@@ -1,0 +1,62 @@
+ <ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Restaurants
+    </ion-title>
+    <ion-buttons slot="end">
+<ion-button>
+<ion-icon name="notifications"></ion-icon>
+</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+
+
+
+
+<ion-content [fullscreen]="true">
+  <div class="banner">
+<img src="assets\orange_banner.jpg" />
+<div class="caption ion-padding">
+  Welcome to Twinker <br>
+ <i> let we serve, what you need</i>
+</div>
+
+
+<div class="search">
+  <ion-item lines="none" class="ion-no-padding">
+    <ion-icon slot="start" name="search-outline"></ion-icon>
+    <ion-input placeholder="Search Restaurant"></ion-input>
+
+  </ion-item >
+</div>
+  </div>
+
+
+<div class="ion-list">
+  <ion-list *ngFor="let restaurants of restaurantDetails;let i=index">
+    <!-- <ion-list-header>
+      Recent Conversations
+    </ion-list-header> -->
+
+    <ion-item (click)="RestaurntClick(restaurants.RestaurantName,restaurants._id)">
+      <ion-thumbnail slot="start">
+        <img src="assets\restaurant_logo.jpg">
+      </ion-thumbnail>
+      <ion-label>
+        <h4>{{restaurants.RestaurantName}}</h4>
+        <p>{{restaurants.RestaurantType}}</p>
+        <p>{{restaurants.Address}}</p>
+      </ion-label>
+    </ion-item>
+
+
+    </ion-list>
+    </div>
+
+  </ion-content>
+

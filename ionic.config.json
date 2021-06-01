@@ -1,0 +1,7 @@
+{
+  "name": "Twinker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

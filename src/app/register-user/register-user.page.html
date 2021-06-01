@@ -1,0 +1,44 @@
+
+<div class="banner">
+  <img src="assets\login.png" />
+  <div class="caption ion-padding">
+    Hi Buddy...<br>
+    Welcome to Twinker<br>
+    <i>let we serve, what you need</i>
+  </div>
+  </div>
+
+
+<ion-content  padding>
+
+  <div style="padding: 5px;margin-top: 20px;">
+  
+    <ion-item  >
+      <ion-label position="floating">Full Name</ion-label>
+      <ion-input ></ion-input>
+    </ion-item>
+  
+  <ion-item>
+    <ion-label position="floating">Mobile No.</ion-label>
+    <ion-input type="number"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Password</ion-label>
+    <ion-input type="password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Confirm Password</ion-label>
+    <ion-input type="password"></ion-input>
+  </ion-item>
+  <div padding style="margin-top: 20px;">
+    <ion-button size="large" type="submit" color="primary"  expand="block">Register</ion-button>
+  </div>
+<hr style="background-color: gray;">
+<p>If already have an account? Kindly...</p>
+  <div padding style="margin-top: 20px;">
+
+    <ion-button size="large" color="secondary" (click)="RedirectToLogin()"  expand="block">Login</ion-button>
+  </div>
+
+</div>
+</ion-content>

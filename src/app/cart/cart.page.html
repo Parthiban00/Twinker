@@ -1,0 +1,193 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>cart</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Cart
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<div class="banner" style="height: 80px;">
+  <img  src="assets\orange_banner1.png" />
+  <div class="caption ion-padding">
+    Hotel Vaani<br>
+    1234, Aranmanai vaasal sivaganga
+  </div>
+  </div>
+
+<div >
+  <ion-header>
+<ion-toolbar>
+  <ion-segment [(ngModel)]="default" color="primary" (ionChange)="segmentChanged($event)">
+<ion-segment-button value="Delivery">
+  <ion-label>Delivery</ion-label>
+  </ion-segment-button>
+
+  <ion-segment-button value="Pickup">
+    <ion-label>Pickup</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="Dining">
+      <ion-label>Dining</ion-label>
+      </ion-segment-button>
+  </ion-segment>
+</ion-toolbar>
+</ion-header>
+  </div>
+
+
+<ion-content>
+
+  <div  *ngIf="default=='Delivery'">
+
+    <div class="deliverylocation">
+    <ion-card>
+      <ion-card-header>
+         Delivery Location
+         <ion-button fill="clear" ><ion-icon   name="create-outline"></ion-icon></ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        Idayamelur, sivaganga.
+      </ion-card-content>
+    </ion-card>
+    </div>
+    <div class="cart-items">
+  <ion-card>
+    <ion-card-content>
+      <div class="item-img">
+        <img src="assets\chicken_biryani.jpg" />
+      </div>
+
+      <div class="item-info">
+        <p>Chicken Biriyani</p>
+      <p>1 full plate with 1 egg and thaalsa</p>
+      <p>Rs.130.00</p>
+
+      <div class="qty-selector" >
+<ion-button fill="clear">-</ion-button>
+<ion-label>1</ion-label>
+<ion-button fill="clear">+</ion-button>
+
+      </div>
+
+      </div>
+
+    </ion-card-content>
+    </ion-card>
+    </div>
+  </div>
+
+  <div  *ngIf="default=='Pickup'">
+    <div class="cart-items">
+  <ion-card>
+    <ion-card-content>
+      <div class="item-img">
+        <img src="assets\chicken_biryani.jpg" />
+      </div>
+
+      <div class="item-info">
+        <p>Chicken Biriyani</p>
+      <p>1 full plate with 1 egg and thaalsa</p>
+      <p>Rs.130.00</p>
+
+      <div class="qty-selector" >
+<ion-button fill="clear">-</ion-button>
+<ion-label>1</ion-label>
+<ion-button fill="clear">+</ion-button>
+
+      </div>
+
+      </div>
+
+    </ion-card-content>
+    </ion-card>
+    </div>
+  </div>
+
+
+  <div  *ngIf="default=='Dining'">
+    <div class="cart-items">
+  <ion-card>
+    <ion-card-content>
+      <div class="item-img">
+        <img src="assets\chicken_biryani.jpg" />
+      </div>
+
+      <div class="item-info">
+        <p>Chicken Biriyani</p>
+      <p>1 full plate with 1 egg and thaalsa</p>
+      <p>Rs.130.00</p>
+
+      <div class="qty-selector" >
+<ion-button fill="clear">-</ion-button>
+<ion-label>1</ion-label>
+<ion-button fill="clear">+</ion-button>
+
+      </div>
+
+      </div>
+
+    </ion-card-content>
+    </ion-card>
+    </div>
+  </div>
+
+  <div class="table">
+    <img src="assets\bill_details.png">
+    <div class="content">
+    <ion-row>
+     <ion-col>
+        Bill Details
+        </ion-col>
+        <ion-col>Cost(Rs.)</ion-col>
+
+    </ion-row>
+    <hr>
+    <ion-row>
+      <ion-col>
+      <ion-label>Item Total</ion-label>
+      </ion-col>
+      <ion-col>400.00</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Delivery Partner Fee</ion-col>
+      <ion-col>45.00</ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>Taxes and Charges</ion-col>
+      <ion-col>7.00</ion-col>
+    </ion-row>
+    <ion-row><ion-col>Total Amount</ion-col>
+    <ion-col>400.00</ion-col>
+    </ion-row>
+    </div>
+  </div>
+ <div>
+  <ion-button (click)="whereIam()">Where I am</ion-button>
+  <p>current position: {{lat}},{{lon}}</p>
+  <p>address:  {{reverseGeocodingResults}}</p>
+
+  </div>
+
+</ion-content>
+
+<ion-footer >
+  <ion-toolbar color="primary">
+    <!-- <ion-title>4 Items</ion-title> -->
+
+    <ion-text class="title">4 Items</ion-text>
+    <ion-text class="description">Amount Rs: 400.00</ion-text>
+
+
+    <ion-button color="secondary" slot="end" >Place Order<ion-icon slot="end" name="cart"></ion-icon></ion-button>
+  </ion-toolbar>
+</ion-footer>

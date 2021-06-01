@@ -1,0 +1,241 @@
+// .product{
+//     background-color:rgb(255, 255, 255);
+//     border-bottom: gray;
+    
+//    border-radius: 5px;
+//     margin: 60px 5px 5px 5px;
+//     height: 100px;
+//     box-shadow:0px 3px 12px 2px rgb(192, 190, 190);
+    
+//     .thumb-img{
+//         height: 100px;
+//         width: 100px;
+        
+//     }
+//     .product-content{
+//         margin-top: -40px;
+//         margin-left: 5px;
+//         .discription{
+//             font-size: small;
+           
+//             color: gray;
+//             margin-top:2px;
+//             font-style: italic;
+
+
+//         }
+//         h6{
+//             margin:0px 0px 0px 0px;
+//         }
+//     }
+//     .price{
+//         position: absolute;
+//         font-size: small;
+       
+//     }
+//     .add-cart{
+      
+//         margin-top: -20px;
+//         display:flex;
+//         justify-content: flex-end;
+//         background-color: #f6f6f6;
+//         align-items: center;
+//         border-radius: 5px;
+        
+        
+
+//     }
+// }
+
+.banner{
+    position: relative;
+  }
+  img{
+    width: 100%;
+    height: 100px;
+  }
+  .caption{
+      
+    position: absolute;
+  //  margin-top: 60px;
+    width: 100%;
+    bottom:45px;
+    font-size: 16px;
+    color: white;
+    padding-left: 26px;
+    padding-right: 26px;
+    
+    
+  }
+
+//   ion-segment{
+  
+//       ion-segment-button{
+//           background-color: rgb(179, 179, 179);
+//           border-radius: 50px;
+          
+          
+          
+          
+        
+//       }
+//   }
+
+.header{
+    display: flex;
+    margin-top: 60px;
+    height: 80px;
+    background-color: gainsboro;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 5px;
+
+  .rest-img{
+    
+     img{
+         display: flex;
+         height: 80px;
+         width: 80px;
+     }
+
+  }
+    
+
+
+}
+
+.product{
+         background-color:rgb(255, 255, 255);
+         border-bottom: gray;
+        
+       border-radius: 5px;
+        margin: 0px 0px 0px 0px;
+     height: 100px;
+}
+
+// ion-content{
+//     --padding-top:16px;
+//     --padding-bottom:16px;
+//     --padding-start:26px;
+//     --padding-end:26px
+// }
+
+.cart-items{
+
+
+ion-card{
+    margin-left:0;
+    margin-right:0;
+    border-radius:0;
+
+    ion-card-content{
+        display: flex;
+        position: relative;
+
+        .item-img{
+            display:flex;
+            align-items: center;
+            margin-right: 16px;
+
+            img{
+                object-fit:cover;
+                width:100px;
+                height: 100px;
+                box-shadow: 0px 10px 30px 0px rgba(0,0,0,0.16);
+            }
+        }
+
+        .item-info{
+            p{
+                font-size: 14px;
+
+            }
+            p:nth-child(1){
+                color: #434343;
+            }
+            p:nth-child(2){
+                color: #919191;
+            }
+            p:nth-child(3){
+                color:var(--ion-color-primary);
+            }
+            .qty-selector{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #f6f6f6;
+                border-radius:5px;
+                margin-top:10px;
+                width:fit-content;
+                
+            
+            // ion-button{
+            //     color:#565656;
+            //     font-size: 16px;
+            //     margin-left: 8px;
+            //     margin-right:8px ;
+            // }
+           
+           
+            
+            }
+            ion-label{
+                color:#565656 !important;
+                font-size: 14px;
+            }
+            .amount{
+           
+              
+               margin-top: -35px;
+               margin-left: 100px;
+               
+            }
+
+        }
+    }
+}
+}
+
+
+ion-footer{
+  
+   
+.title{
+    display: flex;
+    margin-top: 0px;
+    margin-left: 10px;
+    font-size: 14px;
+    
+
+}
+.description{
+    display: flex;
+    margin-top: 0px;
+    margin-left: 10px;
+    color:whitesmoke;
+    font-size: 14px;
+    font-style: italic;
+    
+
+}
+
+    ion-button{
+        text-transform: capitalize;
+        font-weight: 300;
+        margin-right: 10px;
+        --border-radius:7px;
+        --box-shadow:none;
+    
+        ion-icon{
+            margin-left: 5px;
+        }
+    }
+
+    
+    
+
+    
+
+}
+
+

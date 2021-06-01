@@ -1,0 +1,53 @@
+
+<ion-app>
+  
+   <!-- <ion-header class="ion-no-border">
+    <ion-toolbar color="primary" no-border>
+        <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+      <ion-title>
+        Twinker
+      </ion-title>
+      <ion-buttons slot="end">
+<ion-button>
+  <ion-icon name="notifications"></ion-icon>
+</ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header> -->
+
+  <ion-menu side="start" menuId="first" contentId="content1">
+    
+      <ion-content>
+        <div class="menu-header-bg"></div>
+        <div class="header-content">
+          <img src="assets\food_logo.jpg" alt="Profile_image">
+          <ion-label>
+            <h2>Parthiban</h2>
+            <p>9095924511</p>
+            </ion-label>
+        </div>
+        <div class="action-button">
+          <ion-button>
+            <ion-icon slot="start" name="create"></ion-icon>Edit Profile
+          </ion-button>
+
+        </div>
+        <ion-list class="menu-item" lines="none" *ngFor="let pages of navigate">
+        <ion-menu-toggle auto-hide="true">
+          <ion-item [routerLink]="pages.url" routerDirection="forward">
+              <ion-icon [name]="pages.icon" slot="start"></ion-icon>
+                 {{pages.title}} 
+          </ion-item>
+        </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+   
+  <!-- Tab bar -->
+  
+
+ <ion-router-outlet id="content1"></ion-router-outlet> 
+<!-- <ion-router-outlet ></ion-router-outlet> -->
+</ion-app>

@@ -1,0 +1,39 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title style="font-size: medium;">Twinker-Login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<div class="banner">
+  <img src="assets\login.png" />
+  <div class="caption ion-padding">
+    Hi Buddy...<br>
+    Welcome to Twinker<br>
+    <i>let we serve, what you need</i>
+  </div>
+  </div>
+
+<ion-content  padding>
+  <form #loginForm="ngForm" >
+  <div style="padding: 5px;margin-top: 20px;">
+  <ion-item  >
+    <ion-label position="floating">Mobile No.</ion-label>
+    <ion-input [(ngModel)]="loginValues.mobileNo" name="mobileNo"  #mobileNo="ngModel" minlength="10" maxlength="10" required ngModel></ion-input>
+  </ion-item>
+  <ion-item   >
+    <ion-label position="floating">Password</ion-label>
+    <ion-input  #password="ngModel"  [(ngModel)]="loginValues.password" name="password"  minlength="8" required ngModel></ion-input>
+    <small *ngIf="password.touched && !password.valid" style="color: red;">Password must contains [min length 8, lowercase, uppercase, symbols and numbers]</small>
+  </ion-item>
+  <div padding style="margin-top: 20px;">
+    <ion-button  type="submit" color="primary" size="large" (click)="Login(mobileNo.value,password.value)" expand="block">Login</ion-button>
+  </div>
+<hr style="background-color: gray;">
+  <div padding style="margin-top: 20px;">
+    <p>If you dont have account? kindly...</p>
+    <ion-button size="large" color="secondary"  (click)="Register()" expand="block">Register</ion-button>
+  </div>
+
+</div>
+</form>
+</ion-content>

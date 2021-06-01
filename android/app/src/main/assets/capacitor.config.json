@@ -1,0 +1,6 @@
+{
+	"appId": "com.twinker.ionic-angular",
+	"appName": "Twinker",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}
