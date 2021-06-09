@@ -1,1 +1,145 @@
 
+<ion-header class="ion-no-border">
+
+  <ion-toolbar  no-border>
+    <ion-buttons fill="clear" slot="start">
+    <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+  <ion-title style="font-family: lato;">
+    Home
+  </ion-title>
+  <ion-buttons slot="end">
+<ion-button fill="clear">
+<ion-icon color="primary" name="notifications"></ion-icon>
+</ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-item lines="none" >
+  <ion-avatar slot="start">
+    <img src="assets/user.png">
+  </ion-avatar>
+
+  <ion-label>
+    <p style="margin-top: 20px;">Hello, {{user[0].FirstName}}</p>
+    <h3 style="margin-top: -15px;">Welcome to Twinker...</h3>
+  </ion-label>
+
+  <ion-button slot="end" fill="clear" *ngIf="userType!='C'" (click)="Dashboard()">
+    <ion-icon color="secondary" name="apps"></ion-icon>
+    </ion-button>
+</ion-item>
+
+</ion-header>
+<ion-content>
+<div class="slides ion-margin-bottom">
+  <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+    <ion-slide style="padding:0px;width: fit-content;" (click)="RestaurantPage()">
+
+      <ion-card>
+        <ion-card-header>
+<div class="main" >
+
+  <img src="assets/rest.png">
+</div>
+<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+        </ion-card-header>
+        <ion-card-content class="ion-text-left">
+
+          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Restaurants</ion-card-title>
+          <ion-card-subtitle style="font-size: 12px;">Delivery | Pickup | Dinein</ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
+
+
+
+
+    </ion-slide>
+    <ion-slide style="padding:0px;width: fit-content;" >
+
+      <ion-card>
+        <ion-card-header>
+<div class="main" >
+
+  <img src="assets/evening_bites.png">
+</div>
+<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+        </ion-card-header>
+        <ion-card-content class="ion-text-left">
+
+          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Evenning Bites</ion-card-title>
+          <ion-card-subtitle style="font-size: 12px;">Crispy | Recepies | Hot</ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
+
+
+
+
+    </ion-slide>
+
+
+
+
+
+
+  </ion-slides>
+  <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+
+
+
+
+    <ion-slide style="padding:0px;width: fit-content;" >
+
+      <ion-card >
+        <ion-card-header>
+<div class="main" >
+
+  <img src="assets/cool.png">
+</div>
+<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+        </ion-card-header>
+        <ion-card-content class="ion-text-left">
+
+          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Drinks | Juices</ion-card-title>
+          <ion-card-subtitle style="font-size: 12px;">Cool | Fruits | Beverages</ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
+
+
+
+
+    </ion-slide>
+    <ion-slide style="padding:0px;width: fit-content;" >
+
+      <ion-card>
+        <ion-card-header>
+<div class="main" >
+
+  <img src="assets/veg.png">
+</div>
+<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+        </ion-card-header>
+        <ion-card-content class="ion-text-left">
+
+          <ion-card-title class="ion-margin-bottom" style="text-align: center;">    Vegetables    </ion-card-title>
+          <ion-card-subtitle style="font-size: 12px;">Directly From Farmers</ion-card-subtitle>
+        </ion-card-content>
+      </ion-card>
+
+
+
+
+    </ion-slide>
+
+
+
+
+
+  </ion-slides>
+
+</div>
+</ion-content>

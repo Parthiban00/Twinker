@@ -8,8 +8,38 @@ import {Router} from '@angular/router'
 })
 export class HomePagePage implements OnInit {
   navigate : any;
-  constructor(private router:Router) { 
+  user:any;
+  userType:any;
+  constructor(private router:Router) {
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.userType=this.user[0].UserType;
     this.sideMenu();
+  }
+
+
+
+
+  slidesOptions={
+
+  }
+
+  RestaurantPage(){
+    this.router.navigate(['home']);
+  }
+  Dashboard(){
+    console.log("user Type "+this.userType);
+    if(this.userType=='R'){
+      this.router.navigate(['restaurant-owner-dashboard']);
+    }
+    else if(this.userType=='D'){
+      this.router.navigate(['delivery-partner-dashboard']);
+    }
+    else if(this.userType=='A'){
+      this.router.navigate(['admin-dashboard']);
+    }
+    else{
+      console.log("this is "+this.userType);
+    }
   }
 
   ngOnInit() {
@@ -53,7 +83,7 @@ export class HomePagePage implements OnInit {
         title : "Sign Out",
         url   : "/contacts",
         icon  : "log-out",
-      
+
       },
     ]
   }

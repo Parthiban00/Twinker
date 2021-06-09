@@ -16,7 +16,11 @@
     <ion-title style="font-family: lato;">
       {{whichRestaurant}}
     </ion-title>
-
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="home"></ion-icon>
+      </ion-button>
+          </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -25,16 +29,17 @@
     <div class="caption ion-padding">
 
       1234, Aranmanai vaasal sivaganga<br>
-      <i style="font-size: small;">Rating: 4.7 | Taste: 95% | Delivery Time: 15-25mins</i>
+      <i style="font-size: small;">Rating: 4.5 | Taste: 4.5 | Delivery Time: 15-25mins</i>
     </div>
     </div>
 
 
     <ion-content  >
-      <ion-progress-bar color="secondary" value="0.25" buffer="0.5" *ngIf=showProgress ></ion-progress-bar>
-     <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
+
+      <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
+        <ion-refresher-content>
+    </ion-refresher-content>
+    </ion-refresher>
 <div >
 
   <ion-segment scrollable [(ngModel)]="menu" color="primary" (ionChange)="segmentChanged($event)">
@@ -117,7 +122,7 @@
     <ion-text class="description">from {{restaurantName1}}</ion-text>
 
 
-    <ion-button color="secondary" slot="end" (click)="ViewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
+    <ion-button color="secondary"  slot="end" (click)="ViewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>
 

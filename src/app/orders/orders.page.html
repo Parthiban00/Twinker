@@ -1,22 +1,630 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>orders</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Orders
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="home"></ion-icon>
+      </ion-button>
+          </ion-buttons>
   </ion-toolbar>
+  <div >
+
+    <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
+      <ion-segment-button  value="Placed">
+        Placed
+      </ion-segment-button>
+      <ion-segment-button  value="Completed">
+        Completed
+      </ion-segment-button>
+
+    </ion-segment>
+    </div>
 </ion-header>
 
 <ion-content>
-  <ion-card>
 
-   <div id="mapid" class="map"></div>
 
-<ion-card-header>
-<ion-card-subtitle>Current Location</ion-card-subtitle>
-<ion-card-title></ion-card-title>
+    <!-- <div  *ngFor="let orders of orderDetails;let i=index">
+      <ion-card (click)="presentActionSheet()">
+        <ion-card-header>
+          Date
+        </ion-card-header>
+      <ion-card-title>
+        {{orders.RestaurantName}}
+      </ion-card-title>
+        <ion-card-subtitle>
+         <i> {{orders.OrderId}}</i>
+        </ion-card-subtitle>
 
-</ion-card-header>
-<ion-card-content>
-  Address:
+
+      </ion-card>
+
+
+      </div> -->
+      <div *ngIf="default=='Placed'">
+<ion-card *ngIf="orderDetails.length">
+
+  <ion-card-content>
+      <mat-accordion *ngFor="let orders of orderDetails;let i=index" >
+
+
+        <mat-expansion-panel (opened)="panelOpenState = true"
+                             (closed)="panelOpenState = false" style="margin-top: 5px;">
+          <mat-expansion-panel-header>
+            <mat-panel-title  style="font-size: small;">
+            {{orders.RestaurantName}}
+            </mat-panel-title>
+            <mat-panel-description  style="font-size: small;">
+            <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+            {{orders.OrderId}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+<mat-accordion>
+          <mat-expansion-panel (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false">
+<mat-expansion-panel-header>
+<mat-panel-title  style="font-size: small;">
+Order Details
+
+</mat-panel-title>
+<mat-panel-description  style="font-size: small;">
+
+
+</mat-panel-description>
+</mat-expansion-panel-header>
+
+
+<div class="container" style="font-size: 12px;">
+
+<ion-card>
+  <ion-card-content>
+<ion-row>
+  <ion-col>
+    Order Type
+  </ion-col>
+  <ion-col style="font-size: 12px;">
+    Delivery
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    Payment Type
+  </ion-col>
+  <ion-col style="font-size: 12px;">
+    COD (Cash On Delivery)
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    Order Status
+  </ion-col>
+  <ion-col style="font-size: 12px;">
+    Placed
+  </ion-col>
+</ion-row>
 </ion-card-content>
-
 </ion-card>
+</div>
+
+</mat-expansion-panel>
+
+</mat-accordion>
+
+          <mat-accordion>
+            <mat-expansion-panel (opened)="panelOpenState = true"
+                                 (closed)="panelOpenState = false" style="margin-top: 3px;">
+              <mat-expansion-panel-header>
+                <mat-panel-title  style="font-size: small;">
+                Item Details
+                </mat-panel-title>
+                <mat-panel-description  style="font-size: small;">
+
+
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+
+
+  <ion-row style="font-size: 14px;">
+    <ion-col>
+      Item
+    </ion-col>
+    <ion-col>
+      Price
+    </ion-col>
+    <ion-col>
+      Quantity
+    </ion-col>
+    <ion-col>
+      Amount
+    </ion-col>
+  </ion-row>
+
+  <ion-row style="font-size: 12px;" *ngFor="let items of orders.ItemDetails" >
+    <ion-col>
+ {{items.ProductName}}
+    </ion-col>
+    <ion-col>
+       {{items.Price}}
+    </ion-col>
+    <ion-col>
+    {{items.ItemCount}}
+    </ion-col>
+    <ion-col>
+       {{items.Amount}}
+    </ion-col>
+  </ion-row>
+
+
+
+            </mat-expansion-panel>
+            </mat-accordion>
+
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                                     (closed)="panelOpenState = false" style="margin-top: 3px;">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title  style="font-size: small;">
+                    Bill Details
+                    </mat-panel-title>
+                    <mat-panel-description  style="font-size: small;">
+                    <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+
+                  <div class="container">
+
+
+<div style="font-size:12px;">
+  <ion-card>
+    <ion-card-content>
+<ion-row>
+  <ion-col>
+    Item Total
+  </ion-col>
+  <ion-col style="font-size: 12px;">
+    {{orders.ItemTotal}}
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    Delivery Partner Fee
+  </ion-col>
+  <ion-col style="font-size: 12px;"  >
+    {{orders.DeliveryPartnerFee.toFixed(2)}}
+  </ion-col>
+</ion-row>
+<ion-row>
+  <ion-col>
+    Taxes and Charges
+  </ion-col>
+  <ion-col style="font-size: 12px;">
+    {{orders.TaxesAndCharges}}.00
+  </ion-col >
+</ion-row>
+<ion-row>
+  <ion-col>
+    Total Amount
+  </ion-col>
+  <ion-col style="font-size: 12px;">
+    {{orders.TotalAmount.toFixed(2)}}
+  </ion-col>
+</ion-row>
+</ion-card-content>
+</ion-card>
+</div>
+                    </div>
+
+
+
+
+                </mat-expansion-panel>
+                </mat-accordion>
+
+                <mat-accordion>
+                    <mat-expansion-panel (opened)="panelOpenState = true"
+                                         (closed)="panelOpenState = false" style="margin-top: 3px;">
+                      <mat-expansion-panel-header>
+                        <mat-panel-title  style="font-size: small;">
+                        Track Order
+                        </mat-panel-title>
+                        <mat-panel-description  style="font-size: small;">
+                        <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+
+<!--
+                      <mat-vertical-stepper>
+                        <mat-step>
+                          <ng-template matStepLabel>Step 1</ng-template>
+                          <ng-template matStepContent>
+                            <p>This content was rendered lazily</p>
+
+                          </ng-template>
+                        </mat-step>
+                        <mat-step>
+                          <ng-template matStepLabel>Step 2</ng-template>
+                          <ng-template matStepContent>
+                            <p>This content was also rendered lazily</p>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext>Next</button>
+                          </ng-template>
+                        </mat-step>
+                        <mat-step>
+                          <ng-template matStepLabel>Step 3</ng-template>
+                          <p>This content was rendered eagerly</p>
+                          <button mat-button matStepperPrevious>Back</button>
+                        </mat-step>
+                      </mat-vertical-stepper> -->
+
+                      <!-- <div class="wrapper"> -->
+                        <ul class="StepProgress">
+                          <li class="StepProgress-item is-done">Order Placed</li>
+                          <li class="StepProgress-item is-done">Accepted By Restaurant
+                          <br><i style="font-size: 12px;">  Gettig Ready</i>
+                          </li>
+                          <li class="StepProgress-item current">Accepted By Delivery Partner</li>
+                          <li class="StepProgress-item">Ready To Deliver <br><i style="font-size: 12px;">On The Way</i></li>
+                          <li class="StepProgress-item">Delivered</li>
+                        </ul>
+
+
+
+
+
+                            <!-- <div class="row">
+                                <div class="col-lg-6">
+                                    <p>ORD_ID-1</p>
+                                    <div class="timeline p-4 block mb-4">
+                                        <div class="tl-item active">
+                                            <div class="tl-dot b-warning"></div>
+                                            <div class="tl-content">
+                                                <div class="">Order Placed</div>
+                                                <div class="tl-date text-muted mt-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tl-item">
+                                            <div class="tl-dot b-primary"></div>
+                                            <div class="tl-content">
+                                                <div class="">Accepted By Restaurant (Getting Ready)</div>
+                                                <div class="tl-date text-muted mt-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tl-item">
+                                            <div class="tl-dot b-danger"></div>
+                                            <div class="tl-content">
+                                                <div class="">Accepted By Delivery Partner</div>
+                                                <div class="tl-date text-muted mt-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tl-item">
+                                            <div class="tl-dot b-danger"></div>
+                                            <div class="tl-content">
+                                                <div class="">Ready To Deliver (On the way)</div>
+                                                <div class="tl-date text-muted mt-1"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tl-item">
+                                            <div class="tl-dot b-warning"></div>
+                                            <div class="tl-content">
+                                                <div class="">Delivered</div>
+                                                <div class="tl-date text-muted mt-1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+
+
+
+                    </mat-expansion-panel>
+
+
+
+                    </mat-accordion>
+
+        </mat-expansion-panel>
+
+
+        </mat-accordion>
+      </ion-card-content>
+    </ion-card>
+    </div>
+
+    <div *ngIf="default=='Completed'">
+      <ion-card *ngIf="orderDetails1.length">
+        <ion-card-subtitle>Date</ion-card-subtitle>
+        <ion-card-content>
+            <mat-accordion *ngFor="let orders1 of orderDetails1;let i=index" >
+
+              <mat-expansion-panel (opened)="panelOpenState = true"
+                                   (closed)="panelOpenState = false" style="margin-top: 5px;">
+                <mat-expansion-panel-header>
+                  <mat-panel-title  style="font-size: small;">
+                  {{orders1.RestaurantName}}
+                  </mat-panel-title>
+                  <mat-panel-description  style="font-size: small;">
+                  <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+                  {{orders1.OrderId}}
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+      <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true"
+                (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+      <mat-panel-title  style="font-size: small;">
+      Order Details
+
+      </mat-panel-title>
+      <mat-panel-description  style="font-size: small;">
+      <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+
+      </mat-panel-description>
+      </mat-expansion-panel-header>
+
+
+      <div class="container" style="font-size: 12px;">
+      <!-- <div class="row">
+
+      <div class="col-7 col-sm-7"  style="font-size: small;">Order Type</div>
+      <div class="col-3 col-sm-3" style="font-size: small;">Delivery</div>
+
+       Force next columns to break to new line at md breakpoint and up
+      <div class="w-100 d-none d-md-block"></div>
+
+      <div class="col-7 col-sm-7"  style="font-size: small;">Payment Type</div>
+      <div class="col-3 col-sm-3"  style="font-size: small;">COD</div>
+      <div class="w-100 d-none d-md-block"></div>
+
+      <div class="col-7 col-sm-7"  style="font-size: small;">Order Status</div>
+      <div class="col-3 col-sm-3"  style="font-size: small;">Placed</div>
+
+      </div> -->
+      <ion-card>
+        <ion-card-content>
+      <ion-row>
+        <ion-col>
+          Order Type
+        </ion-col>
+        <ion-col style="font-size: 12px;">
+          Delivery
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Payment Type
+        </ion-col>
+        <ion-col style="font-size: 12px;">
+          COD (Cash On Delivery)
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Order Status
+        </ion-col>
+        <ion-col style="font-size: 12px;">
+          Placed
+        </ion-col>
+      </ion-row>
+      </ion-card-content>
+      </ion-card>
+      </div>
+
+      </mat-expansion-panel>
+
+      </mat-accordion>
+
+                <mat-accordion>
+                  <mat-expansion-panel (opened)="panelOpenState = true"
+                                       (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                      <mat-panel-title  style="font-size: small;">
+                      Item Details
+                      </mat-panel-title>
+                      <mat-panel-description  style="font-size: small;">
+                      <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+
+                    <!-- <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8" >
+
+
+                      <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef style="text-align: center;"> No. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="itemName" >
+                        <th mat-header-cell *matHeaderCellDef class="align"> Item Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.ProductName}} </td>
+                      </ng-container>
+
+
+
+
+
+                      <ng-container matColumnDef="price">
+                        <th mat-header-cell *matHeaderCellDef class="align"> Price </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Price}} </td>
+                      </ng-container>
+
+
+                      <ng-container matColumnDef="quantity">
+                        <th mat-header-cell *matHeaderCellDef class="align"> Qty. </th>
+                        <td mat-cell *matCellDef="let element"> {{element.Quantity}} </td>
+                      </ng-container>
+                      <ng-container matColumnDef="amount">
+                          <th mat-header-cell *matHeaderCellDef class="align"> Amount </th>
+                          <td mat-cell *matCellDef="let element"> {{element.Amount}} </td>
+                        </ng-container>
+
+                      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                    </table> -->
+
+                    <!-- <div class="container table_">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>Item</th>
+                          <th>Price</th>
+                          <th>Quantity</th>
+                          <th>Amount</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let items of itemDetails;let j=index">
+                          <td *ngIf="items.RestaurantId==orders.RestaurantId">{{items.ProductName}}</td>
+                          <td  class="td_" *ngIf="items.RestaurantId==orders.RestaurantId">{{items.Price}}</td>
+                          <td class="td_" *ngIf="items.RestaurantId==orders.RestaurantId">{{items.ItemCount}}</td>
+                          <td class="td_" *ngIf="items.RestaurantId==orders.RestaurantId">{{items.Amount}}</td>
+
+                        </tr>
+
+                      </tbody>
+                    </table>
+         </div> -->
+      <ion-card>
+        <ion-card-content>
+        <ion-row style="font-size: 14px;">
+          <ion-col>
+            Item
+          </ion-col>
+          <ion-col>
+            Price
+          </ion-col>
+          <ion-col>
+            Quantity
+          </ion-col>
+          <ion-col>
+            Amount
+          </ion-col>
+        </ion-row>
+
+        <ion-row style="font-size: 12px;" *ngFor="let items of orders1.ItemDetails" >
+          <ion-col>
+       {{items.ProductName}}
+          </ion-col>
+          <ion-col>
+             {{items.Price}}
+          </ion-col>
+          <ion-col>
+          {{items.ItemCount}}
+          </ion-col>
+          <ion-col>
+             {{items.Amount}}
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+        </ion-card>
+
+
+                  </mat-expansion-panel>
+                  </mat-accordion>
+
+                  <mat-accordion>
+                      <mat-expansion-panel (opened)="panelOpenState = true"
+                                           (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title  style="font-size: small;">
+                          Bill Details
+                          </mat-panel-title>
+                          <mat-panel-description  style="font-size: small;">
+                          <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
+
+                          </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <div class="container">
+                          <!-- <div class="row">
+                              <div class="col-7 col-sm-7" >Items</div>
+                            <div class="col-4 col-sm-4">Cost (Rs.)</div>
+
+
+                            <div class="w-100 d-none d-md-block"></div>
+                            <hr>
+                            <div class="col-7 col-sm-7"  style="font-size: small;">Item Total</div>
+                            <div class="col-3 col-sm-3" style="font-size: small;">{{orders.ItemTotal}}</div>
+
+
+                            <div class="w-100 d-none d-md-block"></div>
+
+                            <div class="col-7 col-sm-7"  style="font-size: small;">Delivery Partner Fee.</div>
+                            <div class="col-3 col-sm-3"  style="font-size: small;">{{orders.DeliveryPartnerFee}}</div>
+                            <div class="w-100 d-none d-md-block"></div>
+                            <div class="col-7 col-sm-7"  style="font-size: small;">Taxes and Charges</div>
+                            <div class="col-3 col-sm-7"  style="font-size: small;">{{orders.TaxesAndCharges}}.00</div>
+
+                            <div class="w-100 d-none d-md-block"></div>
+                            <hr>
+                            <div class="col-7 col-sm-7" style="font-weight:bolder;">Total Amount</div>
+                            <div class="col-3 col-sm-3" style="font-weight:bolder;">{{orders.TotalAmount.toFixed(2)}}</div>
+                          </div> -->
+
+      <div style="font-size:12px;">
+        <ion-card>
+          <ion-card-content>
+      <ion-row>
+        <ion-col>
+          Item Total
+        </ion-col>
+        <ion-col style="font-size: 12px;">
+          {{orders1.ItemTotal}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Delivery Partner Fee
+        </ion-col>
+        <ion-col style="font-size: 12px;"  >
+          {{orders1.DeliveryPartnerFee.toFixed(2)}}
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Taxes and Charges
+        </ion-col>
+        <ion-col style="font-size: 12px;">
+          {{orders1.TaxesAndCharges}}.00
+        </ion-col >
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          Total Amount
+        </ion-col>
+        <ion-col style="font-size: 12px;">
+          {{orders1.TotalAmount.toFixed(2)}}
+        </ion-col>
+      </ion-row>
+      </ion-card-content>
+      </ion-card>
+      </div>
+                          </div>
+
+
+
+
+                      </mat-expansion-panel>
+                      </mat-accordion>
+
+
+
+              </mat-expansion-panel>
+
+              </mat-accordion>
+            </ion-card-content>
+          </ion-card>
+
+    </div>
+
 </ion-content>

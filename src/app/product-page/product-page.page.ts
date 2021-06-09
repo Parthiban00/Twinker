@@ -68,7 +68,7 @@ export class ProductPagePage implements OnInit {
 
   ngOnInit(): void {
 
-
+this.products.length=0;
 
     this.getCartAll();
 
@@ -349,7 +349,7 @@ else if(this.products[i].ItemCount==0){
  }
 
  viewCart(){
-  this.router.navigate(['cart-items']);
+  this.router.navigate(['cart']);
  }
 
 
@@ -377,8 +377,8 @@ ViewCart(){
  }
 
  doRefresh(event) {
-  console.log('Begin async operation');
-
+  //console.log('Begin async operation');
+this.ngOnInit();
   setTimeout(() => {
     console.log('Async operation has ended');
     event.target.complete();
@@ -417,6 +417,9 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
   });
 
   await alert.present();
+}
+RedirectToHome(){
+  this.router.navigate(['home-page']);
 }
 }
 

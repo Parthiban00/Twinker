@@ -29,6 +29,7 @@
 
 
     ion-card{
+
         margin-left:0;
         margin-right:0;
         border-radius:0;
@@ -51,7 +52,9 @@
             }
 
             .item-info{
+
                 p{
+                  margin-top: -10px;
                     font-size: 14px;
 
                 }
@@ -127,7 +130,7 @@
                 text-transform: capitalize;
                 font-weight: 300;
                 margin-right: 10px;
-                --border-radius:7px;
+                --border-radius:0px;
                 --box-shadow:none;
 
                 ion-icon{
@@ -150,7 +153,7 @@
            .content{
             position: absolute;
             width: 100%;
-            bottom:55px;
+            bottom:45px;
             font-size: 16px;
             color: white;
            padding-left: 5px;
@@ -191,3 +194,18 @@ margin-top: -15px;
     }
   }
  }
+
+
+ /* DOES NOT WORK - not specific enough */
+.action-sheet-group {
+  background: #e5e5e5;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class .action-sheet-group {
+  background: #e5e5e5;
+}
+
+.my-custom-class {
+  --background: #e5e5e5;
+}

@@ -12,19 +12,24 @@
     <ion-title style="font-family: lato;">
       Cart
     </ion-title>
-
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="home"></ion-icon>
+      </ion-button>
+          </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <div class="banner" style="height: 80px;">
   <img  src="assets\orange_banner1.png" />
   <div class="caption ion-padding">
-    Hotel Vaani<br>
-    1234, Aranmanai vaasal sivaganga
+    {{restaurantName}}<br>
+
+   <i> {{cartItemsAll.length}} items</i>
   </div>
   </div>
 
-<div >
+<div *ngIf="cartItemsAll.length">
   <ion-header>
 <ion-toolbar>
   <ion-segment [(ngModel)]="default" color="primary" (ionChange)="segmentChanged($event)">
@@ -45,37 +50,43 @@
   </div>
 
 
-<ion-content>
 
+    <!-- <ion-refresher-content>
+      <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200"> -->
+<ion-content *ngIf="cartItemsAll.length">
+  <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div  *ngIf="default=='Delivery'">
 
     <div class="deliverylocation">
     <ion-card>
       <ion-card-header>
          Delivery Location
-         <ion-button fill="clear" ><ion-icon   name="create-outline"></ion-icon></ion-button>
+         <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button>
       </ion-card-header>
       <ion-card-content>
-        Idayamelur, sivaganga.
+        {{selectedLocation}}
+        <!-- {{selectedLocation}} -->
       </ion-card-content>
     </ion-card>
     </div>
     <div class="cart-items">
-  <ion-card>
+  <ion-card *ngFor="let cartItem of cartItemsAll; let i=index">
     <ion-card-content>
       <div class="item-img">
         <img src="assets\chicken_biryani.jpg" />
       </div>
 
       <div class="item-info">
-        <p>Chicken Biriyani</p>
+        <p>{{cartItem.ProductName}}</p>
       <p>1 full plate with 1 egg and thaalsa</p>
-      <p>Rs.130.00</p>
+      <p>Rs.{{cartItem.Price}}.00</p>
 
       <div class="qty-selector" >
-<ion-button fill="clear">-</ion-button>
-<ion-label>1</ion-label>
-<ion-button fill="clear">+</ion-button>
+<ion-button fill="clear" [disabled]="!cartItem.ItemCount" (click)="DecreaseCount(i)">-</ion-button>
+<ion-label>{{cartItem.ItemCount}}</ion-label>
+<ion-button fill="clear" (click)="IncreaseCount(i)" >+</ion-button>
 
       </div>
 
@@ -83,34 +94,53 @@
 
     </ion-card-content>
     </ion-card>
+    </div>
+    <div class="table">
+      <img src="assets\bill_details.png">
+      <div class="content">
+      <ion-row>
+       <ion-col style="font-size: 16px;">
+          Bill Details
+          </ion-col >
+          <ion-col  style="font-size: 16px;"> Cost(Rs.)</ion-col>
+
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col>
+        <ion-label>Item Total</ion-label>
+        </ion-col>
+        <ion-col>{{itemAmount}}.00</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Delivery Partner Fee</ion-col>
+        <ion-col>{{deliveryPartnerFee1}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>Taxes and Charges</ion-col>
+        <ion-col>{{taxesAndCharges}}.00</ion-col>
+      </ion-row>
+      <ion-row><ion-col>Total Amount</ion-col>
+      <ion-col>{{totalAmount1}}</ion-col>
+      </ion-row>
+      </div>
     </div>
   </div>
 
+
+
   <div  *ngIf="default=='Pickup'">
-    <div class="cart-items">
+    <div class="cart-items"  >
   <ion-card>
     <ion-card-content>
-      <div class="item-img">
-        <img src="assets\chicken_biryani.jpg" />
-      </div>
 
-      <div class="item-info">
-        <p>Chicken Biriyani</p>
-      <p>1 full plate with 1 egg and thaalsa</p>
-      <p>Rs.130.00</p>
-
-      <div class="qty-selector" >
-<ion-button fill="clear">-</ion-button>
-<ion-label>1</ion-label>
-<ion-button fill="clear">+</ion-button>
-
-      </div>
-
-      </div>
+      <p>Comming Soon...</p>
 
     </ion-card-content>
     </ion-card>
     </div>
+
   </div>
 
 
@@ -118,76 +148,31 @@
     <div class="cart-items">
   <ion-card>
     <ion-card-content>
-      <div class="item-img">
-        <img src="assets\chicken_biryani.jpg" />
-      </div>
 
-      <div class="item-info">
-        <p>Chicken Biriyani</p>
-      <p>1 full plate with 1 egg and thaalsa</p>
-      <p>Rs.130.00</p>
-
-      <div class="qty-selector" >
-<ion-button fill="clear">-</ion-button>
-<ion-label>1</ion-label>
-<ion-button fill="clear">+</ion-button>
-
-      </div>
-
-      </div>
+      <p>Comming Soon...
+      </p>
 
     </ion-card-content>
     </ion-card>
     </div>
-  </div>
-
-  <div class="table">
-    <img src="assets\bill_details.png">
-    <div class="content">
-    <ion-row>
-     <ion-col>
-        Bill Details
-        </ion-col>
-        <ion-col>Cost(Rs.)</ion-col>
-
-    </ion-row>
-    <hr>
-    <ion-row>
-      <ion-col>
-      <ion-label>Item Total</ion-label>
-      </ion-col>
-      <ion-col>400.00</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>Delivery Partner Fee</ion-col>
-      <ion-col>45.00</ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>Taxes and Charges</ion-col>
-      <ion-col>7.00</ion-col>
-    </ion-row>
-    <ion-row><ion-col>Total Amount</ion-col>
-    <ion-col>400.00</ion-col>
-    </ion-row>
-    </div>
-  </div>
- <div>
-  <ion-button (click)="whereIam()">Where I am</ion-button>
-  <p>current position: {{lat}},{{lon}}</p>
-  <p>address:  {{reverseGeocodingResults}}</p>
 
   </div>
+
+
 
 </ion-content>
 
-<ion-footer >
+<ion-footer  *ngIf="cartItemsAll.length">
   <ion-toolbar color="primary">
     <!-- <ion-title>4 Items</ion-title> -->
 
-    <ion-text class="title">4 Items</ion-text>
-    <ion-text class="description">Amount Rs: 400.00</ion-text>
+    <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
+    <ion-text class="description">Amount Rs:{{totalAmount1}}</ion-text>
 
 
-    <ion-button color="secondary" slot="end" >Place Order<ion-icon slot="end" name="cart"></ion-icon></ion-button>
+    <ion-button color="secondary" slot="end" (click)="PlaceOrder()" >Place Order<ion-icon slot="end" name="cart"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>
+
+<!-- </ion-refresher>
+</ion-refresher-content> -->

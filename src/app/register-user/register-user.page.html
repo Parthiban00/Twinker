@@ -10,28 +10,53 @@
 
 
 <ion-content  padding>
+  <ion-radio-group value='C' (ionChange)="onItemChange($event)" >
+  <ion-row  >
 
+    <ion-col>
+         <ion-item>
+            <ion-label>Customer</ion-label>
+            <ion-radio mode="md"  item-left value="C"></ion-radio>
+       </ion-item>
+     </ion-col>
+
+    <ion-col>
+        <ion-item>
+            <ion-label>Onwer</ion-label>
+            <ion-radio mode="md"  item-left value="R"></ion-radio>
+       </ion-item>
+    </ion-col>
+
+    <ion-col>
+        <ion-item>
+            <ion-label>Delivery</ion-label>
+            <ion-radio mode="md"  item-left value="D"></ion-radio>
+       </ion-item>
+    </ion-col>
+
+</ion-row>
+</ion-radio-group>
+
+<form #registerForm="ngForm" >
   <div style="padding: 5px;margin-top: 20px;">
-  
-    <ion-item  >
-      <ion-label position="floating">Full Name</ion-label>
-      <ion-input ></ion-input>
+
+    <ion-item   >
+      <ion-label position="floating" >Full Name</ion-label>
+      <ion-input  #firstName="ngModel" required ngModel name="firstname" type="text" class="form-control"></ion-input>
     </ion-item>
-  
+
   <ion-item>
-    <ion-label position="floating">Mobile No.</ion-label>
-    <ion-input type="number"></ion-input>
+    <ion-label position="floating"  >Mobile No.</ion-label>
+    <ion-input type="number" #mobileNo name="mobileno" minlength="10" maxlength="10" required ngModel></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Password</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input type="password"  #password ="ngModel" name="password" minlength="8"  required ngModel></ion-input>
   </ion-item>
-  <ion-item>
-    <ion-label position="floating">Confirm Password</ion-label>
-    <ion-input type="password"></ion-input>
-  </ion-item>
+  <div class="small"> <small  *ngIf="password.touched && !password.valid" style="color: red;">Password must contains [min length 8, lowercase, uppercase, symbols and numbers]</small></div>
+
   <div padding style="margin-top: 20px;">
-    <ion-button size="large" type="submit" color="primary"  expand="block">Register</ion-button>
+    <ion-button size="large" type="submit" color="primary" [disabled]="!registerForm.valid"  (click)="RegisterUser(firstName.value,mobileNo.value,password.value)"  expand="block">Register</ion-button>
   </div>
 <hr style="background-color: gray;">
 <p>If already have an account? Kindly...</p>
@@ -41,4 +66,5 @@
   </div>
 
 </div>
+</form>
 </ion-content>

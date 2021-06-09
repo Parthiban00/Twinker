@@ -1,0 +1,29 @@
+mat-grid-tile {
+  background: #f17e3b;
+  color: rgb(255, 255, 255);
+  border-radius: 5px;
+
+}
+
+.thumb{
+//background-image:url('assets\restaurant_icon.png');
+//background-image: url('Twinker\src\assets\restaurant_icon.png');
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  position:absolute;
+  margin-left: 2.5%;
+  margin-top: -40px;
+  background-color: rgb(255, 255, 255);
+}
+
+.thumb1{
+  //background-image:url('assets\orders.png');
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    position:absolute;
+    margin-left: 2.5%;
+    margin-top: -40px;
+    background-color: rgb(255, 255, 255);
+  }

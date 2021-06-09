@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["node","express","mongodb","firebase"],
+  "author": "Parthiban",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",

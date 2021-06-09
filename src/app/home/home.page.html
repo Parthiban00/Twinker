@@ -7,8 +7,8 @@
       Restaurants
     </ion-title>
     <ion-buttons slot="end">
-<ion-button>
-<ion-icon name="notifications"></ion-icon>
+<ion-button (click)="RedirectToHome()">
+<ion-icon name="home"></ion-icon>
 </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -19,6 +19,11 @@
 
 
 <ion-content [fullscreen]="true">
+  <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
+    <ion-refresher-content>
+</ion-refresher-content>
+</ion-refresher>
+
   <div class="banner">
 <img src="assets\orange_banner.jpg" />
 <div class="caption ion-padding">
@@ -38,25 +43,42 @@
 
 
 <div class="ion-list">
-  <ion-list *ngFor="let restaurants of restaurantDetails;let i=index">
+  <ion-list style="margin-top: -10px;" lines="none" *ngFor="let restaurants of restaurantDetails;let i=index">
     <!-- <ion-list-header>
       Recent Conversations
     </ion-list-header> -->
-
+<ion-card>
     <ion-item (click)="RestaurntClick(restaurants.RestaurantName,restaurants._id)">
       <ion-thumbnail slot="start">
         <img src="assets\restaurant_logo.jpg">
       </ion-thumbnail>
       <ion-label>
         <h4>{{restaurants.RestaurantName}}</h4>
-        <p>{{restaurants.RestaurantType}}</p>
-        <p>{{restaurants.Address}}</p>
+        <p  style="margin-top: -10px;">{{restaurants.RestaurantType}}</p>
+        <p  style="margin-top: -10px;">{{restaurants.Address}}</p>
+        <hr style="background-color: rgb(236, 138, 45);">
+        <p style="font-size: 12px;">Taste: 4.5 | Rating: 4.5 | {{restaurants.Distance}} km | 20-35 mins </p>
       </ion-label>
     </ion-item>
 
-
+  </ion-card>
     </ion-list>
     </div>
 
+
+
   </ion-content>
+
+
+  <ion-footer *ngIf="cartItemsAll.length">
+    <ion-toolbar color="primary">
+
+
+      <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
+      <ion-text class="description">from from {{restaurantName}}</ion-text>
+
+
+      <ion-button color="secondary" slot="end" (click)="viewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
+    </ion-toolbar>
+  </ion-footer>
 

@@ -1,0 +1,80 @@
+ion-header{
+  ion-toolbar,ion-item{
+    --background: #f1f5f8;
+    background: #f1f5f8;
+    padding : 0 10px;
+  }
+  ion-toolbar{
+    .bordered{
+      --border-radius:10px;
+      --box-shadow:5px 5px 10px #d1d1d1, -5px -5px 10px #FFFFFF;
+    }
+  }
+
+  ion-item{
+    h3{
+      font-weight: 700;
+      font-size: 14px;
+    }
+    p{
+      font-weight: 500;
+      font-size: 14px;
+    }
+    ion-avatar{
+      --border-radius:40%
+    }
+  }
+}
+
+ion-content{
+  --background: linear-gradient(90deg,rgb(226, 104, 23) 0%, rgb(229, 117, 13) 35%, rgb(236, 136, 78) 100%);
+
+.slides{
+  background: #f1f5f8;
+  padding:4px 10px 20px 10px;
+  //border-radius: 0 0 28px 28px;
+
+
+}
+
+
+
+
+
+
+ion-card{
+ // width:100%;
+width:100%;
+height: 200px;
+//margin-left: -100px;
+  box-shadow: none;
+  //border-radius: 14px;
+  padding:9px;
+  margin-left: 0px;
+  background: rgba(255,255,255,.8);
+.main{
+  width: 60px;
+  height: 60px;
+  //margin-left: ;
+  margin-left: 35px;
+  border-radius: 50px;
+background: #FFFFFF;
+box-shadow: 7px 7px 20px #dbdfe2,
+          -7px -7px 20px #ffffff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+  // img{
+   //  width: 30px;
+  // }
+
+}
+.foods-row{
+  padding-top: -5px;
+}
+}
+}
+
+
+
+

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -7,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   navigate : any;
-  constructor() {  this.sideMenu();}
+  constructor(private router:Router) {  this.sideMenu();}
 
   sideMenu()
   {
@@ -15,39 +16,41 @@ export class AppComponent {
     [
       {
         title : "Cart",
-        url   : "/home",
+        url   : "/cart",
         icon  : "cart"
       },
       {
         title : "Orders",
-        url   : "/home",
+        url   : "/orders",
         icon  : "list"
       },
       {
         title : "Favourites",
-        url   : "/chat",
+        url   : "/favourites",
         icon  : "heart"
       },
       {
         title : "Help Us To Improve",
-        url   : "/contacts",
+        url   : "/to-improve",
         icon  : "trending-up"
       },
       {
         title : "About Us",
-        url   : "/contacts",
+        url   : "/about-us",
         icon  : "paw"
       },
       {
         title : "Terms And Conditions",
-        url   : "/contacts",
+        url   : "/terms-conditions",
         icon  : "information-circle"
       },
       {
         title : "Sign Out",
-        url   : "/contacts",
+       url   : "/login",
         icon  : "log-out",
-      
+       // function:LogOut()
+
+
       },
     ]
   }
@@ -55,4 +58,12 @@ export class AppComponent {
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);
   }
+
+   LogOut(){
+    // console.log("hi logout");
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['login']);
+   }
+
+
 }

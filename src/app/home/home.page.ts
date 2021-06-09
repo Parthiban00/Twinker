@@ -14,32 +14,12 @@ import Cart from '../models/cart';
 })
 export class HomePage {
 
-
+getData:any;
   userName:string="";
   userId:string="";
   currentRate:number=3;
 restaurantDetails:Restaurant[]=[];
 user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-  /*restaurantDetails=[
-    {
-      id:"1",
-       name:"Swathi Mess",
-     status:"Available",
-     type:"Veg/Non-Veg",
-     address:"Court vaasal, Sivaganga.",
-     ratting:"4.5"
-
-   },
-
-   {
-    id:"2",
-    name:"Malairam Restaurant",
-   status:"Available",
-   type:"Veg/Non-Veg",
-   address:"Near Sivankovil, Sivaganga.",
-   ratting:"3.0"
- },
-   ];*/
 
 
 
@@ -47,15 +27,22 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService) {
 
 
+
+
+
   }
+
+
+
+
   cartItemsAll:Cart[]=[];
 
    itemTotal=0;
    restaurantName:string="";
-   lat1=9.9192509;
-   lon1=78.1083096;
-   lat2=9.9153631;
-   lon2=78.4441528;
+  //  lat1=9.9192509;
+  //  lon1=78.1083096;
+  //  lat2=9.9153631;
+  //  lon2=78.4441528;
    unit="K";
    coord:any;
   ngOnInit(): void {
@@ -83,6 +70,8 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     this.userName=this.activatedRouter.snapshot.params.firstName;
     this.userId=this.activatedRouter.snapshot.params.id;
+
+
     this.restaurantService.GetRestaurants().subscribe((res)=>{
 
       this.restaurantDetails=res as Restaurant[];
@@ -94,7 +83,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       navigator.geolocation.getCurrentPosition((position:any)=>{
        this. coord=position.coords;
 
-        console.log(`lat: ${position.coords.latitude},lon:${position.coords.longitude}`);
+        console.log(` current lat: ${position.coords.latitude}, current lon:${position.coords.longitude}`);
 
 
         for(var j=0;j<this.restaurantDetails.length;j++){
@@ -113,7 +102,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
 
   viewCart(){
-    this.router.navigate(['cart-items']);
+    this.router.navigate(['cart']);
   }
 
 
@@ -156,4 +145,22 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
    this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId]);
   }
 
+
+
+  doRefresh(event) {
+    this.ngOnInit();
+
+
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      event.target.complete();
+    }, 2000);
+  }
+
+  RedirectToHome(){
+    this.router.navigate(['home-page']);
+  }
 }
+
+

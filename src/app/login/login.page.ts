@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import{UserLoginService} from 'src/app/user-login.service';
 import  Login  from '../models/login';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-login',
@@ -12,7 +14,8 @@ export class LoginPage implements OnInit {
 
   latestData: any;
   loginStatus:boolean=true;
-userType:String="C";
+//userType:String="C";
+status:String="Failed";
 
  loginValues={
 mobileNo:"",
@@ -23,15 +26,21 @@ password:""
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
- constructor(private router:Router,private userLoginService:UserLoginService){}
+ constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController){
+
+  //localStorage.removeItem('currentUser');
+ }
 
 
   ngOnInit(): void {
+
+
+
     if(!localStorage.getItem('currentUser')){
 console.log("no");
     }
     else{
-      this.router.navigate(['home']);
+      this.router.navigate(['home-page']);
       console.log("yes");
 
     }
@@ -43,46 +52,42 @@ Login(mobileNo:String,password:String){
 
     mobileNo:mobileNo,
     password:password,
-    ActiveYn:"Yes",
-    UserType:this.userType
+    ActiveYn:true,
+    //UserType:this.userType
   }
 
 
-/*this.userLoginService.userLogin(loginCredential).subscribe((data:any)=>{
 
-
-  console.log(data.FirstName);
-  console.log(data.length);
-})*/
-
-this.userLoginService.userLogin(loginCredential).subscribe((res)=>{
+  this.userLoginService.userLogin(loginCredential).subscribe((res)=>{
 
   this.users=res as Login[];
   if(!this.users.length){
+    this.status="Invalid Mobile No. or Password...";
     console.log("login failed")
-    // this._snackBar.openFromComponent(SnackBarComponent, {
-    //   duration: this.durationInSeconds * 1000,
-    //   data:"Invalid MobileNo. or Password..."
 
 
-    //});
+    this.presentToast(this.status);
+
+
     this.loginValues.mobileNo="";
     this.loginValues.password="";
   }
   else{
+
+    this.status="Logged In Successfull...";
     console.log("login successful")
 
 
-    // this.dataService.dataUpdated.subscribe((loginStatus) => {
-    //   this.latestData = loginStatus;
-    // });
+    this.presentToast(this.status);
+
+
 
     console.log(this.users[0].FirstName+' '+this.users[0].MobileNo+' '+this.users[0]._id);
 
-    this.router.navigate(['home',this.users[0].FirstName,this.users[0]._id]);
+    //this.router.navigate(['home',this.users[0].FirstName,this.users[0]._id]);
+    this.router.navigate(['home-page']);
     localStorage.setItem("currentUser",JSON.stringify(this.users));
-    //this.router.navigate(['AppComponent']);
-    //this.reloadCurrentRoute();
+
   }
 
 });
@@ -103,8 +108,16 @@ reloadCurrentRoute() {
   });
 }
 
-onItemChange(value:any){
-  console.log(" Value is : ", value );
-  this.userType=value;
+// onItemChange(value:any){
+//   console.log(" Value is : ", value );
+//   this.userType=value;
+// }
+
+async presentToast(status:any) {
+  const toast = await this.toastController.create({
+    message: status,
+    duration: 2000
+  });
+  toast.present();
 }
 }

@@ -1,6 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import {MatExpansionModule} from '@angular/material/expansion';
+import Orders from '../models/orders';
+import{OrdersService} from 'src/app/orders.service';
+import {Router} from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 declare const L:any;
+import { ActionSheetController } from '@ionic/angular';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -8,10 +13,19 @@ declare const L:any;
 })
 export class OrdersPage implements OnInit {
 
-  lat:any;
-  lon:any;
+  isLinear = false;
+  itemDetails:any[]=[];
+  itemDetails1:any[]=[];
+  panelOpenState = false;
+orderDetails:Orders[]=[];
+orderDetails1:Orders[]=[];
+default:string="";
+  user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-  constructor(private geolocation: Geolocation) { }
+  constructor(private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule) {
+
+    this.default="Placed";
+   }
 
 
 
@@ -19,74 +33,143 @@ export class OrdersPage implements OnInit {
 
   ngOnInit() {
 
-    var map = L.map('mapid').setView([40.725, -73.985], 13);
-
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
-
-  var geocodeService = L.esri.Geocoding.geocodeService({
-    apikey:'AAPKd4adcedf2122456d84303cac03f0556dwSm4eCy2zgbfYe22E9mVvBNWJeQm65Jo6d1SR74bETi8ZpXfjR4Wpb_LDMI07W4m' // replace with your api key - https://developers.arcgis.com
-  });
-
-  map.on('click', function (e) {
-    console.log(e.latlng);
-    var D={
-lat:9.9130983,
-lng:78.4444128
+    var getOrders={
+      Status:"Placed",
+      ActiveYn:true,
+      UserId:this.user[0]._id
     }
-    geocodeService.reverse().latlng(D).run(function (error, result) {
-      if (error) {
-        return;
+   this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
+this.orderDetails=res as Orders[];
+console.log(this.orderDetails);
+
+
+for(var i=0;i<this.orderDetails.length;i++){
+
+  //ELEMENT_DATA.length=0;
+  for(var j=0;j<this.orderDetails[i].ItemDetails.length;j++){
+
+    //ELEMENT_DATA.push({position:j+1,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
+   //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
+this.itemDetails.push(this.orderDetails[i].ItemDetails[j])
+  }
+}
+
+console.log("ite detailassss   "+ this.itemDetails[0]);
+   })
+
+   var getOrders1={
+    Status:"Completed",
+    ActiveYn:true,
+    UserId:this.user[0]._id
+  }
+
+
+  this.ordersService.GetPlacedOrders(getOrders1).subscribe((res)=>{
+    this.orderDetails1=res as Orders[];
+    console.log('completed orders: '+this.orderDetails1);
+
+
+    for(var i=0;i<this.orderDetails1.length;i++){
+
+      //ELEMENT_DATA.length=0;
+      for(var j=0;j<this.orderDetails1[i].ItemDetails.length;j++){
+
+       // ELEMENT_DATA.push({position:j+1,ItemName:this.orderDetails1[i].ItemDetails[j].ProductName,Price:this.orderDetails1[i].ItemDetails[j].Price,Quantity:this.orderDetails1[i].ItemDetails[j].ItemCount,Amount:this.orderDetails1[i].ItemDetails[j].Amount});
+       //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
+    this.itemDetails1.push(this.orderDetails1[i].ItemDetails[j])
       }
+    }
 
-      L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-      console.log('Address '+result.address.Match_addr);
-    });
-  });
-
+    console.log("ite detailassss   "+ this.itemDetails[0]);
+       })
 
 
 
-    this.geolocation.getCurrentPosition({
-
-      timeout:10000,
-      enableHighAccuracy:true
-    }).then((resp) => {
-      // resp.coords.latitude
-      // resp.coords.longitude
-
-      this.lat=resp.coords.latitude;
-      this.lon=resp.coords.longitude;
-
-      var D={
-        lat:9.851748,
-        lng:78.482916
-            }
-            geocodeService.reverse().latlng(D).run(function (error, result) {
-              if (error) {
-                return;
-              }
-
-              L.marker(result.latlng).addTo(map).bindPopup(result.address.Match_addr).openPopup();
-              console.log('Address '+result.address);
-            });
-
-      console.log(resp.coords.latitude);
-      console.log(resp.coords.longitude);
-      // this.ReverseGeocoding(this.lat,this.lon);
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
-
-     let watch = this.geolocation.watchPosition();
-     watch.subscribe((data) => {
-      // data can be a set of coordinates, or an error (if an error occurred).
-      // data.coords.latitude
-      // data.coords.longitude
-
-     });
 
   }
 
+  segmentChanged(ev: any) {
+
+
+    console.log('Segment changed', ev.detail.value);
+  //console.log(this.productDetails[1].MenuId);
+  this.default=ev.detail.value;
+  }
+
+  displayedColumns: string[] = ['position', 'itemName', 'price', 'quantity','amount'];
+
+
+  dataSource = ELEMENT_DATA;
+  //dataSource =;
+
+
+  RedirectToHome(){
+    this.router.navigate(['home-page']);
+  }
+
+
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Placed',
+      cssClass: 'my-custom-class',
+      buttons: [{
+        text: 'Order Details',
+        role: 'destructive',
+        icon: 'location',
+        handler: () => {
+console.log("Order details is clicked");
+
+
+        }
+
+      }, {
+        text: 'Item Details',
+        icon: 'share',
+        handler: () => {
+          console.log('Item details clicked');
+        }
+      }, {
+        text: 'Bill Details',
+        icon: 'share',
+        handler: () => {
+          console.log('Bill details clicked');
+        }
+      }, {
+        text: 'Track Order',
+        icon: 'share',
+        handler: () => {
+          console.log('Track clicked');
+        }
+
+
+
+
+
+
+
+      }]
+    });
+    await actionSheet.present();
+
+    const { role } = await actionSheet.onDidDismiss();
+    console.log('onDidDismiss resolved with role', role);
+  }
+
 }
+export interface PeriodicElement {
+  ItemName: string;
+  position: number;
+  Price: number;
+  Quantity: number;
+  Amount: number;
+
+
+}
+
+
+const ELEMENT_DATA: PeriodicElement[] = [
+
+
+
+];

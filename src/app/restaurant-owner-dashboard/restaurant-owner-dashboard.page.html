@@ -1,0 +1,41 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Restaurant - Dashboard
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="home"></ion-icon>
+      </ion-button>
+          </ion-buttons>
+  </ion-toolbar>
+  <!-- <div >
+
+    <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
+      <ion-segment-button  value="Placed">
+        Placed
+      </ion-segment-button>
+      <ion-segment-button  value="Accepted">
+        Accepted
+      </ion-segment-button>
+      <ion-segment-button  value="Ready">
+        Ready
+      </ion-segment-button>
+      <ion-segment-button  value="Completed">
+        Completed
+      </ion-segment-button>
+
+    </ion-segment>
+    </div> -->
+
+    <div style="margin-top: 20px;margin-left: 5px;margin-right: 5px;">
+      <mat-grid-list cols="2" rowHeight="2:1">
+          <mat-grid-tile><div class="thumb"><img src="assets\restaurant_icon.png"></div><br><br>Restaurants Management</mat-grid-tile>
+          <mat-grid-tile (click)="OrdersManagement()"><div class="thumb1"><img src="assets\orders.png"></div><br><br>Orders Management</mat-grid-tile>
+
+        </mat-grid-list>
+        </div>
+</ion-header>

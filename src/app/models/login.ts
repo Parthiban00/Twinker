@@ -10,6 +10,6 @@ export default class Login{
     Address2: string="";
     Address3: string="";
     UserType: string="";
-    ActiveYn: string="";
-    DeleteYn: string="";
+    ActiveYn: Boolean;
+    DeleteYn: Boolean;
 }

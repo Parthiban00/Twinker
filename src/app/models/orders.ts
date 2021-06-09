@@ -1,6 +1,8 @@
+
+
 export default class Orders{
-   
-    
+
+
     _id:string="";
     OrderId:string ="";
     UserId: string="";
@@ -20,6 +22,13 @@ export default class Orders{
     MobileNo: string="";
     Address:string="";
     ItemDetails:any;
-    
+    DeliveryPartnerDetails:{
+      FirstName:String;
+      MobileNo:String;
+      UserType:String;
+      UserId:String;
+
+    };
+
  }
 

@@ -15,7 +15,11 @@ const DeliveryLocation = require('./database/models/delivery-location');
 const OrderDetails = require('./database/models/order-details');
 app.use(express.json());
 // ---------------------------------new--------------
-const port = process.env.PORT || 8080;
+//const port = process.env.PORT || 8080;
+
+
+
+
 
 app.use(cors());
 
@@ -134,9 +138,9 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
             .catch((error)=>console.log(error));
         });
 
-        app.get('/userregisters/:MobileNo/:Password/:ActiveYn/:UserType',(req,res)=>{
+        app.get('/userregisters/:MobileNo/:Password/:ActiveYn',(req,res)=>{
             console.log("user login get ");
-            Register.find({MobileNo:req.params.MobileNo,Password:req.params.Password,ActiveYn:req.params.ActiveYn,UserType:req.params.UserType})
+            Register.find({MobileNo:req.params.MobileNo,Password:req.params.Password,ActiveYn:true})
             .then((userregisters)=> res.send(userregisters))
             .catch((error)=>console.log(error));
         });
@@ -336,7 +340,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                                 .catch((error)=>console.log(error));
                             });
 
-                            app.get('/restaurants/:userId',(req,res)=>{
+                            app.get('/restaurants/:userId/:activeYn',(req,res)=>{
                                 console.log('hi '+req.params.userId);
 
                                 Restaurant.find({UserId:req.params.userId})
@@ -372,16 +376,32 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                                     .catch((error)=>console.log(error));
                                 });
 
+                                app.get('/orderdetails',(req,res)=>{
+
+                                  console.log("get all orders from order details");
+                                  OrderDetails.find({})
+                                  .then(orderdetails=>res.send(orderdetails))
+                                  .catch((error)=>console.log(error));
+                              });
+
+//                                 app.get('/orderdetails/:ActiveYn/:UserId/:DeleteYn',(req,res)=>{
+
+// console.log("get accepted order by delivery partner");
+//                                   OrderDetails.find({ActiveYn:req.params.ActiveYn,_id:req.params.UserId})
+//                                   .then(orderdetails=>res.send(orderdetails))
+//                                   .catch((error)=>console.log(error));
+//                               });
+
                                 app.patch('/orderdetails/:_id/:RestaurantId/:ActiveYn/:DeleteYn/', (req,res)=>{
 
 
-
-                                    OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn}, {$set: {Status:req.body.Status,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails}})
-                                    .then((orderdetails)=> res.send(orderdetails))
-                                    .catch((error)=>console.log(error));
+// console.log('update delivery partner accept '+req.body.DeliveryPartnerDetails);
+                                  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn}, {$set: {Status:req.body.Status,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails}})
+                                   .then((orderdetails)=> res.send(orderdetails))
+                                     .catch((error)=>console.log(error));
 
                                     }),
 
 
-// app.listen(3000, () => console.log("Server is connected on port 3000"));
-app.listen(port, () => console.log("Server is connected on port "+port));
+ app.listen(3000, () => console.log("Server is connected on port 3000"));
+//app.listen(port, () => console.log("Server is connected on port "+port));

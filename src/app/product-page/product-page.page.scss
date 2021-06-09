@@ -1,23 +1,23 @@
 // .product{
 //     background-color:rgb(255, 255, 255);
 //     border-bottom: gray;
-    
+
 //    border-radius: 5px;
 //     margin: 60px 5px 5px 5px;
 //     height: 100px;
 //     box-shadow:0px 3px 12px 2px rgb(192, 190, 190);
-    
+
 //     .thumb-img{
 //         height: 100px;
 //         width: 100px;
-        
+
 //     }
 //     .product-content{
 //         margin-top: -40px;
 //         margin-left: 5px;
 //         .discription{
 //             font-size: small;
-           
+
 //             color: gray;
 //             margin-top:2px;
 //             font-style: italic;
@@ -31,18 +31,18 @@
 //     .price{
 //         position: absolute;
 //         font-size: small;
-       
+
 //     }
 //     .add-cart{
-      
+
 //         margin-top: -20px;
 //         display:flex;
 //         justify-content: flex-end;
 //         background-color: #f6f6f6;
 //         align-items: center;
 //         border-radius: 5px;
-        
-        
+
+
 
 //     }
 // }
@@ -55,7 +55,7 @@
     height: 100px;
   }
   .caption{
-      
+
     position: absolute;
   //  margin-top: 60px;
     width: 100%;
@@ -64,20 +64,20 @@
     color: white;
     padding-left: 26px;
     padding-right: 26px;
-    
-    
+
+
   }
 
 //   ion-segment{
-  
+
 //       ion-segment-button{
 //           background-color: rgb(179, 179, 179);
 //           border-radius: 50px;
-          
-          
-          
-          
-        
+
+
+
+
+
 //       }
 //   }
 
@@ -91,7 +91,7 @@
     border-radius: 5px;
 
   .rest-img{
-    
+
      img{
          display: flex;
          height: 80px;
@@ -99,7 +99,7 @@
      }
 
   }
-    
+
 
 
 }
@@ -107,7 +107,7 @@
 .product{
          background-color:rgb(255, 255, 255);
          border-bottom: gray;
-        
+
        border-radius: 5px;
         margin: 0px 0px 0px 0px;
      height: 100px;
@@ -147,10 +147,12 @@ ion-card{
 
         .item-info{
             p{
+              margin-top: -10px;
                 font-size: 14px;
 
             }
             p:nth-child(1){
+
                 color: #434343;
             }
             p:nth-child(2){
@@ -167,28 +169,28 @@ ion-card{
                 border-radius:5px;
                 margin-top:10px;
                 width:fit-content;
-                
-            
+
+
             // ion-button{
             //     color:#565656;
             //     font-size: 16px;
             //     margin-left: 8px;
             //     margin-right:8px ;
             // }
-           
-           
-            
+
+
+
             }
             ion-label{
                 color:#565656 !important;
                 font-size: 14px;
             }
             .amount{
-           
-              
+
+
                margin-top: -35px;
                margin-left: 100px;
-               
+
             }
 
         }
@@ -198,14 +200,14 @@ ion-card{
 
 
 ion-footer{
-  
-   
+
+
 .title{
     display: flex;
     margin-top: 0px;
     margin-left: 10px;
     font-size: 14px;
-    
+
 
 }
 .description{
@@ -215,7 +217,7 @@ ion-footer{
     color:whitesmoke;
     font-size: 14px;
     font-style: italic;
-    
+
 
 }
 
@@ -223,18 +225,18 @@ ion-footer{
         text-transform: capitalize;
         font-weight: 300;
         margin-right: 10px;
-        --border-radius:7px;
+        --border-radius:0px;
         --box-shadow:none;
-    
+
         ion-icon{
             margin-left: 5px;
         }
     }
 
-    
-    
 
-    
+
+
+
 
 }
 

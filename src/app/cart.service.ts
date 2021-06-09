@@ -72,4 +72,9 @@ return this.webService.patch('carts',data);
      console.log("rest id   "+data.RestaurantId)
     return this.webService.get(`restaurants/${data.RestaurantId}`);
    }
+
+   GetAllOrders(){
+   // console.log("rest id   "+data.RestaurantId)
+   return this.webService.get('orderdetails');
+  }
 }

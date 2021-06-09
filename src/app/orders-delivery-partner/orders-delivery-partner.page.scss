@@ -1,0 +1,32 @@
+ion-select {
+  /* Applies to the value and placeholder color */
+  color: #545ca7;
+
+  /* Set a different placeholder color */
+  --placeholder-color: #971e49;
+
+  /* Set full opacity on the placeholder */
+  --placeholder-opacity: 1;
+}
+
+
+.banner{
+  position: relative;
+}
+img{
+  width: 100%;
+  height: 100px;
+}
+.caption{
+
+  position: absolute;
+//  margin-top: 60px;
+  width: 100%;
+  bottom:45px;
+  font-size: 16px;
+  color: white;
+  padding-left: 26px;
+  padding-right: 26px;
+
+
+}

@@ -111,8 +111,9 @@ ion-content{
     background: white;
     margin:16px 26px 16px 26px;
     padding:5px 16px 5px 16px;
-    border-radius: 10px;
-    box-shadow:0px 3px 12px 2px rgb(83, 83, 83);
+    height: fit-content;
+    //border-radius: 10px;
+    box-shadow:0px 2px 5px 2px rgb(83, 83, 83);
 
     ion-item{
       --inner-padding-end:0 !important;
@@ -135,3 +136,46 @@ ion-content{
   margin-top: 40px;
 
 }
+
+ion-footer{
+
+
+  .title{
+      display: flex;
+      margin-top: 0px;
+      margin-left: 10px;
+      font-size: 14px;
+
+
+  }
+  .description{
+      display: flex;
+      margin-top: 0px;
+      margin-left: 10px;
+      color:whitesmoke;
+      font-size: 14px;
+      font-style: italic;
+
+
+  }
+
+      ion-button{
+          text-transform: capitalize;
+          font-weight: 300;
+          margin-right: 10px;
+          --border-radius:0px;
+
+          --box-shadow:none;
+
+          ion-icon{
+              margin-left: 5px;
+          }
+      }
+
+
+
+
+
+
+  }
+
