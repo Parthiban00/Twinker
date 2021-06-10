@@ -22,4 +22,8 @@ export class RegisterUserService {
 
   return this.webService.post('deliverylocations',data);
 }
+
+GetRegisteredUsers(){
+  return this.webService.get('userregisters');
+}
 }

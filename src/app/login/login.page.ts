@@ -97,7 +97,7 @@ Register(){
 }
 
 ForgetPassword(){
-  this.router.navigate(['forget-password']);
+  console.log("forget password");
 }
 
 reloadCurrentRoute() {
@@ -120,4 +120,8 @@ async presentToast(status:any) {
   });
   toast.present();
 }
+
+// ForgetPassword(){
+
+// }
 }

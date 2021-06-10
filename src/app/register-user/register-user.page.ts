@@ -3,12 +3,15 @@ import {Router} from '@angular/router';
 import {RegisterUserService} from 'src/app/register-user.service';
 import DeliveryLocations from '../models/delivery-locations';
 import { ToastController } from '@ionic/angular';
+import Register from '../models/register-user';
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.page.html',
   styleUrls: ['./register-user.page.scss'],
 })
 export class RegisterUserPage implements OnInit {
+
+  registeredUsers:Register[]=[];
   userType="Customer";
   registeredUserStatus:boolean=false;
   durationInSeconds=3;
@@ -16,15 +19,17 @@ export class RegisterUserPage implements OnInit {
   Address2:String="";
   Address3:String="";
   UserType:String="C";
-  ActiveYn:String="Yes";
-  DeleteYn:String="No";
+  ActiveYn:Boolean=true;
+  DeleteYn:Boolean=false;
   status="";
+  availability:Boolean=true;
 
 deliveryLocation:DeliveryLocations[]=[];
 
   constructor(private router:Router,private registerUserService:RegisterUserService,public toastController: ToastController) { }
 
   ngOnInit() {
+    this.GetRegisteredUsers();
   }
   RedirectToLogin(){
 this.router.navigate(['login']);
@@ -95,6 +100,28 @@ async presentToast(status:any) {
   toast.present();
 }
 
+GetRegisteredUsers(){
+this.registerUserService.GetRegisteredUsers().subscribe((res)=>{
 
+  this.registeredUsers=res as Register[];
+  console.log("Registered Users "+this.registeredUsers);
+})
+}
+ChechAvailability(mobileNo){
+  console.log("Entered Mobile No. "+mobileNo);
+  for(var i=0;i<this.registeredUsers.length;i++){
+    if(this.registeredUsers[i].MobileNo==mobileNo){
+      this.availability=false;
+      break;
+
+    }
+    else{
+      this.availability=true;
+      continue;
+    }
+  }
+  console.log("Availability "+this.availability);
+
+}
 }
 
