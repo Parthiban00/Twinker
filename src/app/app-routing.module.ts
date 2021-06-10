@@ -94,6 +94,10 @@ const routes: Routes = [
     loadChildren: () => import('./orders-delivery-partner/orders-delivery-partner.module').then( m => m.OrdersDeliveryPartnerPageModule),
     canActivate:[AuthenticationGuard]
   },
+  {
+    path: 'splash-screen',
+    loadChildren: () => import('./splash-screen/splash-screen.module').then( m => m.SplashScreenPageModule)
+  },
 
 
 

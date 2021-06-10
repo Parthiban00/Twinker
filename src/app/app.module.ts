@@ -11,6 +11,13 @@ import { HttpClientModule,HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
+
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+//import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+
 //import {  CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 
@@ -20,7 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule],
-  providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,
+  providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,
 
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],

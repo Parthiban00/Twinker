@@ -3,8 +3,8 @@ import {Router} from '@angular/router';
 import{UserLoginService} from 'src/app/user-login.service';
 import  Login  from '../models/login';
 import { ToastController } from '@ionic/angular';
-
-
+import { ActionSheetController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -26,7 +26,7 @@ password:""
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
- constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController){
+ constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController){
 
   //localStorage.removeItem('currentUser');
  }
@@ -98,6 +98,7 @@ Register(){
 
 ForgetPassword(){
   console.log("forget password");
+  this.presentAlertConfirm();
 }
 
 reloadCurrentRoute() {
@@ -124,4 +125,52 @@ async presentToast(status:any) {
 // ForgetPassword(){
 
 // }
+
+async presentActionSheet() {
+  const actionSheet = await this.actionSheetController.create({
+    header: 'Reset Password',
+    cssClass: 'my-custom-class',
+    buttons: [{
+      text: 'Current Location',
+      role: 'destructive',
+      icon: 'location',
+      handler: () => {
+
+
+
+      }
+
+
+    }]
+  });
+  await actionSheet.present();
+
+  const { role } = await actionSheet.onDidDismiss();
+  console.log('onDidDismiss resolved with role', role);
+}
+
+async presentAlertConfirm() {
+
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+   header: 'Enter Your Mobile No.',
+    message: ' <ion-item  >'+
+
+    '<ion-input  name="mobileNo"  minlength="10" maxlength="10" required></ion-input>'+
+ ' </ion-item>',
+    buttons: [
+     {
+        text: 'Okay',
+        handler: () => {
+          console.log('Confirm Okay');
+
+        //  this.router.navigate(['home-page']);
+
+        }
+      }
+    ]
+  });
+
+ // await alert.present();
+}
 }
