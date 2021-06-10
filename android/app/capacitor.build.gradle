@@ -13,7 +13,7 @@ dependencies {
     implementation project(':capacitor-geolocation')
     implementation project(':capacitor-haptics')
     implementation project(':capacitor-keyboard')
-
+    implementation "com.google.android.gms:play-services-location:16.+"
 }
 
 

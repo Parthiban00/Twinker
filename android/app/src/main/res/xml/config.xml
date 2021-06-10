@@ -23,5 +23,9 @@
     <param name="android-package" value="cordova.plugin.nativegeocoder.NativeGeocoder"/>
   </feature>
 
+  <feature name="RequestLocationAccuracy">
+    <param name="android-package" value="cordova.plugin.RequestLocationAccuracy"/>
+  </feature>
+
   
 </widget>
