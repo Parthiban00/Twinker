@@ -15,7 +15,7 @@ const DeliveryLocation = require('./database/models/delivery-location');
 const OrderDetails = require('./database/models/order-details');
 app.use(express.json());
 // ---------------------------------new--------------
-//const port = process.env.PORT || 8080;
+const port = process.env.PORT || 5000;
 
 
 
@@ -403,5 +403,5 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                                     }),
 
 
- app.listen(3000, () => console.log("Server is connected on port 3000"));
-//app.listen(port, () => console.log("Server is connected on port "+port));
+ //app.listen(3000, () => console.log("Server is connected on port 3000"));
+app.listen(port, () => console.log("Server is connected on port "+port));
