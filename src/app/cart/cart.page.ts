@@ -14,9 +14,9 @@ import Restaurant from '../models/restaurants';
 import{CartService} from 'src/app/cart.service';
 import {Router} from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { WebService } from '../web.service';
-import { error } from '@angular/compiler/src/util';
+import { LoadingController } from '@ionic/angular';
 import Orders from '../models/orders';
+//import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
@@ -37,10 +37,11 @@ selectedLocation:any;
   address:string="";
   default:string="";
   allOrders:Orders[]=[];
-  constructor(public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService) {
+  isLoading = false;
+  constructor(public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
-
+//this.present();
   this.geolocation.getCurrentPosition({
 
             timeout:10000,
@@ -57,6 +58,7 @@ this.default="Delivery";
             console.log(resp.coords.longitude);
 
             this.ReverseGeocoding(this.lat,this.lon);
+          //  this.dismiss();
            }).catch((error) => {
              console.log('Error getting location', error);
            });
@@ -109,11 +111,14 @@ public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
   ngOnInit() {
 
+console.log("cart entered");
 
     this.onLoad();
   }
 
   onLoad() {
+    this.present();
+
     var itemTotal=0;
     var getCart={
       UserId:this.user[0]._id,
@@ -128,7 +133,11 @@ public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
       this.cartItemsAll=res as Cart[];
       console.log(this.cartItemsAll);
 
-
+if(this.cartItemsAll.length==0){
+this.dismiss();
+ // this.router.navigate(['home']);
+ this.cartEmpty();
+}
 
       for(var i=0;i<this.cartItemsAll.length;i++){
         itemTotal+=this.cartItemsAll[i].Amount;
@@ -166,7 +175,7 @@ public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
         console.log(itemTotal);
 
       //  this.transactions[0].charges=itemTotal;
-
+this.dismiss();
     });
 
 
@@ -237,7 +246,7 @@ onChecked(event:any){
 
 IncreaseCount(i:any){
 
-
+this.present();
   this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
 
@@ -275,7 +284,7 @@ IncreaseCount(i:any){
    this.cartService.UpdateCart1(addCartItems).subscribe((res)=>{
      this.cartItems=res as Cart[];
 
-
+this.dismiss();
      //this.reloadCurrentRoute();
      this.ngOnInit();
 
@@ -284,7 +293,7 @@ IncreaseCount(i:any){
   }
   DecreaseCount(i:any){
 
-
+this.present();
 
     this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount-1;
     this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
@@ -332,6 +341,9 @@ IncreaseCount(i:any){
         this.cartItems=res as Cart[];
 
        // this.reloadCurrentRoute();
+      this.dismiss();
+      //this.router.navigate(['home']);
+
        this.ngOnInit();
       });
     }
@@ -494,6 +506,8 @@ IncreaseCount(i:any){
 
   distance(lat1:any, lon1:any, lat2:any, lon2:any)
   {
+
+    console.log("enters distance");
     var R = 6371; // km
     var dLat = this.toRad(lat2-lat1);
     var dLon = this.toRad(lon2-lon1);
@@ -509,19 +523,24 @@ IncreaseCount(i:any){
     if(this.distanceKm>2){
       let distanceKm1=this.distanceKm-3;
             // this.transactions[1].charges=(distanceKm1*12);
+            console.log("enters distance if");
             this.deliveryPartnerFee=(distanceKm1*12);
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 //this.deliveryPartnerFee=this.deliveryPartnerFee.toFixed(2);
 this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
 this.totalAmount1=this.totalAmount.toFixed(2);
+this.dismiss();
           }
            else{
             //this.transactions[1].charges=20;
+            console.log("enters distance else");
             this.deliveryPartnerFee=20;
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
             this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
             this.totalAmount1=this.totalAmount.toFixed(2);
+            this.dismiss();
            }
+          // this.dismiss();
     return d;
 
   }
@@ -604,8 +623,10 @@ if(event.target.value=="Pickup"){
     this.nativeGeocoder.reverseGeocode(lat,lon,options).then((results)=>{
 this.reverseGeocodingResults=JSON.stringify(results[0]);
 
-this.selectedLocation=JSON.stringify(results[0].subThoroughfare)+','+JSON.stringify(results[0].thoroughfare)+','+JSON.stringify(results[0].locality)+','+JSON.stringify(results[0].subAdministrativeArea)+','+JSON.stringify(results[0].administrativeArea)+','+JSON.stringify(results[0].countryName)+','+JSON.stringify(results[0].countryCode);
-    })
+this.selectedLocation=JSON.stringify(results[0].locality)+','+JSON.stringify(results[0].subAdministrativeArea)+','+JSON.stringify(results[0].administrativeArea)+','+JSON.stringify(results[0].countryName)+','+JSON.stringify(results[0].countryCode);
+
+this.dismiss();
+})
   }
 
 
@@ -623,7 +644,7 @@ this.presentActionSheet();
         role: 'destructive',
         icon: 'location',
         handler: () => {
-
+          this.present();
 
           this.geolocation.getCurrentPosition({
 
@@ -641,6 +662,7 @@ this.presentActionSheet();
             console.log(resp.coords.longitude);
 
             this.ReverseGeocoding(this.lat,this.lon);
+            this.dismiss();
            }).catch((error) => {
              console.log('Error getting location', error);
            });
@@ -664,7 +686,28 @@ this.presentActionSheet();
     console.log('onDidDismiss resolved with role', role);
   }
 
+  async cartEmpty() {
+   // this.dismiss();
+   // this.dismiss();
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+     // header: 'ohooo! Empty...',
+      message: '<stron>ohooo! Empty...</strong>',
+      buttons: [
+       {
+          text: 'Place Order',
+          handler: () => {
+            console.log('Confirm Okay');
 
+            this.router.navigate(['home-page']);
+
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
 
   async presentAlertConfirm() {
 
@@ -702,7 +745,7 @@ this.presentActionSheet();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
-    }, 2000);
+    }, );
   }
   RedirectToHome(){
     this.router.navigate(['home-page']);
@@ -720,5 +763,24 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
    })
 
   }
+  async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      // duration: 5000,
+      cssClass: 'my-custom-class',
+          message: 'Please wait...',
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
 
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
 }

@@ -8,6 +8,10 @@ import MainMenu from '../models/main-menu';
 import Product from '../models/products';
 import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
+
+import { LoadingController } from '@ionic/angular';
+
+
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.page.html',
@@ -58,7 +62,8 @@ export class ProductPagePage implements OnInit {
   mainMenu:MainMenu[]=[];
   productDetails:Product[]=[];
   products:Product[]=[];
-  constructor(private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService) {
+  isLoading = false;
+  constructor(private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
 
@@ -67,6 +72,7 @@ export class ProductPagePage implements OnInit {
   }
 
   ngOnInit(): void {
+    this.present();
 
 this.products.length=0;
 
@@ -119,7 +125,7 @@ for(var i=0;i<this.productDetails.length;i++){
 
 
 })
-
+this.dismiss();
 
 
 
@@ -156,6 +162,7 @@ segmentChanged(ev: any) {
  IncreaseItem(i:any,menuId:any){
 
   //this.getCartAll();
+  this.present();
   let date: Date = new Date();
 
    console.log(this.selectedMenuName);
@@ -222,6 +229,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
           this.cartItems=res as Cart[];
 
           this.getCartAll();
+
         })
       }
     }
@@ -237,7 +245,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
         }
         else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.restaurantId){
 
-
+this.dismiss();
 
 
             // const dialogRef= this.dialog.open(DialogBoxComponent,{data:{key:'Your cart contains items from '+this.cartItemsAll[0].RestaurantName+'. Do you want to replace?'}});
@@ -292,7 +300,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
 
  }
  DecreaseItem(i:any,menuId:any){
-
+this.present();
   this.products[i].ItemCount=this.products[i].ItemCount-1;
   this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
 
@@ -340,7 +348,7 @@ else if(this.products[i].ItemCount==0){
   this.cartService.ItemCountZero(addCartItems).subscribe((res)=>{
     this.cartItems=res as Cart[];
     this.showCart.length=0;
-
+this.dismiss();
   });
 }
 
@@ -370,6 +378,8 @@ console.log("hi hi hi");
     this.itemTotal1+=this.showCart[i].Amount;
      this.restaurantName1=this.showCart[i].RestaurantName;
      }
+
+     this.dismiss();
   })
  }
 ViewCart(){
@@ -382,10 +392,11 @@ this.ngOnInit();
   setTimeout(() => {
     console.log('Async operation has ended');
     event.target.complete();
-  }, 2000);
+  },);
 }
 
 async presentAlertConfirm(clearCart:any,addCart:any) {
+  this.present();
   console.log("clear cart "+clearCart+" add cart "+addCart);
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
@@ -420,6 +431,26 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
 }
 RedirectToHome(){
   this.router.navigate(['home-page']);
+}
+async present() {
+  this.isLoading = true;
+  return await this.loadingController.create({
+    // duration: 5000,
+    cssClass: 'my-custom-class',
+        message: 'Please wait...',
+  }).then(a => {
+    a.present().then(() => {
+      console.log('presented');
+      if (!this.isLoading) {
+        a.dismiss().then(() => console.log('abort presenting'));
+      }
+    });
+  });
+}
+
+async dismiss() {
+  this.isLoading = false;
+  return await this.loadingController.dismiss().then(() => console.log('dismissed'));
 }
 }
 

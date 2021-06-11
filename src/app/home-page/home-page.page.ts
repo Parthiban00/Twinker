@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router'
-
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.page.html',
@@ -9,8 +9,10 @@ import {Router} from '@angular/router'
 export class HomePagePage implements OnInit {
   navigate : any;
   user:any;
+  isLoading = false;
   userType:any;
-  constructor(private router:Router) {
+  constructor(private router:Router,public loadingController: LoadingController) {
+
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.userType=this.user[0].UserType;
     this.sideMenu();
@@ -90,5 +92,26 @@ export class HomePagePage implements OnInit {
 
   segmentChanged(ev: any) {
     console.log('Segment changed', ev);
+  }
+
+  async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      // duration: 5000,
+      cssClass: 'my-custom-class',
+          message: 'Please wait...',
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
+
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 }

@@ -5,6 +5,7 @@ import  Login  from '../models/login';
 import { ToastController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -16,7 +17,7 @@ export class LoginPage implements OnInit {
   loginStatus:boolean=true;
 //userType:String="C";
 status:String="Failed";
-
+isLoading = false;
  loginValues={
 mobileNo:"",
 password:""
@@ -26,7 +27,7 @@ password:""
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
- constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController){
+ constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController){
 
   //localStorage.removeItem('currentUser');
  }
@@ -47,7 +48,8 @@ console.log("no");
   }
 Login(mobileNo:String,password:String){
 
-
+  //this.presentLoading();
+  this.present();
   const loginCredential={
 
     mobileNo:mobileNo,
@@ -85,6 +87,7 @@ Login(mobileNo:String,password:String){
     console.log(this.users[0].FirstName+' '+this.users[0].MobileNo+' '+this.users[0]._id);
 
     //this.router.navigate(['home',this.users[0].FirstName,this.users[0]._id]);
+    this.dismiss();
     this.router.navigate(['home-page']);
     localStorage.setItem("currentUser",JSON.stringify(this.users));
 
@@ -172,5 +175,38 @@ async presentAlertConfirm() {
   });
 
  // await alert.present();
+}
+
+// async presentLoading() {
+//   const loading = await this.loadingController.create({
+//     cssClass: 'my-custom-class',
+//     message: 'Please wait...',
+//     duration: 2000
+//   });
+//   await loading.present();
+
+//   const { role, data } = await loading.onDidDismiss();
+//   console.log('Loading dismissed!');
+// }
+
+async present() {
+  this.isLoading = true;
+  return await this.loadingController.create({
+    // duration: 5000,
+    cssClass: 'my-custom-class',
+        message: 'Please wait...',
+  }).then(a => {
+    a.present().then(() => {
+      console.log('presented');
+      if (!this.isLoading) {
+        a.dismiss().then(() => console.log('abort presenting'));
+      }
+    });
+  });
+}
+
+async dismiss() {
+  this.isLoading = false;
+  return await this.loadingController.dismiss().then(() => console.log('dismissed'));
 }
 }

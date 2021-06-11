@@ -5,7 +5,7 @@ import{RestaurantsService} from 'src/app/restaurants.service';
 import Restaurant from '../models/restaurants';
 import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
-
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -18,16 +18,17 @@ getData:any;
   userName:string="";
   userId:string="";
   currentRate:number=3;
+  isLoading = false;
 restaurantDetails:Restaurant[]=[];
 user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
-  constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService) {
+  constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
-
+//this.dismiss();
 
 
   }
@@ -46,6 +47,8 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
    unit="K";
    coord:any;
   ngOnInit(): void {
+
+    this.present();
 
     var k;
 
@@ -93,6 +96,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       k=j;
           this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
         }
+        this.dismiss();
       });
 
 
@@ -134,6 +138,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
       if (unit=="K") { dist = dist * 1.609344
       console.log("distance between two coord   "+dist)
       this.restaurantDetails[k].Distance=parseFloat(dist.toFixed(1));
+
       }
       if (unit=="N") { dist = dist * 0.8684 }
       return dist;
@@ -155,12 +160,33 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
-    }, 2000);
+    }, );
   }
 
   RedirectToHome(){
     this.router.navigate(['home-page']);
   }
+  async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      // duration: 5000,
+      cssClass: 'my-custom-class',
+          message: 'Please wait...',
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
+
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
 }
 
 

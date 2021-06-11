@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 declare const L:any;
 import { ActionSheetController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -20,9 +21,10 @@ export class OrdersPage implements OnInit {
 orderDetails:Orders[]=[];
 orderDetails1:Orders[]=[];
 default:string="";
+isLoading = false;
   user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-  constructor(private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule) {
+  constructor(private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
 
     this.default="Placed";
    }
@@ -32,6 +34,8 @@ default:string="";
 
 
   ngOnInit() {
+
+    this.present();
 
     var getOrders={
       Status:"Placed",
@@ -81,6 +85,7 @@ console.log("ite detailassss   "+ this.itemDetails[0]);
     }
 
     console.log("ite detailassss   "+ this.itemDetails[0]);
+    this.dismiss();
        })
 
 
@@ -156,6 +161,26 @@ console.log("Order details is clicked");
     console.log('onDidDismiss resolved with role', role);
   }
 
+  async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      // duration: 5000,
+      cssClass: 'my-custom-class',
+          message: 'Please wait...',
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
+
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
 }
 export interface PeriodicElement {
   ItemName: string;

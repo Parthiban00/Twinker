@@ -4,6 +4,7 @@ import {RegisterUserService} from 'src/app/register-user.service';
 import DeliveryLocations from '../models/delivery-locations';
 import { ToastController } from '@ionic/angular';
 import Register from '../models/register-user';
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.page.html',
@@ -23,10 +24,10 @@ export class RegisterUserPage implements OnInit {
   DeleteYn:Boolean=false;
   status="";
   availability:Boolean=true;
-
+  isLoading = false;
 deliveryLocation:DeliveryLocations[]=[];
 
-  constructor(private router:Router,private registerUserService:RegisterUserService,public toastController: ToastController) { }
+  constructor(private router:Router,private registerUserService:RegisterUserService,public toastController: ToastController,public loadingController: LoadingController) { }
 
   ngOnInit() {
     this.GetRegisteredUsers();
@@ -36,7 +37,7 @@ this.router.navigate(['login']);
   }
 
   RegisterUser(firstName:String,mobileNo:any,password:String){
-
+this.present();
     const registeruser={
       FirstName:firstName,
       LastName:"",
@@ -83,6 +84,7 @@ this.status="Register User Successfull..."
       //   data:"User Registered Successful"
 
       // });
+      this.dismiss();
       this.router.navigate(['login']);
     });
 }
@@ -122,6 +124,26 @@ ChechAvailability(mobileNo){
   }
   console.log("Availability "+this.availability);
 
+}
+async present() {
+  this.isLoading = true;
+  return await this.loadingController.create({
+    // duration: 5000,
+    cssClass: 'my-custom-class',
+        message: 'Please wait...',
+  }).then(a => {
+    a.present().then(() => {
+      console.log('presented');
+      if (!this.isLoading) {
+        a.dismiss().then(() => console.log('abort presenting'));
+      }
+    });
+  });
+}
+
+async dismiss() {
+  this.isLoading = false;
+  return await this.loadingController.dismiss().then(() => console.log('dismissed'));
 }
 }
 
