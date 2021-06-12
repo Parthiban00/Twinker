@@ -16,6 +16,7 @@ export class HomePagePage implements OnInit {
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.userType=this.user[0].UserType;
     this.sideMenu();
+    console.log("home page etered");
   }
 
 
@@ -114,4 +115,11 @@ export class HomePagePage implements OnInit {
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
+
+  LogOut(){
+    // console.log("hi logout");
+   // window.cache.clear();
+    localStorage.removeItem('currentUser');
+    this.router.navigate(['login']);
+   }
 }

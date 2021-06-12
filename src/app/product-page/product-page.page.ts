@@ -347,8 +347,9 @@ else if(this.products[i].ItemCount==0){
 
   this.cartService.ItemCountZero(addCartItems).subscribe((res)=>{
     this.cartItems=res as Cart[];
-    this.showCart.length=0;
-this.dismiss();
+   // this.showCart.length=0;
+   this.getCartAll();
+//this.dismiss();
   });
 }
 
@@ -396,7 +397,7 @@ this.ngOnInit();
 }
 
 async presentAlertConfirm(clearCart:any,addCart:any) {
-  this.present();
+ // this.present();
   console.log("clear cart "+clearCart+" add cart "+addCart);
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
@@ -414,6 +415,7 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
         text: 'Okay',
         handler: () => {
           console.log('Confirm Okay');
+          this.present();
           this.cartService.RemoveCart(clearCart).subscribe((res)=>{
                    this.cartItems=res as Cart[];
 

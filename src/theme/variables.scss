@@ -236,3 +236,12 @@
     --ion-card-background: #1e1e1e;
   }
 }
+
+// @import "roboto";
+// @import "noto-sans";
+
+@import url(https://fonts.googleapis.com/css2?family=Crimson+Pro);
+$font-family-base:'Crimson Text',serif !default;
+$font-family-ios-base:'Crimson Text';
+$font-family-md-base:'Crimson Text';
+$font-famil-wp-base:'Crimson Text';

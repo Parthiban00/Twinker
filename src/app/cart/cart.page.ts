@@ -151,14 +151,14 @@ this.dismiss();
         this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
           this.restaurantDetails=res as Restaurant[];
           console.log("restaurant deteils  "+this.restaurantDetails[0].Address)
-                if(!navigator.geolocation){
-                  console.log('location not supported');
-                }
+                // if(!navigator.geolocation){
+                //   console.log('location not supported');
+                // }
 
-                navigator.geolocation.getCurrentPosition((position:any)=>{
-                 this. coord=position.coords;
+                // navigator.geolocation.getCurrentPosition((position:any)=>{
+                //  this. coord=position.coords;
 
-                  console.log(`lat: ${position.coords.latitude},lon:${position.coords.longitude}`);
+               //   console.log(`lat: ${position.coords.latitude},lon:${position.coords.longitude}`);
 
 
 
@@ -166,16 +166,16 @@ this.dismiss();
 
 
                    // this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude,this.unit);
-                    this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+                    this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
 
-                });
+               // });
 
               })
 
         console.log(itemTotal);
 
       //  this.transactions[0].charges=itemTotal;
-this.dismiss();
+//this.dismiss();
     });
 
 
@@ -615,7 +615,7 @@ if(event.target.value=="Pickup"){
 
   ReverseGeocoding(lat:any,lon:any){
 
-
+//this.present();
   var options:NativeGeocoderOptions={
     useLocale:true,
     maxResults:1
@@ -623,9 +623,9 @@ if(event.target.value=="Pickup"){
     this.nativeGeocoder.reverseGeocode(lat,lon,options).then((results)=>{
 this.reverseGeocodingResults=JSON.stringify(results[0]);
 
-this.selectedLocation=JSON.stringify(results[0].locality)+','+JSON.stringify(results[0].subAdministrativeArea)+','+JSON.stringify(results[0].administrativeArea)+','+JSON.stringify(results[0].countryName)+','+JSON.stringify(results[0].countryCode);
+this.selectedLocation=JSON.stringify(results[0].thoroughfare).replace(/"/g, "")+','+JSON.stringify(results[0].locality).replace(/"/g, "")+','+JSON.stringify(results[0].subAdministrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].administrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].countryName).replace(/"/g, "")+','+JSON.stringify(results[0].countryCode).replace(/"/g, "");
 
-this.dismiss();
+//this.dismiss();
 })
   }
 

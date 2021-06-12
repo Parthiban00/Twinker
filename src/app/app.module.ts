@@ -13,7 +13,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
-
+//import { CacheModule } from "ionic-cache";
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 //import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';

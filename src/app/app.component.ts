@@ -130,6 +130,7 @@ export class AppComponent {
 
    LogOut(){
     // console.log("hi logout");
+   // window.cache.clear();
     localStorage.removeItem('currentUser');
     this.router.navigate(['login']);
    }

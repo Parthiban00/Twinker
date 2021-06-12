@@ -13,6 +13,8 @@ import { LoadingController } from '@ionic/angular';
 })
 export class LoginPage implements OnInit {
 
+  showPassword=false;
+  passwordToogleIcon='eye';
   latestData: any;
   loginStatus:boolean=true;
 //userType:String="C";
@@ -35,14 +37,17 @@ password:""
 
   ngOnInit(): void {
 
-
+this.present();
 
     if(!localStorage.getItem('currentUser')){
 console.log("no");
+this.dismiss();
     }
     else{
+      this.dismiss();
       this.router.navigate(['home-page']);
       console.log("yes");
+
 
     }
   }
@@ -67,7 +72,7 @@ Login(mobileNo:String,password:String){
     this.status="Invalid Mobile No. or Password...";
     console.log("login failed")
 
-
+this.dismiss();
     this.presentToast(this.status);
 
 
@@ -208,5 +213,15 @@ async present() {
 async dismiss() {
   this.isLoading = false;
   return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+}
+
+IconToggle(){
+    this.showPassword=!this.showPassword;
+    if(this.passwordToogleIcon=='eye'){
+      this.passwordToogleIcon='eye-off';
+    }
+    else{
+      this.passwordToogleIcon='eye';
+    }
 }
 }

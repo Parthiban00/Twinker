@@ -11,7 +11,8 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./register-user.page.scss'],
 })
 export class RegisterUserPage implements OnInit {
-
+  showPassword=false;
+  passwordToogleIcon='eye';
   registeredUsers:Register[]=[];
   userType="Customer";
   registeredUserStatus:boolean=false;
@@ -144,6 +145,16 @@ async present() {
 async dismiss() {
   this.isLoading = false;
   return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+}
+
+IconToggle(){
+  this.showPassword=!this.showPassword;
+  if(this.passwordToogleIcon=='eye'){
+    this.passwordToogleIcon='eye-off';
+  }
+  else{
+    this.passwordToogleIcon='eye';
+  }
 }
 }
 

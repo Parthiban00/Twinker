@@ -14,35 +14,45 @@
   </div>
 
 <ion-content padding >
-  <div style="padding: 5px;margin-top: 20px;">
+  <ion-card>
+    <ion-card-title class="cart_title">
+      Login...
+    </ion-card-title>
+  <div style="padding: 5px;margin-top: 10px;">
   <form #loginForm="ngForm" >
+    <ion-card >
+  <ion-item   >
 
-  <ion-item  >
     <ion-label position="floating">Mobile No.</ion-label>
     <ion-input [(ngModel)]="loginValues.mobileNo" name="mobileNo"  #mobileNo="ngModel" minlength="10" maxlength="10" required ngModel></ion-input>
+
   </ion-item>
-  <ion-item  style="padding-left: 5px;padding-right: 5px;" >
+</ion-card>
+  <ion-card>
+  <ion-item   >
     <ion-label position="floating">Password</ion-label>
-    <ion-input  #password="ngModel" type="password"  [(ngModel)]="loginValues.password" name="password"  minlength="8" required ngModel></ion-input>
-
+    <ion-input  #password="ngModel" [type]="showPassword?'text':'password'"  [(ngModel)]="loginValues.password" name="password"  minlength="8" required ngModel></ion-input>
+    <ion-icon (click)="IconToggle()" slot="end" [name]="passwordToogleIcon" style="margin-top: 15px;"></ion-icon>
   </ion-item>
-
+</ion-card>
  <div class="small"> <small  *ngIf="password.touched && !password.valid" style="color: red;">Password must contains [min length 8, lowercase, uppercase, symbols and numbers]</small></div>
- <a style="margin-left: 10px;color:orangered;font-style: italic;" (click)="ForgetPassword()">Forget Password... </a>
+
+ <a class="forget" (click)="ForgetPassword()">Forget Password... </a>
 
  <div padding style="margin-top: 20px;">
 
-    <ion-button  type="submit" color="primary"  [disabled]="!loginForm.valid" size="large" (click)="Login(mobileNo.value,password.value)" expand="block">Login</ion-button>
+    <ion-button  type="submit" color="primary" style="font-size: 14px;"   [disabled]="!loginForm.valid" size="large" (click)="Login(mobileNo.value,password.value)" expand="block">LOGIN</ion-button>
   </div>
 
 
 <hr style="background-color: gray;">
   <div padding style="margin-top: 20px;">
     <p>If you dont have account? kindly...</p>
-    <ion-button size="large" color="secondary"  (click)="Register()" expand="block">Register</ion-button>
+    <ion-button size="large" color="secondary" style="font-size: 14px;"  (click)="Register()" expand="block">REGISTER</ion-button>
   </div>
 
 
 </form>
 </div>
+</ion-card>
 </ion-content>
