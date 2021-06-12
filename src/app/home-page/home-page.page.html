@@ -145,4 +145,44 @@
   </ion-slides>
 
 </div>
+<div class="container" *ngIf="orderDetails.length">
+  <h3>
+    Recently Placed Order
+  </h3>
+  <ion-item lines="none" (click)="OrdersPage()" *ngFor="let orders of orderDetails;let i=index">
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <ion-button color="light" fill="clear">
+            <ion-icon slot="icon-only" name="list"></ion-icon>
+
+          </ion-button>
+        </ion-col>
+        <ion-col size="8">
+          <ion-label >
+            <h4>
+              {{orders.RestaurantName}}
+            </h4>
+<h6 style="margin-top: -18px;">{{orders.OrderId}} | {{orders.ItemCount}} Items | Rs.{{orders.TotalAmount}}</h6>
+<h6 style="margin-top: -18px;">Restaurant</h6>
+</ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button color="light" fill="clear">
+            <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+
+          </ion-button>
+        </ion-col>
+
+
+
+      </ion-row>
+      <ion-row>
+       <h4>Order Process <span style="font-size: 12px;color:rgba(255,255,255,.66);">[Getting Ready]</span></h4>
+        <ion-progress-bar color="success" value="0.3"></ion-progress-bar>
+      </ion-row>
+    </ion-grid>
+
+  </ion-item>
+</div>
 </ion-content>

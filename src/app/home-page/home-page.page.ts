@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router'
 import { LoadingController } from '@ionic/angular';
+import Orders from '../models/orders';
+import{OrdersService} from 'src/app/orders.service';
+
 @Component({
   selector: 'app-home-page',
   templateUrl: './home-page.page.html',
@@ -11,12 +14,9 @@ export class HomePagePage implements OnInit {
   user:any;
   isLoading = false;
   userType:any;
-  constructor(private router:Router,public loadingController: LoadingController) {
+  orderDetails: Orders[]=[];
+  constructor(private router:Router,public loadingController: LoadingController,private ordersService: OrdersService) {
 
-    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    this.userType=this.user[0].UserType;
-    this.sideMenu();
-    console.log("home page etered");
   }
 
 
@@ -46,6 +46,26 @@ export class HomePagePage implements OnInit {
   }
 
   ngOnInit() {
+
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.userType=this.user[0].UserType;
+    this.sideMenu();
+    console.log("home page etered");
+    var getOrders={
+      Status:"Placed",
+      ActiveYn:true,
+      UserId:this.user[0]._id
+    }
+
+    this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
+      this.orderDetails=res as Orders[];
+     // console.log(this.orderDetails);
+
+
+
+
+
+         })
   }
 
   sideMenu()
@@ -122,4 +142,14 @@ export class HomePagePage implements OnInit {
     localStorage.removeItem('currentUser');
     this.router.navigate(['login']);
    }
+
+   ionViewDidEnter(){
+    this.ngOnInit();
+  //this.list.length=0;
+
+
+  }
+  OrdersPage(){
+    this.router.navigate(['orders']);
+  }
 }
