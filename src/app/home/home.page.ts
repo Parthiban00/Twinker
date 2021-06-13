@@ -12,7 +12,7 @@ import { IonSearchbar } from '@ionic/angular';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit,OnDestroy {
+export class HomePage implements OnInit {
   @ViewChild('search', { static: false }) search: IonSearchbar;
 
   public list: Array<Object> = [];
@@ -118,10 +118,11 @@ this.searchHotel="";
                 }
 
                // this.searchedItem = this.restaurantDetails;
-               this.dismiss();
+
 
 
     });
+    this.dismiss();
 
 
   }
@@ -161,7 +162,7 @@ this.searchHotel="";
       if (unit=="K") { dist = dist * 1.609344
       console.log("distance between two coord   "+dist)
       this.restaurantDetails[k].Distance=parseFloat(dist.toFixed(1));
-this.dismiss();
+//this.dismiss();
       }
       if (unit=="N") { dist = dist * 0.8684 }
       return dist;
@@ -226,20 +227,20 @@ this.dismiss();
 
   }
 
-  ionViewDidEnter(){
-    console.log("ion view will enter");
-    this.ngOnInit();
+   ionViewDidEnter(){
+     console.log("ion view will enter");
+      this.ngOnInit();
 
 
-  }
-  //@HostListener('unloaded')
-  ionViewDidLeave(){
-    console.log("restauratn page leave");
-    this.ngOnDestroy();
-  }
-  ngOnDestroy(){
-    console.log(" restaurant angular page destroyed");
-  }
+    }
+
+  // ionViewDidLeave(){
+  //   console.log("restauratn page leave");
+  //   this.ngOnDestroy();
+  // }
+  // ngOnDestroy(){
+  //   console.log(" restaurant angular page destroyed");
+  // }
 
   async presentToast(status:any) {
     const toast = await this.toastController.create({
