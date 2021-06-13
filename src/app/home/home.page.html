@@ -82,12 +82,13 @@
 
 
 <div class="ion-list">
-  <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index">
+  <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
+    <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of restaurantDetails;let i=index">
 
 <ion-card>
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id)">
       <ion-thumbnail slot="start">
-        <img src="assets\restaurant_logo.jpg">
+        <img src="assets\rest.jpg">
       </ion-thumbnail>
       <ion-label>
         <h4>{{item.RestaurantName}}</h4>

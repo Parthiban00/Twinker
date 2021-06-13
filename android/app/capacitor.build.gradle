@@ -15,7 +15,7 @@ dependencies {
     implementation project(':capacitor-keyboard')
     implementation "com.google.android.gms:play-services-location:16.+"
 }
-
+apply from: "../../node_modules/cordova-plugin-badge/src/android/badge.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

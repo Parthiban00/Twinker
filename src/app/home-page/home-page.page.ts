@@ -5,6 +5,8 @@ import Orders from '../models/orders';
 import{OrdersService} from 'src/app/orders.service';
 import { Platform } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import{CartService} from 'src/app/cart.service';
+import Cart from '../models/cart';
 
 @Component({
   selector: 'app-home-page',
@@ -19,7 +21,8 @@ export class HomePagePage implements OnInit,OnDestroy {
   orderDetails: Orders[]=[];
   subscribe: any;
   currentUrl:any;
-  constructor(private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+  cartItemsAll:Cart[]=[];
+  constructor(private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 
   }
@@ -51,6 +54,9 @@ export class HomePagePage implements OnInit,OnDestroy {
   }
 
   ngOnInit() {
+
+
+
    this.currentUrl=this.router.url;
 
     console.log("current url "+this.currentUrl);
@@ -184,5 +190,9 @@ this.currentUrl="";
 
   OrdersPage(){
     this.router.navigate(['orders']);
+  }
+
+  ViewCart(){
+    this.router.navigate(['cart']);
   }
 }

@@ -52,9 +52,18 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
    unit="K";
    coord:any;
   ngOnInit(): void {
-//     this.toastMsg=""
-// this.presentToast();
+
     this.present();
+
+    navigator.geolocation.getCurrentPosition((position:any)=>{
+
+     this. coord=position.coords;
+
+      console.log(` current lat: ${position.coords.latitude}, current lon:${position.coords.longitude}`);
+
+
+
+    });
 //this.list.length=0;
 this.searchHotel="";
 //this.searchedItem.length=0;
@@ -76,38 +85,40 @@ this.searchHotel="";
        this.itemTotal+=this.cartItemsAll[i].Amount;
         this.restaurantName=this.cartItemsAll[i].RestaurantName;
         }
+
     })
 
 
-    this.userName=this.activatedRouter.snapshot.params.firstName;
-    this.userId=this.activatedRouter.snapshot.params.id;
+   // this.userName=this.activatedRouter.snapshot.params.firstName;
+    //this.userId=this.activatedRouter.snapshot.params.id;
 
 
     this.restaurantService.GetRestaurants().subscribe((res)=>{
 
+
       this.restaurantDetails=res as Restaurant[];
+
       //console.log(this.restaurants[0].RestaurantName);
-      if(!navigator.geolocation){
-        console.log('location not supported');
-      }
+      // if(!navigator.geolocation){
+      //   this.toastMsg="if geolocation";
+      //   this.presentToast(this.toastMsg);
+      //   console.log('location not supported');
+      // }
 
-      navigator.geolocation.getCurrentPosition((position:any)=>{
-       this. coord=position.coords;
-       this.list=[];
-        console.log(` current lat: ${position.coords.latitude}, current lon:${position.coords.longitude}`);
-
-
-        for(var j=0;j<this.restaurantDetails.length;j++){
+      this.list=[];
+      for(var j=0;j<this.restaurantDetails.length;j++){
 
 
-this.list.push(this.restaurantDetails[j]);
-          console.log("enters for loop");
-      k=j;
-          this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
-        }
-        this.searchedItem = this.list;
-        this.dismiss();
-      });
+        this.list.push(this.restaurantDetails[j]);
+                  console.log("enters for loop");
+              k=j;
+
+                  this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
+
+                }
+
+               // this.searchedItem = this.restaurantDetails;
+               this.dismiss();
 
 
     });
@@ -129,11 +140,13 @@ this.list.push(this.restaurantDetails[j]);
   }
 
   distance(lat1:any, lon1:any, lat2:any, lon2:any, unit:any,k:any) {
+
     console.log(k);
     if ((lat1 == lat2) && (lon1 == lon2)) {
       return 0;
     }
     else {
+
       var radlat1 = Math.PI * lat1/180;
       var radlat2 = Math.PI * lat2/180;
       var theta = lon1-lon2;
@@ -184,6 +197,8 @@ this.dismiss();
           message: 'Please wait...',
     }).then(a => {
       a.present().then(() => {
+
+
         console.log('presented');
         if (!this.isLoading) {
           a.dismiss().then(() => console.log('abort presenting'));
@@ -199,10 +214,10 @@ this.dismiss();
 
   SearchChange(event){
     console.log("search change "+event.detail.value);
-    this.searchedItem = this.list;
+   // this.searchedItem = this.restaurantDetails;
     const val = event.target.value;
     if (val && val.trim() != '') {
-      this.searchedItem = this.searchedItem.filter((item: any) => {
+      this.restaurantDetails = this.restaurantDetails.filter((item: any) => {
         console.log(item.RestaurantName.toLowerCase().indexOf(val.toLowerCase()) > -1);
         return (item.RestaurantName.toLowerCase().indexOf(val.toLowerCase()) > -1);
 
@@ -229,7 +244,7 @@ this.dismiss();
   async presentToast(status:any) {
     const toast = await this.toastController.create({
       message: status,
-      duration: 2000
+      duration: 1000
     });
     toast.present();
   }
