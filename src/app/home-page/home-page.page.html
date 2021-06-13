@@ -28,9 +28,9 @@
   <ion-button slot="end" fill="clear" *ngIf="userType!='C'" (click)="Dashboard()">
     <ion-icon color="secondary" name="apps"></ion-icon>
     </ion-button>
-    <ion-button slot="end" fill="clear"  (click)="LogOut()">
+    <!-- <ion-button slot="end" fill="clear"  (click)="LogOut()">
       <ion-icon name="log-out-sharp"></ion-icon>
-      </ion-button>
+      </ion-button> -->
 </ion-item>
 
 </ion-header>
@@ -163,7 +163,7 @@
             <h4>
               {{orders.RestaurantName}}
             </h4>
-<h6 style="margin-top: -18px;">{{orders.OrderId}} | {{orders.ItemCount}} Items | Rs.{{orders.TotalAmount}}</h6>
+<h6 style="margin-top: -18px;">{{orders.OrderId}} | {{orders.ItemCount}} Items | Rs.{{orders.TotalAmount.toFixed(2)}}</h6>
 <h6 style="margin-top: -18px;">Restaurant</h6>
 </ion-label>
         </ion-col>

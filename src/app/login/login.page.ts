@@ -6,6 +6,8 @@ import { ToastController } from '@ionic/angular';
 import { ActionSheetController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -17,6 +19,8 @@ export class LoginPage implements OnInit {
   passwordToogleIcon='eye';
   latestData: any;
   loginStatus:boolean=true;
+  currentUrl:any;
+  subscribe:any;
 //userType:String="C";
 status:String="Failed";
 isLoading = false;
@@ -29,9 +33,25 @@ password:""
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
- constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController){
+ constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController,private platform: Platform,private navController:NavController){
 
   //localStorage.removeItem('currentUser');
+  this.currentUrl=this.router.url;
+
+  console.log("current url "+this.currentUrl);
+  this.subscribe=this.platform.backButton.subscribeWithPriority(666666,()=>{
+
+if(this.currentUrl==="/login"){
+if(window.confirm("do you want to exit app?")){
+  navigator["app"].exitApp();
+}
+
+}
+else{
+ this.navController.back();
+}
+
+})
  }
 
 

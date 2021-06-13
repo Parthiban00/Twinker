@@ -530,6 +530,7 @@ this.present();
 this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
 this.totalAmount1=this.totalAmount.toFixed(2);
 this.dismiss();
+
           }
            else{
             //this.transactions[1].charges=20;
@@ -540,7 +541,7 @@ this.dismiss();
             this.totalAmount1=this.totalAmount.toFixed(2);
             this.dismiss();
            }
-          // this.dismiss();
+          //
     return d;
 
   }
@@ -692,7 +693,7 @@ this.presentActionSheet();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
      // header: 'ohooo! Empty...',
-      message: '<stron>ohooo! Empty...</strong>',
+      message: '<stron>Ohooo! Empty...</strong>',
       buttons: [
        {
           text: 'Place Order',
@@ -783,4 +784,5 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
+
 }

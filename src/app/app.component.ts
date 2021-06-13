@@ -4,6 +4,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import { Platform } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -13,14 +15,20 @@ export class AppComponent {
   navigate : any;
   locCords: any;
   times: any;
-  constructor(private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy) {  this.sideMenu();
-    this.splashScreen.show();
-   // this.splashScreen.hide();
+  subscribe: any;
+  constructor(private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
+   // this.splashScreen.show();
+
+
+
+    this.splashScreen.hide();
    this.locCords = {
     latitude: "",
     longitude: "",
     accuracy: "",
     timestamp: ""
+
+
   }
   this.times = Date.now();
   this.chckAppGpsPermission();

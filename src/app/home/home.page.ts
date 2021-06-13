@@ -1,5 +1,5 @@
-import { Component , ViewChild } from '@angular/core';
-
+import { Component , ViewChild, OnInit,OnDestroy, HostListener} from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import {Router,ActivatedRoute} from '@angular/router';
 import{RestaurantsService} from 'src/app/restaurants.service';
 import Restaurant from '../models/restaurants';
@@ -12,12 +12,12 @@ import { IonSearchbar } from '@ionic/angular';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit,OnDestroy {
   @ViewChild('search', { static: false }) search: IonSearchbar;
 
   public list: Array<Object> = [];
   public searchedItem: any;
-
+toastMsg="";
   searchHotel:any;
 getData:any;
   userName:string="";
@@ -30,7 +30,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
-  constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController) {
+  constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
 
 
 //this.dismiss();
@@ -52,9 +52,10 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
    unit="K";
    coord:any;
   ngOnInit(): void {
-
+//     this.toastMsg=""
+// this.presentToast();
     this.present();
-this.list.length=0;
+//this.list.length=0;
 this.searchHotel="";
 //this.searchedItem.length=0;
     var k;
@@ -92,7 +93,7 @@ this.searchHotel="";
 
       navigator.geolocation.getCurrentPosition((position:any)=>{
        this. coord=position.coords;
-       this.list.length=0;
+       this.list=[];
         console.log(` current lat: ${position.coords.latitude}, current lon:${position.coords.longitude}`);
 
 
@@ -147,7 +148,7 @@ this.list.push(this.restaurantDetails[j]);
       if (unit=="K") { dist = dist * 1.609344
       console.log("distance between two coord   "+dist)
       this.restaurantDetails[k].Distance=parseFloat(dist.toFixed(1));
-
+this.dismiss();
       }
       if (unit=="N") { dist = dist * 0.8684 }
       return dist;
@@ -210,12 +211,28 @@ this.list.push(this.restaurantDetails[j]);
 
   }
 
-   ionViewDidEnter(){
-     console.log("ion view will enter");
-     this.ngOnInit();
+  ionViewDidEnter(){
+    console.log("ion view will enter");
+    this.ngOnInit();
 
 
-   }
+  }
+  //@HostListener('unloaded')
+  ionViewDidLeave(){
+    console.log("restauratn page leave");
+    this.ngOnDestroy();
+  }
+  ngOnDestroy(){
+    console.log(" restaurant angular page destroyed");
+  }
+
+  async presentToast(status:any) {
+    const toast = await this.toastController.create({
+      message: status,
+      duration: 2000
+    });
+    toast.present();
+  }
 
 }
 
