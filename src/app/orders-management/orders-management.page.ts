@@ -4,6 +4,7 @@ import{OrdersService} from 'src/app/orders.service';
 import Restaurants from '../models/restaurants';
 import {OwnersService} from 'src/app/owners.service';
 import {Router} from '@angular/router';
+import { LoadingController } from '@ionic/angular';
 
 export interface PeriodicElement {
   itemName: string;
@@ -35,7 +36,9 @@ export class OrdersManagementPage implements OnInit {
   restaurants:Restaurants[]=[];
   selectedValue: string="";
   default:string="";
-  constructor(private ordersService:OrdersService,private owenerService:OwnersService,private router:Router) {
+  isLoading = false;
+
+  constructor(private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
     this.default="Placed"
   }
 
@@ -44,6 +47,7 @@ export class OrdersManagementPage implements OnInit {
 
   ngOnInit() {
 
+this.present();
     console.log(this.user[0]._id)
     var getRestaurants={
       UserId:this.user[0]._id,
@@ -59,6 +63,7 @@ this.owenerService.GetRestaurants(getRestaurants).subscribe((res)=>{
   for(var i=0;i<this.restaurants.length;i++){
     this.selectRestaurants.push({value:this.restaurants[i]._id,viewValue:this.restaurants[i].RestaurantName});
   }
+  this.dismiss();
 })
   }
 
@@ -69,6 +74,7 @@ this.owenerService.GetRestaurants(getRestaurants).subscribe((res)=>{
   }
 
   nextStep(id:any,restaurantId:any) {
+    this.present();
     //this.step++;
 var acceptedOrders={
   _id:id,
@@ -81,11 +87,14 @@ this.owenerService.AcceptOders(acceptedOrders).subscribe((res)=>{
  // this.ngOnInit();
  // this.orderDetails=res as Orders[];
  this.onChange(this.selectRestaurants);
+ this.dismiss();
+
 })
 
   }
 
   Ready(id:any,restaurantId:any) {
+    this.present();
     //this.step++;
 var acceptedOrders={
   _id:id,
@@ -96,6 +105,7 @@ var acceptedOrders={
 this.owenerService.AcceptOders(acceptedOrders).subscribe((res)=>{
   this.onChange(this.selectRestaurants);
  // this.orderDetails=res as Orders[];
+ this.dismiss();
 })
 
   }
@@ -162,6 +172,8 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
 
   }
  onChange(selectedValue){
+   this.present();
+   this.selectedValue=selectedValue;
    this.selectRestaurants=selectedValue;
   console.log(selectedValue);
 
@@ -185,20 +197,66 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
     this.itemDetails.push(this.orderDetails[i].ItemDetails[j])
       }
     }
+    this.dismiss();
   })
   }
 
   doRefresh(event) {
     //console.log('Begin async operation');
-  this.ngOnInit();
+  //this.ngOnInit();
+  this.present();
+  var getOrders={
+    DeleteYn:false,
+    ActiveYn:true,
+    RestaurantId:this.selectedValue
+
+  }
+
+  this.owenerService.GetOrders(getOrders).subscribe((res)=>{
+    this.orderDetails=res as Orders[];
+    console.log(this.orderDetails[0]);
+
+    for(var i=0;i<this.orderDetails.length;i++){
+
+      //ELEMENT_DATA.length=0;
+      for(var j=0;j<this.orderDetails[i].ItemDetails.length;j++){
+
+       //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
+    this.itemDetails.push(this.orderDetails[i].ItemDetails[j])
+      }
+    }
+    this.dismiss();
+  })
+
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
-    }, 2000);
+    }, 1000);
   }
 
   RedirectToHome(){
     this.router.navigate(['restaurant-owner-dashboard']);
+  }
+
+  async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      // duration: 5000,
+      cssClass: 'my-custom-class',
+          message: 'Please wait...',
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
+
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 
 }

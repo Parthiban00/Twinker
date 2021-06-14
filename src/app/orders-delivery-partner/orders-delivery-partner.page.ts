@@ -3,7 +3,7 @@ import Orders from '../models/orders';
 import{DeliveryBoyService} from 'src/app/delivery-boy.service';
 import{OwnersService} from 'src/app/owners.service'
 import {Router} from '@angular/router';
-
+import { LoadingController } from '@ionic/angular';
 @Component({
   selector: 'app-orders-delivery-partner',
   templateUrl: './orders-delivery-partner.page.html',
@@ -17,7 +17,7 @@ export class OrdersDeliveryPartnerPage implements OnInit {
   public currentMonth: number = this.today.getMonth();
   public currentDay: number = this.today.getDate();
   deliveryPartnerDetails=new Array;
-  constructor(private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
+  constructor(private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
 
     this.defaultSegment="Delivery";
     this.default="Ready";
@@ -31,7 +31,7 @@ export class OrdersDeliveryPartnerPage implements OnInit {
   itemDetails1:any[]=[];
   panelOpenState = false;
   user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
+  isLoading = false;
   //this.deliveryPartnerDetails=this.user[0];
 currentUserId=this.user[0]._id;
 
@@ -59,7 +59,7 @@ currentUserId=this.user[0]._id;
 
 
   GetOrderDetails(){
-
+this.present();
 this.deliveryPartnerDetails.push(this.user[0]);
 console.log('current user  '+this.user[0]);
 
@@ -70,11 +70,11 @@ var getOrders={
 
 }
 
- var getAcceptedOrders={
-   ActiveYn:true,
-   DeleteYn:false,
-   UserId:this.user[0]._id,
- }
+//  var getAcceptedOrders={
+//    ActiveYn:true,
+//    DeleteYn:false,
+//    UserId:this.user[0]._id,
+//  }
 
 this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
   this.orderDetails=res as Orders[];
@@ -89,12 +89,13 @@ this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
   this.itemDetails.push(this.orderDetails[i].ItemDetails[j])
     }
   }
+  this.dismiss();
 })
   }
 
   Accepted(id:any,restaurantId:any) {
 
-
+this.present();
 
     //this.step++;
 var acceptedOrders={
@@ -110,12 +111,14 @@ var acceptedOrders={
 console.log("delivery partner details  "+this.user[0]);
 
   this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
-
+this.dismiss();
 this.GetOrderDetails();
+
   })
   }
 
   Delivered(id:any,restaurantId:any) {
+    this.present();
     //this.step++;
 var acceptedOrders={
   _id:id,
@@ -130,7 +133,7 @@ var acceptedOrders={
 
 this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
  // this.orderDetails=res as Orders[];
-
+this.dismiss();
  this.GetOrderDetails();
 })
   }
@@ -160,6 +163,27 @@ this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();
-    }, 2000);
+    }, 1000);
+  }
+
+    async present() {
+    this.isLoading = true;
+    return await this.loadingController.create({
+      // duration: 5000,
+      cssClass: 'my-custom-class',
+          message: 'Please wait...',
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoading) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
+    });
+  }
+
+  async dismiss() {
+    this.isLoading = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 }

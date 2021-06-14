@@ -846,7 +846,7 @@ Item Details
 
   <div *ngIf="default=='Completed' && defaultSegment=='Delivery'">
     <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
-      <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Completed' && orders.DeliveryPartnerDetails.UserId==currentUserId">
+      <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Completed'  && orders.DeliveryPartnerDetails.UserId==currentUserId">
 
           <mat-expansion-panel hideToggle>
               <mat-expansion-panel-header>
