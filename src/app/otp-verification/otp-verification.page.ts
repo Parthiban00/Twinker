@@ -182,5 +182,10 @@ RegisterUser(){
       // this.router.navigate(['home-page']);
       });
   }
+
+  gfgf(){
+    this.presentToast("OTP Re-sended...","success");
+    this.gfg();
+  }
 }
 

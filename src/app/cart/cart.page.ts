@@ -27,7 +27,7 @@ export class CartPage implements OnInit {
   deliveryPartnerFee1:String;
 totalAmount=0;
 totalAmount1:String;
-  taxesAndCharges=7;
+  taxesAndCharges=0;
   deliveryPartnerFee:number;
 itemAmount=0;
 selectedLocation:any;
@@ -507,7 +507,7 @@ this.present();
   distance(lat1:any, lon1:any, lat2:any, lon2:any)
   {
 
-    console.log("enters distance");
+
     var R = 6371; // km
     var dLat = this.toRad(lat2-lat1);
     var dLon = this.toRad(lon2-lon1);
@@ -518,23 +518,22 @@ this.present();
       Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
-    console.log("distance  "+d);
+
     this.distanceKm=d;
     if(this.distanceKm>2){
-      let distanceKm1=this.distanceKm-3;
-            // this.transactions[1].charges=(distanceKm1*12);
-            console.log("enters distance if");
-            this.deliveryPartnerFee=(distanceKm1*12);
+
+
+            this.deliveryPartnerFee=(this.distanceKm*12);
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
-//this.deliveryPartnerFee=this.deliveryPartnerFee.toFixed(2);
+
 this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
 this.totalAmount1=this.totalAmount.toFixed(2);
 this.dismiss();
 
           }
            else{
-            //this.transactions[1].charges=20;
-            console.log("enters distance else");
+
+
             this.deliveryPartnerFee=20;
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
             this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;

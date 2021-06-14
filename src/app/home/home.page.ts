@@ -16,7 +16,7 @@ export class HomePage implements OnInit {
   @ViewChild('search', { static: false }) search: IonSearchbar;
 
   public list: Array<Object> = [];
-  public searchedItem: any;
+  searchedItem: any;
 toastMsg="";
   searchHotel:any;
 getData:any;
@@ -33,7 +33,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
 
 
-//this.dismiss();
+
 
 
   }
@@ -45,10 +45,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
    itemTotal=0;
    restaurantName:string="";
-  //  lat1=9.9192509;
-  //  lon1=78.1083096;
-  //  lat2=9.9153631;
-  //  lon2=78.4441528;
+
    unit="K";
    coord:any;
   ngOnInit(): void {
@@ -89,8 +86,6 @@ this.searchHotel="";
     })
 
 
-   // this.userName=this.activatedRouter.snapshot.params.firstName;
-    //this.userId=this.activatedRouter.snapshot.params.id;
 
 
     this.restaurantService.GetRestaurants().subscribe((res)=>{
@@ -98,12 +93,6 @@ this.searchHotel="";
 
       this.restaurantDetails=res as Restaurant[];
 
-      //console.log(this.restaurants[0].RestaurantName);
-      // if(!navigator.geolocation){
-      //   this.toastMsg="if geolocation";
-      //   this.presentToast(this.toastMsg);
-      //   console.log('location not supported');
-      // }
 
       this.list=[];
       for(var j=0;j<this.restaurantDetails.length;j++){
@@ -116,8 +105,9 @@ this.searchHotel="";
                   this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
 
                 }
+                this.searchedItem = res as Restaurant[];
 
-               // this.searchedItem = this.restaurantDetails;
+              //  this.searchedItem = this.restaurantDetails;
 
 
 
@@ -215,10 +205,11 @@ this.searchHotel="";
 
   SearchChange(event){
     console.log("search change "+event.detail.value);
-   // this.searchedItem = this.restaurantDetails;
+    this.searchedItem = this.restaurantDetails;
+    console.log("rest details"+this.restaurantDetails);
     const val = event.target.value;
     if (val && val.trim() != '') {
-      this.restaurantDetails = this.restaurantDetails.filter((item: any) => {
+      this.searchedItem = this.searchedItem.filter((item: any) => {
         console.log(item.RestaurantName.toLowerCase().indexOf(val.toLowerCase()) > -1);
         return (item.RestaurantName.toLowerCase().indexOf(val.toLowerCase()) > -1);
 

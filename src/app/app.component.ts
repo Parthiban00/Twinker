@@ -5,7 +5,8 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Platform } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
+import { NavController,ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -16,7 +17,7 @@ export class AppComponent {
   locCords: any;
   times: any;
   subscribe: any;
-  constructor(private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
+  constructor(private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
    // this.splashScreen.show();
 
 
@@ -72,8 +73,9 @@ export class AppComponent {
       () => {
         this.getLocationAccCords()
       },
-      error => alert(JSON.stringify(error))
+      error => this.presentAlertConfirm()
     );
+
   }
 
   getLocationAccCords() {
@@ -143,5 +145,43 @@ export class AppComponent {
     this.router.navigate(['login']);
    }
 
+   async presentToast(message,color){
+    const toast=await this.toastCtrl.create({
+      message:message,
+      color:color,
+      duration:1000,
+      position:"middle",
+    });
+    toast.present();
+  }
+
+  async presentAlertConfirm() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Sorry!',
+      message: 'Ooo Nooo! You cannot place orders without turn on location. Kindly Turn On Locaiton (GPS).',
+      buttons: [
+
+       {
+
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+
+           this.requestToSwitchOnGPS();
+
+          }
+
+
+
+        }
+
+
+      ]
+    });
+
+    await alert.present();
+  }
 
 }
