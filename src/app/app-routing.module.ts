@@ -33,6 +33,13 @@ const routes: Routes = [
 
 
   },
+  {
+    path: 'login/:MobileNo/:Password',
+    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule),
+
+
+
+  },
 
   {
     path: 'register-user',
@@ -97,6 +104,10 @@ const routes: Routes = [
   {
     path: 'splash-screen',
     loadChildren: () => import('./splash-screen/splash-screen.module').then( m => m.SplashScreenPageModule)
+  },
+  {
+    path: 'otp-verification/:mobileNo/:password/:firstName/:userType',
+    loadChildren: () => import('./otp-verification/otp-verification.module').then( m => m.OtpVerificationPageModule)
   },
 
 

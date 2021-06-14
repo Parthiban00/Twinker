@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors=require('cors');
 const mongoose = require('./database/mongoose');
-
+const fast2sms = require('fast-two-sms')
 const List= require ('./database/models/list');
 const Task= require ('./database/models/task');
 
@@ -22,7 +22,7 @@ const port = process.env.PORT || 5000;
 
 
 app.use(cors());
-
+app.use(express.urlencoded({extended:false}))
 
 
 
@@ -401,6 +401,22 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                                      .catch((error)=>console.log(error));
 
                                     }),
+
+
+                                    // -------------------------------sms----------------------------------
+
+
+                                    app.post('/sendMessage', (req,res)=>{
+
+                                      var options = {authorization : 'eu4WQRvGTkypH5U1IJNzEislmfXc3b6S2t9P0rADnoOgZ8L7hq7ramfGJ1NWkQobOKjqVwY4pHZCn3Su' , message : req.body.message ,  numbers : [req.body.number]}
+                                  fast2sms.sendMessage(options).then(response=>{
+                                      console.log(response)
+                                    })
+
+
+
+                                  })
+
 
 
  //app.listen(3000, () => console.log("Server is connected on port 3000"));

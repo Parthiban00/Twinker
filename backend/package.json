@@ -7,13 +7,19 @@
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["node","express","mongodb","firebase"],
+  "keywords": [
+    "node",
+    "express",
+    "mongodb",
+    "firebase"
+  ],
   "author": "Parthiban",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "mongoose": "^5.12.11",
+    "fast-two-sms": "^3.0.0",
+    "mongoose": "^5.12.13",
     "nodemon": "^2.0.7"
   }
 }

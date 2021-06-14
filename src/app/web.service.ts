@@ -8,9 +8,11 @@ import { Injectable } from '@angular/core';
 })
 export class WebService {
 readonly ROOT_URL;
+readonly ROOT_URL1;
   constructor(private http:HttpClient) {
 
     this.ROOT_URL="https://twinkersvg.herokuapp.com";
+
  //this.ROOT_URL="http://localhost:3000";
  //this.ROOT_URL="http://192.168.0.100:3000";
 
@@ -39,6 +41,8 @@ readonly ROOT_URL;
      return this.http.get(`${this.ROOT_URL}/${uri}`,payload);
     //return this.http.get(`${uri}`,payload);
   }
+
+
 
 
 

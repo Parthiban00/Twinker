@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {Router,ActivatedRoute} from '@angular/router';
 import{UserLoginService} from 'src/app/user-login.service';
 import  Login  from '../models/login';
 import { ToastController } from '@ionic/angular';
@@ -29,14 +29,28 @@ mobileNo:"",
 password:""
   }
 
-
+mobileNo;
+password;
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
- constructor(private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController,private platform: Platform,private navController:NavController){
+ constructor(private activatedRouter:ActivatedRoute, private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController,private platform: Platform,private navController:NavController){
 
   //localStorage.removeItem('currentUser');
   this.currentUrl=this.router.url;
+this.mobileNo=this.activatedRouter.snapshot.params.MobileNo;
+this.password=this.activatedRouter.snapshot.params.Password;
+console.log("mobile no "+this.mobileNo+' password '+this.password);
+
+
+if(this.mobileNo==undefined || this.mobileNo=="" || this.mobileNo==null){
+  console.log("route params not present");
+}
+else{
+  console.log("route params  present");
+  this.loginValues.mobileNo=this.mobileNo;
+  this.loginValues.password=this.password;
+}
 
   console.log("current url "+this.currentUrl);
   this.subscribe=this.platform.backButton.subscribeWithPriority(666666,()=>{

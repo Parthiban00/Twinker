@@ -1,0 +1,85 @@
+<ion-content class="ion-padding ion-text-center">
+  <h3 syle="margin-top:100px">
+    TWINKER - Verificaiton
+  </h3>
+  <p>
+    Enter the One Time Password sent to +91{{mobileNo}}
+  </p>
+
+  <ion-grid class="inputs">
+    <ion-row>
+      <ion-col size="2">
+        <input type="text" value={{otp.substring(0,1)}} readonly id="ip1">
+      </ion-col>
+
+      <ion-col size="2">
+        <input type="text" value={{otp.substring(1,2)}} readonly id="ip2">
+      </ion-col>
+
+      <ion-col size="2">
+        <input type="text" value={{otp.substring(2,3)}} readonly id="ip3">
+      </ion-col>
+
+      <ion-col size="2">
+        <input type="text" value={{otp.substring(3,4)}} readonly id="ip4">
+      </ion-col>
+
+      <ion-col size="2">
+        <input type="text" value={{otp.substring(4,5)}} readonly id="ip5">
+      </ion-col>
+
+      <ion-col size="2">
+        <input type="text" value={{otp.substring(5,6)}} readonly id="ip6">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-note>
+    Did'nt receive OTP?
+    <ion-text color="primary">
+      Resend OTP
+    </ion-text>
+  </ion-note>
+
+  <ion-grid class="buttons">
+    <ion-row>
+
+      <ion-col size="4">
+        <button (click)="set('1')">1</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('2')">2</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('3')">3</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('4')">4</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('5')">5</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('6')">6</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('7')">7</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('8')">8</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('9')">9</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="clear()">Clear</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="set('0')">0</button>
+      </ion-col>
+      <ion-col size="4">
+        <button (click)="back()">Back</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

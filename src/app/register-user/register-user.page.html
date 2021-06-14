@@ -54,6 +54,7 @@
     <ion-label position="floating"  >Mobile No.</ion-label>
     <ion-input type="number" #mobileNo name="mobileno" (change)="ChechAvailability(mobileNo.value)" minlength="10" maxlength="10" required ngModel></ion-input>
   </ion-item>
+
 </ion-card>
 <ion-card>
   <div class="small" style="padding-left:15px"> <small  *ngIf="!availability" style="color: red;">Mobile No. already registered.[Kindly try another one.]</small></div>
@@ -66,7 +67,7 @@
   <div class="small" style="padding-left:15px"> <small  *ngIf="password.touched && !password.valid" style="color: red;">Password must contains [min length 8, lowercase, uppercase, symbols and numbers]</small></div>
 
   <div padding style="margin-top: 20px;">
-    <ion-button size="large" type="submit" color="primary" style="font-size: 14px;" [disabled]="!registerForm.valid || !availability"  (click)="RegisterUser(firstName.value,mobileNo.value,password.value)"  expand="block">REGISTER</ion-button>
+    <ion-button size="large" type="submit" color="primary" style="font-size: 14px;" [disabled]="!registerForm.valid || !availability"  (click)="RegisterUser(firstName.value,mobileNo.value,password.value)"  expand="block">VERIFY & REGISTER</ion-button>
   </div>
 <hr style="background-color: gray;">
 <p>If already have an account? Kindly...</p>

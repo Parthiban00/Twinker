@@ -38,7 +38,7 @@ this.router.navigate(['login']);
   }
 
   RegisterUser(firstName:String,mobileNo:any,password:String){
-this.present();
+//this.present();
     const registeruser={
       FirstName:firstName,
       LastName:"",
@@ -54,40 +54,35 @@ this.present();
       DeleteYn:this.DeleteYn
     }
 
+this.router.navigate(['otp-verification/'+registeruser.MobileNo+'/'+registeruser.Password+'/'+registeruser.FirstName+'/'+this.UserType]);
 
 
-    //console.log(firstName);
-    //this.registerUserService.createUser(firstName,lastName,address,mobileNo,password,emailId,this.Address1,this.Address2,this.Address3,this.UserType,this.ActiveYn,this.DeleteYn);
-    this.registerUserService.createUser(registeruser).subscribe((list:any)=>{
+//     this.registerUserService.createUser(registeruser).subscribe((list:any)=>{
 
-      console.log(list.FirstName+' '+list._id);
-      this.registeredUserStatus=true;
+//       console.log(list.FirstName+' '+list._id);
+//       this.registeredUserStatus=true;
 
-      const deliveryAddress={
-          UserId:list._id,
-          UserName:list.FirstName,
-          MobileNo:list.MobileNo,
-          Address:list.Address,
-          ActiveYn:true,
-          DeleteYn:false,
-          Recent:'Yes',
-          UserType:list.UserType
-      }
+//       const deliveryAddress={
+//           UserId:list._id,
+//           UserName:list.FirstName,
+//           MobileNo:list.MobileNo,
+//           Address:list.Address,
+//           ActiveYn:true,
+//           DeleteYn:false,
+//           Recent:'Yes',
+//           UserType:list.UserType
+//       }
 
-      this.registerUserService.deliveryLocation(deliveryAddress).subscribe((res)=>{
+//       this.registerUserService.deliveryLocation(deliveryAddress).subscribe((res)=>{
 
-this.deliveryLocation=res as DeliveryLocations[];
-      })
-this.status="Register User Successfull..."
-     this. presentToast(this.status)
-      // this._snackBar.openFromComponent(SnackBarComponent, {
-      //   duration: this.durationInSeconds * 1000,
-      //   data:"User Registered Successful"
+// this.deliveryLocation=res as DeliveryLocations[];
+//       })
+// this.status="Register User Successfull..."
+//      this. presentToast(this.status)
 
-      // });
-      this.dismiss();
-      this.router.navigate(['login']);
-    });
+//       this.dismiss();
+//       this.router.navigate(['login']);
+//     });
 }
 
 onItemChange(event:any){
