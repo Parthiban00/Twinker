@@ -25,6 +25,16 @@ getData:any;
   currentRate:number=3;
   isLoading = false;
 restaurantDetails:Restaurant[]=[];
+
+
+
+cartItemsAll:Cart[]=[];
+
+itemTotal=0;
+restaurantName:string="";
+
+unit="K";
+coord:any;
 user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
 
@@ -35,35 +45,30 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
 
 
-
   }
 
 
-
-
-  cartItemsAll:Cart[]=[];
-
-   itemTotal=0;
-   restaurantName:string="";
-
-   unit="K";
-   coord:any;
   ngOnInit(): void {
+
+
+  }
+
+  ionViewDidEnter(){
 
     this.present();
 
+
+
     navigator.geolocation.getCurrentPosition((position:any)=>{
 
-     this. coord=position.coords;
-
-      console.log(` current lat: ${position.coords.latitude}, current lon:${position.coords.longitude}`);
+      this. coord=position.coords;
 
 
+     });
 
-    });
-//this.list.length=0;
+
 this.searchHotel="";
-//this.searchedItem.length=0;
+
     var k;
 
 
@@ -92,7 +97,7 @@ this.searchHotel="";
 
 
       this.restaurantDetails=res as Restaurant[];
-
+      this.searchedItem = res as Restaurant[];
 
       this.list=[];
       for(var j=0;j<this.restaurantDetails.length;j++){
@@ -105,17 +110,16 @@ this.searchHotel="";
                   this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
 
                 }
-                this.searchedItem = res as Restaurant[];
 
-              //  this.searchedItem = this.restaurantDetails;
+
+                this.dismiss();
 
 
 
     });
-    this.dismiss();
 
+    }
 
-  }
 
   viewCart(){
     this.router.navigate(['cart']);
@@ -167,7 +171,8 @@ this.searchHotel="";
 
 
   doRefresh(event) {
-    this.ngOnInit();
+    //this.ngOnInit();
+    this.ionViewDidEnter();
 
 
 
@@ -218,20 +223,7 @@ this.searchHotel="";
 
   }
 
-   ionViewDidEnter(){
-     console.log("ion view will enter");
-      this.ngOnInit();
 
-
-    }
-
-  // ionViewDidLeave(){
-  //   console.log("restauratn page leave");
-  //   this.ngOnDestroy();
-  // }
-  // ngOnDestroy(){
-  //   console.log(" restaurant angular page destroyed");
-  // }
 
   async presentToast(status:any) {
     const toast = await this.toastController.create({

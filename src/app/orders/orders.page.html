@@ -50,7 +50,8 @@
 <ion-card *ngIf="orderDetails.length">
 
   <ion-card-content>
-      <mat-accordion *ngFor="let orders of orderDetails;let i=index" >
+    <div *ngFor="let orders of orderDetails;let i=index" >
+      <mat-accordion *ngIf="orders.Status!='Completed'" >
 
 
         <mat-expansion-panel (opened)="panelOpenState = true"
@@ -240,87 +241,20 @@ Order Details
                         </mat-panel-description>
                       </mat-expansion-panel-header>
 
-<!--
-                      <mat-vertical-stepper>
-                        <mat-step>
-                          <ng-template matStepLabel>Step 1</ng-template>
-                          <ng-template matStepContent>
-                            <p>This content was rendered lazily</p>
 
-                          </ng-template>
-                        </mat-step>
-                        <mat-step>
-                          <ng-template matStepLabel>Step 2</ng-template>
-                          <ng-template matStepContent>
-                            <p>This content was also rendered lazily</p>
-                            <button mat-button matStepperPrevious>Back</button>
-                            <button mat-button matStepperNext>Next</button>
-                          </ng-template>
-                        </mat-step>
-                        <mat-step>
-                          <ng-template matStepLabel>Step 3</ng-template>
-                          <p>This content was rendered eagerly</p>
-                          <button mat-button matStepperPrevious>Back</button>
-                        </mat-step>
-                      </mat-vertical-stepper> -->
-
-                      <!-- <div class="wrapper"> -->
                         <ul class="StepProgress">
-                          <li class="StepProgress-item is-done">Order Placed</li>
-                          <li class="StepProgress-item is-done">Accepted By Restaurant
+                          <li class="StepProgress-item " [ngClass]="{'is-done' : orders.Status=='Placed' || orders.Status=='Accepted by Restaurant Owner' || orders.Status=='Accepted by Delivery Partner' || orders.Status=='Ready' || orders.Status=='Completed'}">Order Placed<br><i style="font-size: 12px;">Waiting for Restaurant Accept</i></li>
+                          <li class="StepProgress-item " [ngClass]="{'is-done' : orders.Status=='Accepted by Restaurant Owner' || orders.Status=='Accepted by Delivery Partner' || orders.Status=='Ready' || orders.Status=='Completed'}">Accepted By Restaurant
                           <br><i style="font-size: 12px;">  Gettig Ready</i>
                           </li>
-                          <li class="StepProgress-item current">Accepted By Delivery Partner</li>
-                          <li class="StepProgress-item">Ready To Deliver <br><i style="font-size: 12px;">On The Way</i></li>
-                          <li class="StepProgress-item">Delivered</li>
+                          <li class="StepProgress-item " [ngClass]="{'is-done' :orders.Status=='Accepted by Delivery Partner'  || orders.Status=='Completed'}">Accepted By Delivery Partner</li>
+                          <li class="StepProgress-item" [ngClass]="{'is-done' :orders.Status=='Accepted by Delivery Partner' || orders.Status=='Completed'}">Ready To Deliver <br><i style="font-size: 12px;">On The Way</i></li>
+                          <li class="StepProgress-item" [ngClass]="{'is-done' : orders.Status=='Completed'}">Delivered</li>
                         </ul>
 
 
 
 
-
-                            <!-- <div class="row">
-                                <div class="col-lg-6">
-                                    <p>ORD_ID-1</p>
-                                    <div class="timeline p-4 block mb-4">
-                                        <div class="tl-item active">
-                                            <div class="tl-dot b-warning"></div>
-                                            <div class="tl-content">
-                                                <div class="">Order Placed</div>
-                                                <div class="tl-date text-muted mt-1"></div>
-                                            </div>
-                                        </div>
-                                        <div class="tl-item">
-                                            <div class="tl-dot b-primary"></div>
-                                            <div class="tl-content">
-                                                <div class="">Accepted By Restaurant (Getting Ready)</div>
-                                                <div class="tl-date text-muted mt-1"></div>
-                                            </div>
-                                        </div>
-                                        <div class="tl-item">
-                                            <div class="tl-dot b-danger"></div>
-                                            <div class="tl-content">
-                                                <div class="">Accepted By Delivery Partner</div>
-                                                <div class="tl-date text-muted mt-1"></div>
-                                            </div>
-                                        </div>
-                                        <div class="tl-item">
-                                            <div class="tl-dot b-danger"></div>
-                                            <div class="tl-content">
-                                                <div class="">Ready To Deliver (On the way)</div>
-                                                <div class="tl-date text-muted mt-1"></div>
-                                            </div>
-                                        </div>
-                                        <div class="tl-item">
-                                            <div class="tl-dot b-warning"></div>
-                                            <div class="tl-content">
-                                                <div class="">Delivered</div>
-                                                <div class="tl-date text-muted mt-1"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
 
 
 
@@ -335,6 +269,7 @@ Order Details
 
 
         </mat-accordion>
+      </div>
       </ion-card-content>
     </ion-card>
     </div>
@@ -343,7 +278,9 @@ Order Details
       <ion-card *ngIf="orderDetails1.length">
         <ion-card-subtitle>Date</ion-card-subtitle>
         <ion-card-content>
-            <mat-accordion *ngFor="let orders1 of orderDetails1;let i=index" >
+
+            <div *ngFor="let orders1 of orderDetails1;let i=index" >
+      <mat-accordion *ngIf="orders1.Status=='Completed'" >
 
               <mat-expansion-panel (opened)="panelOpenState = true"
                                    (closed)="panelOpenState = false" style="margin-top: 5px;">
@@ -622,6 +559,7 @@ Order Details
               </mat-expansion-panel>
 
               </mat-accordion>
+              </div>
             </ion-card-content>
           </ion-card>
 

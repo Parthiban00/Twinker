@@ -30,36 +30,28 @@ export class OrdersDeliveryPartnerPage implements OnInit {
   itemDetails:any[]=[];
   itemDetails1:any[]=[];
   panelOpenState = false;
-  user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+user:any;
   isLoading = false;
   //this.deliveryPartnerDetails=this.user[0];
-currentUserId=this.user[0]._id;
 
-
+currentUserId:any;
   ngOnInit() {
 
+
+
+
+
+  }
+  ionViewDidEnter(){
     this.GetOrderDetails();
-  // this.deliveryService.GetAcceptedOrders(getAcceptedOrders).subscribe((res)=>{
-  //   this.orderDetails1=res as Orders[];
-  //   console.log('orders by userId  '+this.orderDetails1[0]);
-
-  //   for(var i=0;i<this.orderDetails1.length;i++){
-
-
-  //     for(var j=0;j<this.orderDetails1[i].ItemDetails.length;j++){
-
-
-  //   this.itemDetails1.push(this.orderDetails1[i].ItemDetails[j])
-  //     }
-  //   }
-  // })
-
-
   }
 
 
   GetOrderDetails(){
 this.present();
+this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+this.currentUserId=this.user[0]._id;
+
 this.deliveryPartnerDetails.push(this.user[0]);
 console.log('current user  '+this.user[0]);
 

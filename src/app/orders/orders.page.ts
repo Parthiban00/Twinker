@@ -22,7 +22,7 @@ orderDetails:Orders[]=[];
 orderDetails1:Orders[]=[];
 default:string="";
 isLoading = false;
-  user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+user:any;
 
   constructor(private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
 
@@ -31,63 +31,61 @@ isLoading = false;
 
 
 
+ionViewDidEnter(){
 
-
-  ngOnInit() {
-
-    this.present();
-
-    var getOrders={
-      Status:"Placed",
-      ActiveYn:true,
-      UserId:this.user[0]._id
-    }
-   this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
+  this.present();
+  this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  var getOrders={
+    Status:"Placed",
+    ActiveYn:true,
+    UserId:this.user[0]._id
+  }
+ this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
 this.orderDetails=res as Orders[];
 console.log(this.orderDetails);
 
 
 for(var i=0;i<this.orderDetails.length;i++){
 
-  //ELEMENT_DATA.length=0;
-  for(var j=0;j<this.orderDetails[i].ItemDetails.length;j++){
 
-    //ELEMENT_DATA.push({position:j+1,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
-   //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
+for(var j=0;j<this.orderDetails[i].ItemDetails.length;j++){
+
 this.itemDetails.push(this.orderDetails[i].ItemDetails[j])
-  }
+}
 }
 
 console.log("ite detailassss   "+ this.itemDetails[0]);
-   })
+ })
 
-   var getOrders1={
-    Status:"Completed",
-    ActiveYn:true,
-    UserId:this.user[0]._id
+ var getOrders1={
+  Status:"Completed",
+  ActiveYn:true,
+  UserId:this.user[0]._id
+}
+
+
+this.ordersService.GetPlacedOrders(getOrders1).subscribe((res)=>{
+  this.orderDetails1=res as Orders[];
+  console.log('completed orders: '+this.orderDetails1);
+
+
+  for(var i=0;i<this.orderDetails1.length;i++){
+
+
+    for(var j=0;j<this.orderDetails1[i].ItemDetails.length;j++){
+
+  this.itemDetails1.push(this.orderDetails1[i].ItemDetails[j])
+    }
   }
 
+  console.log("ite detailassss   "+ this.itemDetails[0]);
+  this.dismiss();
+     })
 
-  this.ordersService.GetPlacedOrders(getOrders1).subscribe((res)=>{
-    this.orderDetails1=res as Orders[];
-    console.log('completed orders: '+this.orderDetails1);
 
+}
 
-    for(var i=0;i<this.orderDetails1.length;i++){
-
-      //ELEMENT_DATA.length=0;
-      for(var j=0;j<this.orderDetails1[i].ItemDetails.length;j++){
-
-       // ELEMENT_DATA.push({position:j+1,ItemName:this.orderDetails1[i].ItemDetails[j].ProductName,Price:this.orderDetails1[i].ItemDetails[j].Price,Quantity:this.orderDetails1[i].ItemDetails[j].ItemCount,Amount:this.orderDetails1[i].ItemDetails[j].Amount});
-       //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
-    this.itemDetails1.push(this.orderDetails1[i].ItemDetails[j])
-      }
-    }
-
-    console.log("ite detailassss   "+ this.itemDetails[0]);
-    this.dismiss();
-       })
-
+  ngOnInit() {
 
 
 

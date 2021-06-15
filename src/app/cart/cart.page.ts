@@ -41,27 +41,7 @@ selectedLocation:any;
   constructor(public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
-//this.present();
-  this.geolocation.getCurrentPosition({
 
-            timeout:10000,
-            enableHighAccuracy:true
-          }).then((resp) => {
-            // resp.coords.latitude
-            // resp.coords.longitude
-            this.lat=resp.coords.latitude;
-            this.lon=resp.coords.longitude;
-
-
-
-            console.log(resp.coords.latitude);
-            console.log(resp.coords.longitude);
-
-            this.ReverseGeocoding(this.lat,this.lon);
-          //  this.dismiss();
-           }).catch((error) => {
-             console.log('Error getting location', error);
-           });
 
 
   }
@@ -70,10 +50,6 @@ this.default="Delivery";
 
   dateRange:string="";
   cartItems:Cart[]=[];
-  // range = new FormGroup({
-  //   start: new FormControl(),
-  //   end: new FormControl()
-  // });
 
 selectedAddressId:string="";
   addressClickStatus: boolean = false;
@@ -88,16 +64,16 @@ selectedAddress:String="";
 newAddress="";
 restaurantDetails:Restaurant[]=[];
 distanceKm:any;
+user:any;
+// public today: Date = new Date();
+// public currentYear: number = this.today.getFullYear();
+// public currentMonth: number = this.today.getMonth();
+// public currentDay: number = this.today.getDate();
+// public minDate: Object = new Date(this.currentYear, this.currentMonth, this.currentDay);
+// public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
-public today: Date = new Date();
-public currentYear: number = this.today.getFullYear();
-public currentMonth: number = this.today.getMonth();
-public currentDay: number = this.today.getDate();
-public minDate: Object = new Date(this.currentYear, this.currentMonth, this.currentDay);
-public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
 
-  user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   cartItemsAll:Cart[]=[];
 
   placeOder:PlaceOrder[]=[];
@@ -111,15 +87,37 @@ public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
   ngOnInit() {
 
-console.log("cart entered");
 
-    this.onLoad();
+
+
+
+
   }
 
-  onLoad() {
+  ionViewDidEnter(){
+
+
     this.present();
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+    this.geolocation.getCurrentPosition({
+
+      timeout:10000,
+      enableHighAccuracy:true
+    }).then((resp) => {
+
+      this.lat=resp.coords.latitude;
+      this.lon=resp.coords.longitude;
+
+      this.ReverseGeocoding(this.lat,this.lon);
+
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+
 
     var itemTotal=0;
+
     var getCart={
       UserId:this.user[0]._id,
       Status:"Cart",
@@ -135,9 +133,27 @@ console.log("cart entered");
 
 if(this.cartItemsAll.length==0){
 this.dismiss();
- // this.router.navigate(['home']);
+
  this.cartEmpty();
 }
+
+var restaurantCredential={
+  RestaurantId:this.cartItemsAll[0].RestaurantId,
+      }
+this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
+  this.restaurantDetails=res as Restaurant[];
+  console.log("restaurant deteils  "+this.restaurantDetails[0].Address)
+
+
+
+
+
+
+            this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+
+
+
+      })
 
       for(var i=0;i<this.cartItemsAll.length;i++){
         itemTotal+=this.cartItemsAll[i].Amount;
@@ -145,44 +161,20 @@ this.dismiss();
         this.restaurantName=this.cartItemsAll[i].RestaurantName;
         }
 
-        var restaurantCredential={
-          RestaurantId:this.cartItemsAll[0].RestaurantId,
-              }
-        this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
-          this.restaurantDetails=res as Restaurant[];
-          console.log("restaurant deteils  "+this.restaurantDetails[0].Address)
-                // if(!navigator.geolocation){
-                //   console.log('location not supported');
-                // }
 
-                // navigator.geolocation.getCurrentPosition((position:any)=>{
-                //  this. coord=position.coords;
-
-               //   console.log(`lat: ${position.coords.latitude},lon:${position.coords.longitude}`);
-
-
-
-
-
-
-                   // this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude,this.unit);
-                    this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
-
-               // });
-
-              })
 
         console.log(itemTotal);
 
-      //  this.transactions[0].charges=itemTotal;
-//this.dismiss();
+
     });
 
 
 
-this.DeliveryLocations();
+
 this.GetAllOrders();
-  }
+   }
+
+
 
   DeliveryLocations(){
 
@@ -286,7 +278,8 @@ this.present();
 
 this.dismiss();
      //this.reloadCurrentRoute();
-     this.ngOnInit();
+    // this.ngOnInit();
+     this.ionViewDidEnter();
 
   })
 
@@ -330,7 +323,8 @@ this.present();
         this.cartItems=res as Cart[];
 
        // this.reloadCurrentRoute();
-       this.ngOnInit();
+     //  this.ngOnInit();
+     this.ionViewDidEnter();
       });
     }
     else if(this.cartItemsAll[i].ItemCount==0){
@@ -344,7 +338,8 @@ this.present();
       this.dismiss();
       //this.router.navigate(['home']);
 
-       this.ngOnInit();
+      // this.ngOnInit();
+      this.ionViewDidEnter();
       });
     }
   }
@@ -376,7 +371,8 @@ this.present();
       this.deliveryLocation=res as DeliveryLocations[];
   this.newAddress="";
 
-      this.onLoad();
+    //  this.ngOnInit();
+    this.ionViewDidEnter();
             })
 
   }
@@ -404,7 +400,7 @@ this.present();
     this.cartService.RemoveAddress(removeAddress).subscribe((res)=>{
 
 
-      this.DeliveryLocations();
+    //  this.DeliveryLocations();
     });
 
   }
@@ -523,7 +519,7 @@ this.present();
     if(this.distanceKm>2){
 
 
-            this.deliveryPartnerFee=(this.distanceKm*12);
+            this.deliveryPartnerFee=(this.distanceKm*8);
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
 this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
@@ -651,15 +647,10 @@ this.presentActionSheet();
             timeout:10000,
             enableHighAccuracy:true
           }).then((resp) => {
-            // resp.coords.latitude
-            // resp.coords.longitude
+
             this.lat=resp.coords.latitude;
             this.lon=resp.coords.longitude;
 
-
-
-            console.log(resp.coords.latitude);
-            console.log(resp.coords.longitude);
 
             this.ReverseGeocoding(this.lat,this.lon);
             this.dismiss();
@@ -669,9 +660,7 @@ this.presentActionSheet();
 
            let watch = this.geolocation.watchPosition();
            watch.subscribe((data) => {
-            // data can be a set of coordinates, or an error (if an error occurred).
-            // data.coords.latitude
-            // data.coords.longitude
+
 
            });
 
@@ -740,7 +729,8 @@ this.presentActionSheet();
   }
 
   doRefresh(event) {
-    this.ngOnInit();
+   // this.ngOnInit();
+   this.ionViewDidEnter();
 
     setTimeout(() => {
       console.log('Async operation has ended');

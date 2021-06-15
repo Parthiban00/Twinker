@@ -31,7 +31,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class OrdersManagementPage implements OnInit {
 
 
-  user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  user:any;
   orderDetails:Orders[]=[];
   restaurants:Restaurants[]=[];
   selectedValue: string="";
@@ -47,8 +47,13 @@ export class OrdersManagementPage implements OnInit {
 
   ngOnInit() {
 
-this.present();
-    console.log(this.user[0]._id)
+
+  }
+  ionViewDidEnter(){
+
+    this.present();
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    //console.log(this.user[0]._id)
     var getRestaurants={
       UserId:this.user[0]._id,
       ActiveYn:true,
