@@ -62,7 +62,7 @@
             </mat-panel-title>
             <mat-panel-description  style="font-size: small;">
             <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
-            {{orders.OrderId}}
+            ORD_ID-{{orders._id.substr(orders._id.length - 3)}}
             </mat-panel-description>
           </mat-expansion-panel-header>
 <mat-accordion>
@@ -290,7 +290,7 @@ Order Details
                   </mat-panel-title>
                   <mat-panel-description  style="font-size: small;">
                   <!-- Currently I am {{panelOpenState ? 'open' : 'closed'}}-->
-                  {{orders1.OrderId}}
+                  ORD_ID-{{orders1._id.substr(orders1._id.length - 3)}}
                   </mat-panel-description>
                 </mat-expansion-panel-header>
       <mat-accordion>
