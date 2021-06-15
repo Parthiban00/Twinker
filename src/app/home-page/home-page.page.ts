@@ -22,6 +22,7 @@ export class HomePagePage implements OnInit,OnDestroy {
   subscribe: any;
   currentUrl:any;
   cartItemsAll:Cart[]=[];
+  orderStatus:String;
   constructor(private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 
