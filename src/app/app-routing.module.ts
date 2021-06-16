@@ -109,6 +109,10 @@ const routes: Routes = [
     path: 'otp-verification/:mobileNo/:password/:firstName/:userType',
     loadChildren: () => import('./otp-verification/otp-verification.module').then( m => m.OtpVerificationPageModule)
   },
+  {
+    path: 'orders-admin',
+    loadChildren: () => import('./orders-admin/orders-admin.module').then( m => m.OrdersAdminPageModule)
+  },
 
 
 

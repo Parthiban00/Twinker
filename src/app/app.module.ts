@@ -23,8 +23,9 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { OrdersAdminPipe } from './orders-admin.pipe';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, OrdersAdminPipe],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule],
   providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,

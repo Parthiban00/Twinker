@@ -22,33 +22,68 @@
       </ion-button>
           </ion-buttons>
   </ion-toolbar>
-</ion-header>
-
   <div class="banner">
     <img src="assets\orange_banner1.png" />
     <div class="caption ion-padding">
 
       1234, Aranmanai vaasal sivaganga<br>
       <i style="font-size: small;">Rating: 4.5 | Taste: 4.5 | Delivery Time: 15-25mins</i>
+      <ion-label class="top-offers"> Top Offers<ion-icon style="margin-top: 3px; position: absolute;" name="caret-forward"></ion-icon></ion-label>
+
     </div>
     </div>
+    <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
+      <ion-refresher-content>
+  </ion-refresher-content>
+  </ion-refresher>
+
+
+  <ion-slides [options]="option" class="ion-margin-top">
+    <ion-slide>
+      <ion-card>
+        <img src="assets/burger1.jpg">
+      </ion-card>
+    </ion-slide>
+    <ion-slide>
+     <ion-card>
+       <img src="assets/burger1.jpg">
+     </ion-card>
+   </ion-slide>
+   <ion-slide>
+     <ion-card>
+       <img src="assets/burger1.jpg">
+     </ion-card>
+   </ion-slide>
+   <ion-slide>
+     <ion-card>
+       <img src="assets/burger1.jpg">
+     </ion-card>
+   </ion-slide>
+   <ion-slide>
+     <ion-card>
+       <img src="assets/burger1.jpg">
+     </ion-card>
+   </ion-slide>
+
+ </ion-slides>
+<div >
+
+<ion-segment scrollable [(ngModel)]="menu" color="primary" (ionChange)="segmentChanged($event)">
+  <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
+    {{menus.MenuName}}
+  </ion-segment-button>
+
+</ion-segment>
+</div>
+
+</ion-header>
+
+
 
 
     <ion-content  >
 
-      <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
-        <ion-refresher-content>
-    </ion-refresher-content>
-    </ion-refresher>
-<div >
 
-  <ion-segment scrollable [(ngModel)]="menu" color="primary" (ionChange)="segmentChanged($event)">
-    <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
-      {{menus.MenuName}}
-    </ion-segment-button>
-
-  </ion-segment>
-  </div>
 
 
 <!-- <div class="product">

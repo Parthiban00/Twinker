@@ -454,5 +454,13 @@ async dismiss() {
   this.isLoading = false;
   return await this.loadingController.dismiss().then(() => console.log('dismissed'));
 }
+
+option={
+  slidePerView:1.5,
+  centeredSlides:true,
+  loop:true,
+  spaceBetween:20,
+  autoplay:true,
+}
 }
 

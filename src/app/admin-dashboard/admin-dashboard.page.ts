@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,9 +8,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminDashboardPage implements OnInit {
 
-  constructor() { }
+  constructor( private router:Router) { }
 
   ngOnInit() {
   }
+  OrdersManagement(){
+    this.router.navigate(['orders-admin']);
+      }
 
+      RedirectToHome(){
+        this.router.navigate(['home-page']);
+      }
+
+      UsersManagement(){
+
+      }
 }

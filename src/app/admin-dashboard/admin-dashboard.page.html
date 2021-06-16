@@ -1,9 +1,99 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>admin-dashboard</ion-title>
-  </ion-toolbar>
+<ion-header class="ion-no-border">
+
+  <ion-toolbar  no-border>
+    <ion-buttons fill="clear" slot="start">
+    <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+  <ion-title style="font-family: lato;">
+    Admin - Dashboard
+  </ion-title>
+  <ion-buttons slot="end">
+<ion-button fill="clear" (click)="RedirectToHome()">
+<ion-icon color="primary" name="Home"></ion-icon>
+</ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+
 </ion-header>
-
 <ion-content>
+  <div class="slides ion-margin-bottom">
+    <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+      <ion-slide style="padding:0px;width: fit-content;" >
 
-</ion-content>
+        <ion-card style="width:180px;">
+          <ion-card-header>
+  <div class="main" >
+
+    <img src="assets/rest.png">
+  </div>
+  <!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+
+            <ion-card-title class="ion-margin-bottom" style="text-align: center;font-size: 16px;">Restaurant</ion-card-title>
+            <ion-card-subtitle style="font-size: 12px;">All Rest... Management</ion-card-subtitle>
+          </ion-card-content>
+        </ion-card>
+
+
+
+
+      </ion-slide>
+      <ion-slide style="padding:0px;width: fit-content;" >
+
+        <ion-card style="width: 180px;" (click)="OrdersManagement()">
+          <ion-card-header>
+  <div class="main" >
+
+    <img src="assets/orders.png">
+  </div>
+  <!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+
+            <ion-card-title class="ion-margin-bottom" style="text-align: center;font-size: 16px;">Orders</ion-card-title>
+            <ion-card-subtitle style="font-size: 12px;">All Orders Management</ion-card-subtitle>
+          </ion-card-content>
+        </ion-card>
+
+
+
+
+      </ion-slide>
+
+      <ion-slide style="padding:0px;width: fit-content;" >
+
+        <ion-card style="width: 180px;" (click)="UsersManagement()">
+          <ion-card-header>
+  <div class="main" >
+
+    <img src="assets/orders.png">
+  </div>
+  <!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+
+            <ion-card-title class="ion-margin-bottom" style="text-align: center;font-size: 16px;">Users</ion-card-title>
+            <ion-card-subtitle style="font-size: 12px;">All Users Management</ion-card-subtitle>
+          </ion-card-content>
+        </ion-card>
+
+
+
+
+      </ion-slide>
+
+
+
+
+
+
+    </ion-slides>
+
+
+  </div>
+  </ion-content>

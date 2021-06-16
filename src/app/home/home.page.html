@@ -14,7 +14,7 @@
   </ion-toolbar>
 
   <div class="banner">
-    <img src="assets\orange_banner.jpg" />
+    <img src="assets\orange_banner2.jpg" />
     <div class="caption ion-padding">
       Welcome to Twinker <br>
      <i> let we serve, what you need</i>
@@ -22,14 +22,41 @@
 
 
     <div class="search">
-      <!-- <ion-item lines="none" class="ion-no-padding"> -->
-        <!-- <ion-icon slot="start" name="search-outline"></ion-icon>
-        <ion-input placeholder="Search Restaurant"></ion-input> -->
+
         <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
 
       <!-- </ion-item > -->
     </div>
       </div>
+
+      <ion-slides [options]="option" class="ion-margin-top">
+         <ion-slide>
+           <ion-card>
+             <img src="assets/burger1.jpg">
+           </ion-card>
+         </ion-slide>
+         <ion-slide>
+          <ion-card>
+            <img src="assets/hotel_banner.jpg">
+          </ion-card>
+        </ion-slide>
+        <ion-slide>
+          <ion-card>
+            <img src="assets/burger1.jpg">
+          </ion-card>
+        </ion-slide>
+        <ion-slide>
+          <ion-card>
+            <img src="assets/burger1.jpg">
+          </ion-card>
+        </ion-slide>
+        <ion-slide>
+          <ion-card>
+            <img src="assets/burger1.jpg">
+          </ion-card>
+        </ion-slide>
+
+      </ion-slides>
 </ion-header>
 
 
@@ -83,7 +110,7 @@
 
 <div class="ion-list">
   <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
-    <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index">
+    <ion-list style="margin-top: -5px;" lines="none" *ngFor="let item of searchedItem;let i=index">
 
 <ion-card>
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id)">

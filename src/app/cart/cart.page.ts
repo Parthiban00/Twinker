@@ -415,7 +415,8 @@ this.present();
 
 
   PlaceOrder(){
-    console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
+    //console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
+    this.present();
     var orderId1="ORD_ID-";
     let orderId2:number=0;
 
@@ -492,6 +493,7 @@ this.present();
   //    // this.openDialog();
   //   //this.reloadCurrentRoute();
   //this.presentToast();
+  this.dismiss();
   this.presentAlertConfirm();
 
 

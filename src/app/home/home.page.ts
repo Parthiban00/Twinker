@@ -54,6 +54,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
 
   ionViewDidEnter(){
+   // this.dismiss();
 
     this.present();
 
@@ -98,6 +99,7 @@ this.searchHotel="";
 
       this.restaurantDetails=res as Restaurant[];
       this.searchedItem = res as Restaurant[];
+      this.dismiss();
 
       this.list=[];
       for(var j=0;j<this.restaurantDetails.length;j++){
@@ -112,11 +114,12 @@ this.searchHotel="";
                 }
 
 
-                this.dismiss();
+
 
 
 
     });
+
 
     }
 
@@ -231,6 +234,15 @@ this.searchHotel="";
       duration: 1000
     });
     toast.present();
+  }
+
+
+  option={
+    slidePerView:1.5,
+    centeredSlides:true,
+    loop:true,
+    spaceBetween:20,
+    autoplay:true,
   }
 
 }
