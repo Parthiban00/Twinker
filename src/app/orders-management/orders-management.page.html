@@ -23,6 +23,17 @@
     </ion-select>
   </ion-item>
 
+
+  <div class="search">
+
+    <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
+
+
+</div>
+<ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
+
+
+
     <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
       <ion-segment-button  value="Placed">
         Placed
@@ -52,7 +63,7 @@
 </ion-refresher-content>
 </ion-refresher>
   <div *ngIf="default=='Placed'">
-  <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+  <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
     <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Placed'">
 
         <mat-expansion-panel hideToggle>
@@ -106,7 +117,7 @@
         </div>
       </div>
         <div *ngIf="default=='Accepted'">
-          <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+          <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
             <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Accepted by Restaurant Owner'">
 
                 <mat-expansion-panel hideToggle>
@@ -162,7 +173,7 @@
           </div>
 
           <div *ngIf="default=='Ready'">
-            <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+            <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
               <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Ready'">
 
                   <mat-expansion-panel hideToggle>
@@ -217,7 +228,7 @@
                   </div>
           </div>
           <div *ngIf="default=='Pending'">
-            <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+            <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
               <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Accepted by Delivery Partner'">
 
                   <mat-expansion-panel hideToggle>
@@ -272,7 +283,7 @@
                   </div>
           </div>
           <div *ngIf="default=='Completed'">
-            <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+            <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
               <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Completed'">
 
                   <mat-expansion-panel hideToggle>
@@ -326,7 +337,51 @@
 
                   </div>
           </div>
+          <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
+            <ion-fab-button size="small" >
+              <ion-icon name="filter"></ion-icon>
+            </ion-fab-button>
+             <ion-fab-list side="top">
+              <ion-fab-button><ion-icon name="calendar" (click)="datePicker.open()"></ion-icon></ion-fab-button>
+              <ion-fab-button><ion-icon name="list" (click)="FilterCancel()"></ion-icon></ion-fab-button>
+            </ion-fab-list>
+          </ion-fab>
 
 </ion-content>
 
 
+<ion-footer   >
+  <ion-toolbar color="primary">
+    <!-- <ion-title>4 Items</ion-title> -->
+<ion-row>
+  <ion-col size="3">
+    <ion-text class="title">Orders</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Amount</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Date</ion-text>
+  </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+    <ion-text class="description">{{totalCompletedOrders}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">{{totalCompletedAmount}} </ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">{{myDate}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+
+
+
+  </ion-col>
+  </ion-row>
+
+
+  </ion-toolbar>
+</ion-footer>

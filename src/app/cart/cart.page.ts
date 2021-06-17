@@ -65,12 +65,16 @@ newAddress="";
 restaurantDetails:Restaurant[]=[];
 distanceKm:any;
 user:any;
-// public today: Date = new Date();
-// public currentYear: number = this.today.getFullYear();
-// public currentMonth: number = this.today.getMonth();
-// public currentDay: number = this.today.getDate();
+
+
+//  public today: Date = new Date();
+//   public currentYear: number = this.today.getFullYear();
+//   public currentMonth: number = this.today.getMonth();
+//   public currentDay: number = this.today.getDate();
+
+
 // public minDate: Object = new Date(this.currentYear, this.currentMonth, this.currentDay);
-// public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
+//  public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
 
 
@@ -87,8 +91,10 @@ user:any;
 
   ngOnInit() {
 
+//console.log("date "+this.today);
 
 
+//console.log("current date kkkkkk   "+today1);
 
 
 
@@ -98,9 +104,14 @@ user:any;
 
 
     this.present();
+
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
+//console.log("current year "+(this.currentMonth+1));
+
     this.geolocation.getCurrentPosition({
+
+
 
       timeout:10000,
       enableHighAccuracy:true
@@ -142,7 +153,7 @@ var restaurantCredential={
       }
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
-  console.log("restaurant deteils  "+this.restaurantDetails[0].Address)
+  //console.log("restaurant deteils  "+this.restaurantDetails[0].Address)
 
 
 
@@ -155,6 +166,8 @@ this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
 
       })
 
+
+
       for(var i=0;i<this.cartItemsAll.length;i++){
         itemTotal+=this.cartItemsAll[i].Amount;
         this.itemAmount=itemTotal;
@@ -163,7 +176,7 @@ this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
 
 
 
-        console.log(itemTotal);
+        //console.log(itemTotal);
 
 
     });
@@ -417,6 +430,14 @@ this.present();
   PlaceOrder(){
     //console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     this.present();
+
+    let today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+var today1 = yyyy + '-' + mm + '-' + dd;
+
     var orderId1="ORD_ID-";
     let orderId2:number=0;
 
@@ -436,7 +457,9 @@ this.present();
 
 
 
-    let date: Date = new Date();
+    //var date=this.currentYear+'-'+(this.currentMonth+1)+'-'+this.currentDay;
+
+
     this.placeOrderArr=[];
 
 
@@ -470,7 +493,7 @@ this.present();
      ActiveYn:true,
      DeleteYn:false,
      Status:'Placed',
-     CreatedDate:date,
+     CreatedDate:today1,
      CreatedBy:this.user[0]._id,
      ItemCount:this.cartItemsAll.length,
      MobileNo:this.user[0].MobileNo,

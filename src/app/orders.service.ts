@@ -13,4 +13,8 @@ export class OrdersService {
 
      return this.webService.get(`orderdetails/${data.UserId}/${data.Status}/${data.ActiveYn}`);
    }
+
+   GetFilteredOders(data:any){
+     return this.webService.get(`orderdetails/${data.ActiveYn}/${data.DeleteYn}/${data.RestaurantId}/${data.CreatedDate}`);
+   }
 }

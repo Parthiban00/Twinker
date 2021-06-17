@@ -91,7 +91,7 @@ const TaskSchema = new mongoose.Schema({
 type:Array
     },
     CreatedDate:{
-        type:Date
+        type:String
     }
 
 

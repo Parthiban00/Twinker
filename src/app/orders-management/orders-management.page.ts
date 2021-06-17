@@ -30,7 +30,26 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 export class OrdersManagementPage implements OnInit {
 
+  public today1: Date = new Date();
+  public currentYear: number = this.today1.getFullYear();
+  public currentMonth: number = this.today1.getMonth();
+  public currentDay: number = this.today1.getDate();
+ public minDate: Object = new Date(this.currentYear, this.currentMonth, this.currentDay);
+  public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
+  totalCompletedItems=0;
+  totalCompletedOrders=0;
+  totalCompletedAmount=0;
+
+    filterOrders:Orders[]=[];
+  totalAmount=0;
+  totalItems=0;
+  totalOrders=0;
+  currentSegment;
+  today;
+  myDate="All";
+  searchedItem: any;
+  searchHotel:any;
   user:any;
   orderDetails:Orders[]=[];
   restaurants:Restaurants[]=[];
@@ -40,13 +59,15 @@ export class OrdersManagementPage implements OnInit {
 
   constructor(private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
     this.default="Placed"
+    this.today=new Date().toISOString();
+    console.log("today date "+this.today);
   }
 
   selectRestaurants: SelectRestaurants[] = [ ];
   itemDetails:any[]=[];
 
   ngOnInit() {
-
+  console.log("min date :"+this.currentYear+'-'+this.currentMonth+'-'+this.currentDay);
 
   }
   ionViewDidEnter(){
@@ -54,6 +75,8 @@ export class OrdersManagementPage implements OnInit {
     this.present();
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     //console.log(this.user[0]._id)
+    this.currentSegment="Placed";
+
     var getRestaurants={
       UserId:this.user[0]._id,
       ActiveYn:true,
@@ -172,14 +195,38 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
     console.log('Segment changed', ev.detail.value);
   //console.log(this.productDetails[1].MenuId);
   this.default=ev.detail.value;
+
+  if(this.default=='Completed'){
+    this.currentSegment='Completed';
+    this.CompletedOrders(this.currentSegment);
+  }
+  else if(this.default=='Placed'){
+    this.currentSegment='Placed';
+    this.CompletedOrders(this.currentSegment);
+  }
+  else if(this.default=='Accepted'){
+    this.currentSegment='Accepted by Restaurant Owner';
+    this.CompletedOrders(this.currentSegment);
+  }
+  else if(this.default=='Ready'){
+    this.currentSegment='Ready';
+    this.CompletedOrders(this.currentSegment);
+  }
+  else if(this.default=='Pending'){
+    this.currentSegment='Accepted by Delivery Partner';
+    this.CompletedOrders(this.currentSegment);
+  }
   }
   OrdersManagement(){
 
   }
  onChange(selectedValue){
-   this.present();
-   this.selectedValue=selectedValue;
-   this.selectRestaurants=selectedValue;
+  this.present();
+  this.totalItems=0;
+  this.totalAmount=0;
+
+  this.selectedValue=selectedValue;
+  this.selectRestaurants=selectedValue;
   console.log(selectedValue);
 
   var getOrders={
@@ -191,17 +238,20 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
 
   this.owenerService.GetOrders(getOrders).subscribe((res)=>{
     this.orderDetails=res as Orders[];
+    this.searchedItem = res as Orders[];
     console.log(this.orderDetails[0]);
 
     for(var i=0;i<this.orderDetails.length;i++){
-
+      this.totalAmount+=this.orderDetails[i].ItemTotal;
       //ELEMENT_DATA.length=0;
       for(var j=0;j<this.orderDetails[i].ItemDetails.length;j++){
-
+        this.totalItems=this.totalItems+1;
        //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
     this.itemDetails.push(this.orderDetails[i].ItemDetails[j])
       }
     }
+    console.log("total amount "+this.totalAmount+" total items :"+this.totalItems+" total orders :"+this.orderDetails.length);
+    this.CompletedOrders(this.currentSegment);
     this.dismiss();
   })
   }
@@ -262,6 +312,87 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
   async dismiss() {
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
+
+
+
+  SearchChange(event){
+    console.log("search change "+event.detail.value);
+    this.searchedItem = this.orderDetails;
+    console.log("rest details"+this.orderDetails);
+    const val = event.target.value;
+    if (val && val.trim() != '') {
+      this.searchedItem = this.searchedItem.filter((item: any) => {
+        console.log(item._id.toLowerCase().indexOf(val.toLowerCase()) > -1);
+        return (item._id.toLowerCase().indexOf(val.toLowerCase()) > -1);
+
+      })
+    }
+
+  }
+
+  GetDate(){
+
+
+    this.present();
+    this.searchedItem=[];
+
+
+    console.log("selected restaurant "+this.selectedValue);
+    this.myDate=this.myDate.substring(0,10);
+    //console.log("selected Date: "+this.myDate);
+
+//     for(var i=0;i<this.orderDetails.length;i++){
+//       if(this.myDate==this.orderDetails[i].CreatedDate && this.selectedValue==this.orderDetails[i].RestaurantId){
+//         this.filterOrders.push(this.orderDetails[i]);
+//       }
+//     }
+// this.searchedItem=this.filterOrders;
+
+var filterOrders={
+
+  CreatedDate:this.myDate,
+  RestaurantId:this.selectedValue,
+  ActiveYn:true,
+  DeleteYn:false
+}
+
+
+this.ordersService.GetFilteredOders(filterOrders).subscribe((res)=>{
+
+
+  this.orderDetails=res as Orders[];
+console.log("filtered orders "+this.filterOrders[0]);
+this.searchedItem=res as Orders[];
+this.CompletedOrders(this.currentSegment);
+this.dismiss();
+});
+
+
+
+  }
+
+  CompletedOrders(segment:string){
+
+    this.totalCompletedOrders=0;
+    this.totalCompletedItems=0;
+    this.totalCompletedAmount=0;
+    for(var p=0;p<this.searchedItem.length;p++){
+      if(this.searchedItem[p].Status==segment){
+      this.totalCompletedOrders=this.totalCompletedOrders+1;
+      this.totalCompletedAmount+=this.searchedItem[p].ItemTotal;
+      for(var q=0;q<this.searchedItem[p].ItemDetails.length;q++){
+  this.totalCompletedItems=this.totalCompletedItems+1;
+      }
+    }
+    }
+    console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
+  }
+
+  FilterCancel(){
+    //this.myDate="All";
+    this.onChange(this.selectRestaurants);
   }
 
 }

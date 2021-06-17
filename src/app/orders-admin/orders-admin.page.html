@@ -22,12 +22,16 @@
 
     </ion-select>
   </ion-item>
+
+
   <div class="search">
 
     <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
 
 
 </div>
+<ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
+
     <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
       <ion-segment-button  value="Placed">
         Placed
@@ -281,6 +285,25 @@
                   </div>
           </div>
           <div *ngIf="default=='Completed'">
+            <!-- <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title style="font-size: small;">
+               ORD_ID-
+                </mat-panel-title>
+                <mat-panel-description style="font-size: small;">
+                 Rs.
+                  <mat-icon>keyboard_arrow_down</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+
+
+              <mat-action-row style="align-content: center;">
+
+                <p style="color: green;" >Delivered Successfull...</p>
+
+              </mat-action-row>
+            </mat-expansion-panel> -->
             <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
               <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Completed'">
 
@@ -335,7 +358,59 @@
 
                   </div>
           </div>
+   <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
+            <ion-fab-button size="small" >
+              <ion-icon name="filter"></ion-icon>
+            </ion-fab-button>
+             <ion-fab-list side="top">
+              <ion-fab-button><ion-icon name="calendar" (click)="datePicker.open()"></ion-icon></ion-fab-button>
+              <ion-fab-button><ion-icon name="list" (click)="FilterCancel()"></ion-icon></ion-fab-button>
+            </ion-fab-list>
+          </ion-fab>
+          <!-- <ion-fab vertical="bottom" horizontal="end" edge slot="fixed">
+            <ion-fab-button>
+              <ion-icon name="settings"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-list side="end">
+              <ion-fab-button><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
+            </ion-fab-list>
+          </ion-fab> -->
 
 </ion-content>
+<ion-footer   >
+  <ion-toolbar color="primary">
+    <!-- <ion-title>4 Items</ion-title> -->
+<ion-row>
+  <ion-col size="3">
+    <ion-text class="title">Orders</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Amount</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Date</ion-text>
+  </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+    <ion-text class="description">{{totalCompletedOrders}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">{{totalCompletedAmount}} </ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">{{myDate}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+
+
+
+  </ion-col>
+  </ion-row>
+
+
+  </ion-toolbar>
+</ion-footer>
 
 

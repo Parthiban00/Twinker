@@ -9,6 +9,9 @@ import { OrdersAdminPageRoutingModule } from './orders-admin-routing.module';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { OrdersAdminPage } from './orders-admin.page';
 
+
+
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   imports: [
     CommonModule,
@@ -18,8 +21,11 @@ import { OrdersAdminPage } from './orders-admin.page';
     MatButtonToggleModule,
     MatExpansionModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+
+
   ],
+  providers:[],
   declarations: [OrdersAdminPage]
 })
 export class OrdersAdminPageModule {}
