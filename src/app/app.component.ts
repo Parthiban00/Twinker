@@ -18,7 +18,7 @@ export class AppComponent {
   times: any;
   subscribe: any;
   constructor(private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
-   // this.splashScreen.show();
+    this.splashScreen.show();
 
 
 

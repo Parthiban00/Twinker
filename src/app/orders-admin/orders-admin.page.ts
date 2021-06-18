@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,OnDestroy, HostListener} from '@angular/core';
 import Orders from '../models/orders';
 import{OrdersService} from 'src/app/orders.service';
 import Restaurants from '../models/restaurants';
@@ -74,7 +74,7 @@ toastMsg="";
 
   }
   ionViewDidEnter(){
-
+this.isLoading=false;
     this.present();
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 this.currentSegment="Placed";
@@ -90,13 +90,14 @@ this.restaurantService.GetRestaurants().subscribe((res)=>{
   for(var i=0;i<this.restaurants.length;i++){
     this.selectRestaurants.push({value:this.restaurants[i]._id,viewValue:this.restaurants[i].RestaurantName});
   }
-  this.dismiss();
+
 
 
 
 
 
 });
+this.dismiss();
   }
 
   step = 0;
@@ -425,6 +426,7 @@ this.totalCompletedItems=this.totalCompletedItems+1;
   }
   console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
 }
+
 
 }
 

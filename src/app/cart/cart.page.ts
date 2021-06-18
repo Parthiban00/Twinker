@@ -67,15 +67,6 @@ distanceKm:any;
 user:any;
 
 
-//  public today: Date = new Date();
-//   public currentYear: number = this.today.getFullYear();
-//   public currentMonth: number = this.today.getMonth();
-//   public currentDay: number = this.today.getDate();
-
-
-// public minDate: Object = new Date(this.currentYear, this.currentMonth, this.currentDay);
-//  public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
-
 
 
   cartItemsAll:Cart[]=[];
@@ -83,7 +74,7 @@ user:any;
   placeOder:PlaceOrder[]=[];
 
    placeOrderArr=new Array;
-   //placeOrderArr:JSON[]=[];
+
 
    unit="K";
    coord:any;
@@ -91,10 +82,7 @@ user:any;
 
   ngOnInit() {
 
-//console.log("date "+this.today);
 
-
-//console.log("current date kkkkkk   "+today1);
 
 
 
@@ -107,7 +95,7 @@ user:any;
 
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
-//console.log("current year "+(this.currentMonth+1));
+
 
     this.geolocation.getCurrentPosition({
 
@@ -153,12 +141,12 @@ var restaurantCredential={
       }
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
-  //console.log("restaurant deteils  "+this.restaurantDetails[0].Address)
 
 
 
 
 
+this.dismiss();
 
             this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
 
@@ -202,7 +190,7 @@ this.GetAllOrders();
 
       for(var j=0;j<this.deliveryLocation.length;j++){
         if(this.deliveryLocation[j].Recent=='Yes'){
-      //    this.selectedAddress=this.deliveryLocation[j].Address;
+
         }
       }
 
@@ -210,21 +198,8 @@ this.GetAllOrders();
   }
 
 
-  // displayedColumns = ['item', 'cost'];
-  // transactions: Transaction[] = [
-  //   {billDetials: 'Item Total', charges: 0},
-  //   {billDetials: 'Delivery Partner Fee', charges: 20},
-  //   {billDetials: 'Taxes and Charges', charges: 7},
-
-  // ];
-
-
-
-  // getTotalCost() {
-  //   return this.transactions.map(t => t.charges).reduce((acc, value) => acc + value, 0);
-  // }
   viewBillDetails(){
-  //  this.router.navigate(['bill-details']);
+
   }
 
 
@@ -255,7 +230,7 @@ this.present();
   this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
 
-  //console.log(this.cartItemsAll[i].MenuName)
+
 
 
   var addCartItems={
@@ -431,6 +406,12 @@ this.present();
     //console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     this.present();
 
+    if(this.selectedLocation=="" || this.selectedLocation==undefined || this.selectedLocation==null){
+      this.dismiss();
+      this.presentAlertConfirm1();
+    }
+    else{
+
     let today = new Date();
 var dd = String(today.getDate()).padStart(2, '0');
 var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -521,13 +502,12 @@ var today1 = yyyy + '-' + mm + '-' + dd;
 
 
    })
-
-
+  }
   }
 
   distance(lat1:any, lon1:any, lat2:any, lon2:any)
   {
-
+this.present();
 
     var R = 6371; // km
     var dLat = this.toRad(lat2-lat1);
@@ -539,11 +519,11 @@ var today1 = yyyy + '-' + mm + '-' + dd;
       Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2);
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
-
+console.log("distance d "+ d);
     this.distanceKm=d;
     if(this.distanceKm>2){
 
-
+      console.log("distance d  >2"+ d);
             this.deliveryPartnerFee=(this.distanceKm*8);
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
@@ -552,7 +532,7 @@ this.totalAmount1=this.totalAmount.toFixed(2);
 this.dismiss();
 
           }
-           else{
+           else if(this.distanceKm<=2){
 
 
             this.deliveryPartnerFee=20;
@@ -562,7 +542,7 @@ this.dismiss();
             this.dismiss();
            }
           //
-    return d;
+   // return d;
 
   }
 
@@ -797,6 +777,36 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
   async dismiss() {
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
+
+  async presentAlertConfirm1() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Ooooh!',
+      message: 'Make sure gps location on your device. We cannot take your delivery location automatically. kindly <strong>Click Okay</strong> to try again.',
+      buttons: [
+
+       {
+
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+
+          this.ionViewDidEnter();
+
+          }
+
+
+
+        }
+
+
+      ]
+    });
+
+    await alert.present();
   }
 
 }
