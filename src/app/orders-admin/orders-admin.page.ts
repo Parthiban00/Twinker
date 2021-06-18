@@ -42,7 +42,7 @@ export class OrdersAdminPage implements OnInit {
 totalCompletedItems=0;
 totalCompletedOrders=0;
 totalCompletedAmount=0;
-
+panelOpenState = false;
   filterOrders:Orders[]=[];
 totalAmount=0;
 totalItems=0;
@@ -431,7 +431,7 @@ async presentAlertConfirm() {
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
     header: 'Notify',
-    message: 'Kindly Select Restaurant on Top...',
+    message: '<small>Kindly Select Restaurant on Top...</small>',
     buttons: [
 
      {

@@ -13,7 +13,7 @@ export class AdminDashboardPage implements OnInit {
   ngOnInit() {
   }
   OrdersManagement(){
-    this.router.navigate(['orders-admin']);
+    this.router.navigate(['orders-dashboard-admin']);
       }
 
       RedirectToHome(){

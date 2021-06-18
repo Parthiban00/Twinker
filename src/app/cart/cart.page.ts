@@ -541,6 +541,10 @@ this.dismiss();
             this.totalAmount1=this.totalAmount.toFixed(2);
             this.dismiss();
            }
+           else{
+             this.dismiss();
+             this.ionViewWillEnter();
+           }
           //
    // return d;
 

@@ -107,7 +107,7 @@
             </ion-col>
           </ion-row>
 
-            <mat-action-row>
+            <mat-action-row style="padding-right: 50px;">
               <button mat-button color="warn" (click)="prevStep()">Cancel</button>
               <button mat-button color="primary" (click)="nextStep(orders._id,orders.RestaurantId)">Accept</button>
             </mat-action-row>
@@ -162,7 +162,7 @@
                     </ion-col>
                   </ion-row>
 
-                    <mat-action-row>
+                    <mat-action-row style="padding-right: 50px;">
                       <button mat-button color="warn" (click)="prevStep()">Cancel</button>
                       <button mat-button color="primary" (click)="Ready(orders._id,orders.RestaurantId)">Ready</button>
                     </mat-action-row>
@@ -216,7 +216,7 @@
                         </ion-col>
                       </ion-row>
 
-                      <mat-action-row style="align-content: center;">
+                      <mat-action-row style="align-content: center;padding-right: 50px;">
                         <!-- <button mat-button color="warn" (click)="prevStep()">Cancel</button>
                         <button mat-button color="primary" (click)="Handled(orders._id,orders.RestaurantId)">Handled</button> -->
                         <p style="color: red;" >Waiting for Delivery Partner Accept</p>
@@ -271,7 +271,7 @@
                         </ion-col>
                       </ion-row>
 
-                      <mat-action-row style="align-content: center;">
+                      <mat-action-row style="align-content: center;padding-right: 50px;">
                         <!-- <button mat-button color="warn" (click)="prevStep()">Cancel</button>
                         <button mat-button color="primary" (click)="Handled(orders._id,orders.RestaurantId)">Handled</button> -->
                         <p style="color: green;" >Accepted by Delivery Partner (Dlivery On Process...)</p>
@@ -326,7 +326,7 @@
                         </ion-col>
                       </ion-row>
 
-                      <mat-action-row style="align-content: center;">
+                      <mat-action-row style="align-content: center;padding-right: 50px;">
                         <!-- <button mat-button color="warn" (click)="prevStep()">Cancel</button>
                         <button mat-button color="primary" (click)="Handled(orders._id,orders.RestaurantId)">Handled</button> -->
                         <p style="color: green;" >Delivered Successfull...</p>
@@ -358,6 +358,9 @@
     <ion-text class="title">Orders</ion-text>
   </ion-col>
   <ion-col size="3">
+    <ion-text class="title">Items</ion-text>
+  </ion-col>
+  <ion-col size="3">
     <ion-text class="title">Amount</ion-text>
   </ion-col>
   <ion-col size="3">
@@ -368,6 +371,9 @@
   <ion-row>
     <ion-col size="3">
     <ion-text class="description">{{totalCompletedOrders}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="description">{{totalCompletedItems}}</ion-text>
   </ion-col>
   <ion-col size="3">
     <ion-text class="title">{{totalCompletedAmount}} </ion-text>
