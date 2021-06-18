@@ -171,7 +171,7 @@ export class HomePagePage implements OnInit,OnDestroy {
     this.router.navigate(['login']);
    }
 
-   ionViewDidEnter(){
+   ionViewWillEnter(){
    this.ngOnInit();
 
   //this.list.length=0;

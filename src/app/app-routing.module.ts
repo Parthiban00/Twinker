@@ -111,7 +111,13 @@ const routes: Routes = [
   },
   {
     path: 'orders-admin',
-    loadChildren: () => import('./orders-admin/orders-admin.module').then( m => m.OrdersAdminPageModule)
+    loadChildren: () => import('./orders-admin/orders-admin.module').then( m => m.OrdersAdminPageModule),
+    canActivate:[AuthenticationGuard]
+  },
+  {
+    path: 'terms-conditions',
+    loadChildren: () => import('./terms-conditions/terms-conditions.module').then( m => m.TermsConditionsPageModule),
+    canActivate:[AuthenticationGuard]
   },
 
 

@@ -5,6 +5,7 @@ import Restaurants from '../models/restaurants';
 import {OwnersService} from 'src/app/owners.service';
 import {Router} from '@angular/router';
 import { LoadingController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 export interface PeriodicElement {
   itemName: string;
@@ -57,7 +58,7 @@ export class OrdersManagementPage implements OnInit {
   default:string="";
   isLoading = false;
 
-  constructor(private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
+  constructor(private alertController:AlertController,private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
     this.default="Placed"
     this.today=new Date().toISOString();
     console.log("today date "+this.today);
@@ -70,9 +71,9 @@ export class OrdersManagementPage implements OnInit {
   console.log("min date :"+this.currentYear+'-'+this.currentMonth+'-'+this.currentDay);
 
   }
-  ionViewDidEnter(){
+  ionViewWillEnter(){
 
-    this.present();
+    //this.present();
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     //console.log(this.user[0]._id)
     this.currentSegment="Placed";
@@ -91,7 +92,8 @@ this.owenerService.GetRestaurants(getRestaurants).subscribe((res)=>{
   for(var i=0;i<this.restaurants.length;i++){
     this.selectRestaurants.push({value:this.restaurants[i]._id,viewValue:this.restaurants[i].RestaurantName});
   }
-  this.dismiss();
+  //this.dismiss();
+  this.presentAlertConfirm();
 })
   }
 
@@ -336,19 +338,16 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
 
 
     this.present();
+    if(this.selectedValue=="" || this.selectedValue==undefined || this.selectedValue==null){
+      this.dismiss();
+          }
+      else{
     this.searchedItem=[];
 
 
     console.log("selected restaurant "+this.selectedValue);
     this.myDate=this.myDate.substring(0,10);
-    //console.log("selected Date: "+this.myDate);
 
-//     for(var i=0;i<this.orderDetails.length;i++){
-//       if(this.myDate==this.orderDetails[i].CreatedDate && this.selectedValue==this.orderDetails[i].RestaurantId){
-//         this.filterOrders.push(this.orderDetails[i]);
-//       }
-//     }
-// this.searchedItem=this.filterOrders;
 
 var filterOrders={
 
@@ -369,7 +368,7 @@ this.CompletedOrders(this.currentSegment);
 this.dismiss();
 });
 
-
+      }
 
   }
 
@@ -393,6 +392,35 @@ this.dismiss();
   FilterCancel(){
     //this.myDate="All";
     this.onChange(this.selectRestaurants);
+  }
+
+  async presentAlertConfirm() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Notify',
+      message: 'Kindly Select Restaurant on Top...',
+      buttons: [
+
+       {
+
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+
+
+
+          }
+
+
+
+        }
+
+
+      ]
+    });
+
+    await alert.present();
   }
 
 }

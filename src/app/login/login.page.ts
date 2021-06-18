@@ -8,12 +8,20 @@ import { AlertController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { IonBottomSheetModule } from 'ion-bottom-sheet';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+
+
+
+
+
+
+
 
   showPassword=false;
   passwordToogleIcon='eye';
@@ -35,6 +43,8 @@ password;
   durationInSeconds=3;
   users:Login[]=[];
  constructor(private activatedRouter:ActivatedRoute, private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController,private platform: Platform,private navController:NavController){
+
+
 
   //localStorage.removeItem('currentUser');
   this.currentUrl=this.router.url;

@@ -31,7 +31,7 @@ user:any;
 
 
 
-ionViewDidEnter(){
+ionViewWillEnter(){
 
   this.present();
   this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');

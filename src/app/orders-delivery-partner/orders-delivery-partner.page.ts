@@ -42,7 +42,7 @@ currentUserId:any;
 
 
   }
-  ionViewDidEnter(){
+  ionViewWillEnter(){
     this.GetOrderDetails();
   }
 
@@ -151,7 +151,7 @@ this.dismiss();
   }
   doRefresh(event) {
     //console.log('Begin async operation');
-  this.ngOnInit();
+  this.ionViewWillEnter();
     setTimeout(() => {
       console.log('Async operation has ended');
       event.target.complete();

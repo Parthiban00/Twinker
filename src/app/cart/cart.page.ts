@@ -88,7 +88,7 @@ user:any;
 
   }
 
-  ionViewDidEnter(){
+  ionViewWillEnter(){
 
 
     this.present();
@@ -267,7 +267,7 @@ this.present();
 this.dismiss();
      //this.reloadCurrentRoute();
     // this.ngOnInit();
-     this.ionViewDidEnter();
+     this.ionViewWillEnter();
 
   })
 
@@ -312,7 +312,7 @@ this.present();
 
        // this.reloadCurrentRoute();
      //  this.ngOnInit();
-     this.ionViewDidEnter();
+     this.ionViewWillEnter();
       });
     }
     else if(this.cartItemsAll[i].ItemCount==0){
@@ -327,7 +327,7 @@ this.present();
       //this.router.navigate(['home']);
 
       // this.ngOnInit();
-      this.ionViewDidEnter();
+      this.ionViewWillEnter();
       });
     }
   }
@@ -360,7 +360,7 @@ this.present();
   this.newAddress="";
 
     //  this.ngOnInit();
-    this.ionViewDidEnter();
+    this.ionViewWillEnter();
             })
 
   }
@@ -735,7 +735,7 @@ this.presentActionSheet();
 
   doRefresh(event) {
    // this.ngOnInit();
-   this.ionViewDidEnter();
+   this.ionViewWillEnter();
 
     setTimeout(() => {
       console.log('Async operation has ended');
@@ -794,7 +794,7 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
           handler: () => {
             console.log('Confirm Okay');
 
-          this.ionViewDidEnter();
+          this.ionViewWillEnter();
 
           }
 

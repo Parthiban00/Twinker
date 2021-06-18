@@ -462,5 +462,9 @@ option={
   spaceBetween:20,
   autoplay:true,
 }
+
+AddToFavourite(menuId:any){
+document.getElementById(menuId).style.color="red";
+}
 }
 

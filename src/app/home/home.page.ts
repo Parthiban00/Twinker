@@ -53,7 +53,7 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
   }
 
-  ionViewDidEnter(){
+  ionViewWillEnter(){
    // this.dismiss();
 
     this.present();
@@ -175,7 +175,7 @@ this.searchHotel="";
 
   doRefresh(event) {
     //this.ngOnInit();
-    this.ionViewDidEnter();
+    this.ionViewWillEnter();
 
 
 
