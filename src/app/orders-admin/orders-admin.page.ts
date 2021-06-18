@@ -74,8 +74,8 @@ toastMsg="";
 
   }
   ionViewDidEnter(){
-this.isLoading=false;
-    this.present();
+
+    //this.present();
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 this.currentSegment="Placed";
 
@@ -97,7 +97,7 @@ this.restaurantService.GetRestaurants().subscribe((res)=>{
 
 
 });
-this.dismiss();
+//this.dismiss();
   }
 
   step = 0;
