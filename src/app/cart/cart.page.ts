@@ -139,6 +139,7 @@ this.dismiss();
 var restaurantCredential={
   RestaurantId:this.cartItemsAll[0].RestaurantId,
       }
+      this.dismiss();
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
 
@@ -146,7 +147,7 @@ this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
 
 
 
-this.dismiss();
+
 
             this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
 
@@ -230,7 +231,12 @@ this.present();
   this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
 
-
+  // if(this.cartItemsAll[i].Offer){
+  //   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
+  //   }
+  //   else{
+  //    this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
+  //   }
 
 
   var addCartItems={
@@ -249,15 +255,17 @@ this.present();
     MobileNo:this.cartItemsAll[i].MobileNo,
     Address:this.cartItemsAll[i].Address,
     CartItemId:this.cartItemsAll[i]._id,
-
+    ActualPrice:this.cartItemsAll[i].ActualPrice,
     Status:"Cart",
     ActiveYn:true,
-    DeleteYn:false
-
+    DeleteYn:false,
+    Offer:this.cartItemsAll[i].Offer,
 
 
    }
-
+   if(this.cartItemsAll[i].Offer){
+    addCartItems.Price=this.cartItemsAll[i].Price;
+      }
    //console.log(addCartItems);
 
 
@@ -296,11 +304,11 @@ this.present();
       MobileNo:this.cartItemsAll[i].MobileNo,
       Address:this.cartItemsAll[i].Address,
       CartItemId:this.cartItemsAll[i]._id,
-
+      ActualPrice:this.cartItemsAll[i].ActualPrice,
       Status:"Cart",
       ActiveYn:true,
-      DeleteYn:false
-
+      DeleteYn:false,
+      Offer:this.cartItemsAll[i].Offer,
 
 
      }
@@ -543,7 +551,7 @@ this.dismiss();
            }
            else{
              this.dismiss();
-             this.ionViewWillEnter();
+             this.presentAlertConfirm2();
            }
           //
    // return d;
@@ -789,7 +797,37 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Ooooh!',
-      message: 'Make sure gps location on your device. We cannot take your delivery location automatically. kindly <strong>Click Okay</strong> to try again.',
+      message: '<small>Make sure gps location on your device. We cannot take your delivery location automatically. kindly <strong>Click Okay</strong> to try again.</small>',
+      buttons: [
+
+       {
+
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+
+          this.ionViewWillEnter();
+
+          }
+
+
+
+        }
+
+
+      ]
+    });
+
+    await alert.present();
+  }
+
+
+  async presentAlertConfirm2() {
+//this.dismiss();
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Ooooh!',
+      message: '<small>We cannot Your Delivery Details. kindly <strong>Click Okay</strong> to Try again...</small>',
       buttons: [
 
        {

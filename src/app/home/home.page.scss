@@ -61,6 +61,7 @@ ion-content{
 
 
     ion-item{
+
       --inner-padding-end:0 !important;
 
       ion-input{
@@ -75,12 +76,27 @@ ion-content{
         margin-right:10px;
       }
     }
-  }
 
 .ion-list{
   margin-top: 5px;
 
+  .ion-card{
+    //position: relative;
+    .offers{
+      position: relative;
+
+      height: 25px;
+      width: 55px;
+      font-size: small;
+      color: white;
+      padding-left: 5px;
+
+          }
+  }
+
 }
+  }
+
 
 ion-footer{
 
@@ -141,4 +157,11 @@ ion-footer{
 
   .swiper-slide{
     transition: 400ms all ease-in-out;
+  }
+
+  .color-green{
+    background-color: seagreen;
+  }
+  .color-red{
+    background-color:salmon;
   }

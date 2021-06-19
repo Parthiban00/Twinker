@@ -5,63 +5,70 @@ const TaskSchema = new mongoose.Schema({
 
         type: mongoose.Types.ObjectId,
         required:true
-        
+
     },
 
     MenuId: {
 
         type: mongoose.Types.ObjectId,
         required:true
-        
+
     },
-          
+
     ProductName : {
         type: String,
-       
+
     },
     Description : {
         type: String,
-       
+
     },
     Price : {
         type: Number,
-       
+
     },
     Size : {
         type: String,
-       
+
     },
     ItemCount : {
         type: Number,
-       
+
     },
     Amount : {
         type: Number,
-       
+
     },
     AvailableTime : {
         type: String,
-       
+
     },
     AvailableStatus : {
         type: Boolean,
-       
+
     },
     AvailableDays : {
         type: String,
-       
+
     },
     ActiveYn : {
         type: Boolean,
-       
+
     },
-   
+
     DeleteYn : {
         type: Boolean,
-       
+
     },
-   
-    
+    Offer : {
+      type: Number,
+
+  },
+  OfferPrice:{
+    type:Number
+  }
+
+
 });
 
 const Products = mongoose.model('Products', TaskSchema);

@@ -33,7 +33,17 @@
         margin-left:0;
         margin-right:0;
         border-radius:0;
+        .offers{
+          width: 70px;
+          height: 20px;
+          font-size: small;
+          color: white;
+          padding-left: 5px;
 
+          background-color: tomato ;
+          position: absolute;
+
+        }
         ion-card-content{
             display: flex;
             position: relative;
@@ -83,6 +93,21 @@
                 //     margin-left: 8px;
                 //     margin-right:8px ;
                 // }
+                }
+                .price{
+                  position: relative;
+
+                  p:nth-child(1){
+                    color:var(--ion-color-primary);
+                  }
+                  p:nth-child(2){
+                    color: tomato;
+                    position:absolute;
+                    left: 60px;
+                    top:10px;
+
+                    //text-decoration:line-through;
+                  }
 
 
 
@@ -98,8 +123,17 @@
                    margin-left: 100px;
 
                 }
+                .offer-price{
 
-            }
+                  color: #919191 !important;
+
+                   font-style: italic;
+                   text-decoration:line-through;
+                 }
+
+             }
+
+
         }
     }
     }

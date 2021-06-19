@@ -163,13 +163,19 @@ segmentChanged(ev: any) {
 
   //this.getCartAll();
   this.present();
+
   let date: Date = new Date();
 
    console.log(this.selectedMenuName);
    console.log(this.user[0].FirstName);
 
    this.products[i].ItemCount=this.products[i].ItemCount+1;
-   this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+   if(this.products[i].Offer){
+   this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
+   }
+   else{
+    this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+   }
 
    var addCartItems={
 
@@ -179,6 +185,7 @@ segmentChanged(ev: any) {
     MenuName:this.selectedMenuName,
     ProductId:this.products[i]._id,
     ProductName:this.products[i].ProductName,
+    ActualPrice:this.products[i].Price,
     Price:this.products[i].Price,
     ItemCount:this.products[i].ItemCount,
     Amount:this.products[i].Amount,
@@ -190,11 +197,17 @@ segmentChanged(ev: any) {
     CreatedBy:this.user[0]._id,
     Status:"Cart",
     ActiveYn:true,
-    DeleteYn:false
+    DeleteYn:false,
+    Offer:this.products[i].Offer,
+
 
 
 
    }
+
+   if(this.products[i].Offer){
+    addCartItems.Price=this.products[i].OfferPrice;
+      }
 
    var getCart={
      UserId:this.user[0]._id,
@@ -302,7 +315,12 @@ this.dismiss();
  DecreaseItem(i:any,menuId:any){
 this.present();
   this.products[i].ItemCount=this.products[i].ItemCount-1;
-  this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+  if(this.products[i].Offer){
+    this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
+    }
+    else{
+     this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+    }
 
   let date: Date = new Date();
   var addCartItems={
@@ -324,13 +342,15 @@ this.present();
     CreatedBy:this.user[0]._id,
     Status:"Cart",
     ActiveYn:true,
-    DeleteYn:false
-
-
+    DeleteYn:false,
+    ActualPrice:this.products[i].Price,
+    Offer:this.products[i].Offer,
 
    }
 
-
+   if(this.products[i].Offer){
+    addCartItems.Price=this.products[i].OfferPrice;
+      }
 
 
 if(this.products[i].ItemCount>0){

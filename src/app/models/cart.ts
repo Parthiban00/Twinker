@@ -1,6 +1,6 @@
 export default class Cart{
 
-    
+
     _id:string="";
     RestaurantId:string ="";
     RestaurantName: string="";
@@ -20,5 +20,9 @@ export default class Cart{
     Status: string="";
     ActiveYn:boolean=true;
     DeleteYn:boolean=false;
-    
+    ActualPrice:number=0;
+    Offer:number;
+
+
+
  }

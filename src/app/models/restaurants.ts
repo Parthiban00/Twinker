@@ -8,7 +8,7 @@ export default class Restaurant{
      Email: string="";
      RestaurantType: string="";
      RestaurantStatus: string="";
-     OrderStatus: string="";
+     OrderStatus: Boolean;
      DineinStatus: string="";
      AvailableDays: string="";
      OpenTime: string="";
@@ -19,5 +19,7 @@ export default class Restaurant{
      Latitude:number=0;
      Longitude:number=0;
      Distance:number=0;
-     
+     Offer:Boolean;
+     AvailableStatus:Boolean
+
  }

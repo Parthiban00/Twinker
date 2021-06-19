@@ -66,8 +66,8 @@ toastMsg="";
     this.today=new Date().toISOString();
     console.log("today date "+this.today);
   }
-
   selectRestaurants: SelectRestaurants[] = [ ];
+
   itemDetails:any[]=[];
 
   ngOnInit() {

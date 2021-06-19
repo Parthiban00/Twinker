@@ -13,4 +13,6 @@ export default class Product{
      DeleteYn: boolean=false;
      ItemCount:number=0;
      Amount:number=0;
+     Offer:number=0;
+     OfferPrice:number=0;
  }
