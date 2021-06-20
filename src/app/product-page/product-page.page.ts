@@ -164,10 +164,10 @@ segmentChanged(ev: any) {
   //this.getCartAll();
   this.present();
 
+
   let date: Date = new Date();
 
-   console.log(this.selectedMenuName);
-   console.log(this.user[0].FirstName);
+
 
    this.products[i].ItemCount=this.products[i].ItemCount+1;
    if(this.products[i].Offer){

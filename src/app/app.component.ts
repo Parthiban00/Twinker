@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
@@ -7,6 +7,7 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { Platform } from '@ionic/angular';
 import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Network } from '@ionic-native/network/ngx';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -17,12 +18,12 @@ export class AppComponent {
   locCords: any;
   times: any;
   subscribe: any;
-  constructor(private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
+  constructor(private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
     this.splashScreen.show();
 
 
 
-    this.splashScreen.hide();
+    //this.splashScreen.hide();
    this.locCords = {
     latitude: "",
     longitude: "",
@@ -30,10 +31,29 @@ export class AppComponent {
     timestamp: ""
 
 
+
   }
+
   this.times = Date.now();
+
+
+  // watch network for a disconnection
+this.network.onDisconnect().subscribe(() => {
+  console.log('network was disconnected :-(');
+  this.presentAlertConfirm1();
+});
+
+// watch network for a connection
+ this.network.onConnect().subscribe(() => {
   this.chckAppGpsPermission();
+
+});
+
   }
+
+
+
+
 
   chckAppGpsPermission() {
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.ACCESS_COARSE_LOCATION).then(
@@ -161,6 +181,35 @@ export class AppComponent {
       cssClass: 'my-custom-class',
       header: 'Sorry!',
       message: 'Ooo Nooo! You cannot place orders without turn on location. Kindly Turn On Locaiton (GPS).',
+      buttons: [
+
+       {
+
+          text: 'Okay',
+          handler: () => {
+            console.log('Confirm Okay');
+
+           this.requestToSwitchOnGPS();
+
+          }
+
+
+
+        }
+
+
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async presentAlertConfirm1() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Ooops!',
+      message: 'You are Disconnected. Kinldy turn on Internet on your Device to Continue.',
       buttons: [
 
        {

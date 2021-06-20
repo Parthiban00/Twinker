@@ -394,9 +394,9 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
 
                                 app.patch('/orderdetails/:_id/:RestaurantId/:ActiveYn/:DeleteYn/', (req,res)=>{
 
+console.log('update accepted by delivery partner');
 
-
-                                  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn}, {$set: {Status:req.body.Status,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails}})
+                                  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn,Status:"Ready"}, {$set: {Status:req.body.Status,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails}})
                                    .then((orderdetails)=> res.send(orderdetails))
                                      .catch((error)=>console.log(error));
 
@@ -424,6 +424,18 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                                     .then(orderdetails=>res.send(orderdetails))
                                     .catch((error)=>console.log(error));
                                 });
+
+
+
+
+                                 app.get('/delivery/orderdetails/:ActiveYn/:DeleteYn/:CreatedDate/',(req,res)=>{
+                                   console.log("delivery get filtered orders");
+
+                                   console.log("get all orders from order details 11111");
+                                   OrderDetails.find({ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn,CreatedDate:req.params.CreatedDate})
+                                  .then(orderdetails=>res.send(orderdetails))
+                                  .catch((error)=>console.log(error));
+                               });
 
                               //   app.get('/orderdetails/:ActiveYn/:DeleteYn:/:CreatedDate/:UserId/',(req,res)=>{
 

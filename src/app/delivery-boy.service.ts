@@ -13,4 +13,10 @@ export class DeliveryBoyService {
   GetAcceptedOrders(data:any){
     return this.webService.get(`orderdetails/${data.ActiveYn}/${data.UserId}/${data.DeleteYn}`)
   }
+
+  GetFilteredOrders(data:any){
+    return this.webService.get(`delivery/orderdetails/${data.ActiveYn}/${data.DeleteYn}/${data.CreatedDate}`)
+  }
 }
+
+

@@ -116,11 +116,11 @@
   <div  class="offers color-green" *ngIf="item.AvailableStatus" >Opened</div>
   <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div>
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id)">
-      <ion-thumbnail slot="start">
-        <img src="assets\rest.jpg">
+      <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
+        <img style="border-radius: 2px;" src="assets\rest2.jpg">
       </ion-thumbnail>
       <ion-label>
-        <h4>{{item.RestaurantName}}</h4><img *ngIf="item.Offer" src="assets/offer.png" style="height: 60px;width: 60px;position: absolute;right: 5px;top: 0px;">
+        <h4>{{item.RestaurantName}}</h4><div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
         <p  style="margin-top: -10px;">{{item.RestaurantType}}</p>
         <p  style="margin-top: -10px;">{{item.Address}}</p>
         <hr style="background-color: rgb(236, 138, 45);">

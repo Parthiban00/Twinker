@@ -54,27 +54,11 @@
        <img src="assets/burger1.jpg">
      </ion-card>
    </ion-slide>
-   <ion-slide>
-     <ion-card>
-       <img src="assets/burger1.jpg">
-     </ion-card>
-   </ion-slide>
-   <ion-slide>
-     <ion-card>
-       <img src="assets/burger1.jpg">
-     </ion-card>
-   </ion-slide>
+
 
  </ion-slides>
-<div >
 
-<ion-segment scrollable [(ngModel)]="menu" color="primary" (ionChange)="segmentChanged($event)">
-  <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
-    {{menus.MenuName}}
-  </ion-segment-button>
 
-</ion-segment>
-</div>
 
 </ion-header>
 
@@ -82,44 +66,61 @@
 
 
     <ion-content  >
+      <div class="todays-offers"><p class="title">Today's Trendings...</p>
+        <div *ngFor="let product of products;let i=index">
 
+          <div class="cart-items">
+        <ion-card *ngIf="product.Offer">
+          <div class="offers" *ngIf="product.Offer">
+            -&nbsp;{{product.Offer}}% Off
+            </div>
+          <ion-card-content>
+            <div class="item-img">
+              <img src="assets\chicken_biryani.jpg" />
+            </div>
 
+            <div class="item-info">
+              <p>{{product.ProductName}}</p>
+            <p>{{product.Description}}</p>
+            <div class="price">
+            <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}</p>
+               <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}</p></div>
+            <div class="qty-selector" >
+      <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
+      <ion-label>{{product.ItemCount}}</ion-label>
+      <ion-button fill="clear" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
 
+            </div>
+            <ion-icon  name="heart-outline" size="medium" class="heart"></ion-icon>
 
-<!-- <div class="product">
-  <ion-item lines="none" class="ion-no-padding">
-    <ion-thumbnail>
-      <img src="assets\restaurant_logo.jpg">
-    </ion-thumbnail>
-    <div class="thumb-img">
-      <img src="assets\chicken_biryani.jpg">
-    </div>
-    <div class="product-content">
-      <h6>Chicken Biriyani</h6>
-      <p class="discription">1 full plate with, 1 egg and thalsa</p>
-      <div class="price">
-        <p>Price Rs: 130 </p>
+            </div>
 
+          </ion-card-content>
+          </ion-card>
+          </div>
         </div>
 
-    </div>
-    <div >
-      <ion-row  >
-        <ion-col class="add-cart" >
-       <ion-button fill="clear" >-</ion-button>
-    <ion-label>0</ion-label>
-       <ion-button fill="clear" >+</ion-button>
-     </ion-col>
-      </ion-row>
-    </div>
+      </div>
 
-  </ion-item>
-  </div> -->
+
+<div  class="navbar">
+
+        <ion-segment  scrollable [(ngModel)]="menu" (ionChange)="segmentChanged($event)">
+          <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
+            {{menus.MenuName}}
+          </ion-segment-button>
+
+        </ion-segment>
+
+      </div>
+
 
   <div *ngFor="let product of products;let i=index">
 
     <div class="cart-items">
-  <ion-card *ngIf="product.Offer">
+  <!-- <ion-card *ngIf="product.Offer"> -->
+    <ion-card *ngIf="product.Offer">
+
     <div class="offers" *ngIf="product.Offer">
       -&nbsp;{{product.Offer}}% Off
       </div>
@@ -148,6 +149,8 @@
     </ion-card>
     </div>
   </div>
+
+
 
   <div *ngFor="let product of products;let i=index">
     <div class="cart-items">

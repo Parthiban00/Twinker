@@ -11,11 +11,16 @@ ion-select {
 
 
 .search{
-  position: relative;
+ // position: relative;
   //bottom:-40px;
-  width: 100%;
+  width: 90%;
 
-
+ion-button{
+  position: absolute;
+  right: 0px;
+  //top: 0px;
+  bottom: 55px;
+}
 
 }
 

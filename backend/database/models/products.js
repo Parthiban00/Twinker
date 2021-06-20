@@ -66,6 +66,9 @@ const TaskSchema = new mongoose.Schema({
   },
   OfferPrice:{
     type:Number
+  },
+  OfferDescription:{
+    type:String
   }
 
 

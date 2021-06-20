@@ -12,5 +12,6 @@ export default class Register{
     UserType: string="";
     ActiveYn: Boolean;
     DeleteYn: Boolean;
+    _id:String;
 
 }

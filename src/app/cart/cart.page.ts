@@ -827,7 +827,7 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Ooooh!',
-      message: '<small>We cannot Your Delivery Details. kindly <strong>Click Okay</strong> to Try again...</small>',
+      message: '<small>We cannot fetch your Delivery Details. kindly <strong>Click Okay</strong> to try again...</small>',
       buttons: [
 
        {

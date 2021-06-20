@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
-      Delivery Orders
+      Orders
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="RedirectToHome()">
@@ -13,6 +13,7 @@
           </ion-buttons>
   </ion-toolbar>
   <div >
+
 
     <div class="banner">
       <img src="assets\delivery_banner.png" />
@@ -24,17 +25,23 @@
           <ion-segment-button  value="Delivery">
             Delivery
           </ion-segment-button>
-          <!-- <ion-segment-button  value="Restaurant">
-            Restaurant
-          </ion-segment-button> -->
+
 
 
 
 
         </ion-segment>
       </div>
+
       </div>
 
+      <ion-item>
+        <ion-label>Delivery Partner</ion-label>
+        <ion-select interface="popover"  [(ngModel)]="selectedValue" (ionChange)="onChange(selectedValue)">
+          <ion-select-option *ngFor="let user of deliveryPartners1" value={{user._id}}>{{user.FirstName}}&nbsp;&nbsp;{{user.MobileNo}}</ion-select-option>
+
+        </ion-select>
+     </ion-item>
 
     <ion-segment *ngIf="defaultSegment=='Delivery'" scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
 
@@ -1820,4 +1827,56 @@ Item Details
 
   </div>
 
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
+    <ion-fab-button size="small" >
+      <ion-icon name="filter"></ion-icon>
+    </ion-fab-button>
+     <ion-fab-list side="top">
+      <ion-fab-button><ion-icon name="calendar" (click)="datePicker.open()"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="list" (click)="FilterCancel()"></ion-icon></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  <ion-datetime style="display: none;" #datePicker [max]="today1" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
 </ion-content>
+
+<ion-footer *ngIf="segment=='Completed' && defaultSegment=='Delivery' && default!='Ready'  ">
+  <ion-toolbar color="primary">
+    <!-- <ion-title>4 Items</ion-title> -->
+<ion-row>
+  <ion-col size="3">
+    <ion-text class="title">Orders</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Items</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Amount</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">Date</ion-text>
+  </ion-col>
+
+  </ion-row>
+  <ion-row>
+    <ion-col size="3">
+    <ion-text class="description">{{totalCompletedOrders}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="description">{{totalCompletedItems}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">{{totalCompletedAmount}}.00 </ion-text>
+  </ion-col>
+  <ion-col size="3">
+    <ion-text class="title">{{myDate}}</ion-text>
+  </ion-col>
+  <ion-col size="3">
+
+
+
+  </ion-col>
+  </ion-row>
+
+
+  </ion-toolbar>
+</ion-footer>
