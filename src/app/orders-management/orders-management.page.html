@@ -30,8 +30,11 @@
 
 
 </div>
-<ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
-
+<div class="datepicker-card">
+  <ion-card>
+<ion-label>Date:&nbsp;{{myDate1}}</ion-label><ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
+</ion-card>
+</div>
 
 
     <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
@@ -42,7 +45,7 @@
         Accepted
       </ion-segment-button>
       <ion-segment-button  value="Ready">
-        Ready
+        Delivery Accept
       </ion-segment-button>
       <ion-segment-button  value="Pending">
         Delivery Pending
@@ -108,7 +111,8 @@
           </ion-row>
 
             <mat-action-row style="padding-right: 50px;">
-              <button mat-button color="warn" (click)="prevStep()">Cancel</button>
+              <ion-text  style="position: absolute;margin-top:8px;left: 0; margin-left: 10px;color: crimson;font-size: small;">Delivery:&nbsp;<span>{{orders.DeliveryPartnerStatus}}</span></ion-text>
+              <!-- <button mat-button color="warn" (click)="prevStep()">Cancel</button> -->
               <button mat-button color="primary" (click)="nextStep(orders._id,orders.RestaurantId)">Accept</button>
             </mat-action-row>
           </mat-expansion-panel>
@@ -163,7 +167,8 @@
                   </ion-row>
 
                     <mat-action-row style="padding-right: 50px;">
-                      <button mat-button color="warn" (click)="prevStep()">Cancel</button>
+                      <ion-text  style="position: absolute;margin-top:8px;left: 0; margin-left: 10px;color: crimson;font-size: small;">Delivery:&nbsp;<span>{{orders.DeliveryPartnerStatus}}</span></ion-text>
+                      <!-- <button mat-button color="warn" (click)="prevStep()">Cancel</button> -->
                       <button mat-button color="primary" (click)="Ready(orders._id,orders.RestaurantId)">Ready</button>
                     </mat-action-row>
                   </mat-expansion-panel>
@@ -174,7 +179,7 @@
 
           <div *ngIf="default=='Ready'">
             <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
-              <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Ready'">
+              <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Ready' && orders.DeliveryPartnerStatus=='Placed by Customer' ">
 
                   <mat-expansion-panel hideToggle>
                       <mat-expansion-panel-header>
@@ -217,8 +222,7 @@
                       </ion-row>
 
                       <mat-action-row style="align-content: center;padding-right: 50px;">
-                        <!-- <button mat-button color="warn" (click)="prevStep()">Cancel</button>
-                        <button mat-button color="primary" (click)="Handled(orders._id,orders.RestaurantId)">Handled</button> -->
+
                         <p style="color: red;" >Waiting for Delivery Partner Accept</p>
 
                       </mat-action-row>
@@ -229,7 +233,7 @@
           </div>
           <div *ngIf="default=='Pending'">
             <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
-              <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Accepted by Delivery Partner'">
+              <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Ready' && orders.DeliveryPartnerStatus=='Accepted by Delivery Partner'">
 
                   <mat-expansion-panel hideToggle>
                       <mat-expansion-panel-header>
@@ -350,7 +354,7 @@
 </ion-content>
 
 
-<ion-footer   >
+<ion-footer   *ngIf="default=='Completed'">
   <ion-toolbar color="primary">
     <!-- <ion-title>4 Items</ion-title> -->
 <ion-row>
@@ -360,11 +364,11 @@
   <ion-col size="3">
     <ion-text class="title">Items</ion-text>
   </ion-col>
+  <!-- <ion-col size="3">
+    <ion-text class="title">Amount</ion-text>
+  </ion-col> -->
   <ion-col size="3">
     <ion-text class="title">Amount</ion-text>
-  </ion-col>
-  <ion-col size="3">
-    <ion-text class="title">Date</ion-text>
   </ion-col>
 
   </ion-row>
@@ -375,17 +379,13 @@
   <ion-col size="3">
     <ion-text class="description">{{totalCompletedItems}}</ion-text>
   </ion-col>
+  <!-- <ion-col size="3">
+    <ion-text class="title">{{toPay}}.00 </ion-text>
+  </ion-col> -->
   <ion-col size="3">
-    <ion-text class="title">{{totalCompletedAmount}} </ion-text>
+    <ion-text class="title">{{toPay}}.00</ion-text>
   </ion-col>
-  <ion-col size="3">
-    <ion-text class="title">{{myDate}}</ion-text>
-  </ion-col>
-  <ion-col size="3">
 
-
-
-  </ion-col>
   </ion-row>
 
 

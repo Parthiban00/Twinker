@@ -42,6 +42,7 @@ export class OrdersAdminPage implements OnInit {
 totalCompletedItems=0;
 totalCompletedOrders=0;
 totalCompletedAmount=0;
+toPay=0;
 panelOpenState = false;
   filterOrders:Orders[]=[];
 totalAmount=0;
@@ -344,7 +345,7 @@ this.totalItems=this.totalItems+1;
   }
 
   GetDate(){
-
+    if(this.myDate!="All"){
 
     this.present();
 
@@ -379,7 +380,10 @@ this.dismiss();
 });
 
   }
-
+  }
+ else{
+   this.dismiss();
+ }
   }
 
   async presentActionSheet() {
@@ -406,7 +410,7 @@ this.dismiss();
   }
 
 FilterCancel(){
-  //this.myDate="All";
+  this.myDate="All";
   this.onChange(this.selectRestaurants);
 }
 
@@ -424,6 +428,7 @@ this.totalCompletedItems=this.totalCompletedItems+1;
     }
   }
   }
+  this.toPay=this.totalCompletedAmount-(10*this.totalCompletedItems);
   console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
 }
 async presentAlertConfirm() {

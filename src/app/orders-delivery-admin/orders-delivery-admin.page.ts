@@ -286,7 +286,7 @@ console.log("dfasfas"+ segment);
     this.totalCompletedItems=0;
     this.totalCompletedAmount=0;
     for(var p=0;p<this.orderDetails.length;p++){
-      if(this.orderDetails[p].Status==segment && this.orderDetails[p].DeliveryPartnerDetails.UserId==this.currentUserId){
+      if(this.orderDetails[p].DeliveryPartnerStatus==segment && this.orderDetails[p].DeliveryPartnerDetails.UserId==this.currentUserId){
       this.totalCompletedOrders=this.totalCompletedOrders+1;
       this.totalCompletedAmount+=this.orderDetails[p].ItemTotal;
       for(var q=0;q<this.orderDetails[p].ItemDetails.length;q++){

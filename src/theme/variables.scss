@@ -244,8 +244,9 @@
 // @import "roboto";
 // @import "noto-sans";
 
-@import url(https://fonts.googleapis.com/css2?family=Crimson+Pro);
-$font-family-base:'Crimson Text',serif !default;
-$font-family-ios-base:'Crimson Text';
-$font-family-md-base:'Crimson Text';
-$font-famil-wp-base:'Crimson Text';
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Saira+Condensed:wght@400;500&family=Ubuntu:wght@300;400&display=swap');
+$font-family:'Saira Condensed', sans-serif !default;
+$font-family-ios:'NSaira Condensed';
+$font-family-md:'Saira Condensed';
+$font-family-wp:'Saira Condensed';

@@ -325,7 +325,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                             app.post('/orderdetails',(req,res)=>{
 
 
-                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails}))
+                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus}))
                                 .save()
                                 .then((orderdetails)=> res.send(orderdetails))
                                 .catch((error)=>console.log(error));
@@ -395,10 +395,19 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
                                 app.patch('/orderdetails/:_id/:RestaurantId/:ActiveYn/:DeleteYn/', (req,res)=>{
 
 console.log('update accepted by delivery partner');
+if(req.body.DeliveryPartnerStatus=='Completed'){
+  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn,DeliveryPartnerStatus:req.body.PreviousStatus}, {$set: {DeliveryPartnerStatus:req.body.DeliveryPartnerStatus,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails,Status:'Completed'}})
+  .then((orderdetails)=> res.send(orderdetails))
+    .catch((error)=>console.log(error));
 
-                                  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn,Status:"Ready"}, {$set: {Status:req.body.Status,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails}})
-                                   .then((orderdetails)=> res.send(orderdetails))
-                                     .catch((error)=>console.log(error));
+}
+else{
+  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id,ActiveYn:req.params.ActiveYn,DeleteYn:req.params.DeleteYn,DeliveryPartnerStatus:req.body.PreviousStatus}, {$set: {DeliveryPartnerStatus:req.body.DeliveryPartnerStatus,DeliveryPartnerDetails:req.body.DeliveryPartnerDetails}})
+  .then((orderdetails)=> res.send(orderdetails))
+    .catch((error)=>console.log(error));
+}
+
+
 
                                     }),
 

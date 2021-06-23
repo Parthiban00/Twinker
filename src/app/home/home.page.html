@@ -16,8 +16,8 @@
   <div class="banner">
     <img src="assets\orange_banner2.jpg" />
     <div class="caption ion-padding">
-      Welcome to Twinker <br>
-     <i> let we serve, what you need</i>
+      Find your Favourite...<br>
+     <i> Restaurants | Hotels | Home Mades </i>
     </div>
 
 
@@ -119,12 +119,12 @@
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
         <img style="border-radius: 2px;" src="assets\rest2.jpg">
       </ion-thumbnail>
-      <ion-label>
-        <h4>{{item.RestaurantName}}</h4><div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
-        <p  style="margin-top: -10px;">{{item.RestaurantType}}</p>
-        <p  style="margin-top: -10px;">{{item.Address}}</p>
-        <hr style="background-color: rgb(236, 138, 45);">
-        <p style="font-size: 12px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
+      <ion-label class="hotel-card">
+        <h4 style="font-weight: 500;">{{item.RestaurantName}}</h4><div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
+        <p  style="margin-top: -15px;font-weight: 400;">{{item.RestaurantType}}</p>
+        <p  style="margin-top: -15px;font-weight: 400;">{{item.Address}}</p>
+        <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+        <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
       </ion-label>
     </ion-item>
 

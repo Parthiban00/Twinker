@@ -102,36 +102,68 @@ this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
 })
   }
 
-  Accepted(id:any,restaurantId:any) {
+//   Accepted(id:any,restaurantId:any) {
 
-this.present();
-//this.myDate=this..substring(0,10);
-    //this.step++;
-var acceptedOrders={
-  _id:id,
-  Status:'Accepted by Delivery Partner',
-  RestaurantId:restaurantId,
-  DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id},
-  ModifiedBy:this.user[0],
-  ModifiedDate: this.myDate.substring(0,10),
-  ActiveYn:true,
-  DeleteYn:false
-}
-console.log("delivery partner details  "+this.user[0]);
+// this.present();
 
-  this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
-this.dismiss();
-console.log("result   "+res);
-if(res==null || res==undefined){
-  this.presentAlertConfirm1();
-}
-this.GetOrderDetails();
+// var acceptedOrders={
+//   _id:id,
+//   Status:'Accepted by Delivery Partner',
+//   RestaurantId:restaurantId,
+//   DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id},
+//   ModifiedBy:this.user[0],
+//   ModifiedDate: this.myDate.substring(0,10),
+//   ActiveYn:true,
+//   DeleteYn:false,
+//   PreviousStatus:'Ready'
+// }
+// console.log("delivery partner details  "+this.user[0]);
 
-  },err=>{
-    this.dismiss();
-    console.log("error "+err)
-  },()=>console.log("proecss completed"))
+//   this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
+// this.dismiss();
+// console.log("result   "+res);
+// if(res==null || res==undefined){
+//   this.presentAlertConfirm1();
+// }
+// this.GetOrderDetails();
+
+//   },err=>{
+//     this.dismiss();
+//     console.log("error "+err)
+//   },()=>console.log("proecss completed"))
+//   }
+
+
+Accepted(id:any,restaurantId:any) {
+
+  this.present();
+
+  var acceptedOrders={
+    _id:id,
+    DeliveryPartnerStatus:'Accepted by Delivery Partner',
+    RestaurantId:restaurantId,
+    DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id},
+    ModifiedBy:this.user[0],
+    ModifiedDate: this.myDate.substring(0,10),
+    ActiveYn:true,
+    DeleteYn:false,
+    PreviousStatus:'Placed by Customer'
   }
+  console.log("delivery partner details  "+this.user[0]);
+
+    this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
+  this.dismiss();
+  console.log("result   "+res);
+  if(res==null || res==undefined){
+    this.presentAlertConfirm1();
+  }
+  this.GetOrderDetails();
+
+    },err=>{
+      this.dismiss();
+      console.log("error "+err)
+    },()=>console.log("proecss completed"))
+    }
 
 
 
@@ -140,13 +172,14 @@ this.GetOrderDetails();
     //this.step++;
 var acceptedOrders={
   _id:id,
-  Status:'Completed',
+  DeliveryPartnerStatus:'Completed',
   RestaurantId:restaurantId,
   DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id},
   ModifiedBy:this.user[0],
   ModifiedDate:this.today,
   ActiveYn:true,
-  DeleteYn:false
+  DeleteYn:false,
+  PreviousStatus:'Accepted by Delivery Partner'
 }
 
 this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
@@ -289,7 +322,7 @@ console.log("dfasfas"+ segment);
     this.totalCompletedItems=0;
     this.totalCompletedAmount=0;
     for(var p=0;p<this.orderDetails.length;p++){
-      if(this.orderDetails[p].Status==segment && this.orderDetails[p].DeliveryPartnerDetails.UserId==this.currentUserId){
+      if(this.orderDetails[p].DeliveryPartnerStatus==segment && this.orderDetails[p].DeliveryPartnerDetails.UserId==this.currentUserId){
       this.totalCompletedOrders=this.totalCompletedOrders+1;
       this.totalCompletedAmount+=this.orderDetails[p].ItemTotal;
       for(var q=0;q<this.orderDetails[p].ItemDetails.length;q++){

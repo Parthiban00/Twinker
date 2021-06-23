@@ -487,7 +487,8 @@ var today1 = yyyy + '-' + mm + '-' + dd;
      ItemCount:this.cartItemsAll.length,
      MobileNo:this.user[0].MobileNo,
      Address:this.selectedLocation,
-     ItemDetails:this.placeOrderArr
+     ItemDetails:this.placeOrderArr,
+     DeliveryPartnerStatus:"Placed by Customer"
 
    }
 
@@ -529,7 +530,7 @@ this.present();
     var d = R * c;
 console.log("distance d "+ d);
     this.distanceKm=d;
-    if(this.distanceKm>2){
+    if(this.distanceKm>=3){
 
       console.log("distance d  >2"+ d);
             this.deliveryPartnerFee=(this.distanceKm*8);
@@ -540,7 +541,7 @@ this.totalAmount1=this.totalAmount.toFixed(2);
 this.dismiss();
 
           }
-           else if(this.distanceKm<=2){
+           else if(this.distanceKm<3){
 
 
             this.deliveryPartnerFee=20;

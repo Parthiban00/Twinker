@@ -72,67 +72,70 @@ export class ProductPagePage implements OnInit {
   }
 
   ngOnInit(): void {
+
+
+
+
+  }
+  ionViewWillEnter(){
     this.present();
 
-this.products.length=0;
+    this.products.length=0;
 
-    this.getCartAll();
+        this.getCartAll();
 
-    var getCart={
-      UserId:this.user[0]._id,
-      Status:"Cart",
-      ActiveYn:true,
-      DeleteYn:false
-    }
-    this.cartService.GetCartAll(getCart).subscribe((res)=>{
-      this.cartItemsAll=res as Cart[];
-      console.log(this.cartItemsAll);
-
-      for(var i=0;i<this.cartItemsAll.length;i++){
-       this.itemTotal+=this.cartItemsAll[i].Amount;
-        this.restaurantName=this.cartItemsAll[i].RestaurantName;
+        var getCart={
+          UserId:this.user[0]._id,
+          Status:"Cart",
+          ActiveYn:true,
+          DeleteYn:false
         }
+        this.cartService.GetCartAll(getCart).subscribe((res)=>{
+          this.cartItemsAll=res as Cart[];
+          console.log(this.cartItemsAll);
+
+          for(var i=0;i<this.cartItemsAll.length;i++){
+           this.itemTotal+=this.cartItemsAll[i].Amount;
+            this.restaurantName=this.cartItemsAll[i].RestaurantName;
+            }
+        })
+
+
+        this.whichRestaurant=this.activateRoute.snapshot.params.name;
+        this.restaurantId=this.activateRoute.snapshot.params.restId;
+        console.log(this.activateRoute.snapshot.params);
+        console.log(localStorage.getItem('currentUser'));
+
+      this.mainMenuService.GetMainMenu(this.restaurantId).subscribe((res)=>{
+    this.mainMenu = res as MainMenu[];
+    console.log(this.mainMenu);
+
+    this.menu=this.mainMenu[0]._id;
+
+    this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
+    this.productDetails=res as Product[];
+    console.log(this.productDetails);
+
+    for(var i=0;i<this.productDetails.length;i++){
+
+      if(this.mainMenu[0]._id==this.productDetails[i].MenuId){
+        this.products.push(this.productDetails[i]);
+      }
+    }
+
+
+
+
+
+
+
+
     })
-
-
-    this.whichRestaurant=this.activateRoute.snapshot.params.name;
-    this.restaurantId=this.activateRoute.snapshot.params.restId;
-    console.log(this.activateRoute.snapshot.params);
-    console.log(localStorage.getItem('currentUser'));
-
-  this.mainMenuService.GetMainMenu(this.restaurantId).subscribe((res)=>{
-this.mainMenu = res as MainMenu[];
-console.log(this.mainMenu);
-
-this.menu=this.mainMenu[0]._id;
-
-this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
-this.productDetails=res as Product[];
-console.log(this.productDetails);
-
-for(var i=0;i<this.productDetails.length;i++){
-
-  if(this.mainMenu[0]._id==this.productDetails[i].MenuId){
-    this.products.push(this.productDetails[i]);
-  }
-}
+    this.dismiss();
 
 
 
-
-
-
-
-
-})
-this.dismiss();
-
-
-
-  });
-
-
-
+      });
   }
 
 
@@ -409,7 +412,7 @@ ViewCart(){
 
  doRefresh(event) {
   //console.log('Begin async operation');
-this.ngOnInit();
+this.ionViewWillEnter();
   setTimeout(() => {
     console.log('Async operation has ended');
     event.target.complete();

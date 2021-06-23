@@ -46,7 +46,7 @@
     <ion-segment *ngIf="defaultSegment=='Delivery'" scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
 
       <ion-segment-button  value="Ready">
-        Ready
+        Orders
       </ion-segment-button>
       <ion-segment-button  value="Accepted">
         Accepted
@@ -84,7 +84,7 @@
 </ion-refresher>
 <div *ngIf="default=='Ready' && defaultSegment=='Delivery'">
   <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
-    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Ready'">
+    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer'">
 
         <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
@@ -458,7 +458,7 @@ Item Details
           </div> -->
 
             <mat-action-row>
-
+              <ion-text  style="position: absolute;left: 0; margin-left: 10px;color: crimson;">Restaurant:&nbsp;<span>{{orders.Status}}</span></ion-text>
               <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId)" >Accept</button>
             </mat-action-row>
           </mat-expansion-panel>
@@ -469,7 +469,7 @@ Item Details
 
   <div *ngIf="default=='Accepted' && defaultSegment=='Delivery'">
     <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
-      <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Accepted by Delivery Partner' && orders.DeliveryPartnerDetails.UserId==currentUserId">
+      <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Accepted by Delivery Partner' && orders.DeliveryPartnerDetails.UserId==currentUserId">
 
           <mat-expansion-panel hideToggle>
               <mat-expansion-panel-header>
@@ -839,7 +839,7 @@ Item Details
             </div> -->
 
               <mat-action-row>
-
+                <ion-text  style="position: absolute;left: 0; margin-left: 10px;color: crimson;">Restaurant:&nbsp;<span>{{orders.Status}}</span></ion-text>
                 <button mat-button color="primary" (click)="Delivered(orders._id,orders.RestaurantId)" >Delivered</button>
               </mat-action-row>
             </mat-expansion-panel>
@@ -853,7 +853,7 @@ Item Details
 
   <div *ngIf="default=='Completed' && defaultSegment=='Delivery'">
     <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
-      <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Completed'  && orders.DeliveryPartnerDetails.UserId==currentUserId">
+      <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Completed'  && orders.DeliveryPartnerDetails.UserId==currentUserId">
 
           <mat-expansion-panel hideToggle>
               <mat-expansion-panel-header>
@@ -1104,6 +1104,7 @@ Item Details
               <mat-action-row>
 
                 <!-- <button mat-button color="primary" >Delivered</button> -->
+                <ion-text  style="position: absolute; left: 0; margin-left: 10px;color: crimson;">Restaurant:&nbsp;<span>{{orders.Status}}</span></ion-text>
                 <p style="color:seagreen;">Delivered Successfully...</p>
               </mat-action-row>
             </mat-expansion-panel>

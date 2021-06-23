@@ -41,14 +41,15 @@ export class OrdersManagementPage implements OnInit {
   totalCompletedItems=0;
   totalCompletedOrders=0;
   totalCompletedAmount=0;
-
+  toPay=0;
     filterOrders:Orders[]=[];
   totalAmount=0;
   totalItems=0;
   totalOrders=0;
   currentSegment;
   today;
-  myDate="All";
+  myDate:any;
+  myDate1="All";
   searchedItem: any;
   searchHotel:any;
   user:any;
@@ -335,8 +336,8 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
   }
 
   GetDate(){
-
-
+this.myDate1=this.myDate;
+    if(this.myDate1!="All"){
     this.present();
     if(this.selectedValue=="" || this.selectedValue==undefined || this.selectedValue==null){
       this.dismiss();
@@ -346,12 +347,12 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
 
 
     console.log("selected restaurant "+this.selectedValue);
-    this.myDate=this.myDate.substring(0,10);
+    this.myDate1=this.myDate.substring(0,10);
 
 
 var filterOrders={
 
-  CreatedDate:this.myDate,
+  CreatedDate:this.myDate1,
   RestaurantId:this.selectedValue,
   ActiveYn:true,
   DeleteYn:false
@@ -369,6 +370,10 @@ this.dismiss();
 });
 
       }
+    }
+    else{
+this.dismiss();
+    }
 
   }
 
@@ -377,6 +382,7 @@ this.dismiss();
     this.totalCompletedOrders=0;
     this.totalCompletedItems=0;
     this.totalCompletedAmount=0;
+    this.toPay=0;
     for(var p=0;p<this.searchedItem.length;p++){
       if(this.searchedItem[p].Status==segment){
       this.totalCompletedOrders=this.totalCompletedOrders+1;
@@ -386,11 +392,12 @@ this.dismiss();
       }
     }
     }
+    this.toPay=this.totalCompletedAmount-(10*this.totalCompletedItems);
     console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
   }
 
   FilterCancel(){
-    //this.myDate="All";
+    this.myDate1="All";
     this.onChange(this.selectRestaurants);
   }
 

@@ -92,7 +92,11 @@ type:Array
     },
     CreatedDate:{
         type:String
+    },
+    DeliveryPartnerStatus:{
+      type:String
     }
+
 
 
 });

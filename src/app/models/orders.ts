@@ -29,6 +29,7 @@ export default class Orders{
       UserId:String;
 
     };
+    DeliveryPartnerStatus:String;
 
  }
 

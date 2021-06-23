@@ -8,6 +8,7 @@ import { Platform } from '@ionic/angular';
 import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -35,17 +36,18 @@ export class AppComponent {
   }
 
   this.times = Date.now();
+  this.chckAppGpsPermission();
 
 
-  // watch network for a disconnection
 this.network.onDisconnect().subscribe(() => {
   console.log('network was disconnected :-(');
-  this.presentAlertConfirm1();
+  this.presentToast();
+
 });
 
-// watch network for a connection
+
  this.network.onConnect().subscribe(() => {
-  this.chckAppGpsPermission();
+
 
 });
 
@@ -165,11 +167,11 @@ this.network.onDisconnect().subscribe(() => {
     this.router.navigate(['login']);
    }
 
-   async presentToast(message,color){
+   async presentToast(){
     const toast=await this.toastCtrl.create({
-      message:message,
-      color:color,
-      duration:1000,
+      message:'Your are disconnected...',
+
+      duration:5000,
       position:"middle",
     });
     toast.present();
@@ -218,7 +220,7 @@ this.network.onDisconnect().subscribe(() => {
           handler: () => {
             console.log('Confirm Okay');
 
-           this.requestToSwitchOnGPS();
+          // this.requestToSwitchOnGPS();
 
           }
 
@@ -232,5 +234,7 @@ this.network.onDisconnect().subscribe(() => {
 
     await alert.present();
   }
+
+
 
 }
