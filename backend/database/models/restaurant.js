@@ -1,3 +1,4 @@
+const { DH_NOT_SUITABLE_GENERATOR } = require('constants');
 const mongoose = require('mongoose');
 const TaskSchema = new mongoose.Schema({
 
@@ -82,6 +83,16 @@ const TaskSchema = new mongoose.Schema({
     },
     OfferDescription:{
       type:String
+    },
+    Latitude:{
+      type:Number
+    },
+
+    Longitude:{
+      type:Number
+    },
+    Sort:{
+      type:Number
     }
 
 

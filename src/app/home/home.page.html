@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
-      Restaurants
+      Foods
     </ion-title>
     <ion-buttons slot="end">
 <ion-button (click)="RedirectToHome()">
@@ -27,8 +27,9 @@
 
       <!-- </ion-item > -->
     </div>
-      </div>
 
+      </div>
+<div class="ad-slides">
       <ion-slides [options]="option" class="ion-margin-top">
          <ion-slide>
            <ion-card>
@@ -57,6 +58,15 @@
         </ion-slide>
 
       </ion-slides>
+
+
+
+      </div>
+<div class="veg">
+
+  <ion-label>Veg Only</ion-label>
+      <ion-toggle class="veg-only" color="secondary" [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)"></ion-toggle>
+    </div>
 </ion-header>
 
 
@@ -68,44 +78,6 @@
     <ion-refresher-content>
 </ion-refresher-content>
 </ion-refresher>
-
-
-  <!-- <ion-card *ngFor="let item of searchedItem">
-    <ion-item >
-      <ion-thumbnail slot="start">
-        <img src="assets\restaurant_logo.jpg">
-      </ion-thumbnail>
-      <ion-label>
-        <h4>{{item.RestaurantName}}</h4>
-        <p  style="margin-top: -10px;">{{item.RestaurantType}}</p>
-        <p  style="margin-top: -10px;">{{item.Address}}</p>
-        <hr style="background-color: rgb(236, 138, 45);">
-        <p style="font-size: 12px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
-      </ion-label>
-    </ion-item>
-
-  </ion-card> -->
-<!--
-<div class="ion-list">
-  <ion-list style="margin-top: -10px;" lines="none" *ngFor="let restaurants of restaurantDetails;let i=index">
-
-<ion-card>
-    <ion-item (click)="RestaurntClick(restaurants.RestaurantName,restaurants._id)">
-      <ion-thumbnail slot="start">
-        <img src="assets\restaurant_logo.jpg">
-      </ion-thumbnail>
-      <ion-label>
-        <h4>{{restaurants.RestaurantName}}</h4>
-        <p  style="margin-top: -10px;">{{restaurants.RestaurantType}}</p>
-        <p  style="margin-top: -10px;">{{restaurants.Address}}</p>
-        <hr style="background-color: rgb(236, 138, 45);">
-        <p style="font-size: 12px;">Taste: 4.5 | Rating: 4.5 | {{restaurants.Distance}} km | 20-35 mins </p>
-      </ion-label>
-    </ion-item>
-
-  </ion-card>
-    </ion-list>
-    </div> -->
 
 
 <div class="ion-list">
@@ -121,8 +93,8 @@
       </ion-thumbnail>
       <ion-label class="hotel-card">
         <h4 style="font-weight: 500;">{{item.RestaurantName}}</h4><div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
-        <p  style="margin-top: -15px;font-weight: 400;">{{item.RestaurantType}}</p>
-        <p  style="margin-top: -15px;font-weight: 400;">{{item.Address}}</p>
+        <p  style="margin-top: -15px;font-size: small;">{{item.RestaurantType}}</p>
+        <p  style="margin-top: -15px;font-size: small;">{{item.Address}}</p>
         <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
         <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
       </ion-label>

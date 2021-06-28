@@ -25,7 +25,7 @@ getData:any;
   currentRate:number=3;
   isLoading = false;
 restaurantDetails:Restaurant[]=[];
-
+isToggle:boolean;
 
 
 cartItemsAll:Cart[]=[];
@@ -244,6 +244,45 @@ this.searchHotel="";
     spaceBetween:20,
     autoplay:true,
   }
+
+
+ToggleEvent(event:any){
+
+  this.searchedItem=[]
+  this.list=[];
+  var k;
+  console.log("event "+event);
+  console.log("istoggle "+this.isToggle);
+  if(this.isToggle==true){
+   // this.present();
+
+
+    for(var j=0;j<this.restaurantDetails.length;j++){
+
+if(this.restaurantDetails[j].RestaurantType=='Veg'){
+  this.list.push(this.restaurantDetails[j]);
+
+k=j;
+
+ // this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
+
+
+}
+
+
+
+
+              }
+              this.searchedItem=this.list;
+             // this.dismiss();
+
+  }
+  else {
+
+    this.ionViewWillEnter();
+
+  }
+}
 
 }
 

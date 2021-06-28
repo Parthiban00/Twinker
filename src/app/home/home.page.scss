@@ -6,13 +6,13 @@ ion-header{
   }
   img{
     width: 100%;
-    height: 100px;
+    height: 70px;
   }
   .caption{
     position: absolute;
     width: 100%;
-    bottom:40px;
-    font-size: 16px;
+    bottom:20px;
+    font-size: 12px;
     color: white;
     padding-left: 26px;
     padding-right: 26px;
@@ -29,6 +29,7 @@ ion-header{
    // height: fit-content;
     //border-radius: 10px;
    // box-shadow:0px 2px 5px 2px rgb(83, 83, 83);
+
 }
 
 ion-slides{
@@ -37,14 +38,14 @@ ion-slides{
 
     ion-card{
       width:250px;
-      height: 130px;
+      height: 100px;
       box-shadow: none;
       border-radius: 2px;
 
 
       img{
         object-fit: cover;
-        width: 100%;
+        width: 250px;
         height: 130px;
         transform:scale(1.1,1.1) rotate(1deg);
         transition: 600ms all ease-in-out;
@@ -83,7 +84,7 @@ ion-content{
     }
 
 .ion-list{
-  margin-top: 5px;
+  margin-top: 10px;
 
   .ion-card{
     //position: relative;
@@ -182,4 +183,48 @@ padding-left: 5px;
 align-items: center;
 justify-content: center;
   }
+
+ .ad-slides{
+ background-color: rgb(255, 255, 255);
+ margin-top: -22px;
+ }
+
+ .ion-margin-top{
+
+   padding-top: 25px;
+ }
+
+.veg{
+position: relative;
+align-content: center;
+background-color: white;
+  height: 40px;
+
+
+ion-label{
+  position: absolute;
+  right: 55px;
+  top: 8px;
+  font-size: 12px;
+  color: rgb(151, 151, 151);
+}
+ion-toggle{
+  position: absolute;
+  right: 0;
+  height: 10px;
+  width: 30px;
+  --border-radius:0px;
+
+  --handle-height: 13px;
+  --handle-border-radius:0px;
+  --handle-width:13px;
+
+}
+}
+
+
+
+
+
+
 

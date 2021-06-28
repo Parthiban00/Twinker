@@ -15,4 +15,7 @@ export default class Product{
      Amount:number=0;
      Offer:number=0;
      OfferPrice:number=0;
+     Commission:number;
+     Sort:number;
+     OfferDescription:string
  }

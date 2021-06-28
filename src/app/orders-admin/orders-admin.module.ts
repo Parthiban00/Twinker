@@ -8,7 +8,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { OrdersAdminPageRoutingModule } from './orders-admin-routing.module';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { OrdersAdminPage } from './orders-admin.page';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
+import {MatInputModule} from '@angular/material/input';
 
 
 import { MatNativeDateModule } from '@angular/material/core';
@@ -22,7 +25,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatExpansionModule,
     MatButtonModule,
     MatIconModule,
-
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
 
   ],
   providers:[],

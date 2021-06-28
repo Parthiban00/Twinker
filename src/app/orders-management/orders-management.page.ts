@@ -6,6 +6,8 @@ import {OwnersService} from 'src/app/owners.service';
 import {Router} from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
 
 export interface PeriodicElement {
   itemName: string;
@@ -13,6 +15,8 @@ export interface PeriodicElement {
   quantity: number;
   amount: string;
 }
+
+
 
 const ELEMENT_DATA: PeriodicElement[] = [
   {position: 1, itemName: 'Hydrogen', quantity: 1.0079, amount: 'H'},
@@ -30,6 +34,12 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 
 export class OrdersManagementPage implements OnInit {
+
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
+  });
 
   public today1: Date = new Date();
   public currentYear: number = this.today1.getFullYear();
@@ -73,7 +83,8 @@ export class OrdersManagementPage implements OnInit {
 
   }
   ionViewWillEnter(){
-
+    this.myDate1="All";
+    this.myDate;
     //this.present();
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     //console.log(this.user[0]._id)
@@ -335,45 +346,57 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
 
   }
 
-  GetDate(){
-this.myDate1=this.myDate;
+  GetDate(event:any){
+
+
+    const stringified = JSON.stringify(event.value);
+   this.myDate= stringified.substring(1, 11);
+
+ //this.myDate=this.myDate.substring(0,10);
+
+ var date=this.myDate.split("-");
+ var yyyy=date[0];
+ var mm=date[1];
+ var dd=parseInt(date[2])+1;
+ this.myDate1=yyyy+'-'+mm+'-'+dd;
+
     if(this.myDate1!="All"){
-    this.present();
-    if(this.selectedValue=="" || this.selectedValue==undefined || this.selectedValue==null){
-      this.dismiss();
-          }
-      else{
-    this.searchedItem=[];
+     this.present();
+     if(this.selectedValue=="" || this.selectedValue==undefined || this.selectedValue==null){
+       this.dismiss();
+           }
+       else{
+     this.searchedItem=[];
 
 
-    console.log("selected restaurant "+this.selectedValue);
-    this.myDate1=this.myDate.substring(0,10);
+     console.log("selected restaurant "+this.selectedValue);
+    // this.myDate1=this.myDate.substring(0,10);
+    // console.log("mydate 1 " +this.myDate1);
 
 
-var filterOrders={
-
-  CreatedDate:this.myDate1,
-  RestaurantId:this.selectedValue,
-  ActiveYn:true,
-  DeleteYn:false
-}
-
-
-this.ordersService.GetFilteredOders(filterOrders).subscribe((res)=>{
+ var filterOrders={
+   CreatedDate:this.myDate1,
+   RestaurantId:this.selectedValue,
+   ActiveYn:true,
+   DeleteYn:false
+ }
 
 
-  this.orderDetails=res as Orders[];
-console.log("filtered orders "+this.filterOrders[0]);
-this.searchedItem=res as Orders[];
-this.CompletedOrders(this.currentSegment);
-this.dismiss();
-});
+ this.ordersService.GetFilteredOders(filterOrders).subscribe((res)=>{
 
-      }
-    }
-    else{
-this.dismiss();
-    }
+
+   this.orderDetails=res as Orders[];
+ console.log("filtered orders "+this.filterOrders[0]);
+ this.searchedItem=res as Orders[];
+ this.CompletedOrders(this.currentSegment);
+ this.dismiss();
+ });
+
+       }
+     }
+     else{
+ this.dismiss();
+     }
 
   }
 
@@ -429,6 +452,8 @@ this.dismiss();
 
     await alert.present();
   }
+
+
 
 }
 

@@ -11,7 +11,13 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { OrdersDeliveryPartnerPageRoutingModule } from './orders-delivery-partner-routing.module';
 
 import { OrdersDeliveryPartnerPage } from './orders-delivery-partner.page';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
+import {MatInputModule} from '@angular/material/input';
+
+
+import { MatNativeDateModule } from '@angular/material/core';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +28,11 @@ import { OrdersDeliveryPartnerPage } from './orders-delivery-partner.page';
     MatExpansionModule,
     MatButtonToggleModule,
     NgbModule,
-    OrdersDeliveryPartnerPageRoutingModule
+    OrdersDeliveryPartnerPageRoutingModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule
   ],
   declarations: [OrdersDeliveryPartnerPage]
 })

@@ -15,7 +15,7 @@
   </ion-buttons>
 </ion-toolbar>
 
-<ion-item lines="none" >
+<ion-item class="profile" lines="none" >
   <ion-avatar slot="start">
     <img src="assets/user.png">
   </ion-avatar>
@@ -39,7 +39,7 @@
 <ion-content >
 <div class="slides ion-margin-bottom">
   <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
-    <ion-slide style="padding:0px;width: fit-content;" (click)="RestaurantPage()">
+    <ion-slide style="padding:0px;width: fit-content;"  (click)="RestaurantPage()">
 
       <ion-card >
         <ion-card-header>
@@ -52,8 +52,9 @@
         </ion-card-header>
         <ion-card-content class="ion-text-left">
 
-          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Restaurants</ion-card-title>
-          <ion-card-subtitle style="font-size: 12px;">Delivery | Pickup | Dinein</ion-card-subtitle>
+          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Foods</ion-card-title>
+          <ion-card-subtitle style="font-size: 12px;">Restaurants | Hotels | &nbsp;&nbsp;</ion-card-subtitle>
+          <ion-card-subtitle  style="font-size: 12px;"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  HomeMade</ion-card-subtitle>
         </ion-card-content>
       </ion-card>
 
@@ -166,7 +167,7 @@
             <h4>
               {{orders.RestaurantName}}
             </h4>
-<h6 style="margin-top: -18px;">{{orders._id.substr(orders._id.length - 3)}} | {{orders.ItemCount}} Items | Rs.{{orders.TotalAmount.toFixed(2)}}</h6>
+<h6 style="margin-top: -18px;">ORD-{{orders._id.substr(orders._id.length - 3)}} | {{orders.ItemCount}} Items | Rs.{{orders.TotalAmount.toFixed(2)}}</h6>
 <h6 style="margin-top: -18px;">Restaurant</h6>
 </ion-label>
         </ion-col>
@@ -181,12 +182,12 @@
 
       </ion-row>
       <ion-row >
-       <h4 *ngIf="orders.Status!='Accepted by Delivery Partner'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.Status}}</i></span></h4>
-       <h4 *ngIf="orders.Status=='Accepted by Delivery Partner'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>Be Ready... [On the Way]</i></span></h4>
+       <h4 *ngIf="orders.Status!='Ready'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.Status}}</i></span></h4>
+       <h4 *ngIf="orders.Status=='Ready'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>Be Ready... [On the Way]</i></span></h4>
        <ion-progress-bar color="success" *ngIf="orders.Status=='Placed'" value='0.2' ></ion-progress-bar>
-        <ion-progress-bar color="success" *ngIf="orders.Status=='Accepted by Restaurant Owner'" value='0.4' ></ion-progress-bar>
-        <ion-progress-bar color="success" *ngIf="orders.Status=='Ready'" value='0.6' ></ion-progress-bar>
-        <ion-progress-bar color="success" *ngIf="orders.Status=='Accepted by Delivery Partner'" value='0.9' ></ion-progress-bar>
+        <ion-progress-bar color="success" *ngIf="orders.Status=='Accepted by Restaurant Owner'" value='0.6' ></ion-progress-bar>
+
+        <ion-progress-bar color="success" *ngIf="orders.Status=='Ready'" value='0.9' ></ion-progress-bar>
 
       </ion-row>
 

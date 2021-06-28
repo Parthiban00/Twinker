@@ -37,7 +37,8 @@ ion-content{
 .slides{
   background: #f1f5f8;
   padding:4px 10px 20px 10px;
-  //border-radius: 0 0 28px 28px;
+  margin-top: -10px;
+  border-radius: 0 0 28px 28px;
 
 
 }
@@ -117,3 +118,6 @@ box-shadow: 7px 7px 20px #dbdfe2,
 
 
 
+.profile{
+  margin-top: -20px;
+}

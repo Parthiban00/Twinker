@@ -69,6 +69,15 @@ const TaskSchema = new mongoose.Schema({
   },
   OfferDescription:{
     type:String
+  },
+  Commission:{
+    type:Number
+  },
+  Suggestion:{
+    type:Boolean
+  },
+  Sort:{
+    type:Number
   }
 
 

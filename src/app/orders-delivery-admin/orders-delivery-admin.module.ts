@@ -11,7 +11,10 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { OrdersDeliveryAdminPageRoutingModule } from './orders-delivery-admin-routing.module';
 
 import { OrdersDeliveryAdminPage } from './orders-delivery-admin.page';
-
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +25,12 @@ import { OrdersDeliveryAdminPage } from './orders-delivery-admin.page';
     MatExpansionModule,
     MatButtonToggleModule,
     NgbModule,
-    OrdersDeliveryAdminPageRoutingModule
+    OrdersDeliveryAdminPageRoutingModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatNativeDateModule
+
   ],
   declarations: [OrdersDeliveryAdminPage]
 })

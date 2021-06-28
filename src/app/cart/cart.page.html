@@ -20,7 +20,7 @@
   </ion-toolbar>
 </ion-header>
 
-<div class="banner" style="height: 80px;">
+<div class="banner" style="height: 50px;">
   <img  src="assets\orange_banner1.png" />
   <div class="caption ion-padding">
     {{restaurantName}}<br>
@@ -85,7 +85,7 @@
         <p>{{cartItem.ProductName}}</p>
       <p>1 full plate with 1 egg and thaalsa</p>
       <div class="price">
-        <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.ActualPrice}}</p>
+        <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.Price}}</p>
            <p *ngIf="cartItem.Offer">Rs.{{cartItem.Price}}</p></div>
 
       <div class="qty-selector" >
@@ -99,6 +99,47 @@
 
     </ion-card-content>
     </ion-card>
+    </div>
+
+    <div class="suggestions">
+
+<p style="margin-left: 5px;color: orangered;font-weight: 500; font-size: small;">Best Combos Ever... Must Try...</p>
+      <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+        <ion-slide style="padding:0px;width: fit-content;" *ngFor="let suggestion of products;let i=index" >
+
+        <ion-card >
+          <ion-card-header>
+  <div class="main" >
+
+    <img src="assets/suggestion1.jpg">
+  </div>
+  <!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+          </ion-card-header>
+          <ion-card-content class="ion-text-left">
+
+            <!-- <ion-card-title class="ion-margin-bottom" style="text-align: center;">Restaurants</ion-card-title>-->
+
+
+              <ion-card-subtitle style="font-size: 12px;">{{suggestion.ProductName}}</ion-card-subtitle>
+<p style="color: orangered;"> Rs: {{suggestion.Price+suggestion.Commission}}</p>
+              <div class="qty-selector1" >
+                <!-- <ion-button fill="clear" (click)="DecreaseItem(i,suggestion.MenuId)" >-</ion-button>
+                <ion-label>{{suggestion.ItemCount}}</ion-label>
+                <ion-button fill="clear" (click)="IncreaseItem(i,suggestion.MenuId)"  >+</ion-button> -->
+                <ion-button color="success" fill="clear" (click)="IncreaseItem(i,suggestion.MenuId)" style="height: 20px;--border-radius: 2px;">Add +</ion-button>
+
+                      </div>
+            </ion-card-content>
+        </ion-card>
+
+
+
+
+      </ion-slide>
+
+
+    </ion-slides>
     </div>
     <div class="table">
       <img src="assets\bill_details.png">

@@ -39,6 +39,13 @@ export class OrdersAdminPage implements OnInit {
  public minDate: Object = new Date(this.currentYear, this.currentMonth, this.currentDay);
   public maxDate: Object =  new Date(this.currentYear, this.currentMonth+1, 15);
 
+
+countryCode:string="91";
+whatsappnumber:string;
+url:string;
+
+
+
 totalCompletedItems=0;
 totalCompletedOrders=0;
 totalCompletedAmount=0;
@@ -237,9 +244,23 @@ this.totalItems+=this.totalItems;
    this.totalItems=0;
    this.totalAmount=0;
 
+
+
    this.selectedValue=selectedValue;
    this.selectRestaurants=selectedValue;
   console.log(selectedValue);
+
+  for(var i=0;i<this.restaurants.length;i++){
+    if(selectedValue==this.restaurants[i]._id){
+      this.whatsappnumber=this.restaurants[i].MobileNo;
+
+      break;
+
+    }
+
+  }
+
+
 
   var getOrders={
     DeleteYn:false,
@@ -344,7 +365,19 @@ this.totalItems=this.totalItems+1;
 
   }
 
-  GetDate(){
+  GetDate(event:any){
+
+    const stringified = JSON.stringify(event.value);
+    this.myDate= stringified.substring(1, 11);
+
+  //this.myDate=this.myDate.substring(0,10);
+
+  var date=this.myDate.split("-");
+  var yyyy=date[0];
+  var mm=date[1];
+  var dd=parseInt(date[2])+1;
+  this.myDate=yyyy+'-'+mm+'-'+dd;
+
     if(this.myDate!="All"){
 
     this.present();
@@ -430,6 +463,8 @@ this.totalCompletedItems=this.totalCompletedItems+1;
   }
   this.toPay=this.totalCompletedAmount-(10*this.totalCompletedItems);
   console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
+
+  this.url="https://wa.me/"+this.countryCode+this.whatsappnumber+"?text=Date: "+this.myDate+" Total Orders: "+this.totalCompletedOrders+" Total Items "+this.totalCompletedItems+" Amount "+this.totalCompletedAmount;
 }
 async presentAlertConfirm() {
 
@@ -460,6 +495,10 @@ async presentAlertConfirm() {
   await alert.present();
 }
 
+
+ShareToWhatsApp(){
+
+}
 }
 
 

@@ -14,8 +14,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {DatePicker} from '@ionic-native/date-picker/ngx';
 //import { CacheModule } from "ionic-cache";
+import {MatFormFieldModule} from '@angular/material/form-field';
 import { Network } from '@ionic-native/network/ngx';
+
 
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
@@ -32,7 +35,7 @@ import { OrdersAdminPipe } from './orders-admin.pipe';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule],
   providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,MatDatepickerModule,Network,
-
+    DatePicker,MatFormFieldModule,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],
   bootstrap: [AppComponent],

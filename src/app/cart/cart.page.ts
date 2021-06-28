@@ -16,6 +16,12 @@ import {Router} from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import Orders from '../models/orders';
+import{ProductsService} from 'src/app/products.service';
+import MainMenu from '../models/main-menu';
+import Product from '../models/products';
+
+
+
 //import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-cart',
@@ -23,7 +29,9 @@ import Orders from '../models/orders';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
-
+  mainMenu:MainMenu[]=[];
+  productDetails:Product[]=[];
+  products:Product[]=[];
   deliveryPartnerFee1:String;
 totalAmount=0;
 totalAmount1:String;
@@ -38,7 +46,7 @@ selectedLocation:any;
   default:string="";
   allOrders:Orders[]=[];
   isLoading = false;
-  constructor(public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
+  constructor( private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
 
@@ -138,7 +146,9 @@ this.dismiss();
 
 var restaurantCredential={
   RestaurantId:this.cartItemsAll[0].RestaurantId,
+
       }
+
       this.dismiss();
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
@@ -167,7 +177,7 @@ this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
 
         //console.log(itemTotal);
 
-
+        this.GetSuggestions(restaurantCredential.RestaurantId);
     });
 
 
@@ -530,7 +540,7 @@ this.present();
     var d = R * c;
 console.log("distance d "+ d);
     this.distanceKm=d;
-    if(this.distanceKm>=3){
+    if(this.distanceKm>=2){
 
       console.log("distance d  >2"+ d);
             this.deliveryPartnerFee=(this.distanceKm*8);
@@ -541,7 +551,7 @@ this.totalAmount1=this.totalAmount.toFixed(2);
 this.dismiss();
 
           }
-           else if(this.distanceKm<3){
+           else if(this.distanceKm<2){
 
 
             this.deliveryPartnerFee=20;
@@ -556,6 +566,7 @@ this.dismiss();
            }
           //
    // return d;
+
 
   }
 
@@ -852,4 +863,191 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     await alert.present();
   }
 
+
+
+  GetSuggestions(restaurantId:String){
+console.log("enter suggestions "+restaurantId);
+var data={
+  restaurantId:restaurantId,
+  suggestion:true
 }
+  this.productService.GetSuggestionProducts(data).subscribe((res)=>{
+    this.products=res as Product[];
+    console.log(this.productDetails);
+
+
+
+
+
+
+
+
+
+    })
+  }
+
+  IncreaseItem(i:number,menuId:String){
+
+
+  //this.getCartAll();
+  this.present();
+
+
+  let date: Date = new Date();
+
+
+
+   this.products[i].ItemCount=this.products[i].ItemCount+1;
+   if(this.products[i].Offer){
+   this.products[i].Amount=(this.products[i].OfferPrice+this.products[i].Commission)*this.products[i].ItemCount;
+   }
+   else{
+    this.products[i].Amount=(this.products[i].Price+this.products[i].Commission)*this.products[i].ItemCount;
+   }
+
+   var addCartItems={
+
+    RestaurantId:this.cartItemsAll[0].RestaurantId,
+    RestaurantName:this.restaurantName,
+    MenuId:menuId,
+    MenuName:"",
+    ProductId:this.products[i]._id,
+    ProductName:this.products[i].ProductName,
+    ActualPrice:this.products[i].Price,
+    Price:this.products[i].Price+this.products[i].Commission,
+    ItemCount:this.products[i].ItemCount,
+    Amount:this.products[i].Amount,
+    UserId:this.user[0]._id,
+    UserName:this.user[0].FirstName,
+    MobileNo:this.user[0].MobileNo,
+    Address:this.user[0].Address,
+    CreatedDate:date,
+    CreatedBy:this.user[0]._id,
+    Status:"Cart",
+    ActiveYn:true,
+    DeleteYn:false,
+    Offer:this.products[i].Offer,
+    OfferDescription:this.products[i].OfferDescription,
+    Commission:this.products[i].Commission
+
+
+
+
+   }
+
+   if(this.products[i].Offer){
+    addCartItems.Price=this.products[i].OfferPrice;
+      }
+
+   var getCart={
+     UserId:this.user[0]._id,
+    MenuId:menuId,
+    ProductId:this.products[i]._id,
+     Status:"Cart",
+     ActiveYn:true
+   }
+
+   // --------------------------------------------  to get all cart items----------------------------------------
+
+this.cartService.GetCartAll(getCart).subscribe((res)=>{
+  this.cartItemsAll=res as Cart[];
+
+})
+// -------------------------------------------- ----------------------------------------
+
+   console.log(addCartItems);
+   this.cartService.GetCart(getCart).subscribe((res)=>{
+    this.cartItems=res as Cart[];
+    console.log("cart Items ---- "+this.cartItems);
+
+
+
+
+
+    if(!this.cartItemsAll.length){
+      if(!this.cartItems.length){
+
+        console.log("Cart is empty");
+        this.cartService.AddCart(addCartItems).subscribe((res)=>{
+          this.cartItems=res as Cart[];
+
+         // this.getCartAll();
+         this.ionViewWillEnter();
+
+        })
+      }
+    }
+      else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId==this.cartItemsAll[0].RestaurantId){
+
+
+
+          console.log("Cart is empty");
+        this.cartService.AddCart(addCartItems).subscribe((res)=>{
+          this.cartItems=res as Cart[];
+        //  this.getCartAll();
+        this.ionViewWillEnter();
+        })
+        }
+        else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.cartItemsAll[0].RestaurantId){
+
+this.dismiss();
+
+
+            // const dialogRef= this.dialog.open(DialogBoxComponent,{data:{key:'Your cart contains items from '+this.cartItemsAll[0].RestaurantName+'. Do you want to replace?'}});
+
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log(result);
+            //   if(result=='Ok'){
+
+            //     this.cartService.RemoveCart(this.removeCart).subscribe((res)=>{
+            //       this.cartItems=res as Cart[];
+
+            //       this.cartService.AddCart(addCartItems).subscribe((res)=>{
+            //         this.cartItems=res as Cart[];
+            //       })
+
+            //     });
+
+
+
+            //   }
+            // });
+        //   this. presentAlertConfirm(this.removeCart,addCartItems);
+
+
+
+        }
+
+
+
+
+
+    else if( this.cartItems.length && this.cartItems[0].RestaurantId==addCartItems.RestaurantId){
+
+//update cart items(item count and amount)
+                  this.cartService.UpdateCart(addCartItems).subscribe((res)=>{
+                    this.cartItems=res as Cart[];
+
+                   // this.getCartAll();
+                   this.ionViewWillEnter();
+                  });
+    }else {
+
+
+    }
+
+
+
+
+
+
+   })
+
+  }
+
+  DecreaseItem(i:number,menuId:String){
+
+  }
+}
+
+

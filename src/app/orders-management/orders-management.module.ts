@@ -8,6 +8,11 @@ import { OrdersManagementPageRoutingModule } from './orders-management-routing.m
 import {MatExpansionModule} from '@angular/material/expansion';
 import { OrdersManagementPage } from './orders-management.page';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -17,9 +22,15 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
     MatIconModule,
     MatButtonModule,
     MatButtonToggleModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    OrdersManagementPageRoutingModule,
+    MatInputModule
 
-    OrdersManagementPageRoutingModule
+
   ],
+  providers:[MatDatepickerModule],
   declarations: [OrdersManagementPage]
 })
 export class OrdersManagementPageModule {}

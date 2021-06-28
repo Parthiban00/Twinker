@@ -26,17 +26,34 @@
 
   <div class="search">
 
-    <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar><ion-button fill="clear"><ion-icon name="filter"></ion-icon></ion-button>
+    <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
 
 
 
 </div>
+
+
+</div>
+
 <div class="datepicker-card">
   <ion-card>
-<ion-label>Date:&nbsp;{{myDate}}</ion-label><ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
+<ion-label>Date:&nbsp;{{myDate}}</ion-label>
 </ion-card>
 </div>
 
+<mat-form-field appearance="fill" class="example-form-field" style="display: none;">
+  <mat-label>Choose a date</mat-label>
+  <input matInput [matDatepicker]="datepicker" [max]="today"  (dateChange)="GetDate($event)">
+  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi #datepicker>
+    <mat-datepicker-actions>
+      <button mat-button matDatepickerCancel>Cancel</button>
+      <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+    </mat-datepicker-actions>
+  </mat-datepicker>
+</mat-form-field>
+
+<div>
     <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
       <ion-segment-button  value="Placed">
         Placed
@@ -1347,10 +1364,13 @@ Bill Details
               <ion-icon name="filter"></ion-icon>
             </ion-fab-button>
              <ion-fab-list side="top">
-              <ion-fab-button><ion-icon name="calendar" (click)="datePicker.open()"></ion-icon></ion-fab-button>
+              <ion-fab-button><ion-icon name="calendar" (click)="datepicker.open()"></ion-icon></ion-fab-button>
               <ion-fab-button><ion-icon name="list" (click)="FilterCancel()"></ion-icon></ion-fab-button>
+              <ion-fab-button href={{url}}><ion-icon name="share-social" ></ion-icon></ion-fab-button>
             </ion-fab-list>
           </ion-fab>
+
+
           <!-- <ion-fab vertical="bottom" horizontal="end" edge slot="fixed">
             <ion-fab-button>
               <ion-icon name="settings"></ion-icon>

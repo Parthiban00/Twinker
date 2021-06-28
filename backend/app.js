@@ -147,8 +147,8 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
 
         app.post('/restaurants',(req,res)=>{
 
-
-            (new Restaurant ({'RestaurantName': req.body.RestaurantName,'RestaurantNickName':req.body.RestaurantNickName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'RestaurantType':req.body.RestaurantType,'RestaurantStatus':req.body.RestaurantStatus,'OrderStatus':req.body.OrderStatus,'DineinStatus':req.body.DineinStatus,'AvailableDays':req.body.AvailableDays,'OpenTime':req.body.OpenHr,'CloseTime':req.body.CloseHr,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn}))
+console.log("save restaurant");
+            (new Restaurant ({'RestaurantName': req.body.RestaurantName,'RestaurantNickName':req.body.RestaurantNickName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'RestaurantType':req.body.RestaurantType,'RestaurantStatus':req.body.RestaurantStatus,'OrderStatus':req.body.OrderStatus,'DineinStatus':req.body.DineinStatus,'AvailableDays':req.body.AvailableDays,'OpenTime':req.body.OpenHr,'CloseTime':req.body.CloseHr,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Latitude':req.body.Latitude,'Longitude':req.body.Longitude,'Distance':req.body.Distance,'Offer':req.body.Offer,'AvailableStatus':req.body.AvailableStatus,'OfferDescription':req.body.OfferDescription,'UserId':req.body.UserId,'Sort':req.body.Sort}))
             .save()
             .then((restaurants)=> res.send(restaurants))
             .catch((error)=>console.log(error));
@@ -159,7 +159,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
 
           console.log('get restaurants entered');
 
-            Restaurant.find({})
+            Restaurant.find({'ActiveYn':true,'DeleteYn':false})
             .then(restaurants=>res.send(restaurants))
             .catch((error)=>console.log(error));
         });
@@ -193,7 +193,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
         app.post('/restaurants/:restId/mainmenus/:menuId/products',(req,res)=>{
 
 
-            (new Products ({'RestaurantId': req.params.restId,'MenuId':req.params.menuId,'ProductName':req.body.ProductName,'Price':req.body.Price,'Size':req.body.Size,'Description':req.body.Description,'AvailableTime':req.body.AvailableTime,'AvailableStatus':req.body.AvailableStatus,'AvailableDays':req.body.AvailableDays,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn}))
+            (new Products ({'RestaurantId': req.params.restId,'MenuId':req.params.menuId,'ProductName':req.body.ProductName,'Price':req.body.Price,'Size':req.body.Size,'Description':req.body.Description,'AvailableTime':req.body.AvailableTime,'AvailableStatus':req.body.AvailableStatus,'AvailableDays':req.body.AvailableDays,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Offer':req.body.Offer,'OfferPrice':req.body.OfferPrice,'OfferDescription':req.body.OfferDescription,'Commission':req.body.Commission,'Suggestion':req.body.Suggestion,'Sort':req.body.Sort,'ItemCount':req.body.ItemCount}))
             .save()
             .then((Products)=> res.send(Products))
             .catch((error)=>console.log(error));
@@ -235,7 +235,7 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
             app.post('/carts',(req,res)=>{
 
 
-                (new Cart ({'RestaurantId': req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MenuId':req.body.MenuId,'MenuName':req.body.MenuName,'ProductId':req.body.ProductId,'ProductName':req.body.ProductName,'Price':req.body.Price,'ItemCount':req.body.ItemCount,'Amount':req.body.Amount,'UserId':req.body.UserId,'UserName':req.body.UserName,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'Status':req.body.Status,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ActualPrice':req.body.ActualPrice,'Offer':req.body.Offer}))
+                (new Cart ({'RestaurantId': req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MenuId':req.body.MenuId,'MenuName':req.body.MenuName,'ProductId':req.body.ProductId,'ProductName':req.body.ProductName,'Price':req.body.Price,'ItemCount':req.body.ItemCount,'Amount':req.body.Amount,'UserId':req.body.UserId,'UserName':req.body.UserName,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'Status':req.body.Status,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ActualPrice':req.body.ActualPrice,'Offer':req.body.Offer,'OfferDescription':req.body.OfferDescription,'Commission':req.body.Commission}))
                 .save()
                 .then((carts)=> res.send(carts))
                 .catch((error)=>console.log(error));
@@ -455,7 +455,12 @@ else{
                               // });
 
 
-
+                              app.get('/restaurants/:restId/mainmenus/products/:suggestion',(req,res)=>{
+console.log("suggestion entered");
+                                Products.find({RestaurantId: req.params.restId,Suggestion:req.params.suggestion})
+                                .then(Products=>res.send(Products))
+                                .catch((error)=>console.log(error));
+                            });
 
 
  //app.listen(3000, () => console.log("Server is connected on port 3000"));

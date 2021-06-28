@@ -32,9 +32,31 @@
 </div>
 <div class="datepicker-card">
   <ion-card>
-<ion-label>Date:&nbsp;{{myDate1}}</ion-label><ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime>
+<ion-label>Date:&nbsp;{{myDate1}}</ion-label>
 </ion-card>
 </div>
+
+<mat-form-field appearance="fill" class="example-form-field" style="display: none;">
+  <mat-label>Choose a date</mat-label>
+  <input matInput [matDatepicker]="datepicker" [max]="today"  (dateChange)="GetDate($event)">
+  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+  <mat-datepicker touchUi #datepicker>
+    <mat-datepicker-actions>
+      <button mat-button matDatepickerCancel>Cancel</button>
+      <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+    </mat-datepicker-actions>
+  </mat-datepicker>
+</mat-form-field>
+<!-- <ion-label>Date:&nbsp;{{myDate1}}</ion-label> -->
+<!-- <mat-form-field class="example-full-width" appearance="fill" >
+  <mat-label>Choose a date</mat-label>
+  <input matInput  [(ngModel)]="myDate" (dateChange)="GetDate($event)" [matDatepicker]="picker">
+  <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle>
+  <mat-datepicker  touchUi #picker ></mat-datepicker>
+</mat-form-field> -->
+
+
+
 
 
     <ion-segment scrollable [(ngModel)]='default' color="primary" (ionChange)="segmentChanged($event)">
@@ -61,6 +83,7 @@
 
 </ion-header>
 <ion-content>
+  <!-- <ion-datetime style="display: none;" #datePicker [max]="today" (ionChange)="GetDate()" [(ngModel)]="myDate"></ion-datetime> -->
   <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
     <ion-refresher-content>
 </ion-refresher-content>
@@ -346,7 +369,7 @@
               <ion-icon name="filter"></ion-icon>
             </ion-fab-button>
              <ion-fab-list side="top">
-              <ion-fab-button><ion-icon name="calendar" (click)="datePicker.open()"></ion-icon></ion-fab-button>
+              <ion-fab-button><ion-icon name="calendar" (click)="datepicker.open()" ></ion-icon></ion-fab-button>
               <ion-fab-button><ion-icon name="list" (click)="FilterCancel()"></ion-icon></ion-fab-button>
             </ion-fab-list>
           </ion-fab>

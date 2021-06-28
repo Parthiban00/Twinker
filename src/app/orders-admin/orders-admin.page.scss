@@ -13,7 +13,7 @@ ion-select {
 .search{
  // position: relative;
   //bottom:-40px;
-  width: 90%;
+  width: 100%;
 
 ion-button{
   position: absolute;
@@ -64,4 +64,14 @@ ion-footer{
 
 
 
+  }
+  .datepicker-card{
+    margin-top: -10px;
+    ion-card{
+      padding: 10px;
+      //height: 40px;
+      align-items: center;
+
+
+    }
   }

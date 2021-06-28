@@ -227,8 +227,19 @@ this.dismiss();
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 
-  GetDate(){
-    console.log("get date");
+
+  GetDate(event:any){
+
+    const stringified = JSON.stringify(event.value);
+    this.myDate= stringified.substring(1, 11);
+
+  //this.myDate=this.myDate.substring(0,10);
+
+  var date=this.myDate.split("-");
+  var yyyy=date[0];
+  var mm=date[1];
+  var dd=parseInt(date[2])+1;
+  this.myDate=yyyy+'-'+mm+'-'+dd;
     if(this.myDate!="All"){
 
 
