@@ -22,6 +22,7 @@ export default class Cart{
     DeleteYn:boolean=false;
     ActualPrice:number=0;
     Offer:number;
+    ActualAmount:number;
 
 
 

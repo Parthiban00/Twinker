@@ -92,7 +92,12 @@ const TaskSchema = new mongoose.Schema({
     },
       Commission:{
       type:Number
-    }
+    },
+
+
+  ActualAmount:{
+    type:Number
+  }
 
 });
 

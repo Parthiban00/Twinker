@@ -415,7 +415,7 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
       }
     }
     }
-    this.toPay=this.totalCompletedAmount-(10*this.totalCompletedItems);
+    this.toPay=this.totalCompletedAmount;
     console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
   }
 

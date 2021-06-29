@@ -78,6 +78,10 @@ const TaskSchema = new mongoose.Schema({
   },
   Sort:{
     type:Number
+  },
+
+  ActualAmount:{
+    type:Number
   }
 
 

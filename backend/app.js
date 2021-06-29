@@ -235,7 +235,7 @@ console.log("save restaurant");
             app.post('/carts',(req,res)=>{
 
 
-                (new Cart ({'RestaurantId': req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MenuId':req.body.MenuId,'MenuName':req.body.MenuName,'ProductId':req.body.ProductId,'ProductName':req.body.ProductName,'Price':req.body.Price,'ItemCount':req.body.ItemCount,'Amount':req.body.Amount,'UserId':req.body.UserId,'UserName':req.body.UserName,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'Status':req.body.Status,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ActualPrice':req.body.ActualPrice,'Offer':req.body.Offer,'OfferDescription':req.body.OfferDescription,'Commission':req.body.Commission}))
+                (new Cart ({'RestaurantId': req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MenuId':req.body.MenuId,'MenuName':req.body.MenuName,'ProductId':req.body.ProductId,'ProductName':req.body.ProductName,'Price':req.body.Price,'ItemCount':req.body.ItemCount,'Amount':req.body.Amount,'UserId':req.body.UserId,'UserName':req.body.UserName,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'Status':req.body.Status,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ActualPrice':req.body.ActualPrice,'Offer':req.body.Offer,'OfferDescription':req.body.OfferDescription,'Commission':req.body.Commission,'ActualAmount':req.body.ActualAmount}))
                 .save()
                 .then((carts)=> res.send(carts))
                 .catch((error)=>console.log(error));
@@ -251,7 +251,7 @@ console.log("save restaurant");
 
                 app.patch('/carts/:RestaurantId/:MenuId/:ProductId/:CartItemId/:Status/:ActiveYn/:UserId', (req,res)=>{
 
-                    Cart.findOneAndUpdate({RestaurantId: req.params.RestaurantId,MenuId:req.params.MenuId,ProductId:req.params.ProductId,_id:req.params.CartItemId,Status:req.params.Status,ActiveYn:req.params.ActiveYn,UserId:req.params.UserId}, {$set: {ItemCount:req.body.ItemCount,Amount:req.body.Amount}})
+                    Cart.findOneAndUpdate({RestaurantId: req.params.RestaurantId,MenuId:req.params.MenuId,ProductId:req.params.ProductId,_id:req.params.CartItemId,Status:req.params.Status,ActiveYn:req.params.ActiveYn,UserId:req.params.UserId}, {$set: {ItemCount:req.body.ItemCount,Amount:req.body.Amount,ActualAmount:req.body.ActualAmount}})
                     .then((carts)=> res.send(carts))
                     .catch((error)=>console.log(error));
 
@@ -325,7 +325,7 @@ console.log("save restaurant");
                             app.post('/orderdetails',(req,res)=>{
 
 
-                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus}))
+                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus,'ActualAmount':req.body.ActualAmount}))
                                 .save()
                                 .then((orderdetails)=> res.send(orderdetails))
                                 .catch((error)=>console.log(error));

@@ -21,7 +21,7 @@
 </ion-header>
 
 <div class="banner" style="height: 50px;">
-  <img  src="assets\orange_banner1.png" />
+  <img  src="assets\menu.jpg" />
   <div class="caption ion-padding">
     {{restaurantName}}<br>
 
@@ -85,8 +85,8 @@
         <p>{{cartItem.ProductName}}</p>
       <p>1 full plate with 1 egg and thaalsa</p>
       <div class="price">
-        <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.Price}}</p>
-           <p *ngIf="cartItem.Offer">Rs.{{cartItem.Price}}</p></div>
+        <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.Price}}.0</p>
+           <p *ngIf="cartItem.Offer">Rs.{{cartItem.Price}}.0</p></div>
 
       <div class="qty-selector" >
 <ion-button fill="clear" [disabled]="!cartItem.ItemCount" (click)="DecreaseCount(i)">-</ion-button>
@@ -122,7 +122,7 @@
 
 
               <ion-card-subtitle style="font-size: 12px;">{{suggestion.ProductName}}</ion-card-subtitle>
-<p style="color: orangered;"> Rs: {{suggestion.Price+suggestion.Commission}}</p>
+<p style="color: orangered;"> Rs: {{suggestion.Price}}.0</p>
               <div class="qty-selector1" >
                 <!-- <ion-button fill="clear" (click)="DecreaseItem(i,suggestion.MenuId)" >-</ion-button>
                 <ion-label>{{suggestion.ItemCount}}</ion-label>
@@ -160,16 +160,23 @@
         <ion-col>{{itemAmount}}.00</ion-col>
       </ion-row>
       <ion-row>
+        <ion-col>Taxes and Charges</ion-col>
+        <ion-col>{{Charges}}%</ion-col>
+      </ion-row>
+      <ion-row><ion-col>Amount</ion-col>
+        <ion-col>{{AmountWithCharges}}</ion-col>
+        </ion-row>
+      <ion-row>
         <ion-col>Delivery Partner Fee</ion-col>
         <ion-col>{{deliveryPartnerFee1}}</ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>Taxes and Charges</ion-col>
-        <ion-col>{{taxesAndCharges}}.00</ion-col>
-      </ion-row>
-      <ion-row><ion-col>Total Amount</ion-col>
-      <ion-col>{{totalAmount1}}</ion-col>
-      </ion-row>
+
+
+
+      <ion-row><ion-col>To Pay</ion-col>
+        <ion-col>{{totalAmount1}}</ion-col>
+        </ion-row>
+
       </div>
     </div>
   </div>

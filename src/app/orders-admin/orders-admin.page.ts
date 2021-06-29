@@ -49,7 +49,8 @@ url:string;
 totalCompletedItems=0;
 totalCompletedOrders=0;
 totalCompletedAmount=0;
-toPay=0;
+toPay;
+topay1=0;
 panelOpenState = false;
   filterOrders:Orders[]=[];
 totalAmount=0;
@@ -452,19 +453,21 @@ CompletedOrders(segment:string){
   this.totalCompletedOrders=0;
   this.totalCompletedItems=0;
   this.totalCompletedAmount=0;
+  this.topay1=0;
   for(var p=0;p<this.searchedItem.length;p++){
     if(this.searchedItem[p].Status==segment){
     this.totalCompletedOrders=this.totalCompletedOrders+1;
-    this.totalCompletedAmount+=this.searchedItem[p].ItemTotal;
+    this.totalCompletedAmount+=this.searchedItem[p].ActualAmount;
+    this.topay1+=this.searchedItem[p].ItemTotal;
     for(var q=0;q<this.searchedItem[p].ItemDetails.length;q++){
 this.totalCompletedItems=this.totalCompletedItems+1;
     }
   }
   }
-  this.toPay=this.totalCompletedAmount-(10*this.totalCompletedItems);
+  this.toPay=this.topay1.toFixed(2);
   console.log("total items "+this.totalCompletedItems+" total orders "+this.totalCompletedOrders+" total amount "+this.totalCompletedAmount);
 
-  this.url="https://wa.me/"+this.countryCode+this.whatsappnumber+"?text=Date: "+this.myDate+" Total Orders: "+this.totalCompletedOrders+" Total Items "+this.totalCompletedItems+" Amount "+this.totalCompletedAmount;
+  this.url="https://wa.me/"+this.countryCode+this.whatsappnumber+"?text=Date: "+this.myDate+" Total Orders: "+this.totalCompletedOrders+" Total Items "+this.totalCompletedItems+" Amount "+this.toPay;
 }
 async presentAlertConfirm() {
 

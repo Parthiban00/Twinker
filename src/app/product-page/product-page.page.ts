@@ -174,10 +174,13 @@ segmentChanged(ev: any) {
 
    this.products[i].ItemCount=this.products[i].ItemCount+1;
    if(this.products[i].Offer){
-   this.products[i].Amount=(this.products[i].OfferPrice+this.products[i].Commission)*this.products[i].ItemCount;
+   this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
+   this.products[i].ActualAmount=this.products[i].OfferPrice*this.products[i].ItemCount;
+
    }
    else{
-    this.products[i].Amount=(this.products[i].Price+this.products[i].Commission)*this.products[i].ItemCount;
+    this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+    this.products[i].ActualAmount=this.products[i].Price*this.products[i].ItemCount;
    }
 
    var addCartItems={
@@ -189,7 +192,7 @@ segmentChanged(ev: any) {
     ProductId:this.products[i]._id,
     ProductName:this.products[i].ProductName,
     ActualPrice:this.products[i].Price,
-    Price:this.products[i].Price+this.products[i].Commission,
+    Price:this.products[i].Price,
     ItemCount:this.products[i].ItemCount,
     Amount:this.products[i].Amount,
     UserId:this.user[0]._id,
@@ -203,7 +206,8 @@ segmentChanged(ev: any) {
     DeleteYn:false,
     Offer:this.products[i].Offer,
     OfferDescription:this.products[i].OfferDescription,
-    Commission:this.products[i].Commission
+    Commission:this.products[i].Commission,
+    ActualAmount:this.products[i].ActualAmount
 
 
 
@@ -321,10 +325,12 @@ this.dismiss();
 this.present();
   this.products[i].ItemCount=this.products[i].ItemCount-1;
   if(this.products[i].Offer){
-    this.products[i].Amount=(this.products[i].OfferPrice+this.products[i].Commission)*this.products[i].ItemCount;
+    this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
+    this.products[i].ActualAmount=this.products[i].OfferPrice*this.products[i].ItemCount;
     }
     else{
-     this.products[i].Amount=(this.products[i].Price+this.products[i].Commission)*this.products[i].ItemCount;
+     this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+     this.products[i].ActualAmount=this.products[i].Price*this.products[i].ItemCount;
     }
 
   let date: Date = new Date();
@@ -336,7 +342,7 @@ this.present();
     MenuName:this.selectedMenuName,
     ProductId:this.products[i]._id,
     ProductName:this.products[i].ProductName,
-    Price:this.products[i].Price+this.products[i].Commission,
+    Price:this.products[i].Price,
     ItemCount:this.products[i].ItemCount,
     Amount:this.products[i].Amount,
     UserId:this.user[0]._id,
@@ -351,7 +357,8 @@ this.present();
     ActualPrice:this.products[i].Price,
     Offer:this.products[i].Offer,
     OfferDescription:this.products[i].OfferDescription,
-    Commission:this.products[i].Commission
+    Commission:this.products[i].Commission,
+    ActualAmount:this.products[i].ActualAmount
    }
 
    if(this.products[i].Offer){

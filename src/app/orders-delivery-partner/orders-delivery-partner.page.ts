@@ -334,7 +334,7 @@ console.log("dfasfas"+ segment);
     for(var p=0;p<this.orderDetails.length;p++){
       if(this.orderDetails[p].DeliveryPartnerStatus==segment && this.orderDetails[p].DeliveryPartnerDetails.UserId==this.currentUserId){
       this.totalCompletedOrders=this.totalCompletedOrders+1;
-      this.totalCompletedAmount+=this.orderDetails[p].ItemTotal;
+      this.totalCompletedAmount+=this.orderDetails[p].ActualAmount;
       for(var q=0;q<this.orderDetails[p].ItemDetails.length;q++){
   this.totalCompletedItems=this.totalCompletedItems+1;
       }

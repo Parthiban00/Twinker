@@ -34,10 +34,13 @@ export class CartPage implements OnInit {
   products:Product[]=[];
   deliveryPartnerFee1:String;
 totalAmount=0;
-totalAmount1:String;
+totalAmount1;
+AmountWithCharges;
   taxesAndCharges=0;
   deliveryPartnerFee:number;
-itemAmount=0;
+  Charges:number=10;
+itemAmount;
+actualAmount=0;
 selectedLocation:any;
   reverseGeocodingResults:any;
   lat:any;
@@ -124,6 +127,7 @@ user:any;
 
 
     var itemTotal=0;
+    var itemActual=0;
 
     var getCart={
       UserId:this.user[0]._id,
@@ -169,7 +173,9 @@ this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
 
       for(var i=0;i<this.cartItemsAll.length;i++){
         itemTotal+=this.cartItemsAll[i].Amount;
+        itemActual+=this.cartItemsAll[i].ActualAmount;
         this.itemAmount=itemTotal;
+        this.actualAmount=itemActual;
         this.restaurantName=this.cartItemsAll[i].RestaurantName;
         }
 
@@ -240,6 +246,7 @@ IncreaseCount(i:any){
 this.present();
   this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
+  this.cartItemsAll[i].ActualAmount=this.cartItemsAll[i].ActualPrice*this.cartItemsAll[i].ItemCount;
 
   // if(this.cartItemsAll[i].Offer){
   //   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
@@ -270,6 +277,7 @@ this.present();
     ActiveYn:true,
     DeleteYn:false,
     Offer:this.cartItemsAll[i].Offer,
+    ActualAmount:this.cartItemsAll[i].ActualAmount
 
 
    }
@@ -296,7 +304,7 @@ this.present();
 
     this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount-1;
     this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
-
+    this.cartItemsAll[i].ActualAmount=this.cartItemsAll[i].ActualPrice*this.cartItemsAll[i].ItemCount;
 
     var addCartItems={
 
@@ -319,7 +327,7 @@ this.present();
       ActiveYn:true,
       DeleteYn:false,
       Offer:this.cartItemsAll[i].Offer,
-
+      ActualAmount:this.cartItemsAll[i].ActualAmount
 
      }
 
@@ -423,7 +431,7 @@ this.present();
   PlaceOrder(){
     //console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
     this.present();
-
+//this.selectedLocation="idayamelur,sivaganga,tamilnadu";
     if(this.selectedLocation=="" || this.selectedLocation==undefined || this.selectedLocation==null){
       this.dismiss();
       this.presentAlertConfirm1();
@@ -487,8 +495,8 @@ var today1 = yyyy + '-' + mm + '-' + dd;
      RestaurantName:this.cartItemsAll[0].RestaurantName,
      ItemTotal:this.itemAmount,
      DeliveryPartnerFee:this.deliveryPartnerFee,
-     TaxesAndCharges:this.taxesAndCharges,
-     TotalAmount:this.totalAmount,
+     TaxesAndCharges:this.Charges,
+     TotalAmount:parseFloat(this.totalAmount1),
      ActiveYn:true,
      DeleteYn:false,
      Status:'Placed',
@@ -498,7 +506,9 @@ var today1 = yyyy + '-' + mm + '-' + dd;
      MobileNo:this.user[0].MobileNo,
      Address:this.selectedLocation,
      ItemDetails:this.placeOrderArr,
-     DeliveryPartnerStatus:"Placed by Customer"
+     DeliveryPartnerStatus:"Placed by Customer",
+     ActualAmount:parseFloat(this.AmountWithCharges).toFixed(2)
+
 
    }
 
@@ -543,11 +553,16 @@ console.log("distance d "+ d);
     if(this.distanceKm>=2){
 
       console.log("distance d  >2"+ d);
-            this.deliveryPartnerFee=(this.distanceKm*8);
+            this.deliveryPartnerFee=(this.distanceKm*7);
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
+
+
+            this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
 this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
 this.totalAmount1=this.totalAmount.toFixed(2);
+
+
 this.dismiss();
 
           }
@@ -556,8 +571,12 @@ this.dismiss();
 
             this.deliveryPartnerFee=20;
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
-            this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
+
+            this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
+            this.totalAmount=this.AmountWithCharges+this.deliveryPartnerFee+this.taxesAndCharges;
             this.totalAmount1=this.totalAmount.toFixed(2);
+
+
             this.dismiss();
            }
            else{
@@ -899,10 +918,10 @@ var data={
 
    this.products[i].ItemCount=this.products[i].ItemCount+1;
    if(this.products[i].Offer){
-   this.products[i].Amount=(this.products[i].OfferPrice+this.products[i].Commission)*this.products[i].ItemCount;
+   this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
    }
    else{
-    this.products[i].Amount=(this.products[i].Price+this.products[i].Commission)*this.products[i].ItemCount;
+    this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
    }
 
    var addCartItems={
@@ -914,7 +933,7 @@ var data={
     ProductId:this.products[i]._id,
     ProductName:this.products[i].ProductName,
     ActualPrice:this.products[i].Price,
-    Price:this.products[i].Price+this.products[i].Commission,
+    Price:this.products[i].Price,
     ItemCount:this.products[i].ItemCount,
     Amount:this.products[i].Amount,
     UserId:this.user[0]._id,

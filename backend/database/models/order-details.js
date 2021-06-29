@@ -95,6 +95,9 @@ type:Array
     },
     DeliveryPartnerStatus:{
       type:String
+    },
+    ActualAmount:{
+      type:Number
     }
 
 

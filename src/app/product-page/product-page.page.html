@@ -84,8 +84,8 @@
               <p>{{product.ProductName}}</p>
             <p>{{product.Description}}</p>
             <div class="price">
-            <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price + product.Commission}}</p>
-               <p *ngIf="product.Offer">Rs.{{product.OfferPrice + product.Commission}}</p></div>
+            <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
+               <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
             <div class="qty-selector" >
       <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
       <ion-label>{{product.ItemCount}}</ion-label>
@@ -106,7 +106,7 @@
 
 <div  class="navbar">
 
-        <ion-segment  scrollable [(ngModel)]="menu" (ionChange)="segmentChanged($event)">
+        <ion-segment  scrollable [(ngModel)]="menu" color="danger" (ionChange)="segmentChanged($event)">
           <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
             {{menus.MenuName}}
           </ion-segment-button>
@@ -134,8 +134,8 @@
         <p>{{product.ProductName}}</p>
       <p>{{product.Description}}</p>
       <div class="price">
-      <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price + product.Commission}}</p>
-         <p *ngIf="product.Offer">Rs.{{product.OfferPrice + product.Commission}}</p></div>
+      <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
+         <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
       <div class="qty-selector" >
 <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
 <ion-label>{{product.ItemCount}}</ion-label>
@@ -161,15 +161,15 @@
       </div>
     <ion-card-content>
       <div class="item-img">
-        <img src="assets\chicken_biryani.jpg" />
+        <img src="assets/menu.jpg" />
       </div>
 
       <div class="item-info">
         <p>{{product.ProductName}}</p>
       <p>{{product.Description}}</p>
       <div class="price">
-      <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price + product.Commission}}</p>
-         <p *ngIf="product.Offer">Rs.{{product.OfferPrice + product.Commission}}</p></div>
+      <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
+         <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
       <div class="qty-selector" >
 <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
 <ion-label>{{product.ItemCount}}</ion-label>

@@ -30,6 +30,7 @@ export default class Orders{
 
     };
     DeliveryPartnerStatus:String;
+    ActualAmount:number;
 
  }
 
