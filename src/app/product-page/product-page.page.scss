@@ -75,16 +75,16 @@
 
       ion-card{
 
-        width:250px;
+        width:100%;
         height: 100px;
         box-shadow: none;
         border-radius: 2px;
 
         img{
-          object-fit: cover;
+         object-fit: cover;
           width: 100%;
-          height: 130px;
-          transform:scale(1.1,1.1) rotate(1deg);
+          height: 100px;
+         // transform:scale(1.1,1.1) rotate(1deg);
           transition: 600ms all ease-in-out;
         }
       }
@@ -313,7 +313,7 @@ ion-footer{
   color: #fff;
 }
 .swiper-slide-active{
-  transform: scale(1.50,1.05);
+  //transform: scale(1.50,1.05);
 
 
 }

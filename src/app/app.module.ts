@@ -18,7 +18,7 @@ import {DatePicker} from '@ionic-native/date-picker/ngx';
 //import { CacheModule } from "ionic-cache";
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Network } from '@ionic-native/network/ngx';
-
+import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
 
 
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
@@ -35,7 +35,7 @@ import { OrdersAdminPipe } from './orders-admin.pipe';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule],
   providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,MatDatepickerModule,Network,
-    DatePicker,MatFormFieldModule,
+    DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],
   bootstrap: [AppComponent],

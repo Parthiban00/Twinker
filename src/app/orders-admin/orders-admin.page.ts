@@ -9,6 +9,7 @@ import{RestaurantsService} from 'src/app/restaurants.service';
 import Restaurant from '../models/restaurants';
 import { ActionSheetController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
 
 export interface PeriodicElement {
   itemName: string;
@@ -368,16 +369,10 @@ this.totalItems=this.totalItems+1;
 
   GetDate(event:any){
 
-    const stringified = JSON.stringify(event.value);
-    this.myDate= stringified.substring(1, 11);
-
-  //this.myDate=this.myDate.substring(0,10);
-
-  var date=this.myDate.split("-");
-  var yyyy=date[0];
-  var mm=date[1];
-  var dd=parseInt(date[2])+1;
-  this.myDate=yyyy+'-'+mm+'-'+dd;
+    const momentDate = new Date(event.value); // Replace event.value with your date value
+    const formattedDate = moment(momentDate).format("YYYY-MM-DD");
+    console.log("selected date:"+formattedDate);
+this.myDate=formattedDate;
 
     if(this.myDate!="All"){
 
@@ -391,7 +386,7 @@ else{
 
 
     console.log("selected restaurant "+this.selectedValue);
-    this.myDate=this.myDate.substring(0,10);
+
 
 
 var filterOrders={

@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import * as moment from 'moment';
 
 
 export interface PeriodicElement {
@@ -58,7 +59,7 @@ export class OrdersManagementPage implements OnInit {
   totalOrders=0;
   currentSegment;
   today;
-  myDate:any;
+  myDate="All";
   myDate1="All";
   searchedItem: any;
   searchHotel:any;
@@ -349,18 +350,13 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
   GetDate(event:any){
 
 
-    const stringified = JSON.stringify(event.value);
-   this.myDate= stringified.substring(1, 11);
 
- //this.myDate=this.myDate.substring(0,10);
+    const momentDate = new Date(event.value); // Replace event.value with your date value
+    const formattedDate = moment(momentDate).format("YYYY-MM-DD");
+    console.log("selected date:"+formattedDate);
+this.myDate=formattedDate;
 
- var date=this.myDate.split("-");
- var yyyy=date[0];
- var mm=date[1];
- var dd=parseInt(date[2])+1;
- this.myDate1=yyyy+'-'+mm+'-'+dd;
-
-    if(this.myDate1!="All"){
+    if(this.myDate!="All"){
      this.present();
      if(this.selectedValue=="" || this.selectedValue==undefined || this.selectedValue==null){
        this.dismiss();
@@ -375,7 +371,7 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
 
 
  var filterOrders={
-   CreatedDate:this.myDate1,
+   CreatedDate:this.myDate,
    RestaurantId:this.selectedValue,
    ActiveYn:true,
    DeleteYn:false
@@ -420,7 +416,7 @@ this.owenerService.GetOrders(getOrders).subscribe((res)=>{
   }
 
   FilterCancel(){
-    this.myDate1="All";
+    this.myDate="All";
     this.onChange(this.selectRestaurants);
   }
 

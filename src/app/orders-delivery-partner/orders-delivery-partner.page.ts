@@ -5,6 +5,7 @@ import{OwnersService} from 'src/app/owners.service'
 import {Router} from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import * as moment from 'moment';
 @Component({
   selector: 'app-orders-delivery-partner',
   templateUrl: './orders-delivery-partner.page.html',
@@ -263,16 +264,11 @@ this.dismiss();
 
   GetDate(event:any){
 
-    const stringified = JSON.stringify(event.value);
-    this.myDate= stringified.substring(1, 11);
 
-  //this.myDate=this.myDate.substring(0,10);
-
-  var date=this.myDate.split("-");
-  var yyyy=date[0];
-  var mm=date[1];
-  var dd=parseInt(date[2])+1;
-  this.myDate=yyyy+'-'+mm+'-'+dd;
+    const momentDate = new Date(event.value); // Replace event.value with your date value
+    const formattedDate = moment(momentDate).format("YYYY-MM-DD");
+    console.log("selected date:"+formattedDate);
+this.myDate=formattedDate;
     if(this.myDate!="All"){
 
 
@@ -283,11 +279,11 @@ this.dismiss();
     this.totalCompletedAmount=0;
     this.orderDetails=[];
     this.itemDetails=[];
-    this.myDate=this.myDate.substring(0,10);
+    //this.myDate=this.myDate.substring(0,10);
     var getOrders={
       ActiveYn:true,
       DeleteYn:false,
-      CreatedDate:this.myDate.substring(0,10)
+      CreatedDate:this.myDate
     }
 console.log("get Date");
 

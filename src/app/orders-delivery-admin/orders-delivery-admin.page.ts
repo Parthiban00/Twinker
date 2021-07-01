@@ -7,6 +7,8 @@ import { LoadingController } from '@ionic/angular';
 import {RegisterUserService} from 'src/app/register-user.service';
 import Register from '../models/register-user';
 import { AlertController } from '@ionic/angular';
+
+import * as moment from 'moment';
 @Component({
   selector: 'app-orders-delivery-admin',
   templateUrl: './orders-delivery-admin.page.html',
@@ -26,7 +28,10 @@ totalCompletedOrders=0;
 totalCompletedAmount=0;
 segment;
 selectedValue: string="";
+selectedDate;
 myDate="All";
+
+selected: Date | null;
 deliveryPartners:any;
 deliveryPartners1:any;
 registeredUsers:Register[]=[];
@@ -226,20 +231,18 @@ this.dismiss();
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
-
+  onDate(event:any){
+    console.log("on date changes :"+event);
+  }
 
   GetDate(event:any){
 
-    const stringified = JSON.stringify(event.value);
-    this.myDate= stringified.substring(1, 11);
 
-  //this.myDate=this.myDate.substring(0,10);
+    const momentDate = new Date(event.value); // Replace event.value with your date value
+    const formattedDate = moment(momentDate).format("YYYY-MM-DD");
+    console.log("selected date:"+formattedDate);
+this.myDate=formattedDate;
 
-  var date=this.myDate.split("-");
-  var yyyy=date[0];
-  var mm=date[1];
-  var dd=parseInt(date[2])+1;
-  this.myDate=yyyy+'-'+mm+'-'+dd;
     if(this.myDate!="All"){
 
 
@@ -250,11 +253,11 @@ this.dismiss();
     this.totalCompletedAmount=0;
     this.orderDetails=[];
     this.itemDetails=[];
-    this.myDate=this.myDate.substring(0,10);
+
     var getOrders={
       ActiveYn:true,
       DeleteYn:false,
-      CreatedDate:this.myDate.substring(0,10)
+      CreatedDate:this.myDate
     }
 console.log("get Date");
 

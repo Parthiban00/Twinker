@@ -34,7 +34,9 @@ export class ProductPagePage implements OnInit {
   rs:number=60;
   whichRestaurant:string="";
   restaurantId:string="";
-
+  isSearch=true;
+  searchMenu;
+  searchedItem: any;
    user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
    removeCart={
@@ -63,6 +65,8 @@ export class ProductPagePage implements OnInit {
   productDetails:Product[]=[];
   products:Product[]=[];
   isLoading = false;
+
+
   constructor(private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
@@ -78,6 +82,8 @@ export class ProductPagePage implements OnInit {
 
   }
   ionViewWillEnter(){
+    this.searchMenu;
+    this.isSearch=true;
     this.present();
 
     this.products.length=0;
@@ -114,6 +120,7 @@ export class ProductPagePage implements OnInit {
 
     this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
     this.productDetails=res as Product[];
+    this.searchedItem=res as Product[];
     console.log(this.productDetails);
 
     for(var i=0;i<this.productDetails.length;i++){
@@ -498,6 +505,33 @@ option={
 
 AddToFavourite(menuId:any){
 document.getElementById(menuId).style.color="red";
+}
+
+slideChanged(slides){
+
+}
+
+SearchMenu(){
+  this.isSearch=false;
+}
+CancelSearch(){
+  this.isSearch=true;
+}
+
+SearchChange(event:any){
+  console.log("search change "+event.detail.value);
+
+  this.searchedItem = this.productDetails;
+  //console.log("rest details"+this.restaurantDetails);
+  const val = event.target.value;
+  if (val && val.trim() != '') {
+    this.searchedItem = this.searchedItem.filter((item: any) => {
+      console.log(item.ProductName.toLowerCase().indexOf(val.toLowerCase()) > -1);
+      return (item.ProductName.toLowerCase().indexOf(val.toLowerCase()) > -1);
+
+    })
+  }
+
 }
 }
 

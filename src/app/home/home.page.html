@@ -38,24 +38,16 @@
          </ion-slide>
          <ion-slide>
           <ion-card>
-            <img src="assets/hotel_banner.jpg">
+            <img src="assets/banner2.jpg">
           </ion-card>
         </ion-slide>
         <ion-slide>
           <ion-card>
-            <img src="assets/burger1.jpg">
+            <img src="assets/banner3.jpg">
           </ion-card>
         </ion-slide>
-        <ion-slide>
-          <ion-card>
-            <img src="assets/burger1.jpg">
-          </ion-card>
-        </ion-slide>
-        <ion-slide>
-          <ion-card>
-            <img src="assets/burger1.jpg">
-          </ion-card>
-        </ion-slide>
+
+
 
       </ion-slides>
 
@@ -87,12 +79,14 @@
 <ion-card class="ion-card">
   <div  class="offers color-green" *ngIf="item.AvailableStatus" >Opened</div>
   <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div>
+
+  <div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id)">
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
         <img style="border-radius: 2px;" src="assets\rest2.jpg">
       </ion-thumbnail>
       <ion-label class="hotel-card">
-        <h4 style="font-weight: 500;">{{item.RestaurantName}}</h4><div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
+        <h4 style="font-weight: 500;">{{item.RestaurantName}}</h4>
         <p  style="margin-top: -15px;font-size: small;">{{item.RestaurantType}}</p>
         <p  style="margin-top: -15px;font-size: small;">{{item.Address}}</p>
         <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">

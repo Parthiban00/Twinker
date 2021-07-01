@@ -8,6 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { IonicModule } from '@ionic/angular';
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
+
 import { OrdersDeliveryAdminPageRoutingModule } from './orders-delivery-admin-routing.module';
 
 import { OrdersDeliveryAdminPage } from './orders-delivery-admin.page';
@@ -29,7 +30,8 @@ import {MatInputModule} from '@angular/material/input';
     MatInputModule,
     MatDatepickerModule,
     MatFormFieldModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+
 
   ],
   declarations: [OrdersDeliveryAdminPage]
