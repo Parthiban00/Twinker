@@ -9,6 +9,10 @@ import { LoadingController } from '@ionic/angular';
 import { Platform } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { IonBottomSheetModule } from 'ion-bottom-sheet';
+import { Placeholder } from '@angular/compiler/src/i18n/i18n_ast';
+import {RegisterUserService} from 'src/app/register-user.service';
+import Register from '../models/register-user';
+import { checkAvailability } from '@ionic-native/core';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -21,8 +25,8 @@ export class LoginPage implements OnInit {
 
 
 
-
-
+  availability:Boolean=false;
+  registeredUsers:Register[]=[];
   showPassword=false;
   passwordToogleIcon='eye';
   latestData: any;
@@ -42,7 +46,7 @@ password;
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
- constructor(private activatedRouter:ActivatedRoute, private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController,private platform: Platform,private navController:NavController){
+ constructor(private registerUserService:RegisterUserService,private activatedRouter:ActivatedRoute, private router:Router,private userLoginService:UserLoginService,public toastController: ToastController,public actionSheetController: ActionSheetController,private alertController:AlertController,public loadingController: LoadingController,private platform: Platform,private navController:NavController){
 
 
 
@@ -82,7 +86,7 @@ else{
   ngOnInit(): void {
 
 this.present();
-
+this.GetRegisteredUsers();
     if(!localStorage.getItem('currentUser')){
 console.log("no");
 this.dismiss();
@@ -206,24 +210,39 @@ async presentAlertConfirm() {
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
    header: 'Enter Your Mobile No.',
-    message: ' <ion-item  >'+
+   inputs: [
+    {
+      name: 'forgetMobileNo',
+      type: 'number',
 
-    '<ion-input  name="mobileNo"  minlength="10" maxlength="10" required></ion-input>'+
- ' </ion-item>',
+    }],
+
     buttons: [
-     {
-        text: 'Okay',
+
+      {
+        text: 'Cancel',
         handler: () => {
           console.log('Confirm Okay');
 
         //  this.router.navigate(['home-page']);
 
         }
+
+      },
+      {
+        text: 'Okay',
+        handler: (alertData) => {
+          console.log(alertData.forgetMobileNo);
+          this.ChechAvailability(alertData.forgetMobileNo);
+        //  this.router.navigate(['home-page']);
+
+        }
+
       }
     ]
   });
 
- // await alert.present();
+  await alert.present();
 }
 
 // async presentLoading() {
@@ -268,4 +287,36 @@ IconToggle(){
       this.passwordToogleIcon='eye';
     }
 }
+
+
+GetRegisteredUsers(){
+  this.registerUserService.GetRegisteredUsers().subscribe((res)=>{
+
+    this.registeredUsers=res as Register[];
+    console.log("Registered Users "+this.registeredUsers);
+  })
+  }
+
+  ChechAvailability(mobileNo){
+    var otpType="Forget";
+    console.log("Entered Mobile No. "+mobileNo);
+    for(var i=0;i<this.registeredUsers.length;i++){
+      if(this.registeredUsers[i].MobileNo==mobileNo){
+        this.availability=true;
+        this.router.navigate(['otp-verification/'+mobileNo+'/'+this.registeredUsers[i].Password+'/'+this.registeredUsers[i].FirstName+'/'+this.registeredUsers[i].UserType+'/'+otpType]);
+        break;
+
+      }
+      else{
+        this.availability=false;
+        continue;
+      }
+    }
+    if(this.availability==false){
+      this.status="Mobile No. Not Registered Yet...";
+      this.presentToast(this.status);
+    }
+    console.log("Availability "+this.availability);
+
+  }
 }

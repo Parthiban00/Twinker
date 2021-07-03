@@ -12,6 +12,12 @@ const routes: Routes = [
   },
 
   {
+    path: 'home/:type',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate:[AuthenticationGuard]
+  },
+
+  {
     path: 'home/:firstName/:id',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
     canActivate:[AuthenticationGuard]
@@ -52,7 +58,7 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard]
   },
   {
-    path: 'product-page/:name/:restId',
+    path: 'product-page/:name/:restId/:type',
     loadChildren: () => import('./product-page/product-page.module').then( m => m.ProductPagePageModule),
     canActivate:[AuthenticationGuard]
   },
@@ -106,7 +112,7 @@ const routes: Routes = [
     loadChildren: () => import('./splash-screen/splash-screen.module').then( m => m.SplashScreenPageModule)
   },
   {
-    path: 'otp-verification/:mobileNo/:password/:firstName/:userType',
+    path: 'otp-verification/:mobileNo/:password/:firstName/:userType/:otpType',
     loadChildren: () => import('./otp-verification/otp-verification.module').then( m => m.OtpVerificationPageModule)
   },
   {

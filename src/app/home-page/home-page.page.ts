@@ -35,8 +35,9 @@ export class HomePagePage implements OnInit,OnDestroy {
 
   };
 
-  RestaurantPage(){
-    this.router.navigate(['home']);
+  RestaurantPage(type:String){
+    console.log(type);
+    this.router.navigate(['home/'+type]);
   }
   Dashboard(){
     console.log('user Type '+this.userType);

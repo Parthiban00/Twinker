@@ -83,7 +83,7 @@
 
       <div class="item-info">
         <p>{{cartItem.ProductName}}</p>
-      <p>1 full plate with 1 egg and thaalsa</p>
+
       <div class="price">
         <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.Price}}.0</p>
            <p *ngIf="cartItem.Offer">Rs.{{cartItem.Price}}.0</p></div>
@@ -101,9 +101,9 @@
     </ion-card>
     </div>
 
-    <div class="suggestions">
+    <div class="suggestions" *ngIf="products.length">
 
-<p style="margin-left: 5px;color: orangered;font-weight: 500; font-size: small;">Best Combos Ever... Must Try...</p>
+<p style="margin-left: 5px;color: orangered;font-weight: 500; font-size: small;">Suggestions.. Must Try...</p>
       <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
         <ion-slide style="padding:0px;width: fit-content;" *ngFor="let suggestion of products;let i=index" >
 

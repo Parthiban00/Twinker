@@ -93,7 +93,14 @@ const TaskSchema = new mongoose.Schema({
     },
     Sort:{
       type:Number
+    },
+    Type:{
+      type:String
+    },
+    Charges:{
+      type:Number
     }
+
 
 
 });

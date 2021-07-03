@@ -27,6 +27,7 @@ export class RegisterUserPage implements OnInit {
   availability:Boolean=true;
   isLoading = false;
 deliveryLocation:DeliveryLocations[]=[];
+ otpType="New";
 
   constructor(private router:Router,private registerUserService:RegisterUserService,public toastController: ToastController,public loadingController: LoadingController) { }
 
@@ -38,6 +39,7 @@ this.router.navigate(['login']);
   }
 
   RegisterUser(firstName:String,mobileNo:any,password:String){
+
 //this.present();
     const registeruser={
       FirstName:firstName,
@@ -54,7 +56,7 @@ this.router.navigate(['login']);
       DeleteYn:this.DeleteYn
     }
 
-this.router.navigate(['otp-verification/'+registeruser.MobileNo+'/'+registeruser.Password+'/'+registeruser.FirstName+'/'+this.UserType]);
+this.router.navigate(['otp-verification/'+registeruser.MobileNo+'/'+registeruser.Password+'/'+registeruser.FirstName+'/'+this.UserType+'/'+this.otpType]);
 
 
 //     this.registerUserService.createUser(registeruser).subscribe((list:any)=>{

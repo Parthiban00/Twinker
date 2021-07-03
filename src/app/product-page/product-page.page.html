@@ -173,11 +173,14 @@
       <div class="price">
       <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
          <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
-      <div class="qty-selector" >
+      <div class="qty-selector" *ngIf="product.AvailableStatus">
 <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
 <ion-label>{{product.ItemCount}}</ion-label>
 <ion-button fill="clear" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
 
+      </div>
+      <div  *ngIf="!product.AvailableStatus">
+        <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
       </div>
       <ion-icon  name="heart-outline" size="medium" class="heart"></ion-icon>
 
@@ -194,12 +197,12 @@
 
   <div class="search">
 
-    <ion-searchbar  debounce="500" [(ngModel)]="searchMenu" (ionChange)="SearchChange($event)"></ion-searchbar>
+    <ion-searchbar #search debounce="500" [(ngModel)]="searchMenu" (ionChange)="SearchChange($event)"></ion-searchbar>
 
 
 </div>
 
-<div *ngFor="let product of searchedItem;let i=index">
+<div *ngFor="let product of products;let i=index">
   <div class="cart-items">
 <ion-card *ngIf="!product.Offer">
   <div class="offers" *ngIf="product.Offer">
@@ -234,7 +237,7 @@
 </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
-    <ion-fab-button size="small" >
+    <ion-fab-button  >
       <ion-icon name="filter"></ion-icon>
     </ion-fab-button>
      <ion-fab-list side="top">

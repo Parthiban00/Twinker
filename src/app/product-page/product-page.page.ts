@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
 import{MainMenuService} from 'src/app/main-menu.service';
@@ -12,12 +12,15 @@ import Cart from '../models/cart';
 import { LoadingController } from '@ionic/angular';
 
 
+
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.page.html',
   styleUrls: ['./product-page.page.scss'],
 })
 export class ProductPagePage implements OnInit {
+  @ViewChild('search') search : any;
+
   selectedMenuName:String="";
   showProgress:boolean=false;
   menu:String="";
@@ -65,9 +68,10 @@ export class ProductPagePage implements OnInit {
   productDetails:Product[]=[];
   products:Product[]=[];
   isLoading = false;
+  type:String;
 
 
-  constructor(private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
+  constructor(private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
 
@@ -82,7 +86,9 @@ export class ProductPagePage implements OnInit {
 
   }
   ionViewWillEnter(){
-    this.searchMenu;
+
+
+    this.searchMenu="";
     this.isSearch=true;
     this.present();
 
@@ -109,6 +115,7 @@ export class ProductPagePage implements OnInit {
 
         this.whichRestaurant=this.activateRoute.snapshot.params.name;
         this.restaurantId=this.activateRoute.snapshot.params.restId;
+        this.type=this.activateRoute.snapshot.params.type;
         console.log(this.activateRoute.snapshot.params);
         console.log(localStorage.getItem('currentUser'));
 
@@ -156,7 +163,6 @@ segmentChanged(ev: any) {
 
     if(ev.detail.value==this.productDetails[k].MenuId){
        this.products.push(this.productDetails[k]);
-
      }
    }
    console.log(this.products);
@@ -472,7 +478,7 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
   await alert.present();
 }
 RedirectToHome(){
-  this.router.navigate(['home']);
+  this.router.navigate(['home/'+this.type]);
 }
 async present() {
   this.isLoading = true;
@@ -513,6 +519,11 @@ slideChanged(slides){
 
 SearchMenu(){
   this.isSearch=false;
+  this.products=this.productDetails;
+  this.searchedItem = this.products;
+  setTimeout(() => {
+    this.search.setFocus();
+  }, 500);
 }
 CancelSearch(){
   this.isSearch=true;
@@ -520,12 +531,12 @@ CancelSearch(){
 
 SearchChange(event:any){
   console.log("search change "+event.detail.value);
-
-  this.searchedItem = this.productDetails;
+  this.products=this.productDetails;
+  //this.searchedItem = this.products;
   //console.log("rest details"+this.restaurantDetails);
   const val = event.target.value;
   if (val && val.trim() != '') {
-    this.searchedItem = this.searchedItem.filter((item: any) => {
+    this.products = this.products.filter((item: any) => {
       console.log(item.ProductName.toLowerCase().indexOf(val.toLowerCase()) > -1);
       return (item.ProductName.toLowerCase().indexOf(val.toLowerCase()) > -1);
 

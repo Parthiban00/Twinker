@@ -20,6 +20,10 @@ export default class Restaurant{
      Longitude:number=0;
      Distance:number=0;
      Offer:Boolean;
-     AvailableStatus:Boolean
+     AvailableStatus:Boolean;
+     OfferDescription:String;
+     Sort:Number;
+     Type:String;
+     Charges:number
 
  }

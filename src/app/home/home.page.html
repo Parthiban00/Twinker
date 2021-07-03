@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
-      Foods
+      {{type}}
     </ion-title>
     <ion-buttons slot="end">
 <ion-button (click)="RedirectToHome()">
@@ -17,7 +17,7 @@
     <img src="assets\orange_banner2.jpg" />
     <div class="caption ion-padding">
       Find your Favourite...<br>
-     <i> Restaurants | Hotels | Home Mades </i>
+     <i> Restaurants | Hotels | Home Mades | Juice Corners </i>
     </div>
 
 
@@ -54,7 +54,7 @@
 
 
       </div>
-<div class="veg">
+<div class="veg" *ngIf="type=='Food'">
 
   <ion-label>Veg Only</ion-label>
       <ion-toggle class="veg-only" color="secondary" [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)"></ion-toggle>
@@ -81,7 +81,7 @@
   <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div>
 
   <div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
-    <ion-item (click)="RestaurntClick(item.RestaurantName,item._id)">
+    <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
         <img style="border-radius: 2px;" src="assets\rest2.jpg">
       </ion-thumbnail>

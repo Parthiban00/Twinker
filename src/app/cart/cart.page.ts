@@ -38,7 +38,7 @@ totalAmount1;
 AmountWithCharges;
   taxesAndCharges=0;
   deliveryPartnerFee:number;
-  Charges:number=10;
+  Charges:number;
 itemAmount;
 actualAmount=0;
 selectedLocation:any;
@@ -156,7 +156,7 @@ var restaurantCredential={
       this.dismiss();
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
-
+this.Charges=this.restaurantDetails[0].Charges;
 
 
 
@@ -559,7 +559,9 @@ console.log("distance d "+ d);
 
 
             this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
-this.totalAmount=this.itemAmount+this.deliveryPartnerFee+this.taxesAndCharges;
+           // console.log("Amount with chargers "+this.AmountWithCharges )
+this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
+//console.log("total amount"+this.totalAmount);
 this.totalAmount1=this.totalAmount.toFixed(2);
 
 
@@ -573,7 +575,8 @@ this.dismiss();
             this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
             this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
-            this.totalAmount=this.AmountWithCharges+this.deliveryPartnerFee+this.taxesAndCharges;
+            this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
+            //console.log("total amount"+this.totalAmount);
             this.totalAmount1=this.totalAmount.toFixed(2);
 
 

@@ -32,6 +32,7 @@ registeredUserStatus:boolean=false;
 firstName;
 password;
 users:Login[]=[];
+otpType;
   constructor(private loadingCtrl:LoadingController,private toastCtrl:ToastController,private activatedRouter:ActivatedRoute,private router:Router,private otpService:OtpVerificationService,private registerUserService:RegisterUserService) { }
 
   ngOnInit() {
@@ -39,7 +40,9 @@ users:Login[]=[];
     this. password=this.activatedRouter.snapshot.params.password;
      this.firstName=this.activatedRouter.snapshot.params.firstName;
     this.UserType=this.activatedRouter.snapshot.params.userType;
+    this.otpType=this.activatedRouter.snapshot.params.otpType;
     console.log("mobile is "+this.mobileNo);
+    console.log("otp Type "+this.otpType);
     this.setIpFocus();
     this.gfg();
   }
@@ -129,6 +132,7 @@ checkOTP(){
 
 RegisterUser(){
  // this.present();
+ if(this.otpType=='New'){
       const registeruser={
         FirstName:this.firstName,
         LastName:"",
@@ -170,17 +174,14 @@ RegisterUser(){
   this.deliveryLocation=res as DeliveryLocations[];
         })
   this.status="Register User Successfull..."
- // localStorage.setItem("currentUser",JSON.stringify(this.users));
-      // this. presentToast(this.status)
-        // this._snackBar.openFromComponent(SnackBarComponent, {
-        //   duration: this.durationInSeconds * 1000,
-        //   data:"User Registered Successful"
 
-        // });
-      //  this.dismiss();
         this.router.navigate(['login/'+list.MobileNo+'/'+list.Password]);
-      // this.router.navigate(['home-page']);
+
       });
+    }
+    else{
+      this.router.navigate(['login/'+this.mobileNo+'/'+this.password]);
+    }
   }
 
   gfgf(){

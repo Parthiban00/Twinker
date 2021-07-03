@@ -148,18 +148,30 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
         app.post('/restaurants',(req,res)=>{
 
 console.log("save restaurant");
-            (new Restaurant ({'RestaurantName': req.body.RestaurantName,'RestaurantNickName':req.body.RestaurantNickName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'RestaurantType':req.body.RestaurantType,'RestaurantStatus':req.body.RestaurantStatus,'OrderStatus':req.body.OrderStatus,'DineinStatus':req.body.DineinStatus,'AvailableDays':req.body.AvailableDays,'OpenTime':req.body.OpenHr,'CloseTime':req.body.CloseHr,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Latitude':req.body.Latitude,'Longitude':req.body.Longitude,'Distance':req.body.Distance,'Offer':req.body.Offer,'AvailableStatus':req.body.AvailableStatus,'OfferDescription':req.body.OfferDescription,'UserId':req.body.UserId,'Sort':req.body.Sort}))
+            (new Restaurant ({'RestaurantName': req.body.RestaurantName,'RestaurantNickName':req.body.RestaurantNickName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'RestaurantType':req.body.RestaurantType,'RestaurantStatus':req.body.RestaurantStatus,'OrderStatus':req.body.OrderStatus,'DineinStatus':req.body.DineinStatus,'AvailableDays':req.body.AvailableDays,'OpenTime':req.body.OpenHr,'CloseTime':req.body.CloseHr,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Latitude':req.body.Latitude,'Longitude':req.body.Longitude,'Distance':req.body.Distance,'Offer':req.body.Offer,'AvailableStatus':req.body.AvailableStatus,'OfferDescription':req.body.OfferDescription,'UserId':req.body.UserId,'Sort':req.body.Sort,'Type':req.body.Type}))
             .save()
             .then((restaurants)=> res.send(restaurants))
             .catch((error)=>console.log(error));
 
         });
 
+
+
         app.get('/restaurants',(req,res)=>{
 
           console.log('get restaurants entered');
 
             Restaurant.find({'ActiveYn':true,'DeleteYn':false})
+            .then(restaurants=>res.send(restaurants))
+            .catch((error)=>console.log(error));
+        });
+
+
+        app.get('/restaurants/:ActiveYn/:Type',(req,res)=>{
+
+          console.log('get restaurants entered');
+
+            Restaurant.find({'ActiveYn':true,'DeleteYn':false,'ActiveYn':req.params.ActiveYn,'Type':req.params.Type})
             .then(restaurants=>res.send(restaurants))
             .catch((error)=>console.log(error));
         });

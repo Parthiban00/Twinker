@@ -36,7 +36,7 @@ restaurantName:string="";
 unit="K";
 coord:any;
 user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
+type:string;
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
@@ -56,9 +56,11 @@ user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   ionViewWillEnter(){
    // this.dismiss();
 
+
     this.present();
 
-
+    this.type=this.activatedRouter.snapshot.params.type;
+    console.log(this.type);
 
     navigator.geolocation.getCurrentPosition((position:any)=>{
 
@@ -91,10 +93,13 @@ this.searchHotel="";
 
     })
 
+var getRest={
+ActiveYn:true,
+Type:this.type
+}
 
 
-
-    this.restaurantService.GetRestaurants().subscribe((res)=>{
+    this.restaurantService.GetRestaurants1(getRest).subscribe((res)=>{
 
 
       this.restaurantDetails=res as Restaurant[];
@@ -166,9 +171,16 @@ this.searchHotel="";
     }
   }
 
-  RestaurntClick(restaurantName:String,restaurantId:any){
-    console.log(restaurantName);
-   this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId]);
+  RestaurntClick(restaurantName:String,restaurantId:any,status:boolean){
+    console.log(restaurantName+''+status);
+
+   if(status){
+    this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId+'/'+this.type]);
+   }
+   else{
+
+   }
+
   }
 
 

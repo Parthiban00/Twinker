@@ -9,6 +9,14 @@ export class RestaurantsService {
   constructor(private webService:WebService) { }
 
   GetRestaurants(){
+
     return this.webService.get('restaurants');
   }
+
+  GetRestaurants1(data:any){
+
+    return this.webService.get(`restaurants/${data.ActiveYn}/${data.Type}`);
+  }
+
+
 }
