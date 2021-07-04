@@ -7,6 +7,16 @@ import { Platform } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
+import Tokens from '../models/tokens';
+
+import {
+  ActionPerformed,
+  PushNotificationSchema,
+  PushNotifications,
+  Token,
+} from '@capacitor/push-notifications';
+
+
 
 @Component({
   selector: 'app-home-page',
@@ -23,6 +33,7 @@ export class HomePagePage implements OnInit,OnDestroy {
   currentUrl:any;
   cartItemsAll:Cart[]=[];
   orderStatus:String;
+  tokens:Tokens[]=[];
   constructor(private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 
@@ -54,10 +65,80 @@ export class HomePagePage implements OnInit,OnDestroy {
       console.log('this is '+this.userType);
     }
   }
-
+token:String;
   ngOnInit() {
 
+    // -------------------------------------------------------------------------------Push notificaion start--------------------------
+    console.log('Initializing HomePage');
 
+    // Request permission to use push notifications
+    // iOS will prompt user and return if they granted permission or not
+    // Android will just grant without prompting
+    PushNotifications.requestPermissions().then(result => {
+      if (result.receive === 'granted') {
+        // Register with Apple / Google to receive push via APNS/FCM
+        PushNotifications.register();
+      } else {
+        // Show some error
+      }
+    });
+
+    // On success, we should be able to receive notifications
+    PushNotifications.addListener('registration',
+      (token: Token) => {
+        //alert('Push registration success, token: ' + token.value);
+        console.log("token value   "+token.value);
+        var data={
+          Token:token.value
+        }
+
+        this.ordersService.GetTokens(data).subscribe((res)=>{
+          this.tokens=res as Tokens[];
+          console.log("get tokes  "+this.tokens.length);
+
+
+         if(this.tokens.length){
+          console.log("token already registered");
+
+        }else{
+         console.log("token not saved yet");
+    this.ordersService.SaveTokens(data).subscribe((res)=>{
+     console.log("token saved successful");
+    })
+        }
+
+
+
+
+             });
+
+      }
+    );
+
+    // Some issue with our setup and push will not work
+    PushNotifications.addListener('registrationError',
+      (error: any) => {
+       // alert('Error on registration: ' + JSON.stringify(error));
+      }
+    );
+
+    // Show us the notification payload if the app is open on our device
+    PushNotifications.addListener('pushNotificationReceived',
+      (notification: PushNotificationSchema) => {
+      //  alert('Push received: ' + JSON.stringify(notification));
+      }
+    );
+
+    // Method called when tapping on a notification
+    PushNotifications.addListener('pushNotificationActionPerformed',
+      (notification: ActionPerformed) => {
+       // alert('Push action performed: ' + JSON.stringify(notification));
+      }
+    );
+
+
+
+// -------------------------------------------------------------------------------Push notificaion end--------------------------
 
    this.currentUrl=this.router.url;
 

@@ -17,4 +17,13 @@ export class OrdersService {
    GetFilteredOders(data:any){
      return this.webService.get(`orderdetails/${data.ActiveYn}/${data.DeleteYn}/${data.RestaurantId}/${data.CreatedDate}`);
    }
+
+   GetTokens(data:any){
+    console.log("get toketn servercice  "+data.Token);
+   return this.webService.get(`tokens/${data.Token}`);
+  }
+
+  SaveTokens(data:any){
+   return this.webService.post('tokens',data);
+  }
 }

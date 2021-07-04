@@ -9,6 +9,7 @@ import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -20,6 +21,7 @@ export class AppComponent {
   times: any;
   subscribe: any;
   constructor(private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
+
     this.splashScreen.show();
 
 
@@ -34,6 +36,7 @@ export class AppComponent {
 
 
   }
+
 
   this.times = Date.now();
   this.chckAppGpsPermission();

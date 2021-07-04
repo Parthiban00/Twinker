@@ -7,6 +7,9 @@ import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
 import { LoadingController } from '@ionic/angular';
 import { IonSearchbar } from '@ionic/angular';
+
+
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "833288842126",
+    "project_id": "twinker-70d21",
+    "storage_bucket": "twinker-70d21.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833288842126:android:b2a81bdcb7ef86f5fd12df",
+        "android_client_info": {
+          "package_name": "com.twinkersvg.herokuapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833288842126-i36307fnsr4t11r1jspc8r2rfefjv8bf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHXfE141_br9Sdlv_IJiAhBxVddYJCGws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833288842126-i36307fnsr4t11r1jspc8r2rfefjv8bf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -5,7 +5,7 @@ const mongoose = require('./database/mongoose');
 const fast2sms = require('fast-two-sms')
 const List= require ('./database/models/list');
 const Task= require ('./database/models/task');
-
+const Tokens=require('./database/models/tokens');
 const Register= require ('./database/models/register-user');
 const Restaurant = require('./database/models/restaurant');
 const MainMenu = require('./database/models/main-menu');
@@ -155,6 +155,24 @@ console.log("save restaurant");
 
         });
 
+        app.post('/tokens',(req,res)=>{
+
+          console.log("save tokens");
+                      (new Tokens ({'Token': req.body.Token}))
+                      .save()
+                      .then((tokens)=> res.send(tokens))
+                      .catch((error)=>console.log(error));
+
+                  });
+
+                  app.get('/tokens/:Token',(req,res)=>{
+
+                    console.log('get tokens');
+
+                      Tokens.find({'Token':req.params.Token})
+                      .then(tokens=>res.send(tokens))
+                      .catch((error)=>console.log(error));
+                  });
 
 
         app.get('/restaurants',(req,res)=>{
