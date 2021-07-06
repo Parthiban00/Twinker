@@ -189,9 +189,20 @@ console.log("save restaurant");
 
           console.log('get restaurants entered');
 
+          if(req.params.ActiveYn=="true" || req.params.ActiveYn=="false" ){
             Restaurant.find({'ActiveYn':true,'DeleteYn':false,'ActiveYn':req.params.ActiveYn,'Type':req.params.Type})
             .then(restaurants=>res.send(restaurants))
             .catch((error)=>console.log(error));
+          }
+          else{
+            console.log('hi '+req.params.ActiveYn);
+
+            Restaurant.find({UserId:req.params.ActiveYn})
+            .then(restaurants=>res.send(restaurants))
+            .catch((error)=>console.log(error));
+          }
+
+
         });
 
         app.get('/restaurants/:restId',(req,res)=>{
@@ -370,7 +381,7 @@ console.log("save restaurant");
                                 .catch((error)=>console.log(error));
                             });
 
-                            app.get('/restaurants/:userId/:activeYn',(req,res)=>{
+                            app.get('/restaurants/orders/:userId/:activeYn',(req,res)=>{
                                 console.log('hi '+req.params.userId);
 
                                 Restaurant.find({UserId:req.params.userId})
