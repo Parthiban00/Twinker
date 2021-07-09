@@ -135,6 +135,10 @@ const routes: Routes = [
     loadChildren: () => import('./orders-delivery-admin/orders-delivery-admin.module').then( m => m.OrdersDeliveryAdminPageModule),
     canActivate:[AuthenticationGuard]
   },
+  {
+    path: 'delivery-location',
+    loadChildren: () => import('./delivery-location/delivery-location.module').then( m => m.DeliveryLocationPageModule)
+  },
 
 
 

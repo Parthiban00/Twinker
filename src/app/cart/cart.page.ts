@@ -41,6 +41,7 @@ AmountWithCharges;
   Charges:number;
 itemAmount;
 actualAmount=0;
+menuAmount=0;
 selectedLocation:any;
   reverseGeocodingResults:any;
   lat:any;
@@ -172,6 +173,7 @@ this.Charges=this.restaurantDetails[0].Charges;
 
 
       for(var i=0;i<this.cartItemsAll.length;i++){
+
         itemTotal+=this.cartItemsAll[i].Amount;
         itemActual+=this.cartItemsAll[i].ActualAmount;
         this.itemAmount=itemTotal;
@@ -429,9 +431,16 @@ this.present();
 
 
   PlaceOrder(){
-    //console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
+    var d = new Date(); // for now
+d.getHours(); // => 9
+d.getMinutes(); // =>  30
+d.getSeconds(); // => 51
+
+this.presentAlertConfirm1();
+
+
     this.present();
-//this.selectedLocation="idayamelur,sivaganga,tamilnadu";
+
     if(this.selectedLocation=="" || this.selectedLocation==undefined || this.selectedLocation==null){
       this.dismiss();
       this.presentAlertConfirm1();
@@ -584,7 +593,7 @@ this.dismiss();
            }
            else{
              this.dismiss();
-             this.presentAlertConfirm2();
+             //this.presentAlertConfirm2();
            }
           //
    // return d;
@@ -771,6 +780,8 @@ this.presentActionSheet();
     await alert.present();
   }
 
+
+
   async presentToast() {
     const toast = await this.toastController.create({
       message: "Order Placed Successfull...",
@@ -830,7 +841,7 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
 
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Ooooh!',
+      header: 'Ooops!',
       message: '<small>Make sure gps location on your device. We cannot take your delivery location automatically. kindly <strong>Click Okay</strong> to try again.</small>',
       buttons: [
 
@@ -860,7 +871,7 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
 //this.dismiss();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
-      header: 'Ooooh!',
+      header: 'Ooops!',
       message: '<small>We cannot fetch your Delivery Details. kindly <strong>Click Okay</strong> to try again...</small>',
       buttons: [
 
@@ -1068,6 +1079,10 @@ this.dismiss();
   }
 
   DecreaseItem(i:number,menuId:String){
+
+  }
+
+  PaymentPage(){
 
   }
 }

@@ -70,7 +70,7 @@ this.network.onDisconnect().subscribe(() => {
         }
       },
       err => {
-        alert(err);
+      //  alert(err);
       }
     );
   }
@@ -85,7 +85,7 @@ this.network.onDisconnect().subscribe(() => {
               this.requestToSwitchOnGPS();
             },
             error => {
-              alert(error)
+             // alert(error)
             }
           );
       }

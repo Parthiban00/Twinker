@@ -72,22 +72,28 @@
     </ion-card>
     </div>
     <div class="cart-items">
+      <ion-card-subtitle style="margin-left: 10px;margin-top: 10px;">Items :</ion-card-subtitle>
   <ion-card *ngFor="let cartItem of cartItemsAll; let i=index">
-    <div class="offers" *ngIf="cartItem.Offer">
+
+    <!-- <div class="offers" *ngIf="cartItem.Offer">
       -&nbsp;{{cartItem.Offer}}% Off
-      </div>
+      </div> -->
     <ion-card-content>
       <div class="item-img">
-        <img src="assets\menu.jpg" />
+        <!-- <img src="assets\menu.jpg" /> -->
+        <ion-icon fill="clear" name="cart"></ion-icon>
       </div>
 
       <div class="item-info">
         <p>{{cartItem.ProductName}}</p>
 
+
       <div class="price">
         <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.Price}}.0</p>
            <p *ngIf="cartItem.Offer">Rs.{{cartItem.Price}}.0</p></div>
-
+<div class="amount">
+  <ion-label>Rs.&nbsp;{{cartItem.Amount}}.0</ion-label>
+</div>
       <div class="qty-selector" >
 <ion-button fill="clear" [disabled]="!cartItem.ItemCount" (click)="DecreaseCount(i)">-</ion-button>
 <ion-label>{{cartItem.ItemCount}}</ion-label>
@@ -216,14 +222,15 @@
 </ion-content>
 
 <ion-footer  *ngIf="cartItemsAll.length">
-  <ion-toolbar color="primary">
+  <ion-toolbar >
     <!-- <ion-title>4 Items</ion-title> -->
 
     <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
     <ion-text class="description">Amount Rs:{{totalAmount1}}</ion-text>
 
 
-    <ion-button color="secondary" slot="end" (click)="PlaceOrder()" >Place Order<ion-icon slot="end" name="cart"></ion-icon></ion-button>
+    <!-- <ion-button color="secondary" slot="end" (click)="PlaceOrder()" >Proceed to Pay<ion-icon slot="end" name="cart"></ion-icon></ion-button> -->
+    <ion-button color="success"  slot="end" (click)="PaymentPage()" >Proceed to Pay</ion-button>
   </ion-toolbar>
 </ion-footer>
 

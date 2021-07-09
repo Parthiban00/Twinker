@@ -122,12 +122,17 @@ app.delete('/lists/:listId/tasks/:taskId', (req,res)=>{
 
         app.post('/userregisters',(req,res)=>{
             console.log("enters backend");
+if(req.body.UserType=='D'){
+
+}
+else{
+
 
             (new Register ({'FirstName': req.body.FirstName,'LastName':req.body.LastName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'Address1':req.body.Address1,'Address2':req.body.Address2,'Address3':req.body.Address3,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn}))
             .save()
             .then((userregisters)=> res.send(userregisters))
             .catch((error)=>console.log(error));
-
+          }
         })
 
 
