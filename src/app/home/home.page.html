@@ -1,64 +1,74 @@
  <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
+  <ion-toolbar  no-border>
       <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button color="primary"></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
       {{type}}
     </ion-title>
     <ion-buttons slot="end">
 <ion-button (click)="RedirectToHome()">
-<ion-icon name="home"></ion-icon>
+<ion-icon  color="primary" name="home"></ion-icon>
 </ion-button>
     </ion-buttons>
   </ion-toolbar>
 
-  <div class="banner">
-    <img src="assets\orange_banner2.jpg" />
-    <div class="caption ion-padding">
-      Find your Favourite...<br>
-     <i> Restaurants | Hotels | Home Mades | Juice Corners </i>
-    </div>
 
 
-    <div class="search">
 
-        <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
 
-      <!-- </ion-item > -->
-    </div>
 
-      </div>
 <div class="ad-slides">
-      <ion-slides [options]="option" class="ion-margin-top">
-         <ion-slide>
+
+      <!-- <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
+         <ion-slide style="padding:0px;width: fit-content;">
            <ion-card>
-             <img src="assets/burger1.jpg">
+             <div class="slide-menu">
+            <div class="menu-name">
+              Full Grill
+              </div>
+
+               <div class="rate">
+                 Rs. 350 Only
+                 </div>
+                 <div class="hotel-name">
+                   <p>Swathi Mess</p>
+                   </div>
+                   </div>
+             <img src="assets/Grill.jpg">
+
            </ion-card>
-         </ion-slide>
-         <ion-slide>
+         </ion-slide >
+         <ion-slide style="padding:0px;width: fit-content;">
           <ion-card>
-            <img src="assets/banner2.jpg">
+            <img src="assets/biriyani1.jpg">
           </ion-card>
         </ion-slide>
-        <ion-slide>
+        <ion-slide style="padding:0px;width: fit-content;">
           <ion-card>
-            <img src="assets/banner3.jpg">
+            <img src="assets/chicken_rice.jpg">
           </ion-card>
         </ion-slide>
 
 
 
-      </ion-slides>
+      </ion-slides> -->
+<div style="position: relative;">
+      <div class="search">
 
+        <ion-searchbar   debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
 
+        <div class="veg" *ngIf="type=='Food'">
+
+          <ion-label>Veg</ion-label>
+              <ion-toggle class="veg-only" color="secondary" [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)"></ion-toggle>
+            </div>
+    </div>
+    </div>
 
       </div>
-<div class="veg" *ngIf="type=='Food'">
 
-  <ion-label>Veg Only</ion-label>
-      <ion-toggle class="veg-only" color="secondary" [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)"></ion-toggle>
-    </div>
+
 </ion-header>
 
 
@@ -104,14 +114,14 @@
 
 
   <ion-footer *ngIf="cartItemsAll.length">
-    <ion-toolbar color="primary">
+    <ion-toolbar>
 
 
       <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
       <ion-text class="description">from from {{restaurantName}}</ion-text>
 
 
-      <ion-button color="secondary" slot="end" (click)="viewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
+      <ion-button color="primary" slot="end" (click)="viewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
     </ion-toolbar>
   </ion-footer>
 

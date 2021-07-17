@@ -59,6 +59,8 @@
   </ion-refresher>
   <div  *ngIf="default=='Delivery'">
 
+    <ion-button disabled (click)="CustomizeDeliveryDetails()" style="width: calc(100% - 20px);margin-left: 10px;margin-top: 10px;" color="primary">Schedule Delivery (soon...)</ion-button>
+
     <div class="deliverylocation">
     <ion-card>
       <ion-card-header>
@@ -71,6 +73,7 @@
       </ion-card-content>
     </ion-card>
     </div>
+
     <div class="cart-items">
       <ion-card-subtitle style="margin-left: 10px;margin-top: 10px;">Items :</ion-card-subtitle>
   <ion-card *ngFor="let cartItem of cartItemsAll; let i=index">
@@ -86,7 +89,7 @@
 
       <div class="item-info">
         <p>{{cartItem.ProductName}}</p>
-
+<p style="width: 250px;">{{cartItem.Description}}</p>
 
       <div class="price">
         <p [ngClass]="cartItem.Offer?'offer-price':''">Rs.{{cartItem.Price}}.0</p>
@@ -117,7 +120,7 @@
           <ion-card-header>
   <div class="main" >
 
-    <img src="assets/suggestion1.jpg">
+    <img src="assets/menu.jpg">
   </div>
   <!-- <img class="foods-row" src="assets/foods_row.png"> -->
 
@@ -151,10 +154,10 @@
       <img src="assets\bill_details.png">
       <div class="content">
       <ion-row>
-       <ion-col style="font-size: 16px;">
+       <ion-col style="font-weight: 500;">
           Bill Details
           </ion-col >
-          <ion-col  style="font-size: 16px;"> Cost(Rs.)</ion-col>
+          <ion-col  style="font-weight: 500;"> Cost(Rs.)</ion-col>
 
       </ion-row>
 
@@ -177,7 +180,10 @@
         <ion-col>{{deliveryPartnerFee1}}</ion-col>
       </ion-row>
 
-
+      <ion-row>
+        <ion-col>Discount</ion-col>
+        <ion-col>{{discount}}%</ion-col>
+      </ion-row>
 
       <ion-row style="font-weight: 500;"><ion-col>To Pay</ion-col>
         <ion-col>{{totalAmount1}}</ion-col>
@@ -185,6 +191,25 @@
 
       </div>
     </div>
+
+
+    <div class="coupon">
+      <ion-card>
+
+        <ion-card-content>
+          <form #loginForm="ngForm" >
+            <ion-item   >
+            <ion-label position="floating">Coupon Code...</ion-label>
+    <ion-input [disabled]="applied" name="coupon" [(ngModel)]="coupon" #coupon1="ngModel" minlength="5" maxlength="10" ngModel></ion-input>
+
+  </ion-item>
+  <small *ngIf="!couponPresent" style="color:crimson;">Invalid or Coupon expired...</small>
+  <small *ngIf="couponApplied" style="color: seagreen;">Coupon Applied...</small>
+  <ion-button color="primary" [disabled]="applied" id="applybtn" (click)="ApplyCoupon()">Apply</ion-button>
+  </form>
+        </ion-card-content>
+      </ion-card>
+      </div>
   </div>
 
 
@@ -230,7 +255,7 @@
 
 
     <!-- <ion-button color="secondary" slot="end" (click)="PlaceOrder()" >Proceed to Pay<ion-icon slot="end" name="cart"></ion-icon></ion-button> -->
-    <ion-button color="success"  slot="end" (click)="PaymentPage()" >Proceed to Pay</ion-button>
+    <ion-button color="success"  slot="end" (click)="PlaceOrder()" >Place Order</ion-button>
   </ion-toolbar>
 </ion-footer>
 

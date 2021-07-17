@@ -31,6 +31,10 @@ export default class Orders{
     };
     DeliveryPartnerStatus:String;
     ActualAmount:number;
+    Discount:number;
+DiscountDescription:string;
+DiscountCode:string;
+CreatedTime;
 
  }
 

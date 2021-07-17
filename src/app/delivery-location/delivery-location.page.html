@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
+  <ion-toolbar  no-border>
       <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
       </ion-buttons>
@@ -14,7 +14,24 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+
+
+
+<ion-content [fullscreen]="true">
+ <ion-card>
+   <div #mapElement class="map"></div>
+   <ion-card-header>
+     <ion-card-subtitle>Destination</ion-card-subtitle>
+     <ion-card-title>Madison, Wi</ion-card-title>
+
+   </ion-card-header>
+ <ion-card-content>
+Address:
+ </ion-card-content>
+
+  </ion-card>
+
+
 
 </ion-content>
 

@@ -8,7 +8,7 @@ import { Platform } from '@ionic/angular';
 import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
-
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
 @Component({
   selector: 'app-root',
@@ -20,10 +20,69 @@ export class AppComponent {
   locCords: any;
   times: any;
   subscribe: any;
-  constructor(private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
+  lat;
+  lon;
+  selectedLocation:any;
+  reverseGeocodingResults:any;
+  location;
+  constructor(private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
 
     this.splashScreen.show();
 
+
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+
+    if(!localStorage.getItem('currentUser')){
+      console.log("no");
+
+          }
+          else{
+
+            this.router.navigate(['home-page']);
+            console.log("yes");
+
+
+          }
+    this.geolocation.getCurrentPosition({
+
+      timeout:10000,
+      enableHighAccuracy:true
+    }).then((resp) => {
+
+      this.lat=resp.coords.latitude;
+      this.lon=resp.coords.longitude;
+      console.log(this.lat+'-'+this.lon);
+
+
+setTimeout(() => {
+  const getAddress= this.ReverseGeocoding(this.lat,this.lon);
+  this.selectedLocation=getAddress;
+  console.log("dsfadgdfsgsdfgfsd"+getAddress);
+  var locationAddress={
+    lat:this.lat,
+    lon:this.lon,
+    address:this.selectedLocation
+  }
+  if(this.location==undefined || this.location==null || this.location==""){
+    localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
+  }
+  else{
+
+  }
+
+}, 2000);
+
+
+
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+
+     let watch = this.geolocation.watchPosition();
+     watch.subscribe((data) => {
+
+
+     });
 
 
     //this.splashScreen.hide();
@@ -57,6 +116,25 @@ this.network.onDisconnect().subscribe(() => {
   }
 
 
+
+
+  ReverseGeocoding(lat:any,lon:any){
+
+    //this.present();
+      var options:NativeGeocoderOptions={
+        useLocale:true,
+        maxResults:1
+      }
+        this.nativeGeocoder.reverseGeocode(lat,lon,options).then((results)=>{
+    this.reverseGeocodingResults=JSON.stringify(results[0]);
+
+    this.selectedLocation=JSON.stringify(results[0].thoroughfare).replace(/"/g, "")+','+JSON.stringify(results[0].locality).replace(/"/g, "")+','+JSON.stringify(results[0].subAdministrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].administrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].countryName).replace(/"/g, "")+','+JSON.stringify(results[0].countryCode).replace(/"/g, "");
+
+
+    return this.selectedLocation;
+    //this.dismiss();
+    })
+      }
 
 
 
@@ -237,6 +315,12 @@ this.network.onDisconnect().subscribe(() => {
 
     await alert.present();
   }
+
+
+
+
+
+
 
 
 

@@ -77,4 +77,17 @@ return this.webService.patch('carts',data);
    // console.log("rest id   "+data.RestaurantId)
    return this.webService.get('orderdetails');
   }
+
+  GetAllCoupons(){
+    // console.log("rest id   "+data.RestaurantId)
+    var data=true
+    return this.webService.get(`coupons/${data}`);
+   }
+   GetOneCoupons(data){
+    // console.log("rest id   "+data.RestaurantId)
+
+    return this.webService.get(`coupons/${data.code}/${data.activeYn}/${data.validTo}`);
+   }
+
+
 }

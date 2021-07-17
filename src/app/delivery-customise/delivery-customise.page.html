@@ -1,0 +1,81 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar  no-border>
+
+    <ion-title style="font-family: lato;">
+      Customize Delivery Details
+    </ion-title>
+    <ion-buttons slot="end">
+<ion-button>
+<ion-icon name="home"></ion-icon>
+</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+<ion-content [fullscreen]=true>
+  <ion-card style="position: relative;">
+    <ion-card-header>
+      <ion-card-subtitle>
+        Continuous Delivery
+      </ion-card-subtitle>
+      <ion-toggle [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)" style="position:absolute;right:10px;bottom:10px"></ion-toggle>
+    </ion-card-header>
+    <ion-card-content >
+
+
+      <mat-form-field appearance="fill" class="example-form-field">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [min]="today" [rangePicker]="rangePicker" [disabled]="!isToggle">
+          <input matStartDate (dateChange)="GetStartDate($event)"  placeholder="Start date">
+          <input matEndDate  (dateChange)="GetEndDate($event)" placeholder="End date">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #rangePicker>
+          <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel>Cancel</button>
+            <button mat-raised-button color="primary" matDateRangePickerApply>Apply</button>
+          </mat-date-range-picker-actions>
+        </mat-date-range-picker>
+
+
+
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>TIMEPICKER</mat-label>
+
+        <!-- The timepicker input -->
+        <input matTimepicker #t="matTimepicker" #time="ngModel"
+          [strict]="false" id="timepicker-example" mode="24h" [ngModel]="defaultValue"
+          placeholder="Please select time..." name="time"
+          (timeChange)="timeChangeHandler($event)"   [disabled]="!isToggle">
+
+        <!-- An icon for the timepicker input that will open the timepicker dialog when clicked -->
+        <mat-icon matSuffix (click)="t.showDialog()">access_time</mat-icon>
+
+        <!-- Error that will be shown when the input date is invalid -->
+        <mat-error *ngIf="time.touched && time.invalid">Invalid Date</mat-error>
+      </mat-form-field>
+
+    </ion-card-content>
+  </ion-card>
+  <ion-card style="position: relative;" >
+    <ion-card-header>
+      <ion-card-subtitle>
+       Exact Delivery Date & Time
+      </ion-card-subtitle>
+      <!-- <p style="position:absolute;right:20px;bottom:5px">Now</p> -->
+      <!-- <ion-button [(ngModel)]="deliveryTime" [disabled]="isToggle"  style="position:absolute;right:20px;bottom:5px">{{deliveryTime}}</ion-button> -->
+    </ion-card-header>
+    <ion-card-content >
+
+      <mat-form-field>
+        <input matInput (dateChange)="GetExactDate($event)" [ngxMatDatetimePicker]="picker" placeholder="Choose a date & time"  [min]="today" [disabled]="isToggle" [(ngModel)]="myDatePicker">
+
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+
+        <ngx-mat-datetime-picker #picker [enableMeridian]="true"></ngx-mat-datetime-picker>
+    </mat-form-field>
+
+    </ion-card-content>
+  </ion-card>
+<ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;" (click)="ApplyDeliveryDetails()">Apply</ion-button>
+<ion-button color="danger" style="width:calc(100% - 20px); margin-left: 10px;" >Cancel</ion-button>
+</ion-content>

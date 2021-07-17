@@ -24,7 +24,7 @@ export class LoginPage implements OnInit {
 
 
 
-
+coupon;
   availability:Boolean=false;
   registeredUsers:Register[]=[];
   showPassword=false;
@@ -319,4 +319,6 @@ GetRegisteredUsers(){
     console.log("Availability "+this.availability);
 
   }
+
+
 }

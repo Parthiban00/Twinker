@@ -202,7 +202,7 @@
             margin:70px 5px 5px 5px;
             position: relative;
 img{
-  height: 250px;
+  height: 280px;
 
 }
 
@@ -213,14 +213,14 @@ img{
             top: 5px;
 
             font-size: 16px;
-            color: rgb(255, 255, 255);
+            color: black;
            padding-left: 5px;
            }
 
 
 
             ion-row{
-                color: rgb(255, 255, 255);
+                color: black;
                 font-size: 14px;
 
 
@@ -251,6 +251,32 @@ margin-top: -15px;
 
     }
   }
+ }
+
+ .coupon{
+
+position: relative;
+   margin-top: -40px;
+
+  ion-card{
+
+    ion-card-content{
+
+margin-top: -20px;
+
+ion-item{
+  width: 200px;
+}
+ion-button{
+  position: absolute;
+  right: 10px;
+  top: 35px;
+}
+
+    }
+  }
+
+
  }
 
 
@@ -352,4 +378,22 @@ margin-left: 15px;
 }
 .proceed{
 
+}
+
+
+
+// ----------------------------------delivery customizable------------------------
+
+/* DOES NOT WORK - not specific enough */
+.modal-wrapper {
+  background: #222;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class .modal-wrapper {
+  background: #222;
+}
+
+.my-custom-class {
+  --background: #222;
 }

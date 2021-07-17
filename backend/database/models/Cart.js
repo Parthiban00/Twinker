@@ -97,6 +97,9 @@ const TaskSchema = new mongoose.Schema({
 
   ActualAmount:{
     type:Number
+  },
+  Description:{
+    type:String
   }
 
 });

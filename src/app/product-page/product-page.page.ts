@@ -184,8 +184,8 @@ segmentChanged(ev: any) {
   let date: Date = new Date();
 
 
-
-   this.products[i].ItemCount=this.products[i].ItemCount+1;
+console.log("dsfasdfasf"+i);
+  this.products[i].ItemCount=this.products[i].ItemCount+1;
    if(this.products[i].Offer){
    this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
    this.products[i].ActualAmount=this.products[i].OfferPrice*this.products[i].ItemCount;
@@ -220,7 +220,8 @@ segmentChanged(ev: any) {
     Offer:this.products[i].Offer,
     OfferDescription:this.products[i].OfferDescription,
     Commission:this.products[i].Commission,
-    ActualAmount:this.products[i].ActualAmount
+    ActualAmount:this.products[i].ActualAmount,
+    Description:this.products[i].Description
 
 
 
@@ -371,7 +372,8 @@ this.present();
     Offer:this.products[i].Offer,
     OfferDescription:this.products[i].OfferDescription,
     Commission:this.products[i].Commission,
-    ActualAmount:this.products[i].ActualAmount
+    ActualAmount:this.products[i].ActualAmount,
+    Description:this.products[i].Description,
    }
 
    if(this.products[i].Offer){

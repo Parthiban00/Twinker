@@ -7,6 +7,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 declare const L:any;
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
+import {OwnersService} from 'src/app/owners.service';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -17,14 +18,16 @@ export class OrdersPage implements OnInit {
   isLinear = false;
   itemDetails:any[]=[];
   itemDetails1:any[]=[];
+  itemDetails2:any[]=[];
   panelOpenState = false;
 orderDetails:Orders[]=[];
 orderDetails1:Orders[]=[];
+orderDetails2:Orders[]=[];
 default:string="";
 isLoading = false;
 user:any;
 
-  constructor(private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
+  constructor(private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
 
     this.default="Placed";
    }
@@ -81,6 +84,31 @@ this.ordersService.GetPlacedOrders(getOrders1).subscribe((res)=>{
   console.log("ite detailassss   "+ this.itemDetails[0]);
   this.dismiss();
      })
+
+
+     var getOrders2={
+      Status:"Canceled by Customer",
+      ActiveYn:true,
+      UserId:this.user[0]._id
+    }
+
+     this.ordersService.GetPlacedOrders(getOrders2).subscribe((res)=>{
+      this.orderDetails2=res as Orders[];
+      console.log('completed orders: '+this.orderDetails2);
+
+
+      for(var i=0;i<this.orderDetails2.length;i++){
+
+
+        for(var j=0;j<this.orderDetails2[i].ItemDetails.length;j++){
+
+      this.itemDetails2.push(this.orderDetails2[i].ItemDetails[j])
+        }
+      }
+
+      console.log("ite detailassss   "+ this.itemDetails[0]);
+      this.dismiss();
+         })
 
 
 }
@@ -178,6 +206,28 @@ console.log("Order details is clicked");
   async dismiss() {
     this.isLoading = false;
     return await this.loadingController.dismiss().then(() => console.log('dismissed'));
+  }
+
+
+  CancelOrder(id:any,restaurantId:any) {
+    this.present();
+    //this.step++;
+var cancelOrders={
+  _id:id,
+  Status:'Canceled by Customer',
+  RestaurantId:restaurantId,
+
+}
+
+this.ownerService.CancelOders(cancelOrders).subscribe((res)=>{
+ // this.ngOnInit();
+ // this.orderDetails=res as Orders[];
+
+ this.dismiss();
+ this.ionViewWillEnter();
+
+})
+
   }
 }
 export interface PeriodicElement {

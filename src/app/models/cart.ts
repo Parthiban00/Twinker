@@ -23,7 +23,10 @@ export default class Cart{
     ActualPrice:number=0;
     Offer:number;
     ActualAmount:number;
-
+    Description:string;
+Discount:number;
+DiscountDescription:string;
+DiscountCode:string;
 
 
  }

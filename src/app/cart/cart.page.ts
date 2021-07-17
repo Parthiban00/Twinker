@@ -19,8 +19,11 @@ import Orders from '../models/orders';
 import{ProductsService} from 'src/app/products.service';
 import MainMenu from '../models/main-menu';
 import Product from '../models/products';
+import Coupons from '../models/coupons';
 
 
+import { ModalController } from '@ionic/angular';
+import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.page';
 
 //import { AlertController } from '@ionic/angular';
 @Component({
@@ -28,13 +31,15 @@ import Product from '../models/products';
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
 })
-export class CartPage implements OnInit {
+export class CartPage  {
+  coupon;
   mainMenu:MainMenu[]=[];
   productDetails:Product[]=[];
   products:Product[]=[];
   deliveryPartnerFee1:String;
 totalAmount=0;
 totalAmount1;
+discount=0;
 AmountWithCharges;
   taxesAndCharges=0;
   deliveryPartnerFee:number;
@@ -50,9 +55,30 @@ selectedLocation:any;
   default:string="";
   allOrders:Orders[]=[];
   isLoading = false;
-  constructor( private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
+  discountDescription="";
+  coupons:Coupons[]=[];
+  discountCode="";
+  couponPresent:boolean;
+  constructor( public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
+this.geolocation.getCurrentPosition({
+
+
+
+  timeout:10000,
+  enableHighAccuracy:true
+}).then((resp) => {
+
+  this.lat=resp.coords.latitude;
+  this.lon=resp.coords.longitude;
+
+ const getAddress= this.ReverseGeocoding(this.lat,this.lon);
+ this.selectedLocation=getAddress;
+
+ }).catch((error) => {
+   console.log('Error getting location', error);
+ });
 
 
 
@@ -77,10 +103,10 @@ newAddress="";
 restaurantDetails:Restaurant[]=[];
 distanceKm:any;
 user:any;
-
-
-
-
+customizeDelivery;
+location;
+applied:boolean;
+couponApplied:boolean;
   cartItemsAll:Cart[]=[];
 
   placeOder:PlaceOrder[]=[];
@@ -92,39 +118,38 @@ user:any;
    coord:any;
 
 
-  ngOnInit() {
-
-
-
-
-
-  }
 
   ionViewWillEnter(){
-
-
+this.applied=false;
+this.coupon="";
+this.discount=0;
+this.discountDescription="";
+this.discountCode="";
+this.couponPresent=true;
+this.couponApplied=false;
+    // var element = <HTMLInputElement> document.getElementById("coupon");
+    // element.disabled = false;
+    // var element1 = <HTMLInputElement> document.getElementById("applybtn");
+    // element1.disabled = false;
     this.present();
+
+ this.customizeDelivery={
+   continuousDelivery:false,
+
+
+
+
+    }
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
 
+this.cartService.GetAllCoupons().subscribe((res)=>{
+this.coupons=res as Coupons[];
+console.log("all coupons"+this.coupons[0]);
+})
 
-    this.geolocation.getCurrentPosition({
-
-
-
-      timeout:10000,
-      enableHighAccuracy:true
-    }).then((resp) => {
-
-      this.lat=resp.coords.latitude;
-      this.lon=resp.coords.longitude;
-
-      this.ReverseGeocoding(this.lat,this.lon);
-
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
 
 
     var itemTotal=0;
@@ -164,7 +189,10 @@ this.Charges=this.restaurantDetails[0].Charges;
 
 
 
-            this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+            const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+            console.log("delivery charges "+deliveryCharge);
+            this.DeliveryChargeCal(deliveryCharge);
+
 
 
 
@@ -250,12 +278,7 @@ this.present();
   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
   this.cartItemsAll[i].ActualAmount=this.cartItemsAll[i].ActualPrice*this.cartItemsAll[i].ItemCount;
 
-  // if(this.cartItemsAll[i].Offer){
-  //   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
-  //   }
-  //   else{
-  //    this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
-  //   }
+
 
 
   var addCartItems={
@@ -435,9 +458,10 @@ this.present();
 d.getHours(); // => 9
 d.getMinutes(); // =>  30
 d.getSeconds(); // => 51
+var time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-this.presentAlertConfirm1();
-
+//this.presentAlertConfirm1();
+this.selectedLocation="Idaamelur";
 
     this.present();
 
@@ -516,7 +540,11 @@ var today1 = yyyy + '-' + mm + '-' + dd;
      Address:this.selectedLocation,
      ItemDetails:this.placeOrderArr,
      DeliveryPartnerStatus:"Placed by Customer",
-     ActualAmount:parseFloat(this.AmountWithCharges).toFixed(2)
+     ActualAmount:parseFloat(this.AmountWithCharges).toFixed(2),
+CreatedTime:time,
+Discount:this.discount,
+DiscountDescritpion:this.discountDescription,
+DiscountCode:this.discountCode
 
 
    }
@@ -545,7 +573,10 @@ var today1 = yyyy + '-' + mm + '-' + dd;
 
   distance(lat1:any, lon1:any, lat2:any, lon2:any)
   {
-this.present();
+
+
+
+
 
     var R = 6371; // km
     var dLat = this.toRad(lat2-lat1);
@@ -558,17 +589,35 @@ this.present();
     var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     var d = R * c;
 console.log("distance d "+ d);
-    this.distanceKm=d;
-    if(this.distanceKm>=2){
-
-      console.log("distance d  >2"+ d);
-            this.deliveryPartnerFee=(this.distanceKm*7);
-            this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
 
+          //
+    return d;
 
-            this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
-           // console.log("Amount with chargers "+this.AmountWithCharges )
+
+  }
+
+
+
+
+
+// ---------------------------------------------------------------------------------delivery charge calc-------------------------
+DeliveryChargeCal(d){
+
+  console.log("delivery carge cal entered "+d);
+this.distanceKm=d;
+
+  if(d>=3){
+   // console.log("delivery carge cal entered "+d);
+
+    console.log("distance d  >2"+ d);
+          this.deliveryPartnerFee=(d*7);
+          this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
+
+
+
+          this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
+         // console.log("Amount with chargers "+this.AmountWithCharges )
 this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
 //console.log("total amount"+this.totalAmount);
 this.totalAmount1=this.totalAmount.toFixed(2);
@@ -576,30 +625,53 @@ this.totalAmount1=this.totalAmount.toFixed(2);
 
 this.dismiss();
 
-          }
-           else if(this.distanceKm<2){
+        }
+         else if(d<3){
+          console.log("delivery carge cal entered 2 if "+d);
+
+          this.deliveryPartnerFee=20;
+          this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
+
+          this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
+          this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
+          //console.log("total amount"+this.totalAmount);
+          this.totalAmount1=this.totalAmount.toFixed(2);
 
 
-            this.deliveryPartnerFee=20;
-            this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
-
-            this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
-            this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
-            //console.log("total amount"+this.totalAmount);
-            this.totalAmount1=this.totalAmount.toFixed(2);
-
-
-            this.dismiss();
-           }
-           else{
-             this.dismiss();
-             //this.presentAlertConfirm2();
-           }
-          //
-   // return d;
+          this.dismiss();
+         }
+         else{
+          console.log("delivery carge cal entered  else"+d);
+           this.dismiss();
+          // this.presentAlertConfirm2();
+         // this.ionViewWillEnter();
+         }
+}
 
 
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
    toRad(Value:any)
   {
@@ -680,7 +752,7 @@ if(event.target.value=="Pickup"){
 this.reverseGeocodingResults=JSON.stringify(results[0]);
 
 this.selectedLocation=JSON.stringify(results[0].thoroughfare).replace(/"/g, "")+','+JSON.stringify(results[0].locality).replace(/"/g, "")+','+JSON.stringify(results[0].subAdministrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].administrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].countryName).replace(/"/g, "")+','+JSON.stringify(results[0].countryCode).replace(/"/g, "");
-
+return this.selectedLocation;
 //this.dismiss();
 })
   }
@@ -712,7 +784,8 @@ this.presentActionSheet();
             this.lon=resp.coords.longitude;
 
 
-            this.ReverseGeocoding(this.lat,this.lon);
+           const GetAddress= this.ReverseGeocoding(this.lat,this.lon);
+           this.selectedLocation=GetAddress;
             this.dismiss();
            }).catch((error) => {
              console.log('Error getting location', error);
@@ -1026,26 +1099,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
 this.dismiss();
 
 
-            // const dialogRef= this.dialog.open(DialogBoxComponent,{data:{key:'Your cart contains items from '+this.cartItemsAll[0].RestaurantName+'. Do you want to replace?'}});
 
-            // dialogRef.afterClosed().subscribe(result => {
-            //   console.log(result);
-            //   if(result=='Ok'){
-
-            //     this.cartService.RemoveCart(this.removeCart).subscribe((res)=>{
-            //       this.cartItems=res as Cart[];
-
-            //       this.cartService.AddCart(addCartItems).subscribe((res)=>{
-            //         this.cartItems=res as Cart[];
-            //       })
-
-            //     });
-
-
-
-            //   }
-            // });
-        //   this. presentAlertConfirm(this.removeCart,addCartItems);
 
 
 
@@ -1084,7 +1138,56 @@ this.dismiss();
 
   PaymentPage(){
 
+
+
   }
+  ApplyCoupon(){
+    var discountPrice;
+    console.log(this.coupon);
+    let today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+    var today1 = yyyy + '-' + mm + '-' + dd;
+    for(var i=0;i<this.coupons.length;i++){
+      if(this.coupons[i].Code==this.coupon && this.coupons[i].ActiveYn==true){
+        discountPrice=this.totalAmount1-(this.totalAmount1*(this.coupons[i].Discount/100));
+        this.totalAmount1=discountPrice.toFixed(2);
+        this.discount=this.coupons[i].Discount;
+        this.applied=true;
+        this.discountDescription=this.coupons[i].CodeDescription;
+        this.discountCode=this.coupons[i].Code
+        this.couponPresent=true;
+        this.couponApplied=true;
+break;
+      }
+      else{
+        this.couponPresent=false;
+      }
+
+
+    }
+
+
+
+      }
+
+
+
+      CustomizeDeliveryDetails(){
+        this.modalController.create({
+component:DeliveryCustomisePage
+        }).then(modalres=>{
+          modalres.present();
+
+          modalres.onDidDismiss().then(res=>{
+            if(res.data!=null){
+
+            }
+          })
+        })
+      }
 }
 
 

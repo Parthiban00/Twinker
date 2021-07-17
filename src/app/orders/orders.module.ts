@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatStepperModule} from '@angular/material/stepper';
 import { IonicModule } from '@ionic/angular';
-
+import {MatButtonModule} from '@angular/material/button';
 
 import { OrdersPageRoutingModule } from './orders-routing.module';
 
@@ -17,7 +17,8 @@ import { OrdersPage } from './orders.page';
     IonicModule,
     OrdersPageRoutingModule,
     MatExpansionModule,
-    MatStepperModule
+    MatStepperModule,
+    MatButtonModule
   ],
   declarations: [OrdersPage]
 })

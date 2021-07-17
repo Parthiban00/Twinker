@@ -182,12 +182,14 @@
 
       </ion-row>
       <ion-row >
-       <h4 *ngIf="orders.Status!='Ready'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.Status}}</i></span></h4>
-       <h4 *ngIf="orders.Status=='Ready'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>Be Ready... [On the Way]</i></span></h4>
-       <ion-progress-bar color="success" *ngIf="orders.Status=='Placed'" value='0.2' ></ion-progress-bar>
-        <ion-progress-bar color="success" *ngIf="orders.Status=='Accepted by Restaurant Owner'" value='0.6' ></ion-progress-bar>
+       <h4 *ngIf="orders.DeliveryPartnerStatus!='Accepted by Delivery Partner'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.DeliveryPartnerStatus}}</i></span></h4>
+       <h4 *ngIf="orders.DeliveryPartnerStatus=='Accepted by Delivery Partner'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.DeliveryPartnerStatus}}&nbsp;[On the way]</i></span></h4>
 
-        <ion-progress-bar color="success" *ngIf="orders.Status=='Ready'" value='0.9' ></ion-progress-bar>
+
+       <ion-progress-bar color="success" *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer'" value='0.3' ></ion-progress-bar>
+        <ion-progress-bar color="success" *ngIf="orders.DeliveryPartnerStatus=='Accepted by Delivery Partner'" value='0.6' ></ion-progress-bar>
+
+        <!-- <ion-progress-bar color="success" *ngIf="orders.Status=='Ready'" value='0.9' ></ion-progress-bar> -->
 
       </ion-row>
 

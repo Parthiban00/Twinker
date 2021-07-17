@@ -23,4 +23,7 @@ DeliveryPartnerAccept(data:any){
   console.log('data :'+data);
   return this.webService.patch(`orderdetails/${data._id}/${data.RestaurantId}/${data.ActiveYn}/${data.DeleteYn}`,data);
 }
+CancelOders(data:any){
+  return this.webService.patch(`orderdetails/${data._id}/${data.RestaurantId}`,data);
+}
 }

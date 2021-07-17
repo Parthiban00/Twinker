@@ -3,6 +3,7 @@
 ion-header{
   .banner{
     position: relative;
+    margin-top: 20px;
   }
   img{
     width: 100%;
@@ -18,37 +19,40 @@ ion-header{
     padding-right: 26px;
   }
   .search{
-     position: absolute;
-     bottom:-40px;
+
+
      width: calc(100% - 52px);
-   // width: 100%;
-    // margin
-  //  background: white;
-    margin:16px 26px 16px 26px;
-   // padding:5px 16px 5px 16px;
-   // height: fit-content;
-    //border-radius: 10px;
-   // box-shadow:0px 2px 5px 2px rgb(83, 83, 83);
+
+
+    margin:0px 0px 16px 0px;
+
 
 }
 
 ion-slides{
 
-  ion-slide{
 
+  ion-slide{
+    margin-top: -20px;
     ion-card{
-      width:100%;
-      height: 100px;
+      position: relative;
+      width:150px;
+      height: 150px;
       box-shadow: none;
       border-radius: 2px;
+      justify-content: center;
+      align-items: center;
+
+
 
 
       img{
         object-fit: cover;
-        width: 100%;
-        height: 130px;
+        width: 150px;
+        height: 150px;
        // transform:scale(1.1,1.1) rotate(1deg);
         transition: 600ms all ease-in-out;
+        opacity: 0.2;
       }
     }
   }
@@ -120,9 +124,9 @@ ion-footer{
       display: flex;
       margin-top: 0px;
       margin-left: 10px;
-      color:whitesmoke;
+      color:rgb(0, 0, 0);
       font-size: 14px;
-      font-style: italic;
+
 
 
   }
@@ -186,7 +190,7 @@ justify-content: center;
 
  .ad-slides{
  background-color: rgb(255, 255, 255);
- margin-top: -22px;
+ //margin-top: -30px;
  }
 
  .ion-margin-top{
@@ -195,27 +199,30 @@ justify-content: center;
  }
 
 .veg{
-position: relative;
+position: absolute;
 align-content: center;
-background-color: white;
+right: 0;
+//background-color: white;
   height: 40px;
 
-
+top: 0;
 ion-label{
   position: absolute;
-  right: 55px;
-  top: 8px;
+  right: 20px;
+
+  top: 0px;
   font-size: 12px;
   color: rgb(151, 151, 151);
 }
 ion-toggle{
   position: absolute;
   right: 0;
-  height: 10px;
+  top: 15px;
+  height: 8px;
   width: 30px;
   --border-radius:0px;
 
-  --handle-height: 13px;
+  --handle-height: 12px;
   --handle-border-radius:0px;
   --handle-width:13px;
 
@@ -224,6 +231,65 @@ ion-toggle{
 }
 
 
+
+
+  .menu-name{
+    position: absolute;
+    top:50px;
+    justify-content: center;
+
+
+ height: 20px;
+ width: 100px;
+
+border-radius: 2px;
+color: #212121;
+font-weight: 500;
+letter-spacing: 1.5;
+
+//opacity: 80%;
+
+
+  }
+  .discount{
+    position: absolute;
+    top:20px;
+    height: 20px;
+width: 100px;
+
+border-radius: 2px;
+color: #212121;
+font-weight: 500;
+letter-spacing: 1.5;
+//opacity: 80%;
+
+  }
+  .rate{
+    position: absolute;
+    height: 50px;
+width: 100px;
+top:70px;
+
+border-radius: 2px;
+color: #212121;
+font-weight: 500;
+letter-spacing: 1.5;
+//opacity: 80%;
+
+  }
+  .hotel-name{
+    position: absolute;
+top:10px;
+    height: 20px;
+width: 150px;
+
+border-radius: 2px;
+color: #212121;
+font-weight: 500;
+letter-spacing: 1.5;
+//opacity: 80%;
+
+  }
 
 
 

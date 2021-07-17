@@ -11,6 +11,7 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard]
   },
 
+
   {
     path: 'home/:type',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
@@ -27,10 +28,10 @@ const routes: Routes = [
   //   redirectTo: 'home/:firstName/:id',
   //   pathMatch: 'full'
   // },
-  {
-    path: '',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
+  // {
+  //   path: '',
+  //   loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+  // },
 
   {
     path: 'login',
@@ -54,6 +55,11 @@ const routes: Routes = [
   },
   {
     path: 'home-page',
+    loadChildren: () => import('./home-page/home-page.module').then( m => m.HomePagePageModule),
+    canActivate:[AuthenticationGuard]
+  },
+  {
+    path: '',
     loadChildren: () => import('./home-page/home-page.module').then( m => m.HomePagePageModule),
     canActivate:[AuthenticationGuard]
   },
@@ -138,6 +144,10 @@ const routes: Routes = [
   {
     path: 'delivery-location',
     loadChildren: () => import('./delivery-location/delivery-location.module').then( m => m.DeliveryLocationPageModule)
+  },
+  {
+    path: 'delivery-customise',
+    loadChildren: () => import('./delivery-customise/delivery-customise.module').then( m => m.DeliveryCustomisePageModule)
   },
 
 

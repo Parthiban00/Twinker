@@ -98,7 +98,21 @@ type:Array
     },
     ActualAmount:{
       type:Number
-    }
+    },
+    CreatedTime:{
+      type:String
+    },
+    Discount:{
+      type:Number
+    },
+    DiscountDescritpion:{
+      type:String
+    },
+    DiscountCode:{
+      type:String
+    },
+
+
 
 
 

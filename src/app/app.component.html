@@ -57,10 +57,16 @@
       <ion-icon name="paw" slot="start"></ion-icon>
          About Us
   </ion-item> -->
+  <ion-item routerLink="/contact-us"   routerDirection="forward">
+    <ion-icon name="hand-left-outline" slot="start"></ion-icon>
+       Contact Us
+</ion-item>
     <ion-item routerLink="/terms-conditions"   routerDirection="forward">
       <ion-icon name="information-circle" slot="start"></ion-icon>
          Terms and Conditions
   </ion-item>
+
+
   <ion-item (click)="LogOut()"   routerDirection="forward">
     <ion-icon name="log-out" slot="start"></ion-icon>
        Log Out

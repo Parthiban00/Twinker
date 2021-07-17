@@ -9,51 +9,55 @@
 </div>  -->
 
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
+  <ion-toolbar  no-border>
       <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button color="primary"></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
       {{whichRestaurant}}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="RedirectToHome()">
-      <ion-icon name="home"></ion-icon>
+      <ion-icon color="primary" name="home"></ion-icon>
       </ion-button>
           </ion-buttons>
   </ion-toolbar>
+  <!-- <ion-card style="height: 50px;">
   <div class="banner">
-    <img src="assets\orange_banner1.png" />
+
     <div class="caption ion-padding">
 
-      <ion-icon name="location" ></ion-icon>&nbsp;&nbsp;Sivaganga<br>
-      <i style="font-size: small;">Rating: 4.5 | Taste: 4.5 | Delivery Time: 15-25mins</i>
-      <!-- <ion-label class="top-offers" style="margin-top: 55px; position: absolute; right: 0; font-size: 12px;"> Our Specials<ion-icon  name="caret-forward"></ion-icon></ion-label> -->
+      <ion-icon name="location" ></ion-icon>&nbsp;&nbsp;<Small>Sivaganga</Small><br>
+      <p style="font-size: small;">Rating: 4.5 | Taste: 4.5 | Delivery Time: 15-25mins</p>
+
 
     </div>
     </div>
+  </ion-card> -->
 
 
 
-  <ion-slides [options]="option" class="ion-margin-top">
-    <ion-slide>
-      <ion-card>
-        <img src="assets/burger1.jpg">
-      </ion-card>
-    </ion-slide>
-    <ion-slide>
-     <ion-card>
-       <img src="assets/banner2.jpg">
-     </ion-card>
-   </ion-slide>
-   <ion-slide>
-     <ion-card>
-       <img src="assets/banner3.jpg">
-     </ion-card>
-   </ion-slide>
+    <div class="ad-slides">
+
+      <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
+         <ion-slide style="padding:0px;width: fit-content;"  *ngFor="let product of productDetails;let i=index">
+           <ion-card *ngIf="product.Offer">
+<div class="offer">TRENDING</div>
+<div class="offer-content">
+<p style="color: white; margin-top: 5px; font-size: small;">{{product.ProductName}}</p>
+<p style="color: white;margin-top:-10px ;"> Rs.&nbsp;{{product.OfferPrice}}&nbsp;Only</p>
+<ion-button color="danger" (click)="IncreaseItem(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add +</ion-button>
 
 
- </ion-slides>
+</div>
+             <img src="assets/menu_offer.jpg">
+           </ion-card>
+         </ion-slide >
+
+
+
+      </ion-slides>
+      </div>
 
  <div  class="navbar" *ngIf="isSearch">
 
@@ -252,14 +256,14 @@
 
 
 <ion-footer *ngIf="showCart.length">
-  <ion-toolbar color="primary">
+  <ion-toolbar >
     <!-- <ion-title>4 Items</ion-title> -->
 
     <ion-text class="title">{{showCart.length}} Items</ion-text>
     <ion-text class="description">from {{restaurantName1}}</ion-text>
 
 
-    <ion-button color="secondary"  slot="end" (click)="ViewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
+    <ion-button color="primary"  slot="end" (click)="ViewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-footer>
 

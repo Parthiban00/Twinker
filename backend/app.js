@@ -13,6 +13,7 @@ const Products = require('./database/models/products');
 const Cart = require('./database/models/Cart');
 const DeliveryLocation = require('./database/models/delivery-location');
 const OrderDetails = require('./database/models/order-details');
+const Coupons = require('./database/models/coupons');
 app.use(express.json());
 // ---------------------------------new--------------
 const port = process.env.PORT || 5000;
@@ -281,7 +282,7 @@ console.log("save restaurant");
             app.post('/carts',(req,res)=>{
 
 
-                (new Cart ({'RestaurantId': req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MenuId':req.body.MenuId,'MenuName':req.body.MenuName,'ProductId':req.body.ProductId,'ProductName':req.body.ProductName,'Price':req.body.Price,'ItemCount':req.body.ItemCount,'Amount':req.body.Amount,'UserId':req.body.UserId,'UserName':req.body.UserName,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'Status':req.body.Status,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ActualPrice':req.body.ActualPrice,'Offer':req.body.Offer,'OfferDescription':req.body.OfferDescription,'Commission':req.body.Commission,'ActualAmount':req.body.ActualAmount}))
+                (new Cart ({'RestaurantId': req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MenuId':req.body.MenuId,'MenuName':req.body.MenuName,'ProductId':req.body.ProductId,'ProductName':req.body.ProductName,'Price':req.body.Price,'ItemCount':req.body.ItemCount,'Amount':req.body.Amount,'UserId':req.body.UserId,'UserName':req.body.UserName,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'Status':req.body.Status,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ActualPrice':req.body.ActualPrice,'Offer':req.body.Offer,'OfferDescription':req.body.OfferDescription,'Commission':req.body.Commission,'ActualAmount':req.body.ActualAmount,'Description':req.body.Description}))
                 .save()
                 .then((carts)=> res.send(carts))
                 .catch((error)=>console.log(error));
@@ -371,7 +372,7 @@ console.log("save restaurant");
                             app.post('/orderdetails',(req,res)=>{
 
 
-                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus,'ActualAmount':req.body.ActualAmount}))
+                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus,'ActualAmount':req.body.ActualAmount,'CreatedTime':req.body.CreatedTime,'Discount':req.body.Discount,'DiscountDescritpion':req.body.DiscountDescritpion,'DiscountCode':req.body.DiscountCode}))
                                 .save()
                                 .then((orderdetails)=> res.send(orderdetails))
                                 .catch((error)=>console.log(error));
@@ -413,6 +414,18 @@ console.log("save restaurant");
                                 .catch((error)=>console.log(error));
 
                                 }),
+
+
+
+                                app.patch('/orders/orderdetails/:_id/:RestaurantId', (req,res)=>{
+
+
+
+                                  OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id}, {$set: {Status:req.body.Status}})
+                                  .then((orderdetails)=> res.send(orderdetails))
+                                  .catch((error)=>console.log(error));
+
+                                  }),
 
                                 app.get('/orderdetails/:ActiveYn/',(req,res)=>{
 
@@ -507,6 +520,31 @@ console.log("suggestion entered");
                                 .then(Products=>res.send(Products))
                                 .catch((error)=>console.log(error));
                             });
+
+
+                            app.get('/coupons/:Code/:ActiveYn/:ValidTo',(req,res)=>{
+                              console.log("coupons entered");
+                                                              Coupons.find({ActiveYn: true,DeleteYn:false,Code:req.params.Code,'ValidTo':req.params.ValidTo})
+                                                              .then(Coupons=>res.send(Coupons))
+                                                              .catch((error)=>console.log(error));
+                                                          });
+
+                                                          app.get('/coupons/:ActiveYn',(req,res)=>{
+                                                            console.log("coupons entered");
+                                                                                            Coupons.find({ActiveYn: true,DeleteYn:false})
+                                                                                            .then(Coupons=>res.send(Coupons))
+                                                                                            .catch((error)=>console.log(error));
+                                                                                        });
+
+                                                          app.post('/coupons',(req,res)=>{
+
+
+                                                            (new Coupons ({'Code':req.body.Code,'CodeDescription':req.body.CodeDescription,'ValidFrom':req.body.ValidFrom,'ValidTo':req.body.ValidTo,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Discount':req.body.Discount}))
+                                                            .save()
+                                                            .then((Coupons)=> res.send(Coupons))
+                                                            .catch((error)=>console.log(error));
+
+                                                        });
 
 
  //app.listen(3000, () => console.log("Server is connected on port 3000"));

@@ -47,43 +47,41 @@
 //     }
 // }
 
-.banner{
-    position: relative;
-  }
+
   img{
     width: 100%;
     height: 100px;
   }
   .caption{
 
-    position: absolute;
+
   //  margin-top: 60px;
     width: 100%;
-    bottom:45px;
+margin-top: -10px;
     font-size: 16px;
-    color: white;
+    color:black;
     padding-left: 26px;
     padding-right: 26px;
 
 
   }
   ion-slides{
-    margin-top: -5px;
+
+//margin-top: -20px;
     ion-slide{
-
-
-
+      margin-top: -20px;
       ion-card{
-
-        width:100%;
-        height: 100px;
+        position: relative;
+        width:150px;
+        height: 150px;
         box-shadow: none;
         border-radius: 2px;
 
+
         img{
-         object-fit: cover;
-          width: 100%;
-          height: 100px;
+          object-fit: cover;
+          width: 150px;
+          height: 150px;
          // transform:scale(1.1,1.1) rotate(1deg);
           transition: 600ms all ease-in-out;
         }
@@ -280,9 +278,9 @@ ion-footer{
     display: flex;
     margin-top: 0px;
     margin-left: 10px;
-    color:whitesmoke;
+    color:rgb(0, 0, 0);
     font-size: 14px;
-    font-style: italic;
+
 
 
 }
@@ -368,3 +366,25 @@ color: white;
 }
 
 
+.offer{
+  position: absolute;
+  top: 0;
+  height: 30px;
+  width: 70px;
+
+  background-color: tomato;
+  padding-top: 10px;
+  font-size: small;
+  color: #f6f6f6;
+
+}
+.offer-content{
+  position: absolute;
+  top:50px;
+  left: 10px;
+
+  height: 120px;
+  width: 130px;
+  background-color:rgba(255, 155, 6, 0.733);
+border-radius: 2px;
+}

@@ -253,11 +253,10 @@ Type:this.type
 
 
   option={
-    slidePerView:1.5,
-    centeredSlides:true,
-    loop:true,
-    spaceBetween:20,
-    autoplay:true,
+    slidePerView:'auto',
+
+    zoom:false,
+    grabCursor:true
   }
 
 
