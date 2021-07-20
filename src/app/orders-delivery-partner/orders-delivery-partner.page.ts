@@ -6,6 +6,8 @@ import {Router} from '@angular/router';
 import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
+import {CallNumber} from "@ionic-native/call-number/ngx";
+
 @Component({
   selector: 'app-orders-delivery-partner',
   templateUrl: './orders-delivery-partner.page.html',
@@ -26,7 +28,7 @@ totalCompletedAmount=0;
 segment;
 
 myDate="All";
-  constructor(private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
+  constructor(private call:CallNumber,private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
     this.today1=new Date().toISOString();
     console.log("today date "+this.today1);
     this.defaultSegment="Delivery";
@@ -366,5 +368,10 @@ console.log("dfasfas"+ segment);
     });
 
     await alert.present();
+  }
+
+  CallCustomer(MobileNo:string){
+ this.call.callNumber(MobileNo,true)  .then(res => console.log('Launched dialer!', res))
+ .catch(err => console.log('Error launching dialer', err));
   }
 }

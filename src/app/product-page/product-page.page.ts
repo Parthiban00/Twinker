@@ -91,7 +91,7 @@ export class ProductPagePage implements OnInit {
     this.searchMenu="";
     this.isSearch=true;
     this.present();
-
+//this.productDetails=[];
     this.products.length=0;
 
         this.getCartAll();
@@ -161,7 +161,7 @@ segmentChanged(ev: any) {
 
    for(var k=0;k<this.productDetails.length;k++){
 
-    if(ev.detail.value==this.productDetails[k].MenuId){
+    if(ev.detail.value==this.productDetails[k].MenuId ){
        this.products.push(this.productDetails[k]);
      }
    }
@@ -281,8 +281,8 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
         }
         else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.restaurantId){
 
-this.dismiss();
 
+          this.dismiss();
 
             // const dialogRef= this.dialog.open(DialogBoxComponent,{data:{key:'Your cart contains items from '+this.cartItemsAll[0].RestaurantName+'. Do you want to replace?'}});
 
@@ -332,9 +332,173 @@ this.dismiss();
 
 
    })
-
+this.dismiss();
 
  }
+
+
+ IncreaseItemOffer(i:any,menuId:any){
+  //this.getCartAll();
+  this.present();
+
+
+  let date: Date = new Date();
+
+
+console.log("dsfasdfasf"+i);
+  this.productDetails[i].ItemCount=this.productDetails[i].ItemCount+1;
+   if(this.productDetails[i].Offer){
+   this.productDetails[i].Amount=this.productDetails[i].OfferPrice*this.productDetails[i].ItemCount;
+   this.productDetails[i].ActualAmount=this.productDetails[i].OfferPrice*this.productDetails[i].ItemCount;
+
+   }
+   else{
+    this.productDetails[i].Amount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
+    this.productDetails[i].ActualAmount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
+   }
+
+   var addCartItems={
+
+    RestaurantId:this.restaurantId,
+    RestaurantName:this.whichRestaurant,
+    MenuId:menuId,
+    MenuName:this.selectedMenuName,
+    ProductId:this.productDetails[i]._id,
+    ProductName:this.productDetails[i].ProductName,
+    ActualPrice:this.productDetails[i].Price,
+    Price:this.productDetails[i].Price,
+    ItemCount:this.productDetails[i].ItemCount,
+    Amount:this.productDetails[i].Amount,
+    UserId:this.user[0]._id,
+    UserName:this.user[0].FirstName,
+    MobileNo:this.user[0].MobileNo,
+    Address:this.user[0].Address,
+    CreatedDate:date,
+    CreatedBy:this.user[0]._id,
+    Status:"Cart",
+    ActiveYn:true,
+    DeleteYn:false,
+    Offer:this.productDetails[i].Offer,
+    OfferDescription:this.productDetails[i].OfferDescription,
+    Commission:this.productDetails[i].Commission,
+    ActualAmount:this.productDetails[i].ActualAmount,
+    Description:this.productDetails[i].Description
+
+
+
+
+   }
+
+   if(this.productDetails[i].Offer){
+    addCartItems.Price=this.productDetails[i].OfferPrice;
+      }
+
+   var getCart={
+     UserId:this.user[0]._id,
+    MenuId:menuId,
+    ProductId:this.productDetails[i]._id,
+     Status:"Cart",
+     ActiveYn:true
+   }
+
+   // --------------------------------------------  to get all cart items----------------------------------------
+
+this.cartService.GetCartAll(getCart).subscribe((res)=>{
+  this.cartItemsAll=res as Cart[];
+
+})
+// -------------------------------------------- ----------------------------------------
+
+   console.log(addCartItems);
+   this.cartService.GetCart(getCart).subscribe((res)=>{
+    this.cartItems=res as Cart[];
+    console.log("cart Items ---- "+this.cartItems);
+
+
+
+
+
+    if(!this.cartItemsAll.length){
+      if(!this.cartItems.length){
+
+        console.log("Cart is empty");
+        this.cartService.AddCart(addCartItems).subscribe((res)=>{
+          this.cartItems=res as Cart[];
+
+          this.getCartAll();
+
+        })
+      }
+    }
+      else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId==this.restaurantId){
+
+
+
+          console.log("Cart is empty");
+        this.cartService.AddCart(addCartItems).subscribe((res)=>{
+          this.cartItems=res as Cart[];
+          this.getCartAll();
+        })
+        }
+        else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.restaurantId){
+
+
+          this.dismiss();
+
+            // const dialogRef= this.dialog.open(DialogBoxComponent,{data:{key:'Your cart contains items from '+this.cartItemsAll[0].RestaurantName+'. Do you want to replace?'}});
+
+            // dialogRef.afterClosed().subscribe(result => {
+            //   console.log(result);
+            //   if(result=='Ok'){
+
+            //     this.cartService.RemoveCart(this.removeCart).subscribe((res)=>{
+            //       this.cartItems=res as Cart[];
+
+            //       this.cartService.AddCart(addCartItems).subscribe((res)=>{
+            //         this.cartItems=res as Cart[];
+            //       })
+
+            //     });
+
+
+
+            //   }
+            // });
+           this. presentAlertConfirm(this.removeCart,addCartItems);
+
+
+
+        }
+
+
+
+
+
+    else if( this.cartItems.length && this.cartItems[0].RestaurantId==addCartItems.RestaurantId){
+
+//update cart items(item count and amount)
+                  this.cartService.UpdateCart(addCartItems).subscribe((res)=>{
+                    this.cartItems=res as Cart[];
+
+                    this.getCartAll();
+                  });
+    }else {
+
+
+    }
+
+
+
+
+
+
+   })
+this.dismiss();
+
+ }
+
+
+
  DecreaseItem(i:any,menuId:any){
 this.present();
   this.products[i].ItemCount=this.products[i].ItemCount-1;
@@ -401,7 +565,7 @@ else if(this.products[i].ItemCount==0){
   });
 }
 
-
+this.dismiss();
 
  }
 
@@ -428,7 +592,7 @@ console.log("hi hi hi");
      this.restaurantName1=this.showCart[i].RestaurantName;
      }
 
-     this.dismiss();
+     //this.dismiss();
   })
  }
 ViewCart(){
@@ -463,7 +627,7 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
         text: 'Okay',
         handler: () => {
           console.log('Confirm Okay');
-          this.present();
+         // this.present();
           this.cartService.RemoveCart(clearCart).subscribe((res)=>{
                    this.cartItems=res as Cart[];
 

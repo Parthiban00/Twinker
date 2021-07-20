@@ -25,6 +25,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 //import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { MatTimepickerModule } from 'mat-timepicker';
 //import {  CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
@@ -35,7 +36,7 @@ import { OrdersAdminPipe } from './orders-admin.pipe';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule,DeliveryCustomisePageModule,MatTimepickerModule],
   providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,MatDatepickerModule,Network,
-    DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,MatTimepickerModule,
+    DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,MatTimepickerModule,CallNumber,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],
   bootstrap: [AppComponent],

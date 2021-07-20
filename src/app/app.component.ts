@@ -29,8 +29,8 @@ export class AppComponent {
 
     this.splashScreen.show();
 
+    //localStorage.removeItem('LocationAddress');
 
-    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 
     if(!localStorage.getItem('currentUser')){
       console.log("no");
@@ -55,6 +55,7 @@ export class AppComponent {
 
 
 setTimeout(() => {
+  this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
   const getAddress= this.ReverseGeocoding(this.lat,this.lon);
   this.selectedLocation=getAddress;
   console.log("dsfadgdfsgsdfgfsd"+getAddress);
@@ -63,7 +64,7 @@ setTimeout(() => {
     lon:this.lon,
     address:this.selectedLocation
   }
-  if(this.location==undefined || this.location==null || this.location==""){
+  if(this.location[0]==undefined || this.location[0]==null || this.location[0]==""){
     localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
   }
   else{
@@ -187,6 +188,28 @@ this.network.onDisconnect().subscribe(() => {
       this.locCords.longitude = response.coords.longitude;
       this.locCords.accuracy = response.coords.accuracy;
       this.locCords.timestamp = response.timestamp;
+
+      setTimeout(() => {
+        const getAddress= this.ReverseGeocoding(this.locCords.latitude,this.locCords.longitude);
+        this.selectedLocation=getAddress;
+        console.log("dsfadgdfsgsdfgfsd swithc on gps    "+getAddress);
+        var locationAddress={
+          lat:this.locCords.latitude,
+          lon:this.locCords.longitude,
+          address:this.selectedLocation
+        }
+        if(this.location[0].lat==undefined || this.location[0].lat==null || this.location[0].lat==""){
+          localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
+        }
+        else{
+
+        }
+
+      }, 2000);
+
+
+
+
     }).catch((err) => {
       alert('Error: ' + err);
     });

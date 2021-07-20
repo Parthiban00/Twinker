@@ -169,7 +169,7 @@ console.log("all coupons"+this.coupons[0]);
       console.log(this.cartItemsAll);
 
 if(this.cartItemsAll.length==0){
-this.dismiss();
+//this.dismiss();
 
  this.cartEmpty();
 }
@@ -179,7 +179,7 @@ var restaurantCredential={
 
       }
 
-      this.dismiss();
+     // this.dismiss();
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
 this.Charges=this.restaurantDetails[0].Charges;
@@ -187,11 +187,42 @@ this.Charges=this.restaurantDetails[0].Charges;
 
 
 
+if(this.location.lat==null || this.location.lat=="" || this.location.lat==undefined || this.location.lat==NaN){
+  this.geolocation.getCurrentPosition({
 
 
-            const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
-            console.log("delivery charges "+deliveryCharge);
-            this.DeliveryChargeCal(deliveryCharge);
+
+    timeout:10000,
+    enableHighAccuracy:true
+  }).then((resp) => {
+
+    this.lat=resp.coords.latitude;
+    this.lon=resp.coords.longitude;
+
+   const getAddress= this.ReverseGeocoding(this.lat,this.lon);
+   this.selectedLocation=getAddress;
+
+   }).catch((error) => {
+     console.log('Error getting location', error);
+   });
+
+   setTimeout(() => {
+    const deliveryCharge=this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+    console.log("delivery charges "+deliveryCharge);
+    this.DeliveryChargeCal(deliveryCharge);
+   }, 2000);
+
+
+
+}
+
+else{
+  const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+  console.log("delivery charges "+deliveryCharge);
+  this.DeliveryChargeCal(deliveryCharge);
+}
+
+
 
 
 
@@ -217,7 +248,7 @@ this.Charges=this.restaurantDetails[0].Charges;
     });
 
 
-
+this.dismiss();
 
 this.GetAllOrders();
    }
@@ -273,7 +304,7 @@ onChecked(event:any){
 
 IncreaseCount(i:any){
 
-this.present();
+//this.present();
   this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
   this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
   this.cartItemsAll[i].ActualAmount=this.cartItemsAll[i].ActualPrice*this.cartItemsAll[i].ItemCount;
@@ -315,7 +346,7 @@ this.present();
    this.cartService.UpdateCart1(addCartItems).subscribe((res)=>{
      this.cartItems=res as Cart[];
 
-this.dismiss();
+//this.dismiss();
      //this.reloadCurrentRoute();
     // this.ngOnInit();
      this.ionViewWillEnter();
@@ -325,7 +356,7 @@ this.dismiss();
   }
   DecreaseCount(i:any){
 
-this.present();
+//this.present();
 
     this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount-1;
     this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
@@ -374,7 +405,7 @@ this.present();
         this.cartItems=res as Cart[];
 
        // this.reloadCurrentRoute();
-      this.dismiss();
+     // this.dismiss();
       //this.router.navigate(['home']);
 
       // this.ngOnInit();
@@ -454,6 +485,8 @@ this.present();
 
 
   PlaceOrder(){
+
+
     var d = new Date(); // for now
 d.getHours(); // => 9
 d.getMinutes(); // =>  30
@@ -461,7 +494,7 @@ d.getSeconds(); // => 51
 var time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
 //this.presentAlertConfirm1();
-this.selectedLocation="Idaamelur";
+//this.selectedLocation="Idaamelur";
 
     this.present();
 
@@ -940,6 +973,53 @@ console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
   }
 
 
+  async presentAlertConfirmtToPlace() {
+
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: 'Payment Type',
+      message: 'Cash On Delivery (Cash | UPI)',
+      buttons: [
+
+
+        {
+
+          text: 'Cancel',
+          handler: () => {
+            console.log('cancel place');
+            //this.PlaceOrder();
+            this.ionViewWillEnter();
+
+
+
+          }
+
+
+
+        },
+        {
+
+          text: 'Confirm',
+          handler: () => {
+            console.log('Confirm Okay');
+            this.PlaceOrder();
+
+
+
+          }
+
+
+
+        }
+
+
+      ]
+    });
+
+    await alert.present();
+  }
+
+
   async presentAlertConfirm2() {
 //this.dismiss();
     const alert = await this.alertController.create({
@@ -996,7 +1076,7 @@ var data={
 
 
   //this.getCartAll();
-  this.present();
+  //this.present();
 
 
   let date: Date = new Date();
@@ -1096,7 +1176,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
         }
         else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.cartItemsAll[0].RestaurantId){
 
-this.dismiss();
+//this.dismiss();
 
 
 

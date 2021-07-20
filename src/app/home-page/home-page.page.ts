@@ -8,6 +8,9 @@ import { NavController } from '@ionic/angular';
 import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
 import Tokens from '../models/tokens';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 
 import {
   ActionPerformed,
@@ -34,8 +37,55 @@ export class HomePagePage implements OnInit,OnDestroy {
   cartItemsAll:Cart[]=[];
   orderStatus:String;
   tokens:Tokens[]=[];
-  constructor(private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+  lat;
+  lon;
+  selectedLocation:any;
+  reverseGeocodingResults:any;
+  location;
+  locCords: any;
+  constructor(private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    this.geolocation.getCurrentPosition({
 
+      timeout:10000,
+      enableHighAccuracy:true
+    }).then((resp) => {
+
+      this.lat=resp.coords.latitude;
+      this.lon=resp.coords.longitude;
+      console.log(this.lat+'-'+this.lon);
+
+
+setTimeout(() => {
+
+  const getAddress= this.ReverseGeocoding(this.lat,this.lon);
+  this.selectedLocation=getAddress;
+  console.log("dsfadgdfsgsdfgfsd"+getAddress);
+  var locationAddress={
+    lat:this.lat,
+    lon:this.lon,
+    address:this.selectedLocation
+  }
+  if(this.location[0]==undefined || this.location[0]==null || this.location[0]==""){
+    localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
+  }
+  else{
+
+  }
+
+}, 2000);
+
+
+
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+
+     let watch = this.geolocation.watchPosition();
+     watch.subscribe((data) => {
+
+
+     });
 
   }
 
@@ -278,4 +328,23 @@ this.currentUrl="";
   ViewCart(){
     this.router.navigate(['cart']);
   }
+
+
+  ReverseGeocoding(lat:any,lon:any){
+
+    //this.present();
+      var options:NativeGeocoderOptions={
+        useLocale:true,
+        maxResults:1
+      }
+        this.nativeGeocoder.reverseGeocode(lat,lon,options).then((results)=>{
+    this.reverseGeocodingResults=JSON.stringify(results[0]);
+
+    this.selectedLocation=JSON.stringify(results[0].thoroughfare).replace(/"/g, "")+','+JSON.stringify(results[0].locality).replace(/"/g, "")+','+JSON.stringify(results[0].subAdministrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].administrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].countryName).replace(/"/g, "")+','+JSON.stringify(results[0].countryCode).replace(/"/g, "");
+
+
+    return this.selectedLocation;
+    //this.dismiss();
+    })
+      }
 }

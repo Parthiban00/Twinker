@@ -96,7 +96,7 @@
         <img style="border-radius: 2px;" src="assets\rest2.jpg">
       </ion-thumbnail>
       <ion-label class="hotel-card">
-        <h4 style="font-weight: 500;">{{item.RestaurantName}}</h4>
+        <h4 style="font-weight: 500;width: 200px;">{{item.RestaurantName}}</h4><div class="offer-circle">10%</div>
         <p  style="margin-top: -15px;font-size: small;">{{item.RestaurantType}}</p>
         <p  style="margin-top: -15px;font-size: small;">{{item.Address}}</p>
         <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
@@ -118,7 +118,7 @@
 
 
       <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
-      <ion-text class="description">from from {{restaurantName}}</ion-text>
+      <ion-text class="description">from {{restaurantName}}</ion-text>
 
 
       <ion-button color="primary" slot="end" (click)="viewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>

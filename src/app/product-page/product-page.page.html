@@ -46,11 +46,11 @@
 <div class="offer-content">
 <p style="color: white; margin-top: 5px; font-size: small;">{{product.ProductName}}</p>
 <p style="color: white;margin-top:-10px ;"> Rs.&nbsp;{{product.OfferPrice}}&nbsp;Only</p>
-<ion-button color="danger" (click)="IncreaseItem(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add +</ion-button>
+<ion-button color="danger" (click)="IncreaseItemOffer(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add +</ion-button>
 
 
 </div>
-             <img src="assets/menu_offer.jpg">
+             <img src="{{product.ImageUrl}}">
            </ion-card>
          </ion-slide >
 
@@ -134,7 +134,7 @@
       </div>
     <ion-card-content>
       <div class="item-img">
-        <img src="assets\chicken_biryani.jpg" />
+        <img src="{{product.ImageUrl}}" />
       </div>
 
       <div class="item-info">
@@ -168,7 +168,8 @@
       </div>
     <ion-card-content>
       <div class="item-img">
-        <img src="assets/menu.jpg" />
+        <!-- <img src="assets/menu.jpg" /> -->
+        <img src="{{product.ImageUrl}}"/>
       </div>
 
       <div class="item-info">

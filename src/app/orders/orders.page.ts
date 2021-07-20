@@ -8,6 +8,7 @@ declare const L:any;
 import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import {OwnersService} from 'src/app/owners.service';
+import {CallNumber} from "@ionic-native/call-number/ngx";
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -27,7 +28,7 @@ default:string="";
 isLoading = false;
 user:any;
 
-  constructor(private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
+  constructor(private call:CallNumber,private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
 
     this.default="Placed";
    }
@@ -229,6 +230,12 @@ this.ownerService.CancelOders(cancelOrders).subscribe((res)=>{
 })
 
   }
+
+  CallCustomer(MobileNo:any){
+  this.call.callNumber(MobileNo,true)
+  .then(res => console.log('Launched dialer!', res))
+   .catch(err => console.log('Error launching dialer', err));
+      }
 }
 export interface PeriodicElement {
   ItemName: string;
