@@ -23,4 +23,8 @@ export class AdminDashboardPage implements OnInit {
       UsersManagement(){
 
       }
+
+      RestaurantManagement(){
+        this.router.navigate(['admin-rest-management']);
+      }
 }

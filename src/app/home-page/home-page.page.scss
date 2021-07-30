@@ -68,7 +68,13 @@ ion-content{
 
 }
 
+ion-slide{
 
+  ion-card{
+    width: 185px;
+   // background-color: rgb(255, 130, 47);
+  }
+}
 
 
 
@@ -82,7 +88,7 @@ height: 200px;
   //border-radius: 14px;
   padding:9px;
   margin-left: 0px;
-  background: rgba(255,255,255,.8);
+  //background: rgba(255,255,255,.8);
 .main{
   width: 60px;
   height: 60px;
@@ -90,8 +96,8 @@ height: 200px;
   margin-left: 35px;
   border-radius: 50px;
 background: #FFFFFF;
-box-shadow: 7px 7px 20px #dbdfe2,
-          -7px -7px 20px #ffffff;
+//box-shadow: 7px 7px 20px #dbdfe2,
+         // -7px -7px 20px #ffffff;
           display: flex;
           align-items: center;
           justify-content: center;

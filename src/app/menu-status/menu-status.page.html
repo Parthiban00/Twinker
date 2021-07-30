@@ -1,0 +1,58 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Manage Menus
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="apps"></ion-icon>
+      </ion-button>
+          </ion-buttons>
+  </ion-toolbar>
+
+
+  <ion-item>
+    <ion-label>Select Restaurant</ion-label>
+    <ion-select interface="popover"  [(ngModel)]="selectedValue" (ionChange)="onChange(selectedValue)">
+      <ion-select-option *ngFor="let rest of restaurants" value={{rest._id}}>{{rest.RestaurantName}}</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
+</ion-header>
+
+<ion-content>
+
+
+<ion-card class="available-status">
+  <ion-card-subtitle>Menus Status </ion-card-subtitle>
+  <div class=button>
+    <ion-list>
+      <ion-item *ngFor="let menus of mainMenu;let i=index">
+        <ion-button color="danger" (click)="GetProducts(menus._id,menus.MenuName)">Edit</ion-button> <ion-label>&nbsp;&nbsp;{{menus.MenuName}}</ion-label>
+
+        <!-- <ion-toggle [(ngModel)]="menus.AvailableStatus" (ngModelChange)="ToggleEvent($event,menus._id)" style="position:absolute;right:10px;bottom:10px"></ion-toggle> -->
+        <ion-button (click)="ToggleEvent(false,menus._id)" color="danger">No</ion-button><ion-button (click)="ToggleEvent(true,menus._id)" color="success">Yes</ion-button>
+      </ion-item>
+    </ion-list>
+
+  </div>
+</ion-card>
+<ion-card class="available-status">
+  <ion-card-subtitle>Main Menu : {{productFrom}} </ion-card-subtitle>
+  <div class=button>
+    <ion-list>
+      <ion-item *ngFor="let product of productDetails;let i=index">
+        <ion-label>&nbsp;&nbsp;{{product.ProductName}}</ion-label>
+
+        <ion-toggle [(ngModel)]="product.AvailableStatus" (ngModelChange)="ToggleEvent1($event,product._id)" style="position:absolute;right:10px;bottom:10px"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+  </div>
+</ion-card>
+
+</ion-content>

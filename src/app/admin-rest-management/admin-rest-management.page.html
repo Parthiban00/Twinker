@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Restaurant Management
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="apps"></ion-icon>
+      </ion-button>
+          </ion-buttons>
+  </ion-toolbar>
+  <div >
+    <ion-card class="available-status">
+      <ion-card-subtitle>All Shops</ion-card-subtitle>
+      <div class=button>
+      <ion-button color="success" (click)="OpenAll()">Open All</ion-button>
+      <ion-button color="danger" (click)="CloseAll()">Close All</ion-button>
+      <ion-button color="secondary" (click)="ManageMenus()" style="width: 100%;">Menus Status</ion-button>
+      </div>
+    </ion-card>
+
+
+
+
+  <!-- <ion-item>
+    <ion-label>Main Menus</ion-label>
+    <ion-select interface="popover"  [(ngModel)]="selectedValue" (ionChange)="onChange1(selectedValue)">
+      <ion-select-option *ngFor="let rest of restaurants" value={{rest._id}}>{{rest.RestaurantName}}</ion-select-option>
+
+    </ion-select>
+  </ion-item> -->
+
+
+
+
+</div>
+
+
+
+
+</ion-header>
+
+<ion-content >
+  <ion-card class="available-status">
+    <ion-card-subtitle>Shops Status </ion-card-subtitle>
+    <div class=button>
+      <ion-list *ngFor="let shop of restaurants;let i=index">
+        <ion-item >
+          <ion-label>{{shop.RestaurantName}}</ion-label>
+          <ion-toggle [(ngModel)]="shop.AvailableStatus" id={{shop._id}} (ngModelChange)="ToggleEvent($event,shop._id)" style="position:absolute;right:10px;bottom:10px" ngModel></ion-toggle>
+        </ion-item>
+      </ion-list>
+
+    </div>
+  </ion-card>
+
+
+  </ion-content>

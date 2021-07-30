@@ -149,6 +149,14 @@ const routes: Routes = [
     path: 'delivery-customise',
     loadChildren: () => import('./delivery-customise/delivery-customise.module').then( m => m.DeliveryCustomisePageModule)
   },
+  {
+    path: 'admin-rest-management',
+    loadChildren: () => import('./admin-rest-management/admin-rest-management.module').then( m => m.AdminRestManagementPageModule)
+  },
+  {
+    path: 'menu-status',
+    loadChildren: () => import('./menu-status/menu-status.module').then( m => m.MenuStatusPageModule)
+  },
 
 
 

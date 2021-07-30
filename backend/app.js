@@ -14,6 +14,7 @@ const Cart = require('./database/models/Cart');
 const DeliveryLocation = require('./database/models/delivery-location');
 const OrderDetails = require('./database/models/order-details');
 const Coupons = require('./database/models/coupons');
+const { isValidObjectId } = require('mongoose');
 app.use(express.json());
 // ---------------------------------new--------------
 const port = process.env.PORT || 5000;
@@ -545,6 +546,57 @@ console.log("suggestion entered");
                                                             .catch((error)=>console.log(error));
 
                                                         });
+
+                                                        app.patch('/restaurants/:_id', (req,res)=>{
+
+
+
+                                                          Restaurant.findOneAndUpdate({_id: req.params._id}, {$set: {AvailableStatus:req.body.availableStatus}})
+                                                          .then((restaurants)=> res.send(restaurants))
+                                                          .catch((error)=>console.log(error));
+
+                                                          }),
+
+
+
+                                                          app.patch('/restaurants', (req,res)=>{
+
+
+
+                                                            Restaurant.updateMany({ActiveYn:true,DeleteYn:false}, {$set: {AvailableStatus:req.body.availableStatus}})
+                                                            .then((restaurants)=> res.send(restaurants))
+                                                            .catch((error)=>console.log(error));
+
+                                                            }),
+
+                                                          app.patch('/products/:restId/:menuId', (req,res)=>{
+
+console.log("restId "+req.params.restId+" menuId "+req.params.menuId);
+
+                                                            Products.updateMany({RestaurantId:req.params.restId,MenuId:req.params.menuId}, {$set: {AvailableStatus:req.body.availableStatus}})
+                                                           // MainMenu.updateMany({RestaurantId: req.params.restId,_id:req.params.menuId}, {$set: {AvailableStatus:req.body.availableStatus}})
+                                                            .then((products)=> res.send(products))
+                                                            .catch((error)=>console.log(error));
+
+
+
+                                                            }),
+
+                                                            app.patch('/products/:restId/:menuId/:id', (req,res)=>{
+
+                                                              console.log("restId "+req.params.restId+" menuId "+req.params.menuId);
+
+                                                                                                                          Products.findOneAndUpdate({RestaurantId:req.params.restId,MenuId:req.params.menuId,_id:req.params.id}, {$set: {AvailableStatus:req.body.availableStatus}})
+                                                                                                                         // MainMenu.updateMany({RestaurantId: req.params.restId,_id:req.params.menuId}, {$set: {AvailableStatus:req.body.availableStatus}})
+                                                                                                                          .then((products)=> res.send(products))
+                                                                                                                          .catch((error)=>console.log(error));
+
+
+
+                                                                                                                          }),
+
+
+
 
 
  //app.listen(3000, () => console.log("Server is connected on port 3000"));
