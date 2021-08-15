@@ -99,6 +99,9 @@ const TaskSchema = new mongoose.Schema({
     },
     Charges:{
       type:Number
+    },
+    ImageUrl:{
+type:String
     }
 
 

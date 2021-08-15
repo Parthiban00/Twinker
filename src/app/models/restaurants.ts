@@ -24,6 +24,8 @@ export default class Restaurant{
      OfferDescription:String;
      Sort:Number;
      Type:String;
-     Charges:number
+     Charges:number;
+     ImageUrl:String;
+
 
  }

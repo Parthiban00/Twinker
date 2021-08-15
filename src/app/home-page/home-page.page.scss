@@ -4,8 +4,8 @@
 
 ion-header{
   ion-toolbar,ion-item{
-    --background: #f1f5f8;
-    background: #f1f5f8;
+    --background: #ffffff;
+    background: #ffffff;
     padding : 0 10px;
   }
   ion-toolbar{
@@ -35,10 +35,10 @@ ion-content{
   --background: linear-gradient(90deg,rgb(228, 98, 11) 0%, rgb(224, 103, 4) 35%, rgb(240, 113, 40) 100%);
 
 .slides{
-  background: #f1f5f8;
+  background: #ffffff;
   padding:4px 10px 20px 10px;
   margin-top: -10px;
-  border-radius: 0 0 28px 28px;
+  //border-radius: 0 0 28px 28px;
 
 
 }
@@ -126,4 +126,17 @@ background: #FFFFFF;
 
 .profile{
   margin-top: -20px;
+}
+.categories{
+
+  height: 120px;
+  margin: 0px;
+  margin-top:2px;
+  background-color: #222;
+
+  img{
+    height: 120px;
+    width: 100%;
+
+  }
 }

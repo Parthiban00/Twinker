@@ -1,0 +1,96 @@
+.product{
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 240px;
+  width: 180px;
+  background-color: beige;
+
+}
+
+.menu{
+  width: 180px;
+  height: 120px;
+  position: absolute;
+  bottom: 0;
+  background-color: rgb(255, 255, 255);
+  padding-left: 5px;
+  padding-top: 5px;
+  font-size: 12px;
+
+
+
+
+}
+
+.qty-selector{
+  display: flex;
+  position: absolute;
+  bottom: 5px;
+
+  justify-content: center;
+  align-items: center;
+  background: #f6f6f6;
+  border-radius:2px;
+  margin-top:10px;
+  width:fit-content;
+  height: 25px;
+  margin-left: 35px;
+
+}
+
+.price{
+  margin-top: -10px;
+  color: orangered;
+}
+.rest-name{
+  padding: 2px 2px 2px 2px;
+  font-size: 12px;
+  color: #f6f6f6;
+  height: 20px;
+  width: fit-content;
+  position: absolute;
+  background-color: tomato;
+}
+ion-footer{
+
+  ion-toolbar{
+  --background:rgb(255, 147, 7);
+  --color:white;
+}
+.title{
+    display: flex;
+    margin-top: 0px;
+    margin-left: 10px;
+    font-size: 14px;
+
+
+}
+.description{
+    display: flex;
+    margin-top: 0px;
+    margin-left: 10px;
+    color:rgb(255, 255, 255);
+    font-size: 14px;
+
+
+
+}
+
+ion-icon{
+  height: 30px;
+  width: 30px;
+  margin-right: 20px;
+      }
+
+
+
+
+
+}
+.add-btn{
+  position: absolute;
+  bottom: 5px;
+  margin-left:45px;
+  margin-top:10px;
+}

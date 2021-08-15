@@ -20,4 +20,6 @@ export default class Product{
      OfferDescription:string;
      ImageUrl:string;
      ActualAmount:number;
+     Category:string;
+     RestaurantName:string;
  }

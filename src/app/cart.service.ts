@@ -90,4 +90,9 @@ return this.webService.patch('carts',data);
    }
 
 
+   PaymentOrderId(data){
+     return this.webService.post(`razorpay/${data.amountInPaisa}`,data)
+   }
+
+
 }

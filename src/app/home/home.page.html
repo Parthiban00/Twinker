@@ -20,39 +20,6 @@
 
 <div class="ad-slides">
 
-      <!-- <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
-         <ion-slide style="padding:0px;width: fit-content;">
-           <ion-card>
-             <div class="slide-menu">
-            <div class="menu-name">
-              Full Grill
-              </div>
-
-               <div class="rate">
-                 Rs. 350 Only
-                 </div>
-                 <div class="hotel-name">
-                   <p>Swathi Mess</p>
-                   </div>
-                   </div>
-             <img src="assets/Grill.jpg">
-
-           </ion-card>
-         </ion-slide >
-         <ion-slide style="padding:0px;width: fit-content;">
-          <ion-card>
-            <img src="assets/biriyani1.jpg">
-          </ion-card>
-        </ion-slide>
-        <ion-slide style="padding:0px;width: fit-content;">
-          <ion-card>
-            <img src="assets/chicken_rice.jpg">
-          </ion-card>
-        </ion-slide>
-
-
-
-      </ion-slides> -->
 <div style="position: relative;">
       <div class="search">
 
@@ -76,6 +43,26 @@
 
 
 <ion-content [fullscreen]="true">
+
+  <div class="slide-items" >
+
+    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
+      <ion-slide style="padding:0px;width: fit-content;" *ngFor="let list of category">
+        <ion-card (click)="Products(list.Category);">
+
+         <div class="menu-name">
+          {{list.Category}}
+           </div>
+
+          <img style="height: 150px;width: 150px;" src="{{list.ImageUrl}}">
+
+        </ion-card>
+     </ion-slide>
+
+
+
+   </ion-slides>
+  </div>
   <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
     <ion-refresher-content>
 </ion-refresher-content>
@@ -83,6 +70,7 @@
 
 
 <div class="ion-list">
+
   <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
     <ion-list style="margin-top: -5px;" lines="none" *ngFor="let item of searchedItem;let i=index">
 
@@ -93,7 +81,7 @@
   <div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
-        <img style="border-radius: 2px;" src="assets\rest2.jpg">
+        <img style="border-radius: 2px;" src="{{item.ImageUrl}}">
       </ion-thumbnail>
       <ion-label class="hotel-card">
         <h4 style="font-weight: 500;width: 200px;">{{item.RestaurantName}}</h4><div class="offer-circle">10%</div>
@@ -112,16 +100,15 @@
 
   </ion-content>
 
-
   <ion-footer *ngIf="cartItemsAll.length">
-    <ion-toolbar>
+    <ion-toolbar (click)="viewCart()">
 
 
       <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
       <ion-text class="description">from {{restaurantName}}</ion-text>
 
 
-      <ion-button color="primary" slot="end" (click)="viewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
+      <ion-icon slot="end" name="cart"></ion-icon>
     </ion-toolbar>
   </ion-footer>
 

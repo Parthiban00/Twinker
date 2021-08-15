@@ -20,6 +20,8 @@
     "express": "^4.17.1",
     "fast-two-sms": "^3.0.0",
     "mongoose": "^5.12.13",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "razorpay": "^2.0.6",
+    "socket.io": "^4.1.3"
   }
 }

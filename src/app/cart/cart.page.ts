@@ -25,6 +25,8 @@ import Coupons from '../models/coupons';
 import { ModalController } from '@ionic/angular';
 import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.page';
 
+declare var Razorpay:any;
+
 //import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-cart',
@@ -1060,6 +1062,7 @@ var data={
   this.productService.GetSuggestionProducts(data).subscribe((res)=>{
     this.products=res as Product[];
     console.log(this.productDetails);
+    //console.log("test    "+this.products[0].ImageUrl)
 
 
 
@@ -1267,6 +1270,79 @@ component:DeliveryCustomisePage
             }
           })
         })
+      }
+
+
+
+
+      Payment(){
+        var payableAmountInPaisa=this.totalAmount1*100;
+      var  data={
+amountInPaisa:payableAmountInPaisa,
+
+        }
+        this.cartService.PaymentOrderId(data).subscribe((res)=>{
+          console.log(res);
+          this.PlaceOrder1(res);
+
+        })
+      }
+
+      PlaceOrder1(res){
+
+
+
+
+        var options = {
+          "key": "rzp_live_Lr7mSG4IeRtTrk", // Enter the Key ID generated from the Dashboard
+          "amount":res.amount , // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+          "currency": "INR",
+          "name": "TWINKER - ORDER ONLINE",
+          "description": "Payable Amount",
+          "image": "https://firebasestorage.googleapis.com/v0/b/twinker-70d21.appspot.com/o/512x512.png?alt=media&token=32c59b60-e104-49be-a809-a665fb9bad67",
+          "order_id": res.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+          "handler": function (response){
+              alert(response.razorpay_payment_id);
+              alert(response.razorpay_order_id);
+              alert(response.razorpay_signature)
+          },
+          "prefill": {
+              "name": "Parthiban Mookkan",
+              "email": "parthimk01@gmail.com",
+              "contact": "9095924511"
+          },
+          "notes": {
+              "address": "Razorpay Corporate Office"
+          },
+          "theme": {
+              "color": "#ff7f24"
+          }
+      };
+
+
+      var rzp1 = new Razorpay(options);
+
+
+      rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+
+
+
+rzp1.open();
+
+
+      }
+
+
+      RedirectToPayment(){
+        this.router.navigate(['payment/'+this.totalAmount1]);
       }
 }
 

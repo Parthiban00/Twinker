@@ -11,6 +11,8 @@ import Tokens from '../models/tokens';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
+import Category from '../models/category';
+import{CategoriesService} from 'src/app/categories.service';
 
 import {
   ActionPerformed,
@@ -18,6 +20,7 @@ import {
   PushNotifications,
   Token,
 } from '@capacitor/push-notifications';
+
 
 
 
@@ -43,7 +46,7 @@ export class HomePagePage implements OnInit,OnDestroy {
   reverseGeocodingResults:any;
   location;
   locCords: any;
-  constructor(private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+  constructor(private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
     this.geolocation.getCurrentPosition({
 
@@ -226,6 +229,8 @@ token:String;
 
 
          });
+
+
   }
 
   sideMenu()

@@ -82,6 +82,9 @@ const TaskSchema = new mongoose.Schema({
 
   ActualAmount:{
     type:Number
+  },
+  Category:{
+    type:String
   }
 
 

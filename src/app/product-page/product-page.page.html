@@ -121,12 +121,12 @@
 
 
 
+<!-- --------------------------------------------------------------------edit -->
 
-
-  <div *ngFor="let product of products;let i=index">
+  <!-- <div *ngFor="let product of products;let i=index">
 
     <div class="cart-items">
-  <!-- <ion-card *ngIf="product.Offer"> -->
+
     <ion-card *ngIf="product.Offer">
 
     <div class="offers" *ngIf="product.Offer">
@@ -156,10 +156,10 @@
     </ion-card-content>
     </ion-card>
     </div>
-  </div>
+  </div> -->
 
 
-
+<!--
   <div *ngFor="let product of products;let i=index">
     <div class="cart-items">
   <ion-card *ngIf="!product.Offer">
@@ -168,7 +168,7 @@
       </div>
     <ion-card-content>
       <div class="item-img">
-        <!-- <img src="assets/menu.jpg" /> -->
+
         <img src="{{product.ImageUrl}}"/>
       </div>
 
@@ -194,11 +194,11 @@
     </ion-card-content>
     </ion-card>
     </div>
-  </div>
+  </div> -->
 </div>
 
 
-<div class="search-div" *ngIf="!isSearch" >
+<!-- <div class="search-div" *ngIf="!isSearch" >
 
   <div class="search">
 
@@ -239,9 +239,41 @@
   </div>
 </div>
 
-</div>
+</div> -->
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
+<ion-row>
+
+  <ion-col style="padding: 0px;" *ngFor="let product of products;let i=index">
+<div class="product">
+
+  <img src="{{product.ImageUrl}}">
+<div class="menu">
+  <p>{{product.ProductName}}</p>
+  <!-- <p style="margin-top: -15px;color: rgb(189, 189, 189);">[from Hotel vani]</p> -->
+  <p style="margin-top: -15px;color: rgb(189, 189, 189);">{{product.Description}}</p>
+
+  <div class="price">
+    <p>Rs.{{product.Price}}</p>
+</div>
+  <div class="qty-selector" *ngIf="product.AvailableStatus && product.ItemCount">
+  <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+<ion-label>{{product.ItemCount}}</ion-label>
+<ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+</div>
+<div  class="add-btn">
+<ion-button color="danger" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add</ion-button>
+</div>
+<div  *ngIf="!product.AvailableStatus">
+  <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
+</div>
+  </div>
+</div>
+</ion-col>
+
+
+  </ion-row>
+
+  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
     <ion-fab-button  >
       <ion-icon name="filter"></ion-icon>
     </ion-fab-button>
@@ -251,20 +283,20 @@
 
 
     </ion-fab-list>
-  </ion-fab>
+  </ion-fab> -->
 </ion-content>
 
 
 
 <ion-footer *ngIf="showCart.length">
-  <ion-toolbar >
+  <ion-toolbar (click)="ViewCart()">
     <!-- <ion-title>4 Items</ion-title> -->
 
     <ion-text class="title">{{showCart.length}} Items</ion-text>
     <ion-text class="description">from {{restaurantName1}}</ion-text>
 
 
-    <ion-button color="primary"  slot="end" (click)="ViewCart()">View Cart  <ion-icon slot="end" name="cart"></ion-icon></ion-button>
+    <ion-icon slot="end" name="cart"></ion-icon>
   </ion-toolbar>
 </ion-footer>
 

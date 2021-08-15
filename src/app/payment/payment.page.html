@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>payment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-card class="total-amount">
+  <ion-card-subtitle>TOTAL AMOUNT : 220.00</ion-card-subtitle>
+  <ion-card-content>Two Hundred Twenty Rupees Only</ion-card-content>
+</ion-card>
+<ion-card class="payment-type">
+  <ion-card-subtitle>PAYMENT TYPE</ion-card-subtitle>
+  <ion-card-content>
+    <ion-list>
+      <ion-radio-group value="biff">
+
+
+        <ion-item>
+          <ion-label>Cash On Delivery(Cash | UPI)</ion-label>
+          <ion-radio slot="start" value="biff"></ion-radio>
+        </ion-item>
+
+        <ion-item>
+          <ion-label  >Online Banking(Cards, Net Banking, UPI Payments, etc.,)</ion-label>
+          <ion-radio slot="start" value="griff"></ion-radio>
+        </ion-item>
+
+      </ion-radio-group>
+    </ion-list>
+  </ion-card-content>
+</ion-card>
+</ion-content>
+<ion-footer  >
+  <ion-toolbar >
+    <!-- <ion-title>4 Items</ion-title> -->
+
+    <ion-text class="title">2 Items</ion-text>
+    <ion-text class="description">Amount Rs: 200.0</ion-text>
+
+
+    <!-- <ion-button  slot="end" (click)="Payment()" >PROCEED TO PAY</ion-button> -->
+    <ion-button  slot="end" >PLACE ORDER</ion-button>
+    <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
+  </ion-toolbar>
+</ion-footer>

@@ -120,7 +120,7 @@
           <ion-card-header>
   <div class="main" >
 
-    <img src="assets/menu.jpg">
+    <img src="{{suggestion.ImageUrl}}">
   </div>
   <!-- <img class="foods-row" src="assets/foods_row.png"> -->
 
@@ -136,9 +136,10 @@
                 <!-- <ion-button fill="clear" (click)="DecreaseItem(i,suggestion.MenuId)" >-</ion-button>
                 <ion-label>{{suggestion.ItemCount}}</ion-label>
                 <ion-button fill="clear" (click)="IncreaseItem(i,suggestion.MenuId)"  >+</ion-button> -->
-                <ion-button color="success" fill="clear" (click)="IncreaseItem(i,suggestion.MenuId)" style="height: 20px;--border-radius: 2px;">Add +</ion-button>
+
 
                       </div>
+                      <ion-button class ="add-btn" color="danger"  (click)="IncreaseItem(i,suggestion.MenuId)" style="height: 20px;--border-radius: 2px;">Add +</ion-button>
             </ion-card-content>
         </ion-card>
 
@@ -254,8 +255,9 @@
     <ion-text class="description">Amount Rs:{{totalAmount1}}</ion-text>
 
 
-    <!-- <ion-button color="secondary" slot="end" (click)="PlaceOrder()" >Proceed to Pay<ion-icon slot="end" name="cart"></ion-icon></ion-button> -->
-    <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button>
+    <ion-button  slot="end" (click)="presentAlertConfirmtToPlace()" >PROCEED TO PAY</ion-button>
+    <!-- <ion-button  slot="end" (click)="RedirectToPayment()" >PROCEED TO PAY</ion-button> -->
+    <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
   </ion-toolbar>
 </ion-footer>
 

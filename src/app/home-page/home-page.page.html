@@ -38,7 +38,7 @@
 </ion-header>
 <ion-content >
 <div class="slides ion-margin-bottom">
-  <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+  <!-- <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
     <ion-slide style="padding:0px;width: fit-content;"  (click)="RestaurantPage('Food')">
 
       <ion-card >
@@ -47,7 +47,7 @@
 
   <img src="assets/rest.png">
 </div>
-<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
         </ion-card-header>
         <ion-card-content class="ion-text-left">
@@ -70,7 +70,7 @@
 
   <img src="assets/evening_bites.png">
 </div>
-<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
         </ion-card-header>
         <ion-card-content class="ion-text-left">
@@ -104,7 +104,7 @@
 
   <img src="assets/cool.png">
 </div>
-<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
         </ion-card-header>
         <ion-card-content class="ion-text-left">
@@ -126,7 +126,7 @@
 
   <img src="assets/veg.png">
 </div>
-<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
         </ion-card-header>
         <ion-card-content class="ion-text-left">
@@ -145,7 +145,18 @@
 
 
 
-  </ion-slides>
+  </ion-slides> -->
+  <div class="categories" (click)="RestaurantPage('Food')">  <img src="assets/foods.jpg"></div>
+  <div class="categories" (click)="RestaurantPage('Vegetable')">  <img src="assets/veggies.jpg"></div>
+  <div class="categories"  (click)="RestaurantPage('Juice')">  <img src="assets/jucies.jpg"></div>
+
+  <div class="categories" (click)="RestaurantPage('Fruit')">  <img src="assets/fruit.jpg"></div>
+
+  <div class="categories" (click)="RestaurantPage('Grocery')">  <img src="assets/grocery.jpg"></div>
+  <div class="categories" (click)="RestaurantPage('Meat')">  <img src="assets/MEAT.jpg"></div>
+  <div class="categories" (click)="RestaurantPage('Medicine')">  <img src="assets/medicine.jpg"></div>
+
+
 
 </div>
 <div class="container" *ngIf="orderDetails.length">

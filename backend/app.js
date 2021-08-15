@@ -13,8 +13,12 @@ const Products = require('./database/models/products');
 const Cart = require('./database/models/Cart');
 const DeliveryLocation = require('./database/models/delivery-location');
 const OrderDetails = require('./database/models/order-details');
+const Category = require('./database/models/category');
 const Coupons = require('./database/models/coupons');
 const { isValidObjectId } = require('mongoose');
+let Razorpay = require('razorpay');
+const socket = require('socket.io');
+
 app.use(express.json());
 // ---------------------------------new--------------
 const port = process.env.PORT || 5000;
@@ -27,6 +31,13 @@ app.use(cors());
 app.use(express.urlencoded({extended:false}))
 
 
+const RazorpayConfig={
+  key_id:'rzp_live_BNBLXyHk09HIQZ',
+  key_secret:'GfucUQNVT6s5EIWiTL0z9ow9'
+}
+
+
+
 
 app.use((req,res,next)=> {
 
@@ -36,6 +47,22 @@ app.use((req,res,next)=> {
     next();
 });
 
+
+var instance = new Razorpay({ key_id: 'rzp_live_Lr7mSG4IeRtTrk', key_secret: 'XVMQGkUnw8Yqcp1VG9OrXTOK' })
+
+
+app.post('/razorpay/:amount',(req,res)=>{
+  var options = {
+    amount:req.params.amount ,  // amount in the smallest currency unit
+    currency: "INR",
+    receipt: "order_rcptid_11"
+  };
+  instance.orders.create(options, function(err, order) {
+    console.log(order);
+    res.send(order)
+
+  });
+})
 
 app.get('/lists',(req,res)=>{
 
@@ -410,7 +437,7 @@ console.log("save restaurant");
 
 
 
-                                OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id}, {$set: {Status:req.body.Status}})
+                                OrderDetails.findOneAndUpdate({RestaurantId: req.params.RestaurantId,_id:req.params._id}, {$set: {Status:req.body.Status,DeliveryPartnerStatus:req.body.Status}})
                                 .then((orderdetails)=> res.send(orderdetails))
                                 .catch((error)=>console.log(error));
 
@@ -589,15 +616,46 @@ console.log("restId "+req.params.restId+" menuId "+req.params.menuId);
                                                                                                                           Products.findOneAndUpdate({RestaurantId:req.params.restId,MenuId:req.params.menuId,_id:req.params.id}, {$set: {AvailableStatus:req.body.availableStatus}})
                                                                                                                          // MainMenu.updateMany({RestaurantId: req.params.restId,_id:req.params.menuId}, {$set: {AvailableStatus:req.body.availableStatus}})
                                                                                                                           .then((products)=> res.send(products))
-                                                                                                                          .catch((error)=>console.log(error));
+                                                                                                           .catch((error)=>console.log(error));
 
 
 
-                                                                                                                          }),
+                                                                                                       }),
+
+                                                                                                       app.get('/random/products/:category',(req,res)=>{
+
+                                                                                                        Products.find({Category: req.params.category})
+                                                                                                        .then(Products=>res.send(Products))
+                                                                                                        .catch((error)=>console.log(error));
+                                                                                                    });
+
+                                                                                                    app.post('/categories',(req,res)=>{
+
+                                                                                                      console.log("save Category");
+                                                                                                                  (new Category ({'Category': req.body.Category,'ImageUrl':req.body.ImageUrl,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Type':req.body.Type}))
+                                                                                                                  .save()
+                                                                                                                  .then((categories)=> res.send(categories))
+                                                                                                                  .catch((error)=>console.log(error));
+
+                                                                                                              });
+                                                                                                              app.get('/categories/:type/:activeYn',(req,res)=>{
+
+                                                                                                                Category.find({Type: req.params.type,ActiveYn:req.params.activeYn})
+                                                                                                                .then(categories=>res.send(categories))
+                                                                                                                .catch((error)=>console.log(error));
+                                                                                                            });
+
+
 
 
 
 
 
  //app.listen(3000, () => console.log("Server is connected on port 3000"));
-app.listen(port, () => console.log("Server is connected on port "+port));
+const server=app.listen(port, () => console.log("Server is connected on port "+port));
+const io=socket(server);
+
+io.sockets.on('connection',(socket)=>{
+  console.log(`new connection id: ${socket.id}`);
+
+})

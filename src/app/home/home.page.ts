@@ -7,7 +7,8 @@ import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
 import { LoadingController } from '@ionic/angular';
 import { IonSearchbar } from '@ionic/angular';
-
+import Category from '../models/category';
+import{CategoriesService} from 'src/app/categories.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ getData:any;
   isLoading = false;
 restaurantDetails:Restaurant[]=[];
 isToggle:boolean;
-
+category:Category[];
 
 cartItemsAll:Cart[]=[];
 
@@ -43,7 +44,7 @@ type:string;
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
-  constructor(private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
+  constructor(private categoriesService:CategoriesService,private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
 
 
 
@@ -71,6 +72,17 @@ type:string;
 
 
      });
+
+     var data={
+      Type:this.type,
+      ActiveYn:true
+    }
+
+    this.categoriesService.GetCategory(data).subscribe((res)=>{
+     this.category=res as Category[];
+     console.log("categories "+this.category);
+
+    })
 
 
 this.searchHotel="";
@@ -296,6 +308,11 @@ k=j;
     this.ionViewWillEnter();
 
   }
+}
+
+Products(category:any){
+
+  this.router.navigate(['products/'+category+'/'+this.type]);
 }
 
 }

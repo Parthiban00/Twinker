@@ -49,6 +49,7 @@ export class ProductPagePage implements OnInit {
    }
 
 
+
   /*productDetails=[
    { name:"House Salads",
     status:"Available",
@@ -614,7 +615,7 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
     header: 'Confirm!',
-    message: '<small>Your cart contains items from <strong>'+this.restaurantName1+'</strong>, would you like to replace it?</small>',
+    message: 'Your cart contains items from <strong>'+this.restaurantName1+'</strong>, would you like to replace it?',
     buttons: [
       {
         text: 'Cancel',

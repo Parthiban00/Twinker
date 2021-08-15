@@ -56,6 +56,8 @@ currentUserId:any;
   }
   ionViewWillEnter(){
     this.GetOrderDetails();
+
+
   }
 
 

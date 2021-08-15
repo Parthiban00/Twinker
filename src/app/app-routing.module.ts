@@ -157,6 +157,14 @@ const routes: Routes = [
     path: 'menu-status',
     loadChildren: () => import('./menu-status/menu-status.module').then( m => m.MenuStatusPageModule)
   },
+  {
+    path: 'products/:category/:type',
+    loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
+  },
+  {
+    path: 'payment/:totalAmount',
+    loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
+  },
 
 
 
