@@ -85,6 +85,12 @@ const TaskSchema = new mongoose.Schema({
   },
   Category:{
     type:String
+  },
+  ImageUrl:{
+    type:String
+  },
+  RestaurantName:{
+    type:String
   }
 
 

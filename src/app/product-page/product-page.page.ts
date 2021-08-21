@@ -128,8 +128,11 @@ export class ProductPagePage implements OnInit {
 
     this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
     this.productDetails=res as Product[];
+
+
     this.searchedItem=res as Product[];
     console.log(this.productDetails);
+
 
     for(var i=0;i<this.productDetails.length;i++){
 

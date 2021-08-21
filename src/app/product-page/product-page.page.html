@@ -76,12 +76,21 @@
 
 
     <ion-content  >
+
+
+
+      <div >
+
+        <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
+          <ion-slide>
+
       <div class="main" *ngIf="isSearch">
 
       <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
         <ion-refresher-content>
     </ion-refresher-content>
     </ion-refresher>
+
       <!-- <div class="todays-offers">
 
         <div *ngFor="let product of productDetails;let i=index">
@@ -284,6 +293,10 @@
 
     </ion-fab-list>
   </ion-fab> -->
+  </ion-slide>
+  </ion-slides>
+  </div>
+
 </ion-content>
 
 

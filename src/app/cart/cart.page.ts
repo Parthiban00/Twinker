@@ -496,13 +496,13 @@ d.getSeconds(); // => 51
 var time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
 //this.presentAlertConfirm1();
-//this.selectedLocation="Idaamelur";
+ //this.selectedLocation="Idaamelur";
 
     this.present();
 
     if(this.selectedLocation=="" || this.selectedLocation==undefined || this.selectedLocation==null){
       this.dismiss();
-      this.presentAlertConfirm1();
+     this.presentAlertConfirm1();
     }
     else{
 
@@ -513,21 +513,21 @@ var yyyy = today.getFullYear();
 
 var today1 = yyyy + '-' + mm + '-' + dd;
 
-    var orderId1="ORD_ID-";
-    let orderId2:number=0;
+  //   var orderId1="ORD_ID-";
+  //   let orderId2:number=0;
 
-    let ExistingOrderId:string= this.allOrders[this.allOrders.length-1].OrderId;
-    if(ExistingOrderId==undefined || ExistingOrderId==null || ExistingOrderId==" "){
-      ExistingOrderId="ORD_ID-0"
-    }
-    else{
-    var subs=ExistingOrderId.split("-");
-  let idIncrement:number=parseInt(subs[1])+1;
+  //   let ExistingOrderId:string= this.allOrders[this.allOrders.length-1].OrderId;
+  //   if(ExistingOrderId==undefined || ExistingOrderId==null || ExistingOrderId==" "){
+  //     ExistingOrderId="ORD_ID-0"
+  //   }
+  //   else{
+  //   var subs=ExistingOrderId.split("-");
+  // let idIncrement:number=parseInt(subs[1])+1;
 
-    //console.log(idIncrement);
-    var orderId=orderId1+idIncrement;
-    }
-   // console.log(orderId);
+
+  //   var orderId=orderId1+idIncrement;
+  //   }
+
 
 
 
@@ -555,7 +555,7 @@ var today1 = yyyy + '-' + mm + '-' + dd;
     //console.log(this.placeOrderArr);
 
    var billDetials={
-     OrderId:orderId,
+    // OrderId:orderId,
 
      UserId:this.user[0]._id,
      UserName:this.user[0].FirstName,
@@ -916,10 +916,10 @@ this.presentActionSheet();
     this.cartService.GetAllOrders().subscribe((res)=>{
 
       this.allOrders=res as Orders[];
-      console.log("all orders "+this.allOrders);
-length=this.allOrders.length;
-console.log("length: "+length);
-console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
+      //console.log("all orders "+this.allOrders);
+//length=this.allOrders.length;
+//console.log("length: "+length);
+//console.log("last order "+ this.allOrders[this.allOrders.length-1].OrderId);
    })
 
   }
