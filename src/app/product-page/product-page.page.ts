@@ -91,7 +91,7 @@ export class ProductPagePage implements OnInit {
 
     this.searchMenu="";
     this.isSearch=true;
-    this.present();
+    //this.present();
 //this.productDetails=[];
     this.products.length=0;
 

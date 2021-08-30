@@ -35,6 +35,22 @@
     </div>
   </ion-card> -->
 
+  <div class="ad-slides" *ngIf="!productDetails.length">
+
+    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
+       <ion-slide style="padding:0px;width: fit-content;">
+         <ion-card>
+
+
+<div style="height:150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+         </ion-card>
+       </ion-slide >
+
+
+
+    </ion-slides>
+    </div>
+
 
 
     <div class="ad-slides">
@@ -61,7 +77,18 @@
 
  <div  class="navbar" *ngIf="isSearch">
 
+
+
+
+
   <ion-segment  scrollable [(ngModel)]="menu" color="danger" (ionChange)="segmentChanged($event)">
+    <ion-segment-button *ngIf="!mainMenu.length">
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+    </ion-segment-button>
+    <ion-segment-button *ngIf="!mainMenu.length">
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+    </ion-segment-button>
+
     <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
       {{menus.MenuName}}
     </ion-segment-button>
@@ -75,16 +102,18 @@
 
 
 
-    <ion-content  >
+    <ion-content >
 
 
 
       <div >
 
-        <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
-          <ion-slide>
+        <!-- <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
 
-      <div class="main" *ngIf="isSearch">
+          <ion-slide  *ngFor="let menus of mainMenu"> -->
+
+      <!-- <div class="main" *ngIf="isSearch"> -->
+        <div class="main" *ngIf="isSearch">
 
       <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
         <ion-refresher-content>
@@ -250,15 +279,37 @@
 
 </div> -->
 
+
+
 <ion-row>
+  <ion-col *ngIf="!productDetails.length" style="padding: 0px;" >
+    <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+<div class="product" >
+
+
+  <div style="height:150px;width: 160px;background-color: rgb(231, 231, 231);"></div>
+<div class="menu">
+  <p style="font-weight: 400;width: 200px;"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></p>
+
+  <p style="margin-top: -10px;color: rgb(189, 189, 189);"><ion-skeleton-text animated style="width:80%"></ion-skeleton-text></p>
+
+  <div class="price">
+    <p><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></p>
+</div>
+
+
+  </div>
+</div>
+</ion-col>
 
   <ion-col style="padding: 0px;" *ngFor="let product of products;let i=index">
-<div class="product">
+    <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+<div class="product" >
 
   <img src="{{product.ImageUrl}}">
 <div class="menu">
   <p>{{product.ProductName}}</p>
-  <!-- <p style="margin-top: -15px;color: rgb(189, 189, 189);">[from Hotel vani]</p> -->
+
   <p style="margin-top: -15px;color: rgb(189, 189, 189);">{{product.Description}}</p>
 
   <div class="price">
@@ -293,8 +344,8 @@
 
     </ion-fab-list>
   </ion-fab> -->
-  </ion-slide>
-  </ion-slides>
+  <!-- </ion-slide>
+  </ion-slides> -->
   </div>
 
 </ion-content>

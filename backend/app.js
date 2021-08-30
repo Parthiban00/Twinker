@@ -213,6 +213,8 @@ console.log("save restaurant");
 
           console.log('get restaurants entered');
 
+
+
             Restaurant.find({'ActiveYn':true,'DeleteYn':false})
             .then(restaurants=>res.send(restaurants))
             .catch((error)=>console.log(error));
@@ -220,6 +222,15 @@ console.log("save restaurant");
 
 
         app.get('/restaurants/:ActiveYn/:Type',(req,res)=>{
+          let date_ob = new Date();
+          let hours = date_ob.getHours();
+
+// current minutes
+let minutes = date_ob.getMinutes();
+
+// current seconds
+let seconds = date_ob.getSeconds();
+console.log(hours + ":" + minutes);
 
           console.log('get restaurants entered');
 
@@ -259,8 +270,9 @@ console.log("save restaurant");
         });
 
         app.get('/restaurants/:restId/:activeYn/mainmenus',(req,res)=>{
+          console.log("main menu entered");
 
-            MainMenu.find({RestaurantId: req.params.restId,ActiveYn:req.params.activeYn})
+            MainMenu.find({RestaurantId: req.params.restId,ActiveYn:req.params.activeYn}).sort({"AvailableStatus":-1})
             .then(mainmenus=>res.send(mainmenus))
             .catch((error)=>console.log(error));
         });
@@ -277,7 +289,7 @@ console.log("save restaurant");
 
         app.get('/restaurants/:restId/mainmenus/products',(req,res)=>{
 
-            Products.find({RestaurantId: req.params.restId})
+            Products.find({RestaurantId: req.params.restId}).sort({"AvailableStatus":-1})
             .then(Products=>res.send(Products))
             .catch((error)=>console.log(error));
         });
@@ -599,7 +611,7 @@ console.log("suggestion entered");
                                                           app.patch('/products/:restId/:menuId', (req,res)=>{
 
 console.log("restId "+req.params.restId+" menuId "+req.params.menuId);
-
+updateMainMenu(req.params.restId,req.params.menuId,req.body.availableStatus);
                                                             Products.updateMany({RestaurantId:req.params.restId,MenuId:req.params.menuId}, {$set: {AvailableStatus:req.body.availableStatus}})
                                                            // MainMenu.updateMany({RestaurantId: req.params.restId,_id:req.params.menuId}, {$set: {AvailableStatus:req.body.availableStatus}})
                                                             .then((products)=> res.send(products))
@@ -647,7 +659,12 @@ console.log("restId "+req.params.restId+" menuId "+req.params.menuId);
 
 
 
-
+function updateMainMenu(restId,menuId,availableStatus){
+  console.log('udate main menu entered'+restId)
+  MainMenu.updateMany({RestaurantId: restId,_id:menuId}, {$set: {AvailableStatus:availableStatus}})
+  .then()
+  .catch((error)=>console.log(error));
+}
 
 
 

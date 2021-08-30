@@ -9,6 +9,7 @@ import { LoadingController } from '@ionic/angular';
 import { IonSearchbar } from '@ionic/angular';
 import Category from '../models/category';
 import{CategoriesService} from 'src/app/categories.service';
+import * as moment from 'moment';
 
 
 @Component({
@@ -41,6 +42,13 @@ unit="K";
 coord:any;
 user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 type:string;
+skeleton=[
+
+{},
+{},
+{},
+{}
+]
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
@@ -61,7 +69,10 @@ type:string;
    // this.dismiss();
 
 
-    this.present();
+    //this.present();
+   const m=moment();
+   console.log(m.toString());
+
 
     this.type=this.activatedRouter.snapshot.params.type;
     console.log(this.type);

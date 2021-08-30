@@ -1,0 +1,25 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+
+    <ion-title style="font-family: lato;">
+      Location Set-Up
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Draggable Marker</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div #mapElement class="map"></div>
+  <ion-card>
+  <ion-card-subtitle>Address:</ion-card-subtitle>
+
+  <ion-card-content>{{formattedAddress}} </ion-card-content>
+  </ion-card>
+  <ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;--border-radius: 0px !important;" (click)="ApplyDeliveryDetails()">Apply</ion-button>
+<ion-button color="danger" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px" >Cancel</ion-button>
+<ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current Location</ion-button>
+</ion-content>

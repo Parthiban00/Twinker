@@ -44,11 +44,14 @@
 
 <ion-content [fullscreen]="true">
 
+
+
+
   <div class="slide-items" >
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
       <ion-slide style="padding:0px;width: fit-content;" *ngFor="let list of category">
-        <ion-card (click)="Products(list.Category);">
+        <ion-card (click)="Products(list.Category);" style="height: 150px;border-radius:0px">
 
          <div class="menu-name">
           {{list.Category}}
@@ -63,30 +66,183 @@
 
    </ion-slides>
   </div>
-  <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
+  <div class="slide-items" *ngIf="!category" >
+
+    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+      <ion-slide style="padding:0px;width: fit-content;">
+        <ion-card  style="height: 150px;border-radius:0px">
+
+         <div class="menu-name">
+
+           </div>
+
+          <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+        </ion-card>
+     </ion-slide>
+     <ion-slide style="padding:0px;width: fit-content;">
+      <ion-card  style="height: 150px;border-radius:0px">
+
+       <div class="menu-name">
+
+         </div>
+
+        <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+      </ion-card>
+   </ion-slide>
+   <ion-slide style="padding:0px;width: fit-content;">
+    <ion-card  style="height: 150px;border-radius:0px">
+
+     <div class="menu-name">
+
+       </div>
+
+      <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+    </ion-card>
+ </ion-slide>
+ <ion-slide style="padding:0px;width: fit-content;">
+  <ion-card  style="height: 150px;border-radius:0px">
+
+   <div class="menu-name">
+
+     </div>
+
+    <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+  </ion-card>
+</ion-slide>
+
+
+
+   </ion-slides>
+  </div>
+ <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
     <ion-refresher-content>
 </ion-refresher-content>
 </ion-refresher>
+<!-- <div *ngIf="!searchedItem">
+  <div class="ion-padding custom-skeleton">
+    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+    <ion-skeleton-text animated></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+    <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+  </div>
 
+  <ion-list>
+    <ion-list-header>
+      <ion-label>
+        <ion-skeleton-text animated style="width: 20%"></ion-skeleton-text>
+      </ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-avatar slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-avatar>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-skeleton-text animated></ion-skeleton-text>
+      </ion-thumbnail>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-skeleton-text animated style="width: 27px; height: 27px" slot="start"></ion-skeleton-text>
+      <ion-label>
+        <h3>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+        </h3>
+        <p>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+        </p>
+        <p>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</div> -->
+
+
+<div class="ion-list" *ngIf="!searchedItem">
+
+  <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
+    <ion-list style="margin-top: -5px;" lines="none" *ngFor="let dummy of skeleton" >
+
+<ion-card class="ion-card"  style="border-radius:0px;">
+
+
+  <!-- <div  class="offers color-green" *ngIf="item.AvailableStatus" >Opened</div>
+  <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div> -->
+
+
+  <div class="offer-logo"style="position: absolute;right:0px;top: 0px;"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></div>
+    <ion-item >
+
+      <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;background-color: rgb(231, 231, 231);" slot="start">
+
+
+      </ion-thumbnail>
+      <ion-label class="hotel-card">
+        <h4 style="font-weight: 400;width: 200px;"><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></h4>
+        <p  style="margin-top: -15px;font-size: 12px;"><ion-skeleton-text animated style="width:80%"></ion-skeleton-text></p>
+        <p  style="margin-top: -15px;font-size: 12px;"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+
+        <p style="font-size: 12px;margin-top: -5px;"><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text> </p>
+      </ion-label>
+    </ion-item>
+
+  </ion-card>
+    </ion-list>
+
+    </div>
 
 <div class="ion-list">
 
   <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
     <ion-list style="margin-top: -5px;" lines="none" *ngFor="let item of searchedItem;let i=index">
 
-<ion-card class="ion-card">
-  <div  class="offers color-green" *ngIf="item.AvailableStatus" >Opened</div>
-  <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div>
+<ion-card class="ion-card"  style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus}">
+
+
+  <!-- <div  class="offers color-green" *ngIf="item.AvailableStatus" >Opened</div>
+  <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div> -->
+
 
   <div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
+
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
-        <img style="border-radius: 2px;" src="{{item.ImageUrl}}">
+
+        <img  src="{{item.ImageUrl}}">
       </ion-thumbnail>
       <ion-label class="hotel-card">
-        <h4 style="font-weight: 500;width: 200px;">{{item.RestaurantName}}</h4><div class="offer-circle">10%</div>
-        <p  style="margin-top: -15px;font-size: small;">{{item.RestaurantType}}</p>
-        <p  style="margin-top: -15px;font-size: small;">{{item.Address}}</p>
+        <h4 style="font-weight: 400;width: 200px;">{{item.RestaurantName}}</h4><div class="offer-circle"><p>10%</p></div>
+        <p  style="margin-top: -15px;font-size: 12px;">{{item.RestaurantType}}</p>
+        <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p>
         <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
         <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
       </ion-label>

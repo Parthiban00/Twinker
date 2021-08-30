@@ -1,27 +1,36 @@
+ion-slides{
 
-  ion-slides{
 
-//margin-top: -20px;
-    ion-slide{
-      margin-top: -20px;
-      ion-card{
-        position: relative;
-        width:150px;
+  ion-slide{
+
+    margin-top: -20px;
+
+
+    ion-card{
+
+      position: relative;
+      width:150px;
+      height: 150px;
+      box-shadow: none;
+      border-radius: 0px !important;
+      justify-content: center;
+      align-items: center;
+
+
+
+
+
+      img{
+        object-fit: cover;
+        width: 150px;
         height: 150px;
-        box-shadow: none;
-        border-radius: 2px;
+       // transform:scale(1.1,1.1) rotate(1deg);
 
-
-        img{
-          object-fit: cover;
-          width: 150px;
-          height: 150px;
-         // transform:scale(1.1,1.1) rotate(1deg);
-          transition: 600ms all ease-in-out;
-        }
+       // opacity: 0.2;
       }
     }
   }
+}
   .top-offers{
     position: absolute;
     margin-top:70px ;
@@ -231,4 +240,14 @@ border-radius: 2px;
   width: fit-content;
   position: absolute;
   background-color: tomato;
+}
+.offer-content1{
+  position: absolute;
+  top:50px;
+  left: 10px;
+
+  height: 120px;
+  width: 130px;
+
+border-radius: 2px;
 }

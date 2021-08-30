@@ -36,15 +36,18 @@ ion-slides{
 
     margin-top: -20px;
 
+
     ion-card{
 
       position: relative;
       width:150px;
       height: 150px;
       box-shadow: none;
-      --border-radius: 0px;
+      border-radius: 0px !important;
       justify-content: center;
       align-items: center;
+
+
 
 
 
@@ -62,6 +65,12 @@ ion-slides{
 }
 }
 
+.available-status-yes{
+box-shadow: 2px 2px 2px green;
+}
+.available-status-no{
+  box-shadow: 2px 2px 2px red;
+}
 
 
 
@@ -307,13 +316,19 @@ letter-spacing: 1.5;
   position: absolute;
   right: 10px;
   top: 10px;
-  height: 25px;
-  width: 25px;
+  height: 20px;
+  width: 20px;
   border-radius: 50%;
-  background-color: rgb(255, 94, 0);
-  font-size: 10px;
+  background-color: rgb(104, 58, 32);
+
   padding: 2px;
-  color:#fff
+  color:#fff;
+  align-content: center;
+  p{
+    margin-top: -3px;
+    font-size: 8px;
+  }
+
 }
 
 

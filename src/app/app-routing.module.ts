@@ -165,6 +165,14 @@ const routes: Routes = [
     path: 'payment/:totalAmount',
     loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   },
+  {
+    path: 'change-location',
+    loadChildren: () => import('./change-location/change-location.module').then( m => m.ChangeLocationPageModule)
+  },
+  {
+    path: 'location-set-up',
+    loadChildren: () => import('./location-set-up/location-set-up.module').then( m => m.LocationSetUpPageModule)
+  },
 
 
 

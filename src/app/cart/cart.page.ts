@@ -8,7 +8,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { ActionSheetController } from '@ionic/angular';
 import {RegisterUserService} from 'src/app/register-user.service';
 import Cart from '../models/cart';
-import DeliveryLocations from '../models/delivery-locations';
+
 import PlaceOrder from '../models/place-order';
 import Restaurant from '../models/restaurants';
 import{CartService} from 'src/app/cart.service';
@@ -24,6 +24,7 @@ import Coupons from '../models/coupons';
 
 import { ModalController } from '@ionic/angular';
 import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.page';
+import {ChangeLocationPage} from '../change-location/change-location.page';
 
 declare var Razorpay:any;
 
@@ -93,7 +94,7 @@ this.geolocation.getCurrentPosition({
 
 selectedAddressId:string="";
   addressClickStatus: boolean = false;
-  deliveryLocation:DeliveryLocations[]=[];
+
 selectedTab:String="";
 isChecked:boolean=false;
 continuousDelivery:boolean=false;
@@ -257,25 +258,7 @@ this.GetAllOrders();
 
 
 
-  DeliveryLocations(){
 
-    var getDeliveryLocations={
-      UserId:this.user[0]._id,
-      ActiveYn:true
-    }
-    this.cartService.GetDeliveryAddress(getDeliveryLocations).subscribe((res)=>{
-      this.deliveryLocation=res as DeliveryLocations[];
-      console.log(this.deliveryLocation);
-
-
-      for(var j=0;j<this.deliveryLocation.length;j++){
-        if(this.deliveryLocation[j].Recent=='Yes'){
-
-        }
-      }
-
-    })
-  }
 
 
   viewBillDetails(){
@@ -438,14 +421,7 @@ IncreaseCount(i:any){
       UserType:this.user[0].UserType
     }
 
-    this.registerUserService.deliveryLocation(newLocation).subscribe((res)=>{
 
-      this.deliveryLocation=res as DeliveryLocations[];
-  this.newAddress="";
-
-    //  this.ngOnInit();
-    this.ionViewWillEnter();
-            })
 
   }
 
@@ -835,7 +811,8 @@ this.presentActionSheet();
         }
 
 
-      }]
+      }],
+
     });
     await actionSheet.present();
 
@@ -1272,6 +1249,21 @@ component:DeliveryCustomisePage
         })
       }
 
+      ChangeLocation(){
+        this.modalController.create({
+          component:ChangeLocationPage
+                  }).then(modalres=>{
+                    modalres.present();
+
+                    modalres.onDidDismiss().then(res=>{
+                      if(res.data!=null){
+
+                      }
+                    })
+                  })
+
+      }
+
 
 
 
@@ -1343,6 +1335,10 @@ rzp1.open();
 
       RedirectToPayment(){
         this.router.navigate(['payment/'+this.totalAmount1]);
+      }
+
+      EditLocation(){
+  this.router.navigate(['delivery-location'])
       }
 }
 

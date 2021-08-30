@@ -18,20 +18,13 @@
 
 
 <ion-content [fullscreen]="true">
- <ion-card>
-   <div #mapElement class="map"></div>
-   <ion-card-header>
-     <ion-card-subtitle>Destination</ion-card-subtitle>
-     <ion-card-title>Madison, Wi</ion-card-title>
-
-   </ion-card-header>
- <ion-card-content>
-Address:
- </ion-card-content>
-
-  </ion-card>
-
-
-
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Draggable Marker</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div #mapElement class="map"></div>
+  <h2>Address:</h2>
+  <h4>{{formattedAddress}}</h4>
 </ion-content>
 
