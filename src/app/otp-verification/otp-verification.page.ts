@@ -30,14 +30,15 @@ status="";
 registerUser:any;
 registeredUserStatus:boolean=false;
 firstName;
-password;
+user;
+password='no';
 users:Login[]=[];
 otpType;
   constructor(private loadingCtrl:LoadingController,private toastCtrl:ToastController,private activatedRouter:ActivatedRoute,private router:Router,private otpService:OtpVerificationService,private registerUserService:RegisterUserService) { }
 
   ngOnInit() {
      this.mobileNo=this.activatedRouter.snapshot.params.mobileNo;
-    this. password=this.activatedRouter.snapshot.params.password;
+   // this. password=this.activatedRouter.snapshot.params.password;
      this.firstName=this.activatedRouter.snapshot.params.firstName;
     this.UserType=this.activatedRouter.snapshot.params.userType;
     this.otpType=this.activatedRouter.snapshot.params.otpType;
@@ -152,30 +153,18 @@ RegisterUser(){
 
       //console.log(firstName);
       //this.registerUserService.createUser(firstName,lastName,address,mobileNo,password,emailId,this.Address1,this.Address2,this.Address3,this.UserType,this.ActiveYn,this.DeleteYn);
-      this.registerUserService.createUser(registeruser).subscribe((list:any)=>{
+      this.registerUserService.createUser(registeruser).subscribe((res)=>{
+        this.users=res as Login[];
 
-        console.log(list.FirstName+' '+list._id);
-     //  this. users=list as Login[];
         this.registeredUserStatus=true;
+        localStorage.setItem("currentUser",JSON.stringify(this.users));
 
-        const deliveryAddress={
-            UserId:list._id,
-            UserName:list.FirstName,
-            MobileNo:list.MobileNo,
-            Address:list.Address,
-            ActiveYn:true,
-            DeleteYn:false,
-            Recent:'Yes',
-            UserType:list.UserType
-        }
 
-        this.registerUserService.deliveryLocation(deliveryAddress).subscribe((res)=>{
+  this.status="Welcome to Twinker Family...";
 
-  this.deliveryLocation=res as DeliveryLocations[];
-        })
-  this.status="Register User Successfull..."
 
-        this.router.navigate(['login/'+list.MobileNo+'/'+list.Password]);
+      //  this.router.navigate(['home-page']);
+      this.router.navigate(['delivery-location'])
 
       });
     }

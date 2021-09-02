@@ -178,6 +178,12 @@ else{
             .then((userregisters)=> res.send(userregisters))
             .catch((error)=>console.log(error));
         });
+        app.get('/userregisters/:MobileNo/:ActiveYn',(req,res)=>{
+          console.log("user login get ");
+          Register.find({MobileNo:req.params.MobileNo,ActiveYn:true})
+          .then((userregisters)=> res.send(userregisters))
+          .catch((error)=>console.log(error));
+      });
 
         app.post('/restaurants',(req,res)=>{
 
@@ -589,7 +595,7 @@ console.log("suggestion entered");
                                                         app.patch('/restaurants/:_id', (req,res)=>{
 
 
-
+                                                          updateProducts(req.params._id,req.body.availableStatus);
                                                           Restaurant.findOneAndUpdate({_id: req.params._id}, {$set: {AvailableStatus:req.body.availableStatus}})
                                                           .then((restaurants)=> res.send(restaurants))
                                                           .catch((error)=>console.log(error));
@@ -664,6 +670,16 @@ function updateMainMenu(restId,menuId,availableStatus){
   MainMenu.updateMany({RestaurantId: restId,_id:menuId}, {$set: {AvailableStatus:availableStatus}})
   .then()
   .catch((error)=>console.log(error));
+}
+
+function updateProducts(restId,availableStatus){
+  console.log('udate produts entered'+restId)
+  if(availableStatus==false){
+  Products.updateMany({RestaurantId: restId}, {$set: {AvailableStatus:availableStatus}})
+  .then()
+  .catch((error)=>console.log(error));
+}
+else{}
 }
 
 

@@ -38,7 +38,7 @@ user:any;
 ionViewWillEnter(){
 
   this.present();
-  this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   var getOrders={
     Status:"Placed",
     ActiveYn:true,

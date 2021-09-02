@@ -3,8 +3,8 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
-declare var google;
 
+declare var google;
 @Component({
   selector: 'app-change-location',
   templateUrl: './change-location.page.html',
@@ -12,6 +12,7 @@ declare var google;
 })
 export class ChangeLocationPage implements AfterViewInit {  public folder: string;
   public map;
+
   public geocoder;
   marker;
   latitude;

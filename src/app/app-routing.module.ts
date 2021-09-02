@@ -118,7 +118,7 @@ const routes: Routes = [
     loadChildren: () => import('./splash-screen/splash-screen.module').then( m => m.SplashScreenPageModule)
   },
   {
-    path: 'otp-verification/:mobileNo/:password/:firstName/:userType/:otpType',
+    path: 'otp-verification/:mobileNo/:firstName/:userType/:otpType',
     loadChildren: () => import('./otp-verification/otp-verification.module').then( m => m.OtpVerificationPageModule)
   },
   {

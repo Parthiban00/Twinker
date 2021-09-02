@@ -40,9 +40,10 @@ isLoading = false;
 mobileNo:"",
 password:""
   }
-
+  otpType="New";
 mobileNo;
 password;
+UserType='C';
   postList:any;
   durationInSeconds=3;
   users:Login[]=[];
@@ -106,8 +107,9 @@ Login(mobileNo:String,password:String){
   const loginCredential={
 
     mobileNo:mobileNo,
-    password:password,
+    FirstName:password,
     ActiveYn:true,
+  //  Password:'no'
     //UserType:this.userType
   }
 
@@ -117,19 +119,28 @@ Login(mobileNo:String,password:String){
 
   this.users=res as Login[];
   if(!this.users.length){
-    this.status="Invalid Mobile No. or Password...";
-    console.log("login failed")
+    // this.status="Invalid Mobile No. or Password...";
+    // console.log("login failed")
 
 this.dismiss();
-    this.presentToast(this.status);
+    // this.presentToast(this.status);
+    this.router.navigate(['otp-verification/'+loginCredential.mobileNo+'/'+loginCredential.FirstName+'/'+this.UserType+'/'+this.otpType]);
 
 
-    this.loginValues.mobileNo="";
-    this.loginValues.password="";
+    // this.loginValues.mobileNo="";
+    // this.loginValues.password="";
   }
-  else{
 
-    this.status="Logged In Successfull...";
+  else  {
+    this.dismiss();
+if(!localStorage.getItem('LocationAddress')){
+  localStorage.setItem("currentUser",JSON.stringify(this.users));
+  console.log('lcoation no');
+  this.router.navigate(['delivery-location'])
+}
+else{
+  this.dismiss();
+    this.status="Welcome to Twinker Family...";
     console.log("login successful")
 
 
@@ -143,7 +154,7 @@ this.dismiss();
     this.dismiss();
     this.router.navigate(['home-page']);
     localStorage.setItem("currentUser",JSON.stringify(this.users));
-
+  }
   }
 
 });

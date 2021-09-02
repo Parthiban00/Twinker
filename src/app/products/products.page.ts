@@ -19,7 +19,7 @@ import { LoadingController } from '@ionic/angular';
 })
 export class ProductsPage implements OnInit {
   products:Product[]=[];
-  user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  user:any;
   category:string;
   categoryProducts:Product[];
   isLoading = false;
@@ -45,7 +45,7 @@ export class ProductsPage implements OnInit {
 
 ionViewWillEnter(){
 
-
+this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 this.getCartAll();
   this.category=this.activatedRouter.snapshot.params.category;
   this.type=this.activateRoute.snapshot.params.type;

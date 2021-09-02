@@ -40,7 +40,7 @@ export class ProductPagePage implements OnInit {
   isSearch=true;
   searchMenu;
   searchedItem: any;
-   user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  user:any;
 
    removeCart={
      Status:'Removed',
@@ -87,7 +87,7 @@ export class ProductPagePage implements OnInit {
 
   }
   ionViewWillEnter(){
-
+   this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
     this.searchMenu="";
     this.isSearch=true;

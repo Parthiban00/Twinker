@@ -9,6 +9,6 @@ export class UserLoginService {
   userLogin(data:any){
 
  console.log(data);
-  return this.webService.get(`userregisters/${data.mobileNo}/${data.password}/${data.ActiveYn}`);
+  return this.webService.get(`userregisters/${data.mobileNo}/${data.ActiveYn}`);
 }
 }

@@ -32,7 +32,7 @@ getData:any;
 restaurantDetails:Restaurant[]=[];
 isToggle:boolean;
 category:Category[];
-
+location;
 cartItemsAll:Cart[]=[];
 
 itemTotal=0;
@@ -40,7 +40,7 @@ restaurantName:string="";
 
 unit="K";
 coord:any;
-user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+user:any;
 type:string;
 skeleton=[
 
@@ -66,6 +66,9 @@ skeleton=[
   }
 
   ionViewWillEnter(){
+    this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+
    // this.dismiss();
 
 
@@ -77,12 +80,13 @@ skeleton=[
     this.type=this.activatedRouter.snapshot.params.type;
     console.log(this.type);
 
-    navigator.geolocation.getCurrentPosition((position:any)=>{
+    // navigator.geolocation.getCurrentPosition((position:any)=>{
 
-      this. coord=position.coords;
+    //   this. coord=position.coords;
 
 
-     });
+    //  });
+
 
      var data={
       Type:this.type,
@@ -140,7 +144,7 @@ Type:this.type
                   console.log("enters for loop");
               k=j;
 
-                  this.distance(this.coord.latitude,this.coord.longitude,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
+                  this.distance(this.location.lat,this.location.lon,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
 
                 }
 

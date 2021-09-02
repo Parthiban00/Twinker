@@ -65,23 +65,7 @@ selectedLocation:any;
   constructor( public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
-this.geolocation.getCurrentPosition({
 
-
-
-  timeout:10000,
-  enableHighAccuracy:true
-}).then((resp) => {
-
-  this.lat=resp.coords.latitude;
-  this.lon=resp.coords.longitude;
-
- const getAddress= this.ReverseGeocoding(this.lat,this.lon);
- this.selectedLocation=getAddress;
-
- }).catch((error) => {
-   console.log('Error getting location', error);
- });
 
 
 
@@ -105,7 +89,7 @@ selectedAddress:String="";
 newAddress="";
 restaurantDetails:Restaurant[]=[];
 distanceKm:any;
-user:any;
+user;
 customizeDelivery;
 location;
 applied:boolean;
@@ -123,6 +107,8 @@ couponApplied:boolean;
 
 
   ionViewWillEnter(){
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 this.applied=false;
 this.coupon="";
 this.discount=0;
@@ -143,11 +129,12 @@ this.couponApplied=false;
 
 
     }
-    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-
-    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
 
+
+
+console.log("locationa ddress "+this.location.address);
+this.selectedLocation=this.location.address;
 this.cartService.GetAllCoupons().subscribe((res)=>{
 this.coupons=res as Coupons[];
 console.log("all coupons"+this.coupons[0]);
@@ -202,8 +189,8 @@ if(this.location.lat==null || this.location.lat=="" || this.location.lat==undefi
     this.lat=resp.coords.latitude;
     this.lon=resp.coords.longitude;
 
-   const getAddress= this.ReverseGeocoding(this.lat,this.lon);
-   this.selectedLocation=getAddress;
+    const getAddress= this.ReverseGeocoding(this.lat,this.lon);
+    this.selectedLocation=getAddress;
 
    }).catch((error) => {
      console.log('Error getting location', error);

@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -9,7 +10,7 @@ import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
-
+declare var google;
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -25,16 +26,24 @@ export class AppComponent {
   selectedLocation:any;
   reverseGeocodingResults:any;
   location;
+  latitude;
+  longitude;
+  address;
+  public geocoder;
   constructor(private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
 
     this.splashScreen.show();
 
     //localStorage.removeItem('LocationAddress');
-
+  //  this.geocoder = new google.maps.Geocoder();
 
     if(!localStorage.getItem('currentUser')){
       console.log("no");
 
+          }
+          if(localStorage.getItem('currentUser') && !localStorage.getItem('LocationAddress')){
+            console.log('lcoation no');
+            this.router.navigate(['delivery-location'])
           }
           else{
 
@@ -43,59 +52,9 @@ export class AppComponent {
 
 
           }
-    this.geolocation.getCurrentPosition({
-
-      timeout:10000,
-      enableHighAccuracy:true
-    }).then((resp) => {
-
-      this.lat=resp.coords.latitude;
-      this.lon=resp.coords.longitude;
-      console.log(this.lat+'-'+this.lon);
-
-
-setTimeout(() => {
-  this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-  const getAddress= this.ReverseGeocoding(this.lat,this.lon);
-  this.selectedLocation=getAddress;
-  console.log("dsfadgdfsgsdfgfsd"+getAddress);
-  var locationAddress={
-    lat:this.lat,
-    lon:this.lon,
-    address:this.selectedLocation
-  }
-  if(this.location[0]==undefined || this.location[0]==null || this.location[0]==""){
-    localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
-  }
-  else{
-
-  }
-
-}, 2000);
 
 
 
-     }).catch((error) => {
-       console.log('Error getting location', error);
-     });
-
-     let watch = this.geolocation.watchPosition();
-     watch.subscribe((data) => {
-
-
-     });
-
-
-    //this.splashScreen.hide();
-   this.locCords = {
-    latitude: "",
-    longitude: "",
-    accuracy: "",
-    timestamp: ""
-
-
-
-  }
 
 
   this.times = Date.now();
@@ -114,9 +73,48 @@ this.network.onDisconnect().subscribe(() => {
 
 });
 
+
+
+//this.setCurrentLocation();
   }
 
+  setCurrentLocation() {
 
+    console.log("setCurrentLoaction entered");
+    this.geocoder = new google.maps.Geocoder();
+     navigator.geolocation.getCurrentPosition((position) => {
+       this.latitude = position.coords.latitude;
+       this.longitude = position.coords.longitude;
+      // this.InitMap(this.latitude,this.longitude);
+console.log("lat lng "+this.latitude+' '+this.longitude);
+       //this.zoom = 8;
+       this.getAddress(this.latitude, this.longitude);
+     });
+
+ }
+ getAddress(latitude, longitude) {
+  console.log('getAddress entered');
+  this.geocoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+    if (status === 'OK') {
+      if (results[0]) {
+        //this.zoom = 12;
+        this.address = results[0].formatted_address;
+        console.log("getAddress "+this.address);
+        var locationAddress={
+          lat:latitude,
+          lon:longitude,
+          address:this.address
+        }
+        localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
+      } else {
+        window.alert('No results found');
+      }
+    } else {
+      window.alert('Geocoder failed due to: ' + status);
+    }
+
+  });
+}
 
 
   ReverseGeocoding(lat:any,lon:any){

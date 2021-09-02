@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
-      Delivery Location
+      SetUp Your Location
     </ion-title>
      <ion-buttons slot="end">
       <ion-button >
@@ -23,8 +23,22 @@
       <ion-title size="large">Draggable Marker</ion-title>
     </ion-toolbar>
   </ion-header>
+  <!-- <input type="text" id="input-search" class="form-control" [(ngModel)]="address"  placeholder="Address"> -->
+  <!-- <ion-item>
+  <ion-label position="floating">Search Address</ion-label>
+  <ion-input id="autocomplete" name="searchAddress" (keyup.enter)="initAutoComplete()" #searchAddress="ngModel"ngModel></ion-input>
+</ion-item> -->
+<p style="padding: 10px;color: red;">Note: Drag the Location Marker to Change Your Location</p>
   <div #mapElement class="map"></div>
-  <h2>Address:</h2>
-  <h4>{{formattedAddress}}</h4>
+
+  <ion-card>
+  <ion-card-subtitle>Address:</ion-card-subtitle>
+
+  <ion-card-content>{{formattedAddress}} </ion-card-content>
+  </ion-card>
+  <ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current Location</ion-button>
+  <ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;--border-radius: 0px !important;" (click)="ApplyDeliveryDetails()">Apply</ion-button>
+
+
 </ion-content>
 
