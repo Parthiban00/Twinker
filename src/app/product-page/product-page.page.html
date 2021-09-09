@@ -45,6 +45,34 @@
 <div style="height:150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
          </ion-card>
        </ion-slide >
+       <ion-slide style="padding:0px;width: fit-content;">
+        <ion-card>
+
+
+<div style="height:150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+        </ion-card>
+      </ion-slide >
+      <ion-slide style="padding:0px;width: fit-content;">
+        <ion-card>
+
+
+<div style="height:150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+        </ion-card>
+      </ion-slide >
+      <ion-slide style="padding:0px;width: fit-content;">
+        <ion-card>
+
+
+<div style="height:150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+        </ion-card>
+      </ion-slide >
+      <ion-slide style="padding:0px;width: fit-content;">
+        <ion-card>
+
+
+<div style="height:150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+        </ion-card>
+      </ion-slide >
 
 
 
@@ -57,7 +85,7 @@
 
       <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
          <ion-slide style="padding:0px;width: fit-content;"  *ngFor="let product of productDetails;let i=index">
-           <ion-card *ngIf="product.Offer">
+           <ion-card *ngIf="product.Offer && product.AvailableStatus">
 <div class="offer">TRENDING</div>
 <div class="offer-content">
 <p style="color: white; margin-top: 5px; font-size: small;">{{product.ProductName}}</p>
@@ -281,8 +309,8 @@
 
 
 
-<ion-row>
-  <ion-col *ngIf="!productDetails.length" style="padding: 0px;" >
+<ion-row *ngIf="!productDetails.length">
+  <ion-col *ngFor="let dummy of skeleton" style="padding: 0px;"  >
     <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
 <div class="product" >
 
@@ -301,7 +329,9 @@
   </div>
 </div>
 </ion-col>
+</ion-row>
 
+<ion-row>
   <ion-col style="padding: 0px;" *ngFor="let product of products;let i=index">
     <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
 <div class="product" >

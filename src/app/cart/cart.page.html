@@ -62,7 +62,7 @@
     <ion-button disabled (click)="CustomizeDeliveryDetails()" style="width: calc(100% - 20px);margin-left: 10px;margin-top: 10px;" color="primary">Schedule Delivery (soon...)</ion-button>
 
     <div class="deliverylocation">
-    <ion-card>
+    <ion-card style="border-radius: 0px;">
       <ion-card-header>
          Delivery Location
          <!-- <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button> -->
@@ -115,9 +115,9 @@
 
 <p style="margin-left: 5px;color: orangered;font-weight: 500; font-size: small;">Suggestions.. Must Try...</p>
       <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
-        <ion-slide style="padding:0px;width: fit-content;" *ngFor="let suggestion of products;let i=index" >
+        <ion-slide style="padding:0px;width: fit-content;border-radius: 0px;" *ngFor="let suggestion of products;let i=index" >
 
-        <ion-card >
+        <ion-card  style="border-radius: 0px !important ;">
           <ion-card-header>
   <div class="main" >
 
@@ -174,18 +174,20 @@
         <ion-col>Taxes and Charges</ion-col>
         <ion-col>{{Charges}}%</ion-col>
       </ion-row>
+      <ion-row>
+        <ion-col>Discount</ion-col>
+        <ion-col>{{discount}}%</ion-col>
+      </ion-row>
       <ion-row><ion-col>Amount</ion-col>
         <ion-col>{{AmountWithCharges}}</ion-col>
         </ion-row>
+
       <ion-row>
         <ion-col>Delivery Partner Fee</ion-col>
         <ion-col>{{deliveryPartnerFee1}}</ion-col>
       </ion-row>
 
-      <ion-row>
-        <ion-col>Discount</ion-col>
-        <ion-col>{{discount}}%</ion-col>
-      </ion-row>
+
 
       <ion-row style="font-weight: 500;"><ion-col>To Pay</ion-col>
         <ion-col>{{totalAmount1}}</ion-col>

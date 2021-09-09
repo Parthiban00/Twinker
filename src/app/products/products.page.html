@@ -17,6 +17,27 @@
 </ion-header>
 
 <ion-content>
+  <ion-row *ngIf="!products.length">
+    <ion-col *ngFor="let dummy of skeleton" style="padding: 0px;"  >
+      <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+  <div class="product" >
+
+
+    <div style="height:150px;width: 160px;background-color: rgb(231, 231, 231);"></div>
+  <div class="menu">
+    <p style="font-weight: 400;width: 200px;"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></p>
+
+    <p style="margin-top: -10px;color: rgb(189, 189, 189);"><ion-skeleton-text animated style="width:80%"></ion-skeleton-text></p>
+
+    <div class="price">
+      <p><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></p>
+  </div>
+
+
+    </div>
+  </div>
+  </ion-col>
+  </ion-row>
   <ion-row>
 
   <ion-col style="padding: 0px;" *ngFor="let products of products;let i=index">

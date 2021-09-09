@@ -41,7 +41,13 @@ export class ProductPagePage implements OnInit {
   searchMenu;
   searchedItem: any;
   user:any;
+  skeleton=[
 
+    {},
+    {},
+    {},
+    {}
+    ]
    removeCart={
      Status:'Removed',
      ActiveYn:false,

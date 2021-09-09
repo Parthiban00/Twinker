@@ -609,14 +609,14 @@ this.distanceKm=d;
    // console.log("delivery carge cal entered "+d);
 
     console.log("distance d  >2"+ d);
-          this.deliveryPartnerFee=(d*7);
+          this.deliveryPartnerFee=Math.round((d*7));
           this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
 
 
-          this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
+          this.AmountWithCharges=Math.round(((this.itemAmount*(this.Charges/100))+this.itemAmount)).toFixed(2);
          // console.log("Amount with chargers "+this.AmountWithCharges )
-this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
+this.totalAmount=Math.round(parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee);
 //console.log("total amount"+this.totalAmount);
 this.totalAmount1=this.totalAmount.toFixed(2);
 
@@ -630,8 +630,8 @@ this.dismiss();
           this.deliveryPartnerFee=20;
           this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
 
-          this.AmountWithCharges=((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2);
-          this.totalAmount=parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee;
+          this.AmountWithCharges=Math.round(((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2));
+          this.totalAmount=Math.round(parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee);
           //console.log("total amount"+this.totalAmount);
           this.totalAmount1=this.totalAmount.toFixed(2);
 
@@ -1021,7 +1021,8 @@ this.presentActionSheet();
 console.log("enter suggestions "+restaurantId);
 var data={
   restaurantId:restaurantId,
-  suggestion:true
+  suggestion:true,
+
 }
   this.productService.GetSuggestionProducts(data).subscribe((res)=>{
     this.products=res as Product[];
@@ -1199,8 +1200,10 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
     var today1 = yyyy + '-' + mm + '-' + dd;
     for(var i=0;i<this.coupons.length;i++){
       if(this.coupons[i].Code==this.coupon && this.coupons[i].ActiveYn==true){
-        discountPrice=this.totalAmount1-(this.totalAmount1*(this.coupons[i].Discount/100));
-        this.totalAmount1=discountPrice.toFixed(2);
+      //  discountPrice=this.totalAmount1-(this.totalAmount1*(this.coupons[i].Discount/100));
+      discountPrice=this.AmountWithCharges-(this.AmountWithCharges*(this.coupons[i].Discount/100));
+      this.AmountWithCharges=Math.round(discountPrice).toFixed(2);
+        this.totalAmount1=Math.round((discountPrice+this.deliveryPartnerFee)).toFixed(2);
         this.discount=this.coupons[i].Discount;
         this.applied=true;
         this.discountDescription=this.coupons[i].CodeDescription;
@@ -1238,13 +1241,22 @@ component:DeliveryCustomisePage
 
       ChangeLocation(){
         this.modalController.create({
-          component:ChangeLocationPage
+          component:ChangeLocationPage,
+          componentProps:this.location
                   }).then(modalres=>{
                     modalres.present();
 
                     modalres.onDidDismiss().then(res=>{
                       if(res.data!=null){
+                        localStorage.removeItem('LocationAddress');
+console.log('changed address '+res.data.address);
+this.selectedLocation=res.data.address;
 
+localStorage.setItem('LocationAddress',JSON.stringify(res.data));
+this.ionViewWillEnter();
+                      }
+                      else{
+                        console.log('resposnse null');
                       }
                     })
                   })
@@ -1326,6 +1338,7 @@ rzp1.open();
 
       EditLocation(){
   this.router.navigate(['delivery-location'])
+
       }
 }
 

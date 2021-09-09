@@ -8,18 +8,24 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Draggable Marker</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
+  <p style="padding: 10px;color: red;">Note: Drag the Location Marker to Change Your Location</p>
   <div #mapElement class="map"></div>
   <ion-card>
   <ion-card-subtitle>Address:</ion-card-subtitle>
 
   <ion-card-content>{{formattedAddress}} </ion-card-content>
+
   </ion-card>
+  <ion-input [(ngModel)]="presentAddress.address" style="display: none;"></ion-input>
+  <ion-input [(ngModel)]="presentAddress.lat" style="display: none;"></ion-input>
+  <ion-input [(ngModel)]="presentAddress.lon" style="display: none;"></ion-input>
+  <ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current <ion-icon name="locate"></ion-icon>&nbsp;Location</ion-button>
   <ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;--border-radius: 0px !important;" (click)="ApplyDeliveryDetails()">Apply</ion-button>
-<ion-button color="danger" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px" >Cancel</ion-button>
-<ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current Location</ion-button>
+<ion-button color="danger" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px" (click)="CancelModel()">Cancel</ion-button>
+
 </ion-content>

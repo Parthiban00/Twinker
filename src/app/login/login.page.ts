@@ -119,16 +119,14 @@ Login(mobileNo:String,password:String){
 
   this.users=res as Login[];
   if(!this.users.length){
-    // this.status="Invalid Mobile No. or Password...";
-    // console.log("login failed")
+
 
 this.dismiss();
-    // this.presentToast(this.status);
+
     this.router.navigate(['otp-verification/'+loginCredential.mobileNo+'/'+loginCredential.FirstName+'/'+this.UserType+'/'+this.otpType]);
 
 
-    // this.loginValues.mobileNo="";
-    // this.loginValues.password="";
+
   }
 
   else  {
@@ -150,7 +148,7 @@ else{
 
     console.log(this.users[0].FirstName+' '+this.users[0].MobileNo+' '+this.users[0]._id);
 
-    //this.router.navigate(['home',this.users[0].FirstName,this.users[0]._id]);
+
     this.dismiss();
     this.router.navigate(['home-page']);
     localStorage.setItem("currentUser",JSON.stringify(this.users));

@@ -78,62 +78,62 @@ this.network.onDisconnect().subscribe(() => {
 //this.setCurrentLocation();
   }
 
-  setCurrentLocation() {
+//   setCurrentLocation() {
 
-    console.log("setCurrentLoaction entered");
-    this.geocoder = new google.maps.Geocoder();
-     navigator.geolocation.getCurrentPosition((position) => {
-       this.latitude = position.coords.latitude;
-       this.longitude = position.coords.longitude;
-      // this.InitMap(this.latitude,this.longitude);
-console.log("lat lng "+this.latitude+' '+this.longitude);
-       //this.zoom = 8;
-       this.getAddress(this.latitude, this.longitude);
-     });
+//     console.log("setCurrentLoaction entered");
+//     this.geocoder = new google.maps.Geocoder();
+//      navigator.geolocation.getCurrentPosition((position) => {
+//        this.latitude = position.coords.latitude;
+//        this.longitude = position.coords.longitude;
 
- }
- getAddress(latitude, longitude) {
-  console.log('getAddress entered');
-  this.geocoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-    if (status === 'OK') {
-      if (results[0]) {
-        //this.zoom = 12;
-        this.address = results[0].formatted_address;
-        console.log("getAddress "+this.address);
-        var locationAddress={
-          lat:latitude,
-          lon:longitude,
-          address:this.address
-        }
-        localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
-      } else {
-        window.alert('No results found');
-      }
-    } else {
-      window.alert('Geocoder failed due to: ' + status);
-    }
+// console.log("lat lng "+this.latitude+' '+this.longitude);
 
-  });
-}
+//        this.getAddress(this.latitude, this.longitude);
+//      });
 
+//  }
+//  getAddress(latitude, longitude) {
+//   console.log('getAddress entered');
+//   this.geocoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+//     if (status === 'OK') {
+//       if (results[0]) {
 
-  ReverseGeocoding(lat:any,lon:any){
+//         this.address = results[0].formatted_address;
+//         console.log("getAddress "+this.address);
+//         var locationAddress={
+//           lat:latitude,
+//           lon:longitude,
+//           address:this.address
+//         }
+//         localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
+//       } else {
 
-    //this.present();
-      var options:NativeGeocoderOptions={
-        useLocale:true,
-        maxResults:1
-      }
-        this.nativeGeocoder.reverseGeocode(lat,lon,options).then((results)=>{
-    this.reverseGeocodingResults=JSON.stringify(results[0]);
+//       }
+//     } else {
 
-    this.selectedLocation=JSON.stringify(results[0].thoroughfare).replace(/"/g, "")+','+JSON.stringify(results[0].locality).replace(/"/g, "")+','+JSON.stringify(results[0].subAdministrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].administrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].countryName).replace(/"/g, "")+','+JSON.stringify(results[0].countryCode).replace(/"/g, "");
+//     }
+
+//   });
+// }
 
 
-    return this.selectedLocation;
-    //this.dismiss();
-    })
-      }
+  // ReverseGeocoding(lat:any,lon:any){
+
+
+  //     var options:NativeGeocoderOptions={
+  //       useLocale:true,
+  //       maxResults:1
+  //     }
+  //       this.nativeGeocoder.reverseGeocode(lat,lon,options).then((results)=>{
+  //   this.reverseGeocodingResults=JSON.stringify(results[0]);
+
+  //   this.selectedLocation=JSON.stringify(results[0].thoroughfare).replace(/"/g, "")+','+JSON.stringify(results[0].locality).replace(/"/g, "")+','+JSON.stringify(results[0].subAdministrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].administrativeArea).replace(/"/g, "")+','+JSON.stringify(results[0].countryName).replace(/"/g, "")+','+JSON.stringify(results[0].countryCode).replace(/"/g, "");
+
+
+  //   return this.selectedLocation;
+
+  //   })
+  //     }
 
 
 
@@ -173,45 +173,45 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
   requestToSwitchOnGPS() {
     this.locationAccuracy.request(this.locationAccuracy.REQUEST_PRIORITY_HIGH_ACCURACY).then(
       () => {
-        this.getLocationAccCords()
+
       },
       error => this.presentAlertConfirm()
     );
 
   }
 
-  getLocationAccCords() {
-    this.geolocation.getCurrentPosition().then((response) => {
-      this.locCords.latitude = response.coords.latitude;
-      this.locCords.longitude = response.coords.longitude;
-      this.locCords.accuracy = response.coords.accuracy;
-      this.locCords.timestamp = response.timestamp;
+  // getLocationAccCords() {
+  //   this.geolocation.getCurrentPosition().then((response) => {
+  //     this.locCords.latitude = response.coords.latitude;
+  //     this.locCords.longitude = response.coords.longitude;
+  //     this.locCords.accuracy = response.coords.accuracy;
+  //     this.locCords.timestamp = response.timestamp;
 
-      setTimeout(() => {
-        const getAddress= this.ReverseGeocoding(this.locCords.latitude,this.locCords.longitude);
-        this.selectedLocation=getAddress;
-        console.log("dsfadgdfsgsdfgfsd swithc on gps    "+getAddress);
-        var locationAddress={
-          lat:this.locCords.latitude,
-          lon:this.locCords.longitude,
-          address:this.selectedLocation
-        }
-        if(this.location[0].lat==undefined || this.location[0].lat==null || this.location[0].lat==""){
-          localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
-        }
-        else{
+  //     setTimeout(() => {
+  //       const getAddress= this.ReverseGeocoding(this.locCords.latitude,this.locCords.longitude);
+  //       this.selectedLocation=getAddress;
+  //       console.log("dsfadgdfsgsdfgfsd swithc on gps    "+getAddress);
+  //       var locationAddress={
+  //         lat:this.locCords.latitude,
+  //         lon:this.locCords.longitude,
+  //         address:this.selectedLocation
+  //       }
+  //       if(this.location[0].lat==undefined || this.location[0].lat==null || this.location[0].lat==""){
+  //         localStorage.setItem("LocationAddress",JSON.stringify(locationAddress));
+  //       }
+  //       else{
 
-        }
+  //       }
 
-      }, 2000);
-
-
+  //     }, 2000);
 
 
-    }).catch((err) => {
-      alert('Error: ' + err);
-    });
-  }
+
+
+  //   }).catch((err) => {
+  //     alert('Error: ' + err);
+  //   });
+  // }
 
   sideMenu()
   {
@@ -266,6 +266,7 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
     // console.log("hi logout");
    // window.cache.clear();
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('LocationAddress');
     this.router.navigate(['login']);
    }
 

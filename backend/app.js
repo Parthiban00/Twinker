@@ -21,7 +21,7 @@ const socket = require('socket.io');
 
 app.use(express.json());
 // ---------------------------------new--------------
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 
 
@@ -562,7 +562,7 @@ else{
 
                               app.get('/restaurants/:restId/mainmenus/products/:suggestion',(req,res)=>{
 console.log("suggestion entered");
-                                Products.find({RestaurantId: req.params.restId,Suggestion:req.params.suggestion})
+                                Products.find({RestaurantId: req.params.restId,Suggestion:req.params.suggestion,AvailableStatus:true})
                                 .then(Products=>res.send(Products))
                                 .catch((error)=>console.log(error));
                             });

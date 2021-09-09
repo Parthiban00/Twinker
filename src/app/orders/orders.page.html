@@ -361,7 +361,8 @@ Order Details
                       <mat-action-row style="padding-right: 50px;" *ngIf="orders.DeliveryPartnerStatus!='Accepted by Delivery Partner'">
 
 
-                        <button mat-button color="primary" (click)="CancelOrder(orders._id,orders.RestaurantId)" >Cancel</button>
+                        <!-- <button mat-button color="primary" (click)="CancelOrder(orders._id,orders.RestaurantId)" >Cancel</button> -->
+                        <button mat-button color="primary" (click)="presentAlertConfirm(orders._id,orders.RestaurantId)" >Cancel</button>
                       </mat-action-row>
 
         </mat-expansion-panel>

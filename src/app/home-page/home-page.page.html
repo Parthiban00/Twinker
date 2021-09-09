@@ -10,30 +10,48 @@
   </ion-title>
   <ion-buttons slot="end">
 <ion-button fill="clear">
+  <ion-button slot="end" class="icon-button" color="primary"  (click)="ViewCart()">
+
+    <ion-icon name="cart"></ion-icon>
+
+    </ion-button>
 <ion-icon color="primary" name="notifications"></ion-icon>
 </ion-button>
+<ion-button slot="end"  color="primary" *ngIf="userType!='C'" (click)="Dashboard()">
+  <ion-icon color="secondary" name="apps"></ion-icon>
+  </ion-button>
   </ion-buttons>
 </ion-toolbar>
 
-<ion-item class="profile" lines="none" >
+<!-- <ion-item class="profile" lines="none" >
   <ion-avatar slot="start">
     <img src="assets/user.png">
   </ion-avatar>
 
-  <ion-label>
-    <p style="margin-top: 20px;"></p>
-    <h3 style="margin-top: -15px;">Welcome to Twinker...</h3>
-  </ion-label>
+
 
   <ion-button slot="end" fill="clear" *ngIf="userType!='C'" (click)="Dashboard()">
     <ion-icon color="secondary" name="apps"></ion-icon>
     </ion-button>
      <ion-button slot="end" class="icon-button" fill="clear"   (click)="ViewCart()">
-      <span class="icon-button-badge"></span>
+
       <ion-icon name="cart"></ion-icon>
 
       </ion-button>
-</ion-item>
+</ion-item> -->
+<div class="deliverylocation">
+  <ion-card style="border-radius: 0px;">
+    <ion-card-header>
+       My Location
+       <!-- <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button> -->
+       <ion-button fill="clear" (click)="ChangeLocation()"><ion-icon   name="create-outline"></ion-icon></ion-button>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-icon name="pin" color="primary"></ion-icon> {{location.address}}
+      <!-- {{selectedLocation}} -->
+    </ion-card-content>
+  </ion-card>
+  </div>
 
 </ion-header>
 <ion-content >

@@ -9,6 +9,7 @@ import { ActionSheetController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import {OwnersService} from 'src/app/owners.service';
 import {CallNumber} from "@ionic-native/call-number/ngx";
+import { AlertController } from '@ionic/angular';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -28,7 +29,7 @@ default:string="";
 isLoading = false;
 user:any;
 
-  constructor(private call:CallNumber,private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
+  constructor(private alertController:AlertController,private call:CallNumber,private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
 
     this.default="Placed";
    }
@@ -211,23 +212,7 @@ console.log("Order details is clicked");
 
 
   CancelOrder(id:any,restaurantId:any) {
-    this.present();
-    //this.step++;
-var cancelOrders={
-  _id:id,
-  Status:'Canceled by Customer',
-  RestaurantId:restaurantId,
 
-}
-
-this.ownerService.CancelOders(cancelOrders).subscribe((res)=>{
- // this.ngOnInit();
- // this.orderDetails=res as Orders[];
-
- this.dismiss();
- this.ionViewWillEnter();
-
-})
 
   }
 
@@ -236,6 +221,53 @@ this.ownerService.CancelOders(cancelOrders).subscribe((res)=>{
   .then(res => console.log('Launched dialer!', res))
    .catch(err => console.log('Error launching dialer', err));
       }
+
+
+      async presentAlertConfirm(id:any,restaurantId:any) {
+        // this.present();
+        // console.log("clear cart "+clearCart+" add cart "+addCart);
+         const alert = await this.alertController.create({
+           cssClass: 'my-custom-class',
+           header: 'Confirm!',
+           message: 'Are sure to cancel this order?',
+           buttons: [
+             {
+               text: 'Yes',
+
+
+               handler: (blah) => {
+                console.log('Confirm Okay');
+                this.present();
+                //this.step++;
+            var cancelOrders={
+              _id:id,
+              Status:'Canceled by Customer',
+              RestaurantId:restaurantId,
+
+            }
+
+            this.ownerService.CancelOders(cancelOrders).subscribe((res)=>{
+             // this.ngOnInit();
+             // this.orderDetails=res as Orders[];
+
+             this.dismiss();
+             this.ionViewWillEnter();
+
+            })
+               }
+             }, {
+               text: 'No',
+               role: 'cancel',
+               cssClass: 'secondary',
+               handler: () => {
+
+               }
+             }
+           ]
+         });
+
+         await alert.present();
+       }
 }
 export interface PeriodicElement {
   ItemName: string;

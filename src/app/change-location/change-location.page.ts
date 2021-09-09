@@ -21,12 +21,14 @@ export class ChangeLocationPage implements AfterViewInit {  public folder: strin
   address: string;
   lat;
   lng;
-
+presentAddress;
+changedAddress;
   @ViewChild('mapElement', {static: false}) mapElement;
   public formattedAddress;
 
   constructor(private activatedRoute: ActivatedRoute,public modalController: ModalController,private navParams:NavParams,private geolocation: Geolocation) {
-
+this.presentAddress=this.navParams.data;
+console.log('present address '+this.presentAddress.address);
    }
 
   ngOnInit() {
@@ -36,7 +38,8 @@ export class ChangeLocationPage implements AfterViewInit {  public folder: strin
   ngAfterViewInit(): void {
 
 
-this.setCurrentLocation();
+//this.setCurrentLocation();
+this.InitMap(this.presentAddress.lat,this.presentAddress.lon);
 
 
   }
@@ -62,19 +65,26 @@ this.setCurrentLocation();
     });
   }
 
-   setCurrentLocation() {
-     console.log("setCurrentLoaction entered");
+  setCurrentLocation() {
+    console.log("setCurrentLoaction entered");
 
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.InitMap(this.latitude,this.longitude);
-console.log("lat lng "+this.latitude+' '+this.longitude);
-        this.zoom = 8;
-        this.getAddress(this.latitude, this.longitude);
-      });
+//       navigator.geolocation.getCurrentPosition((position) => {
+//         this.latitude = position.coords.latitude;
+//         this.longitude = position.coords.longitude;
+//         this.InitMap(this.latitude,this.longitude);
+// console.log("lat lng "+this.latitude+' '+this.longitude);
+//         this.zoom = 8;
+//         this.getAddress(this.latitude, this.longitude);
+//       });
+this.geolocation.getCurrentPosition().then((resp) => {
+ // resp.coords.latitude
+ // resp.coords.longitude
+ this.getAddress(resp.coords.latitude, resp.coords.longitude);
+}).catch((error) => {
+  console.log('Error getting location', error);
+});
 
-  }
+ }
   getAddress(latitude, longitude) {
     console.log('getAddress entered');
     this.geocoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
@@ -83,6 +93,12 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
           this.zoom = 12;
           this.address = results[0].formatted_address;
           console.log("getAddress "+this.address);
+          this.changedAddress={
+            lat:latitude,
+            lon:longitude,
+            address:this.address
+          }
+
         } else {
           window.alert('No results found');
         }
@@ -103,6 +119,11 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
         this.latitude=this.marker.getPosition().lat();
         this.longitude=this.marker.getPosition().lng();
         console.log("lat lng: "+this.latitude+' '+this.longitude);
+        this.presentAddress={
+          lat:this.latitude,
+          address:this.formattedAddress,
+          lon:this.longitude
+        }
       } else {
       }
     });
@@ -111,7 +132,12 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
 
 
   ApplyDeliveryDetails(){
-    this.modalController.dismiss();
+
+    //localStorage.setItem("LocationAddress",JSON.stringify(this.changedAddress));
+    this.modalController.dismiss(this.presentAddress);
+      }
+      CancelModel(){
+        this.modalController.dismiss();
       }
 
 }

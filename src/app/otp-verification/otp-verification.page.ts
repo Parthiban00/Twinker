@@ -6,6 +6,7 @@ import {RegisterUserService} from 'src/app/register-user.service';
 import Register from '../models/register-user';
 import DeliveryLocations from '../models/delivery-locations';
 import Login from '../models/login';
+import{UserLoginService} from 'src/app/user-login.service';
 
 //import { clear } from 'console';
 
@@ -34,7 +35,7 @@ user;
 password='no';
 users:Login[]=[];
 otpType;
-  constructor(private loadingCtrl:LoadingController,private toastCtrl:ToastController,private activatedRouter:ActivatedRoute,private router:Router,private otpService:OtpVerificationService,private registerUserService:RegisterUserService) { }
+  constructor(private userLoginService:UserLoginService,private loadingCtrl:LoadingController,private toastCtrl:ToastController,private activatedRouter:ActivatedRoute,private router:Router,private otpService:OtpVerificationService,private registerUserService:RegisterUserService) { }
 
   ngOnInit() {
      this.mobileNo=this.activatedRouter.snapshot.params.mobileNo;
@@ -164,7 +165,7 @@ RegisterUser(){
 
 
       //  this.router.navigate(['home-page']);
-      this.router.navigate(['delivery-location'])
+      this.Login();
 
       });
     }
@@ -177,5 +178,29 @@ RegisterUser(){
     this.presentToast("OTP Re-sended...","success");
     this.gfg();
   }
+
+  Login(){
+    const loginCredential={
+
+      mobileNo:this.mobileNo,
+      FirstName:this.password,
+      ActiveYn:true,
+
+    }
+  this.userLoginService.userLogin(loginCredential).subscribe((res)=>{
+
+    this.users=res as Login[];
+
+      console.log("login successful")
+
+      console.log(this.users[0].FirstName+' '+this.users[0].MobileNo+' '+this.users[0]._id);
+
+      localStorage.setItem("currentUser",JSON.stringify(this.users));
+      this.router.navigate(['delivery-location'])
+
+  });
+  }
 }
+
+
 

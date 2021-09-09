@@ -13,9 +13,12 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import Category from '../models/category';
 import{CategoriesService} from 'src/app/categories.service';
+import { ThrowStmt } from '@angular/compiler';
 
 
+import { ModalController } from '@ionic/angular';
 
+import {ChangeLocationPage} from '../change-location/change-location.page';
 
 
 @Component({
@@ -40,7 +43,8 @@ export class HomePagePage implements  OnInit {
   reverseGeocodingResults:any;
   location;
   locCords: any;
-  constructor(private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+
+  constructor(public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 
 
@@ -49,7 +53,8 @@ export class HomePagePage implements  OnInit {
   }
   ngOnInit(): void {
 
-
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    console.log('location'+this.location.address)
   }
 
 
@@ -157,6 +162,7 @@ token:String;
    }
 
    ionViewWillEnter(){
+     console.log('1');
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');;
 
 
@@ -179,8 +185,10 @@ this.navController.back();
 })
 
 
+console.log('2');
+console.log('this user '+this.user._id);
 
-console.log('this user '+this.user);
+
  this.userType=this.user[0].UserType;
  console.log(this.userType);
 this.sideMenu();
@@ -224,5 +232,30 @@ this.currentUrl="";
     this.router.navigate(['cart']);
   }
 
+
+  ChangeLocation(){
+    this.modalController.create({
+      component:ChangeLocationPage,
+      componentProps:this.location
+              }).then(modalres=>{
+                modalres.present();
+
+                modalres.onDidDismiss().then(res=>{
+                  if(res.data!=null){
+                    localStorage.removeItem('LocationAddress');
+console.log('changed address '+res.data.address);
+this.selectedLocation=res.data.address;
+
+localStorage.setItem('LocationAddress',JSON.stringify(res.data));
+this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+//this.ionViewWillEnter();
+                  }
+                  else{
+                    console.log('resposnse null');
+                  }
+                })
+              })
+
+  }
 
 }

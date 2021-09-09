@@ -31,7 +31,7 @@ export class DeliveryLocationPage implements AfterViewInit {  public folder: str
   @ViewChild('mapElement', {static: false}) mapElement;
   public formattedAddress;
 
-  constructor(private activatedRoute: ActivatedRoute,private router:Router) { }
+  constructor(private activatedRoute: ActivatedRoute,private router:Router,private geolocation:Geolocation) { }
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
@@ -88,14 +88,21 @@ this.setCurrentLocation();
    setCurrentLocation() {
      console.log("setCurrentLoaction entered");
 
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.latitude = position.coords.latitude;
-        this.longitude = position.coords.longitude;
-        this.InitMap(this.latitude,this.longitude);
-console.log("lat lng "+this.latitude+' '+this.longitude);
-        this.zoom = 8;
-        this.getAddress(this.latitude, this.longitude);
-      });
+//       navigator.geolocation.getCurrentPosition((position) => {
+//         this.latitude = position.coords.latitude;
+//         this.longitude = position.coords.longitude;
+//         this.InitMap(this.latitude,this.longitude);
+// console.log("lat lng "+this.latitude+' '+this.longitude);
+//         this.zoom = 8;
+//         this.getAddress(this.latitude, this.longitude);
+//       });
+this.geolocation.getCurrentPosition().then((resp) => {
+  // resp.coords.latitude
+  // resp.coords.longitude
+  this.getAddress(resp.coords.latitude, resp.coords.longitude);
+ }).catch((error) => {
+   console.log('Error getting location', error);
+ });
 
   }
   getAddress(latitude, longitude) {
@@ -131,6 +138,11 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
         this.latitude=this.marker.getPosition().lat();
         this.longitude=this.marker.getPosition().lng();
         console.log("lat lng: "+this.latitude+' '+this.longitude);
+        this.locationAddress={
+          lat:this.latitude,
+          lon:this.longitude,
+          address:this.formattedAddress
+        }
       } else {
       }
     });

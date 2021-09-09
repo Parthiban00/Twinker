@@ -30,7 +30,20 @@ export class ProductsPage implements OnInit {
   itemTotal=0;
   itemTotal1=0;
   type:string;
+  skeleton=[
 
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    ]
   restaurantName1:string="";
 
   removeCart={
