@@ -266,7 +266,7 @@ this.network.onDisconnect().subscribe(() => {
     // console.log("hi logout");
    // window.cache.clear();
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('LocationAddress');
+   // localStorage.removeItem('LocationAddress');
     this.router.navigate(['login']);
    }
 

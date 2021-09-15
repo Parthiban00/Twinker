@@ -542,7 +542,9 @@ var today1 = yyyy + '-' + mm + '-' + dd;
 CreatedTime:time,
 Discount:this.discount,
 DiscountDescritpion:this.discountDescription,
-DiscountCode:this.discountCode
+DiscountCode:this.discountCode,
+Latitude:this.location.lat,
+Longitude:this.location.lon
 
 
    }

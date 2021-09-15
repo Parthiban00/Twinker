@@ -111,6 +111,12 @@ type:Array
     DiscountCode:{
       type:String
     },
+    Latitude:{
+      type:Number
+    },
+    Longitude:{
+      type:Number
+    }
 
 
 

@@ -21,7 +21,7 @@ const socket = require('socket.io');
 
 app.use(express.json());
 // ---------------------------------new--------------
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 
 
@@ -418,7 +418,7 @@ console.log(hours + ":" + minutes);
                             app.post('/orderdetails',(req,res)=>{
 
 
-                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus,'ActualAmount':req.body.ActualAmount,'CreatedTime':req.body.CreatedTime,'Discount':req.body.Discount,'DiscountDescritpion':req.body.DiscountDescritpion,'DiscountCode':req.body.DiscountCode}))
+                                (new OrderDetails ({'OrderId': req.body.OrderId,'UserId':req.body.UserId,'UserName':req.body.UserName,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'ItemTotal':req.body.ItemTotal,'DeliveryPartnerFee':req.body.DeliveryPartnerFee,'TaxesAndCharges':req.body.TaxesAndCharges,'TotalAmount':req.body.TotalAmount,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Status':req.body.Status,'CreatedDate':req.body.CreatedDate,'CreatedBy':req.body.CreatedBy,'ItemCount':req.body.ItemCount,'MobileNo':req.body.MobileNo,'Address':req.body.Address,'ItemDetails':req.body.ItemDetails,'DeliveryPartnerStatus':req.body.DeliveryPartnerStatus,'ActualAmount':req.body.ActualAmount,'CreatedTime':req.body.CreatedTime,'Discount':req.body.Discount,'DiscountDescritpion':req.body.DiscountDescritpion,'DiscountCode':req.body.DiscountCode,'Latitude':req.body.Latitude,'Longitude':req.body.Longitude}))
                                 .save()
                                 .then((orderdetails)=> res.send(orderdetails))
                                 .catch((error)=>console.log(error));

@@ -27,6 +27,8 @@ export default class Cart{
 Discount:number;
 DiscountDescription:string;
 DiscountCode:string;
+Latitude:number;
+Longitude:number;
 
 
  }

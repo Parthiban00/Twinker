@@ -29,13 +29,14 @@
   <ion-input id="autocomplete" name="searchAddress" (keyup.enter)="initAutoComplete()" #searchAddress="ngModel"ngModel></ion-input>
 </ion-item> -->
 <p style="padding: 10px;color: red;">Note: Drag the Location Marker to Change Your Location</p>
-  <div #mapElement class="map"></div>
+  <div #mapElement style="width: 100%;height: 400px;"  id="map"></div>
 
   <ion-card>
   <ion-card-subtitle>Address:</ion-card-subtitle>
 
   <ion-card-content>{{formattedAddress}} </ion-card-content>
   </ion-card>
+
   <ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current Location</ion-button>
   <ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;--border-radius: 0px !important;" (click)="ApplyDeliveryDetails()">Apply</ion-button>
 

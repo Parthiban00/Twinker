@@ -35,6 +35,8 @@ export default class Orders{
 DiscountDescription:string;
 DiscountCode:string;
 CreatedTime;
+Latitude:number;
+Longitude:number
 
  }
 

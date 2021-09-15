@@ -376,4 +376,12 @@ console.log("dfasfas"+ segment);
  this.call.callNumber(MobileNo,true)  .then(res => console.log('Launched dialer!', res))
  .catch(err => console.log('Error launching dialer', err));
   }
+
+  NavigateDirection(lat,lon){
+    let originVal="";
+    let modeVal="driving";
+    //let url="https://www.google.com/maps/dir/?api=1&travelmode="+modeVal+"&layer=traffic&origin="+lat+","+lon+"&destination"+lat+","+lon;
+window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lon)
+//window.open(url);
+  }
 }

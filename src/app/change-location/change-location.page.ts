@@ -68,21 +68,24 @@ this.InitMap(this.presentAddress.lat,this.presentAddress.lon);
   setCurrentLocation() {
     console.log("setCurrentLoaction entered");
 
-//       navigator.geolocation.getCurrentPosition((position) => {
-//         this.latitude = position.coords.latitude;
-//         this.longitude = position.coords.longitude;
-//         this.InitMap(this.latitude,this.longitude);
-// console.log("lat lng "+this.latitude+' '+this.longitude);
-//         this.zoom = 8;
-//         this.getAddress(this.latitude, this.longitude);
-//       });
-this.geolocation.getCurrentPosition().then((resp) => {
- // resp.coords.latitude
- // resp.coords.longitude
- this.getAddress(resp.coords.latitude, resp.coords.longitude);
-}).catch((error) => {
-  console.log('Error getting location', error);
-});
+    navigator.geolocation.getCurrentPosition((position) => {
+         this.latitude = position.coords.latitude;
+            this.longitude = position.coords.longitude;
+           // let coords=new google.maps.LatLng(this.latitude,this.longitude);
+console.log("lat lng "+this.latitude+' '+this.longitude);
+       this.zoom = 8;
+      this.getAddress(this.latitude, this.longitude);
+
+    this.InitMap(this.latitude,this.longitude);
+    });
+// this.geolocation.getCurrentPosition().then((resp) => {
+// // resp.coords.latitude
+// // resp.coords.longitude
+// this.getAddress(resp.coords.latitude, resp.coords.longitude);
+
+// }).catch((error) => {
+// console.log('Error getting location', error);
+// });
 
  }
   getAddress(latitude, longitude) {
