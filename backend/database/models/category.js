@@ -26,6 +26,16 @@ const TaskSchema = new mongoose.Schema({
         type: Boolean,
 
     },
+    RestaurantId:{
+      type:String
+    },
+    RestaurantName:{
+      type:String
+    },
+    AvailableStatus:{
+      type:Boolean
+    }
+
 
 
 

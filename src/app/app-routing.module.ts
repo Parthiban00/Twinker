@@ -173,6 +173,14 @@ const routes: Routes = [
     path: 'location-set-up',
     loadChildren: () => import('./location-set-up/location-set-up.module').then( m => m.LocationSetUpPageModule)
   },
+  {
+    path: 'popover-types',
+    loadChildren: () => import('./popover-types/popover-types.module').then( m => m.PopoverTypesPageModule)
+  },
+  {
+    path: 'offers',
+    loadChildren: () => import('./offers/offers.module').then( m => m.OffersPageModule)
+  },
 
 
 

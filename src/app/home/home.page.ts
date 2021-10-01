@@ -1,15 +1,22 @@
 import { Component , ViewChild, OnInit,OnDestroy, HostListener} from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController,IonContent } from '@ionic/angular';
 import {Router,ActivatedRoute} from '@angular/router';
 import{RestaurantsService} from 'src/app/restaurants.service';
 import Restaurant from '../models/restaurants';
 import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
 import { LoadingController } from '@ionic/angular';
-import { IonSearchbar } from '@ionic/angular';
+import { IonSearchbar,IonSelect,IonList} from '@ionic/angular';
 import Category from '../models/category';
 import{CategoriesService} from 'src/app/categories.service';
 import * as moment from 'moment';
+import ShopCategory from '../models/shop-category';
+import { PopoverController } from '@ionic/angular';
+import { PopoverComponent } from '../popover/popover.component';
+import{PopoverTypesPage} from '../popover-types/popover-types.page';
+import { PopoverTypesPageRoutingModule } from '../popover-types/popover-types-routing.module';
+import { ViewportScroller } from '@angular/common';
+
 
 
 @Component({
@@ -19,6 +26,11 @@ import * as moment from 'moment';
 })
 export class HomePage implements OnInit {
   @ViewChild('search', { static: false }) search: IonSearchbar;
+  @ViewChild('mySelect', { static: false }) selectRef: IonSelect;
+@ViewChild(IonContent,{static:true})
+content:IonContent
+
+
 
   public list: Array<Object> = [];
   searchedItem: any;
@@ -34,14 +46,15 @@ isToggle:boolean;
 category:Category[];
 location;
 cartItemsAll:Cart[]=[];
-
+shopCategory:ShopCategory[];
 itemTotal=0;
 restaurantName:string="";
-
+selected;
 unit="K";
 coord:any;
 user:any;
 type:string;
+currentTime1;
 skeleton=[
 
 {},
@@ -59,7 +72,7 @@ skeleton=[
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
-  constructor(private categoriesService:CategoriesService,private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
+  constructor(private _vps: ViewportScroller,public popoverController: PopoverController,private categoriesService:CategoriesService,private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
 
 
 
@@ -70,6 +83,10 @@ skeleton=[
   ngOnInit(): void {
 
 
+  }
+
+  openSelect() {
+    this.selectRef.open()
   }
 
   ionViewWillEnter(){
@@ -102,7 +119,7 @@ skeleton=[
 
     this.categoriesService.GetCategory(data).subscribe((res)=>{
      this.category=res as Category[];
-     console.log("categories "+this.category);
+     //console.log("categories "+this.category);
 
     })
 
@@ -134,7 +151,9 @@ var getRest={
 ActiveYn:true,
 Type:this.type
 }
-
+this.restaurantService.GetCategory(getRest).subscribe((res)=>{
+  this.shopCategory=res as ShopCategory[];
+})
 
     this.restaurantService.GetRestaurants1(getRest).subscribe((res)=>{
 
@@ -145,13 +164,14 @@ Type:this.type
 
       this.list=[];
       for(var j=0;j<this.restaurantDetails.length;j++){
-
+       // this.shopCategory.push(this.restaurantDetails[j].Category);
 
         this.list.push(this.restaurantDetails[j]);
-                  console.log("enters for loop");
+                  // console.log("enters for loop");
               k=j;
-
+//console.log('dsaffffffffffffffffffffffffff'+this.restaurantDetails[j].OpenTime);
                   this.distance(this.location.lat,this.location.lon,this.restaurantDetails[j].Latitude,this.restaurantDetails[j].Longitude,this.unit,k);
+//this.AvailableTime(this.restaurantDetails[j].OpenTime,this.restaurantDetails[j].CloseTime,k);
 
                 }
 
@@ -199,7 +219,7 @@ Type:this.type
       dist = dist * 180/Math.PI;
       dist = dist * 60 * 1.1515;
       if (unit=="K") { dist = dist * 1.609344
-      console.log("distance between two coord   "+dist)
+      // console.log("distance between two coord   "+dist)
       this.restaurantDetails[k].Distance=parseFloat(dist.toFixed(1));
 //this.dismiss();
       }
@@ -332,10 +352,81 @@ k=j;
   }
 }
 
-Products(category:any){
+// Products(category:any){
 
-  this.router.navigate(['products/'+category+'/'+this.type]);
+//   this.router.navigate(['products/'+category+'/'+this.type]);
+// }
+
+Products(restaurantName:string,restaurantId:string,type:string){
+  this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId+'/'+type]);
+
+   //this.router.navigate(['products/'+category+'/'+this.type]);
+  }
+
+async presentPopover(ev: any) {
+  const popover = await this.popoverController.create({
+    component: PopoverTypesPage,
+    cssClass: 'my-custom-class',
+    event: ev,
+    translucent: true,
+    componentProps:this.shopCategory
+  });
+
+  popover.onDidDismiss().then((data:any)=>{
+console.log("from popover data  "+data.data.fromPopover);
+this.scrollFn(data.data.fromPopover);
+  })
+  await popover.present();
+
+  const { role } = await popover.onDidDismiss();
+  console.log('onDidDismiss resolved with role', role);
 }
+
+
+AvailableTime(stime,etime,k){
+  console.log(stime,etime);
+     // ------------------------------------------------------------------------------getTIme start-----------------
+     var d = new Date(); // for now
+     d.getHours(); // => 9
+     d.getMinutes(); // =>  30
+     d.getSeconds(); // => 51
+     var time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+ // ------------------------------------------------------------------------------------getTime end---------------
+
+ var currentDateTime=time;
+
+ // console.log('current date and time '+currentDateTime);
+
+
+//  stime='11:00a';
+//   etime='3.00p';
+
+ var startTime = moment(stime, "HH:mm a");
+ var endTime = moment(etime, "HH:mm a");
+  startTime.toString();   // "Fri Oct 28 2016 18:00:00 GMT-0400"
+ endTime.toString();    // "Fri Oct 28 2016 03:30:00 GMT-0400"
+ this. currentTime1=moment(currentDateTime,"HH:mm:ss")
+ //currentTime.toString(); //"Fri Oct 28 2016 23:00:00 GMT-0400"
+ //console.log(this.currentTime1.toString());
+
+ if(this.currentTime1.isAfter(startTime) && this.currentTime1.isBefore(endTime)){
+   console.log("tttttrue");
+   this.restaurantDetails[k].AvailableStatus=true;
+   }
+   else{
+     console.log("ffffalse");
+     this.restaurantDetails[k].AvailableStatus=false;
+   }
+}
+
+scrollFn(anchor: string): void{
+  console.log("hi scroll"+anchor);
+  this._vps.scrollToAnchor(anchor);
+this.content.scrollToBottom(2000)
+//this.content.scrollX(0, , 4000)
+
+}
+
 
 }
 

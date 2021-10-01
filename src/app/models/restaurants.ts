@@ -26,6 +26,8 @@ export default class Restaurant{
      Type:String;
      Charges:number;
      ImageUrl:String;
+     Category:string;
+     CategoryId:string;
 
 
  }

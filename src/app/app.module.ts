@@ -19,24 +19,25 @@ import {DatePicker} from '@ionic-native/date-picker/ngx';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { Network } from '@ionic-native/network/ngx';
 import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
-
+import {MatListModule} from '@angular/material/list';
 import {DeliveryCustomisePageModule} from './delivery-customise/delivery-customise.module';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 //import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import { MatTimepickerModule } from 'mat-timepicker';
 //import {  CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CallNumber } from '@ionic-native/call-number/ngx';
-
-
+import {MatSelectModule} from '@angular/material/select';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrdersAdminPipe } from './orders-admin.pipe';
+import { Clipboard } from '@ionic-native/clipboard/ngx';
 @NgModule({
   declarations: [AppComponent, OrdersAdminPipe],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule,DeliveryCustomisePageModule,MatTimepickerModule],
+
+imports: [MatSelectModule,MatListModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule,DeliveryCustomisePageModule,MatTimepickerModule],
   providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,MatDatepickerModule,Network,
-    DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,MatTimepickerModule,CallNumber,
+    DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,MatTimepickerModule,CallNumber,Clipboard,
 
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],
   bootstrap: [AppComponent],

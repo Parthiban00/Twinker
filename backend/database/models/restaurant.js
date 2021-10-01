@@ -102,6 +102,12 @@ const TaskSchema = new mongoose.Schema({
     },
     ImageUrl:{
 type:String
+    },
+    Category:{
+      type:String
+    },
+    CategoryId:{
+      type:String
     }
 
 

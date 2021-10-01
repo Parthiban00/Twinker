@@ -94,5 +94,17 @@ return this.webService.patch('carts',data);
      return this.webService.post(`razorpay/${data.amountInPaisa}`,data)
    }
 
+   GetUserDetails(data){
+     return this.webService.get(`userregisters/${data}`)
+   }
+   UpdateWelcomeOffer(data){
+    return this.webService.patch(`userregisters/${data}`,data);
+  }
+
+  GetOffers(){
+    return this.webService.get('offers');
+
+  }
+
 
 }

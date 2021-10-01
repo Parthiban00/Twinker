@@ -51,6 +51,12 @@ const TaskSchema = new mongoose.Schema({
         type: Boolean,
 
     },
+    WelcomeOffer:{
+      type:Boolean
+    },
+    Offer:{
+      type:Number
+    }
 
 });
 

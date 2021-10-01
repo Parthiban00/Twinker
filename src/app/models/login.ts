@@ -12,4 +12,5 @@ export default class Login{
     UserType: string="";
     ActiveYn: Boolean;
     DeleteYn: Boolean;
+
 }

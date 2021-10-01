@@ -17,6 +17,9 @@ export class RestaurantsService {
 
     return this.webService.get(`restaurants/${data.ActiveYn}/${data.Type}`);
   }
+  GetCategory(data:any){
 
+    return this.webService.get(`shopCategories/${data.Type}`);
+  }
 
 }

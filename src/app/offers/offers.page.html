@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+
+    <ion-title style="font-family: lato;">
+      Offers
+    </ion-title>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="ion-list" *ngFor="let item of offers;let i=index">
+
+    <ion-list lines="none">
+<ion-card class="ion-card"  style="border-radius:0px;" >
+    <ion-item>
+
+      <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
+
+        <img  src="{{item.ImageUrl}}">
+      </ion-thumbnail>
+      <ion-label class="hotel-card">
+        <h4 style="font-weight: 400;width: 200px;">{{item.ShortDescription}}</h4>
+        <p  style="margin-top: -15px;font-size: 12px;">{{item.Discount}}%&nbsp;Discount from Total Amount</p>
+        <!-- <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p> -->
+        <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+        <!-- <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p> -->
+        <p  style="font-size: 12px;margin-top: 0px;">Code:&nbsp;&nbsp;{{item.Code}}</p>
+        <ion-button (click)="CopyCode(item.Code)" color="success" style="--border-radius:0px !important;position: absolute;right: 10px;bottom: 15px;" slot="end">copy code</ion-button>
+      </ion-label>
+    </ion-item>
+
+  </ion-card>
+    </ion-list>
+  </div>
+
+
+
+  <!-- <ion-button color="danger" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px" (click)="CancelModel()">Cancel</ion-button> -->
+</ion-content>
+<ion-footer >
+  <ion-toolbar >
+    <!-- <ion-title>4 Items</ion-title> -->
+
+
+
+
+    <ion-button color="danger" slot="end" (click)="CancelModel()" >CANCEL</ion-button>
+    <!-- <ion-button  slot="end" (click)="RedirectToPayment()" >PROCEED TO PAY</ion-button> -->
+    <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
+  </ion-toolbar>
+</ion-footer>

@@ -6,6 +6,8 @@ Category:string;
 ImageUrl:string;
 Type:string;
 ActiveYn:boolean;
-DeleteYn:boolean
+DeleteYn:boolean;
+RestaurantId:string;
+RestaurantName:string;
 
 }

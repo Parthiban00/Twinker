@@ -1,3 +1,4 @@
+
  <ion-header class="ion-no-border">
   <ion-toolbar  no-border>
       <ion-buttons slot="start">
@@ -7,9 +8,13 @@
       {{type}}
     </ion-title>
     <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+        <ion-icon  color="primary" name="cart"></ion-icon>
+        </ion-button>
 <ion-button (click)="RedirectToHome()">
 <ion-icon  color="primary" name="home"></ion-icon>
 </ion-button>
+
     </ion-buttons>
   </ion-toolbar>
 
@@ -42,7 +47,7 @@
 
 
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" [scrollEvents]="true" delegate-handle="content">
 
 
 
@@ -51,7 +56,7 @@
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
       <ion-slide style="padding:0px;width: fit-content;" *ngFor="let list of category">
-        <ion-card (click)="Products(list.Category);" style="height: 150px;border-radius:0px">
+        <ion-card (click)="Products(list.RestaurantName,list.RestaurantId,list.Type);" style="height: 150px;border-radius:0px">
 
          <div class="menu-name">
           {{list.Category}}
@@ -220,19 +225,17 @@
 
     </div>
 
-<div class="ion-list">
 
+<div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}>
+  <div class="type" >
+    <div class="start"></div>
+<P>{{category.Category}}</P>
+  </div>
   <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
-    <ion-list style="margin-top: -5px;" lines="none" *ngFor="let item of searchedItem;let i=index">
+    <div *ngFor="let item of searchedItem;let i=index">
+    <ion-list style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
 
-<ion-card class="ion-card"  style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus}">
-
-
-  <!-- <div  class="offers color-green" *ngIf="item.AvailableStatus" >Opened</div>
-  <div  class="offers color-red" *ngIf="!item.AvailableStatus">Closed</div> -->
-
-
-  <div class="offer-logo" *ngIf="item.Offer" style="position: absolute;right:0px;top: 0px;">{{item.OfferDescription}}</div>
+<ion-card class="ion-card"  style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus,'close':!item.AvailableStatus}">
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
 
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
@@ -250,12 +253,20 @@
 
   </ion-card>
     </ion-list>
+  </div>
     </div>
 
-
+    <!-- <p #target>Secret message!</p> -->
 
   </ion-content>
 
+  <!-- <div style="margin-bottom:20px;width: 100%; align-items: center;
+  justify-content: center;display: flex;">
+
+  <ion-button style="--border-radius: 20px;" color="danger"  (click)="presentPopover($event)">Types</ion-button>
+
+
+</div> -->
   <ion-footer *ngIf="cartItemsAll.length">
     <ion-toolbar (click)="viewCart()">
 

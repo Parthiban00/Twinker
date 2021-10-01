@@ -8,7 +8,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { ActionSheetController } from '@ionic/angular';
 import {RegisterUserService} from 'src/app/register-user.service';
 import Cart from '../models/cart';
-
+import Offers from '../models/offers';
 import PlaceOrder from '../models/place-order';
 import Restaurant from '../models/restaurants';
 import{CartService} from 'src/app/cart.service';
@@ -20,11 +20,13 @@ import{ProductsService} from 'src/app/products.service';
 import MainMenu from '../models/main-menu';
 import Product from '../models/products';
 import Coupons from '../models/coupons';
-
+import Register from '../models/register-user';
 
 import { ModalController } from '@ionic/angular';
 import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.page';
 import {ChangeLocationPage} from '../change-location/change-location.page';
+import {OffersPage} from '../offers/offers.page';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 declare var Razorpay:any;
 
@@ -62,6 +64,9 @@ selectedLocation:any;
   coupons:Coupons[]=[];
   discountCode="";
   couponPresent:boolean;
+  getUser:Register[];
+  offers:Offers[];
+  toastMsg:string;
   constructor( public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
@@ -135,6 +140,16 @@ this.couponApplied=false;
 
 console.log("locationa ddress "+this.location.address);
 this.selectedLocation=this.location.address;
+this.cartService.GetUserDetails(this.user[0]._id).subscribe((res)=>{
+this.getUser=res as Register[];
+console.log('get user for welcome offer '+this.getUser.length);
+})
+
+this.cartService.GetOffers().subscribe((res)=>{
+  this.offers=res as Offers[];
+  console.log("offers "+this.offers[1].Code);
+})
+
 this.cartService.GetAllCoupons().subscribe((res)=>{
 this.coupons=res as Coupons[];
 console.log("all coupons"+this.coupons[0]);
@@ -858,8 +873,8 @@ this.presentActionSheet();
 
   async presentToast() {
     const toast = await this.toastController.create({
-      message: "Order Placed Successfull...",
-      duration: 2000
+      message: "This Offer is Not Eligible for U",
+      duration: 3000
     });
     toast.present();
   }
@@ -1200,19 +1215,64 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
     var yyyy = today.getFullYear();
 
     var today1 = yyyy + '-' + mm + '-' + dd;
-    for(var i=0;i<this.coupons.length;i++){
-      if(this.coupons[i].Code==this.coupon && this.coupons[i].ActiveYn==true){
-      //  discountPrice=this.totalAmount1-(this.totalAmount1*(this.coupons[i].Discount/100));
-      discountPrice=this.AmountWithCharges-(this.AmountWithCharges*(this.coupons[i].Discount/100));
-      this.AmountWithCharges=Math.round(discountPrice).toFixed(2);
-        this.totalAmount1=Math.round((discountPrice+this.deliveryPartnerFee)).toFixed(2);
-        this.discount=this.coupons[i].Discount;
-        this.applied=true;
-        this.discountDescription=this.coupons[i].CodeDescription;
-        this.discountCode=this.coupons[i].Code
-        this.couponPresent=true;
-        this.couponApplied=true;
-break;
+
+
+    for(var i=0;i<this.offers.length;i++){
+
+      if(this.offers[i].Code==this.coupon && this.offers[i].CodeDescription=="WelcomeOffer" && this.offers[i].ActiveYn==true){
+        if(this.getUser.length){
+          console.log("get user in apply copon entered");
+          discountPrice=this.AmountWithCharges-(this.AmountWithCharges*(this.offers[i].Discount/100));
+          this.AmountWithCharges=Math.round(discountPrice).toFixed(2);
+            this.totalAmount1=Math.round((discountPrice+this.deliveryPartnerFee)).toFixed(2);
+            this.discount=this.offers[i].Discount;
+            this.applied=true;
+            this.discountDescription=this.offers[i].CodeDescription;
+            this.discountCode=this.offers[i].Code
+            this.couponPresent=true;
+             this.couponApplied=true;
+        }
+        else{
+          // this.couponPresent=false;
+          //    this.couponApplied=false;
+          //    this.applied=false;
+          this.presentToast();
+        }
+
+      }
+      else if(this.offers[i].Code==this.coupon && this.offers[i].RestaurantId==this.cartItemsAll[0].RestaurantId && this.offers[i].ActiveYn==true && this.offers[i].CodeDescription=="This Restaurant Only"){
+
+          console.log("get user in apply copon entered");
+          discountPrice=this.AmountWithCharges-(this.AmountWithCharges*(this.offers[i].Discount/100));
+          this.AmountWithCharges=Math.round(discountPrice).toFixed(2);
+            this.totalAmount1=Math.round((discountPrice+this.deliveryPartnerFee)).toFixed(2);
+            this.discount=this.offers[i].Discount;
+            this.applied=true;
+            this.discountDescription=this.offers[i].CodeDescription;
+            this.discountCode=this.offers[i].Code
+            this.couponPresent=true;
+             this.couponApplied=true;
+
+
+      }
+      else if(this.offers[i].Code==this.coupon && this.offers[i].CodeDescription=="Minimum Offfer All"){
+        if(this.offers[i].MinimumAmount==this.AmountWithCharges){
+
+          console.log("get user in apply copon entered");
+          discountPrice=this.AmountWithCharges-(this.AmountWithCharges*(this.offers[i].Discount/100));
+          this.AmountWithCharges=Math.round(discountPrice).toFixed(2);
+            this.totalAmount1=Math.round((discountPrice+this.deliveryPartnerFee)).toFixed(2);
+            this.discount=this.offers[i].Discount;
+            this.applied=true;
+            this.discountDescription=this.offers[i].CodeDescription;
+            this.discountCode=this.offers[i].Code
+            this.couponPresent=true;
+             this.couponApplied=true;
+        }
+        else{
+          this.presentToast();
+        }
+
       }
       else{
         this.couponPresent=false;
@@ -1341,6 +1401,22 @@ rzp1.open();
       EditLocation(){
   this.router.navigate(['delivery-location'])
 
+      }
+
+      OpenOffers(){
+        this.modalController.create({
+          component:OffersPage,
+          //componentProps:this.location
+                  }).then(modalres=>{
+                    modalres.present();
+
+                    modalres.onDidDismiss().then(res=>{
+
+                    })
+                  })
+      }
+      RemoveCoupon(){
+        this.ionViewWillEnter();
       }
 }
 

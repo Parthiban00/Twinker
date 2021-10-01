@@ -26,7 +26,7 @@
 
   --ion-color-tertiary: #ffffff;
   --ion-color-tertiary-rgb: 82, 96, 255;
-  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast: #f60000;
   --ion-color-tertiary-contrast-rgb: 255, 255, 255;
   --ion-color-tertiary-shade: #4854e0;
   --ion-color-tertiary-tint: #6370ff;
@@ -241,12 +241,12 @@
   }
 }
 
-// @import "roboto";
-// @import "noto-sans";
+ //@import "roboto";
+ //@import "noto-sans";
 
 
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif&family=Saira+Condensed:wght@400;500&family=Ubuntu:wght@300;400&display=swap');
-$font-family:'Saira Condensed', sans-serif !default;
-$font-family-ios:'NSaira Condensed';
-$font-family-md:'Saira Condensed';
-$font-family-wp:'Saira Condensed';
+@import url('https://fonts.googleapis.com/css2?family=Gemunu+Libre:wght@300&display=swap');
+$font-family-base:'Gemunu Libre', sans-serif !default;
+$font-family-ios-base:'Gemunu Libre';
+$font-family-md-base:'Gemunu Libre';
+$font-family-wp-base:'Gemunu Libre';

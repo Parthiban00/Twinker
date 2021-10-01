@@ -17,8 +17,11 @@ const Category = require('./database/models/category');
 const Coupons = require('./database/models/coupons');
 const { isValidObjectId } = require('mongoose');
 let Razorpay = require('razorpay');
-const socket = require('socket.io');
-
+//const socket = require('socket.io');
+const ShopCategory=require('./database/models/shop-category');
+const Offers = require('./database/models/offers');
+//const server=require('http').createServer(app);
+//const io=require("socket.io")(server,{cors:{origin:"*"}});
 app.use(express.json());
 // ---------------------------------new--------------
 const port = process.env.PORT || 5000;
@@ -157,7 +160,7 @@ if(req.body.UserType=='D'){
 else{
 
 
-            (new Register ({'FirstName': req.body.FirstName,'LastName':req.body.LastName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'Address1':req.body.Address1,'Address2':req.body.Address2,'Address3':req.body.Address3,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn}))
+            (new Register ({'FirstName': req.body.FirstName,'LastName':req.body.LastName,'Address':req.body.Address,'MobileNo':req.body.MobileNo,'Password':req.body.Password,'Email':req.body.Email,'Address1':req.body.Address1,'Address2':req.body.Address2,'Address3':req.body.Address3,'UserType':req.body.UserType,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'WelcomeOffer':true}))
             .save()
             .then((userregisters)=> res.send(userregisters))
             .catch((error)=>console.log(error));
@@ -184,6 +187,21 @@ else{
           .then((userregisters)=> res.send(userregisters))
           .catch((error)=>console.log(error));
       });
+
+      app.get('/userregisters/:id',(req,res)=>{
+        console.log("user login get by id ");
+        Register.find({_id:req.params.id,ActiveYn:true,WelcomeOffer:true})
+        .then((userregisters)=> res.send(userregisters))
+        .catch((error)=>console.log(error));
+    });
+    app.patch('/userregisters/:id', (req,res)=>{
+      console.log('welcome offer false update');
+      Products.findOneAndUpdate({_id: req.params.id}, {$set:{WelcomeOffer:false}})
+      .then((products)=> res.send(products))
+      .catch((error)=>console.log(error));
+
+      }),
+
 
         app.post('/restaurants',(req,res)=>{
 
@@ -219,7 +237,8 @@ console.log("save restaurant");
 
           console.log('get restaurants entered');
 
-
+          // var datetime = new Date();
+          // console.log(datetime);
 
             Restaurant.find({'ActiveYn':true,'DeleteYn':false})
             .then(restaurants=>res.send(restaurants))
@@ -237,6 +256,13 @@ let minutes = date_ob.getMinutes();
 // current seconds
 let seconds = date_ob.getSeconds();
 console.log(hours + ":" + minutes);
+
+var dd = String(date_ob.getDate()).padStart(2, '0');
+var mm = String(date_ob.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = date_ob.getFullYear();
+
+var today1 = yyyy + '-' + mm + '-' + dd;
+console.log(today1);
 
           console.log('get restaurants entered');
 
@@ -582,6 +608,14 @@ console.log("suggestion entered");
                                                                                             .catch((error)=>console.log(error));
                                                                                         });
 
+
+                                                          app.get('/offers',(req,res)=>{
+                                                            console.log("offers entered");
+                                                                                            Offers.find({ActiveYn: true,DeleteYn:false})
+                                                                                            .then(Offers=>res.send(Offers))
+                                                                                            .catch((error)=>console.log(error));
+                                                                                        });
+
                                                           app.post('/coupons',(req,res)=>{
 
 
@@ -591,6 +625,16 @@ console.log("suggestion entered");
                                                             .catch((error)=>console.log(error));
 
                                                         });
+
+                                                        app.post('/offers',(req,res)=>{
+
+
+                                                          (new Offers ({'Code':req.body.Code,'CodeDescription':req.body.CodeDescription,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Discount':req.body.Discount,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'MinimumAmount':req.body.MinimumAmount,'Discount':req.body.Discount}))
+                                                          .save()
+                                                          .then((Offers)=> res.send(Offers))
+                                                          .catch((error)=>console.log(error));
+
+                                                      });
 
                                                         app.patch('/restaurants/:_id', (req,res)=>{
 
@@ -650,7 +694,7 @@ updateMainMenu(req.params.restId,req.params.menuId,req.body.availableStatus);
                                                                                                     app.post('/categories',(req,res)=>{
 
                                                                                                       console.log("save Category");
-                                                                                                                  (new Category ({'Category': req.body.Category,'ImageUrl':req.body.ImageUrl,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Type':req.body.Type}))
+                                                                                                                  (new Category ({'Category': req.body.Category,'ImageUrl':req.body.ImageUrl,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Type':req.body.Type,'RestaurantId':req.body.RestaurantId,'RestaurantName':req.body.RestaurantName,'AvailableStatus':req.body.AvailableStatus}))
                                                                                                                   .save()
                                                                                                                   .then((categories)=> res.send(categories))
                                                                                                                   .catch((error)=>console.log(error));
@@ -658,7 +702,7 @@ updateMainMenu(req.params.restId,req.params.menuId,req.body.availableStatus);
                                                                                                               });
                                                                                                               app.get('/categories/:type/:activeYn',(req,res)=>{
 
-                                                                                                                Category.find({Type: req.params.type,ActiveYn:req.params.activeYn})
+                                                                                                                Category.find({Type: req.params.type,ActiveYn:req.params.activeYn,AvailableStatus:true})
                                                                                                                 .then(categories=>res.send(categories))
                                                                                                                 .catch((error)=>console.log(error));
                                                                                                             });
@@ -682,13 +726,34 @@ function updateProducts(restId,availableStatus){
 else{}
 }
 
+app.post('/shopCategories',(req,res)=>{
+
+  console.log("save Category");
+ (new ShopCategory ({'Category': req.body.Category,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Type':req.body.Type}))
+ .save()
+ .then((shopCategories)=> res.send(shopCategories))
+ .catch((error)=>console.log(error));
+
+ });
+
+ app.get('/shopCategories/:Type',(req,res)=>{
+
+  ShopCategory.find({'ActiveYn':true,'DeleteYn':false,'Type':req.params.Type})
+  .then(shopCategories=>res.send(shopCategories))
+  .catch((error)=>console.log(error));
+});
+
 
 
  //app.listen(3000, () => console.log("Server is connected on port 3000"));
 const server=app.listen(port, () => console.log("Server is connected on port "+port));
-const io=socket(server);
+//const io=socket(server);
 
-io.sockets.on('connection',(socket)=>{
-  console.log(`new connection id: ${socket.id}`);
 
-})
+// server.listen(5000,()=>{
+//   console.log("server is runnging");
+// });
+// io.on('connection',(socket)=>{
+//   console.log(`new connection id: ${socket.id}`);
+
+// });
