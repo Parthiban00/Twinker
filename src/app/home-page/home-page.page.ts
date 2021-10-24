@@ -14,7 +14,12 @@ import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import Category from '../models/category';
 import{CategoriesService} from 'src/app/categories.service';
 import { ThrowStmt } from '@angular/compiler';
-
+import MainCategory from '../models/main-categories';
+import AddSlide from '../models/add-slide';
+import BuddySlide from '../models/buddy-slide';
+import BookingSlide from '../models/booking-slide';
+import {DashboardService} from '../dashboard.service';
+import {OffersPage} from '../offers/offers.page';
 
 import { ModalController } from '@ionic/angular';
 
@@ -42,9 +47,14 @@ export class HomePagePage implements  OnInit {
   selectedLocation:any;
   reverseGeocodingResults:any;
   location;
+  countdown;
   locCords: any;
-
-  constructor(public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+  mainCategory:MainCategory[];
+addSlide:AddSlide[];
+buddySlide:BuddySlide[];
+bookingSlide:BookingSlide[];
+itemTotal=0;
+  constructor(private dashboardService:DashboardService,public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 
 
@@ -55,6 +65,11 @@ export class HomePagePage implements  OnInit {
 
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
     console.log('location'+this.location.address)
+
+
+    // this.dashboardService.GetBookingSlide().subscribe((res)=>{
+    //   this.bookingSlide=res as BookingSlide[];
+    // })
   }
 
 
@@ -77,6 +92,10 @@ export class HomePagePage implements  OnInit {
     }
     else if(this.userType=='A'){
       this.router.navigate(['admin-dashboard']);
+     //var restaurantName='Hotel Vallavan';
+     //var restaurantId="60d54c87a206741f10a4b716";
+    // var type='Food';
+  // this.router.navigate(['products/'+restaurantName+'/'+restaurantId+'/'+type]);
     }
     else{
       console.log('this is '+this.userType);
@@ -165,8 +184,34 @@ token:String;
      console.log('1');
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');;
 
+    var getCart={
+      UserId:this.user[0]._id,
+      Status:"Cart",
+      ActiveYn:true,
+      DeleteYn:false
+    }
+    this.cartService.GetCartAll(getCart).subscribe((res)=>{
+      this.cartItemsAll=res as Cart[];
+      console.log(this.cartItemsAll);
 
+      for(var i=0;i<this.cartItemsAll.length;i++){
+       this.itemTotal+=this.cartItemsAll[i].Amount;
+       // this.restaurantName=this.cartItemsAll[i].RestaurantName;
+        }
 
+    })
+
+    this.dashboardService.GetMainCategory().subscribe((res)=>{
+      this.mainCategory=res as MainCategory[];
+      console.log(this.mainCategory);
+    })
+
+    this.dashboardService.GetAddSlide().subscribe((res)=>{
+      this.addSlide=res as AddSlide[];
+    })
+    this.dashboardService.GetBuddySlide().subscribe((res)=>{
+      this.buddySlide=res as BuddySlide[];
+    })
 this.currentUrl=this.router.url;
 
 console.log("current url "+this.currentUrl);
@@ -203,7 +248,7 @@ this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
   this.orderDetails=res as Orders[];
  // console.log(this.orderDetails);
 
-
+console.log(this.orderDetails[0].DeliveryTime);
 
 
 
@@ -256,6 +301,27 @@ this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
                 })
               })
 
+  }
+  hide(){
+    console.log("hi hide");
+    this.orderDetails.length=0;
+    var element = document.getElementById('footer');
+    element.classList.add('slide-out-bottom');
+    //element.classList.remove('container');
+
+
+  }
+  OpenOffers(){
+    this.modalController.create({
+      component:OffersPage,
+      //componentProps:this.location
+              }).then(modalres=>{
+                modalres.present();
+
+                modalres.onDidDismiss().then(res=>{
+
+                })
+              })
   }
 
 }

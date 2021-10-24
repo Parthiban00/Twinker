@@ -158,7 +158,7 @@ const routes: Routes = [
     loadChildren: () => import('./menu-status/menu-status.module').then( m => m.MenuStatusPageModule)
   },
   {
-    path: 'products/:category/:type',
+    path: 'products/:name/:restId/:type',
     loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
   },
   {
@@ -180,6 +180,15 @@ const routes: Routes = [
   {
     path: 'offers',
     loadChildren: () => import('./offers/offers.module').then( m => m.OffersPageModule)
+  },
+
+  {
+    path: 'buddy',
+    loadChildren: () => import('./buddy/buddy.module').then( m => m.BuddyPageModule)
+  },
+  {
+    path: 'contact-us',
+    loadChildren: () => import('./contact-us/contact-us.module').then( m => m.ContactUsPageModule)
   },
 
 

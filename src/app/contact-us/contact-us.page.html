@@ -1,0 +1,69 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Contact Us
+    </ion-title>
+     <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="home"></ion-icon>
+      </ion-button>
+          </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+<ion-card style="--border-radius:0px !important;">
+  <ion-card-subtitle style="margin-top: 5px;margin-left: 10px;">
+    Head Office :
+  </ion-card-subtitle>
+  <ion-card-content>
+    1428, Thamarakki Main Road, Idayamelur, Sivaganga, TamilNadu, IN 630562
+    <ion-button style="width: 100%;" (click)="NavigateDirection()" color="danger"><ion-icon name="navigate-circle-sharp"></ion-icon></ion-button>
+  </ion-card-content>
+</ion-card>
+<ion-card style="--border-radius:0px !important;">
+  <ion-card-subtitle style="margin-top: 5px;margin-left: 10px;">
+    Reach Us:
+  </ion-card-subtitle>
+  <ion-card-content>
+    <ion-row>
+      <ion-col>
+        Primary: 6381824277
+      </ion-col>
+
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button style="width:fit-content;" (click)="CallCustomer('6381824277');" color="success"><ion-icon name="call-sharp"></ion-icon></ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button style="width:fit-content;" (click)="WhatsApp('6381824277');" color="success"><ion-icon name="logo-whatsapp"></ion-icon></ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        Secondary: 9095924511
+      </ion-col>
+
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button style="width:fit-content;" (click)="CallCustomer('9095924511');" color="success"><ion-icon name="call-sharp"></ion-icon></ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button style="width:fit-content;" (click)="WhatsApp('9095924511');" color="success"><ion-icon name="logo-whatsapp"></ion-icon></ion-button>
+      </ion-col>
+    </ion-row>
+
+
+
+  </ion-card-content>
+</ion-card>
+<div style="display: block;margin-left: auto;margin-right: auto;">
+  <img src="/assets/office.gif">
+</div>
+</ion-content>

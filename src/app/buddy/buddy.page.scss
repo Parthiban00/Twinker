@@ -1,0 +1,167 @@
+
+.buddy-header{
+  width: 100%;
+  height: 120px;
+  background-color: antiquewhite;
+
+}
+
+ion-card{
+
+  div{
+  form{
+
+  ion-item{
+
+background-color:tomato;
+    height: fit-content;
+
+font-size: 14px;
+border-radius: 2px;
+
+
+
+ion-label{
+
+}
+ion-input{
+  //background: gold;
+  font-size: 14px;
+
+
+     }
+  }
+
+
+
+}
+
+
+
+// ion-button{
+//     text-transform: capitalize;
+//     font-weight: 300;
+//     --background:#628cff;
+//     --border-radius:2px;
+//     --box-shadow:none;
+//     margin:10px 10px;
+//     font-size: 16px;
+
+
+
+
+// }
+p{
+    font-size: 14px;
+    color: gray;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+}
+}
+.my-custom-class {
+  --background: #222;
+  --spinner-color: #fff;
+
+  color: #fff;
+}
+
+.forget{
+  margin-left: 10px;
+  font-size: 12px;
+
+}
+.cart_title{
+ padding: 15px;
+ font-size: 16px;
+ color: orangered;
+ font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+.small{
+  padding: 10px;
+}
+/* DOES NOT WORK - not specific enough */
+ion-loading {
+  color: green;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class {
+  --background: #222;
+  --spinner-color: #fff;
+
+  color: #fff;
+}
+
+.forget{
+  margin-left: 10px;
+  font-size: 12px;
+
+}
+.cart_title{
+ padding: 15px;
+ font-size: 16px;
+ color: orangered;
+ font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.image-upload{
+  background-color: antiquewhite;
+
+}
+
+
+.qty-selector{
+
+
+
+
+
+
+
+
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    //border: 1px solid rgb(248, 120, 14);
+    border-radius:2px;
+    margin-top:10px;
+    width:fit-content;
+    height: fit-content;
+
+// ion-button{
+//     color:#565656;
+//     font-size: 16px;
+//     margin-left: 8px;
+//     margin-right:8px ;
+// }
+    display: block;
+
+    margin-left: auto;
+    margin-right: auto;
+
+  // ion-button{
+  //     color:#565656;
+  //     font-size: 16px;
+  //     margin-left: 8px;
+  //     margin-right:8px ;
+  // }
+
+
+  }
+ul{
+  li{
+    color: tomato;
+    font-size: 12px;
+  }
+}
+
+.upload-div{
+  ion-button{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+}

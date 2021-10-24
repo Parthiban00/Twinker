@@ -24,16 +24,16 @@
         <div class="header-content">
           <img src="assets\50x50.png" alt="Profile_image">
           <ion-label>
-            <h2 style="font-family: lato;">Hi Buddy...</h2>
-            <p style="font-family: lato;">Welcome To Our Family...</p>
+            <h2 style="font-weight: 300;">hi buddy...</h2>
+            <p style="font-weight: 300;">Welcome To Twinker</p>
             </ion-label>
         </div>
-        <div class="action-button">
+        <!-- <div class="action-button">
           <ion-button disabled>
             <ion-icon slot="start" name="create"></ion-icon>Edit Profile
           </ion-button>
 
-        </div>
+        </div> -->
         <ion-list class="menu-item" lines="none" >
         <ion-menu-toggle auto-hide="true">
 
@@ -61,10 +61,6 @@
     <ion-icon name="hand-left-outline" slot="start"></ion-icon>
        Contact Us
 </ion-item>
-    <ion-item routerLink="/terms-conditions"   routerDirection="forward">
-      <ion-icon name="information-circle" slot="start"></ion-icon>
-         Terms and Conditions
-  </ion-item>
 
 
   <ion-item (click)="LogOut()"   routerDirection="forward">

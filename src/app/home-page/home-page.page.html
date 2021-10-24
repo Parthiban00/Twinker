@@ -5,229 +5,218 @@
     <ion-buttons fill="clear" slot="start">
     <ion-menu-button color="primary"></ion-menu-button>
     </ion-buttons>
-  <ion-title style="font-family: lato;">
-    Home
+
+  <ion-title (click)="ChangeLocation()" style="font-size: 12px;">
+    <ion-icon color="primary" name="location"></ion-icon>
+    {{location.address}}
   </ion-title>
-  <ion-buttons slot="end">
-<ion-button fill="clear">
-  <ion-button slot="end" class="icon-button" color="primary"  (click)="ViewCart()">
 
-    <ion-icon name="cart"></ion-icon>
+    <ion-buttons slot="end">
 
-    </ion-button>
-<ion-icon color="primary" name="notifications"></ion-icon>
-</ion-button>
-<ion-button slot="end"  color="primary" *ngIf="userType!='C'" (click)="Dashboard()">
-  <ion-icon color="secondary" name="apps"></ion-icon>
-  </ion-button>
-  </ion-buttons>
+
+
+          <ion-button fill="clear" slot="end" class="icon-button" color="primary"  (click)="OpenOffers()">
+
+            <ion-icon name="ribbon-sharp"></ion-icon>
+
+            </ion-button>
+            <ion-button fill="clear" slot="end" [ngClass]="{'jello-horizontal':cartItemsAll.length}" color="primary"  (click)="ViewCart()">
+
+              <ion-icon name="cart"></ion-icon>
+
+              </ion-button>
+      <ion-button slot="end"  color="primary" *ngIf="userType!='C'" (click)="Dashboard()">
+        <ion-icon color="secondary" name="apps"></ion-icon>
+        </ion-button>
+        </ion-buttons>
 </ion-toolbar>
 
-<!-- <ion-item class="profile" lines="none" >
-  <ion-avatar slot="start">
-    <img src="assets/user.png">
-  </ion-avatar>
+<div class="slide-items" >
+
+  <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true,pagination: true}"  pager>
+    <ion-slide  *ngFor="let adds of addSlide" style="padding:0px;width: fit-content;width: 100%;" >
+      <ion-card style="height: 120px;border-radius:0px;width: 100%;">
+
+       <div class="menu-name">
+
+         </div>
+
+        <img style="height: 120px;width: 100%;" src="{{adds.ImageUrl}}">
+
+      </ion-card>
+   </ion-slide>
+   <!-- <ion-slide style="padding:0px;width: fit-content;width: 100%" >
+    <ion-card style="height: 120px;border-radius:0px;width: 100%">
+
+     <div class="menu-name">
+
+       </div>
+
+      <img style="height: 120px;width: 100%;" src="/assets/veggies1.jpg">
+
+    </ion-card>
+ </ion-slide> -->
 
 
 
-  <ion-button slot="end" fill="clear" *ngIf="userType!='C'" (click)="Dashboard()">
-    <ion-icon color="secondary" name="apps"></ion-icon>
-    </ion-button>
-     <ion-button slot="end" class="icon-button" fill="clear"   (click)="ViewCart()">
 
-      <ion-icon name="cart"></ion-icon>
-
-      </ion-button>
-</ion-item> -->
-<div class="deliverylocation">
-  <ion-card style="border-radius: 0px;">
-    <ion-card-header>
-       My Location
-       <!-- <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button> -->
-       <ion-button fill="clear" (click)="ChangeLocation()"><ion-icon   name="create-outline"></ion-icon></ion-button>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-icon name="pin" color="primary"></ion-icon> {{location.address}}
-      <!-- {{selectedLocation}} -->
-    </ion-card-content>
-  </ion-card>
-  </div>
+ </ion-slides>
+</div>
 
 </ion-header>
+
 <ion-content >
-<div class="slides ion-margin-bottom">
-  <!-- <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
-    <ion-slide style="padding:0px;width: fit-content;"  (click)="RestaurantPage('Food')">
 
-      <ion-card >
-        <ion-card-header>
-<div class="main" >
+  <div class="ion-list" >
+    <div class="type" >
+      <div class="start"></div>
+  <P>CATEGORIES</P>
+    </div>
+    </div>
 
-  <img src="assets/rest.png">
-</div>
+    <div>
+      <ion-card style="border-radius: 0px;">
 
 
-        </ion-card-header>
-        <ion-card-content class="ion-text-left">
 
-          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Foods</ion-card-title>
-          <ion-card-subtitle style="font-size: 12px;">Restaurants | Hotels | &nbsp;&nbsp;</ion-card-subtitle>
-          <ion-card-subtitle  style="font-size: 12px;"> &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  HomeMade</ion-card-subtitle>
-        </ion-card-content>
+
+          <ion-row style="margin-bottom: 10px;margin-right: 10px;">
+            <ion-col (click)="RestaurantPage(list.Type)" style="padding: 0px;" *ngFor="let list of mainCategory;let i=index">
+              <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+          <div class="product" >
+
+            <img src="{{list.ImageUrl}}" style="height: 90px;" alt="Category Icon">
+          <div class="menu">
+            <p>{{list.Category}}</p>
+
+            <p style="margin-top: -15px;color: gray;">{{list.Description}}</p>
+
+
+            </div>
+          </div>
+          </ion-col>
+
+
+
+            </ion-row>
+
       </ion-card>
+      </div>
+      <div class="ion-list" >
+        <div class="type" >
+          <div class="start"></div>
+      <P>TWINKER BUDDY (Soon)</P>
+        </div>
+        </div>
+        <div class="slide-items" >
 
+          <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
+            <ion-slide *ngFor="let buddy of buddySlide" style="padding:0px;width: fit-content;width: 100%;">
+              <ion-card style="height: 120px;border-radius:0px;width: 100%;">
 
+               <div class="menu-name">
 
+                 </div>
 
-    </ion-slide>
-    <ion-slide style="padding:0px;width: fit-content;" >
+                <img style="height: 120px;width: 100%;" src="{{buddy.ImageUrl}}">
 
-      <ion-card>
-        <ion-card-header>
-<div class="main" >
+              </ion-card>
+           </ion-slide>
+           <!-- <ion-slide style="padding:0px;width: fit-content;width: 100%" >
+            <ion-card style="height: 120px;border-radius:0px;width: 100%">
 
-  <img src="assets/evening_bites.png">
-</div>
+             <div class="menu-name">
 
+               </div>
 
-        </ion-card-header>
-        <ion-card-content class="ion-text-left">
+              <img style="height: 120px;width: 100%;" src="/assets/diwali.jpg">
 
-          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Evenning Bites</ion-card-title>
-          <ion-card-subtitle style="font-size: 12px;">Crispy | Recepies | Hot</ion-card-subtitle>
-        </ion-card-content>
-      </ion-card>
+            </ion-card>
+         </ion-slide> -->
 
 
 
 
-    </ion-slide>
+         </ion-slides>
+        </div>
+        <!-- <div class="ion-list" >
+          <div class="type" >
+            <div class="start"></div>
+        <P>BOOKINGS - Let's book for your's...</P>
+          </div>
+          </div> -->
+          <!-- <div class="slide-items" >
 
+            <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
+              <ion-slide style="padding:0px;width: fit-content;width: 100%;" >
+                <ion-card style="height: 120px;border-radius:0px;width: 100%;">
 
+                 <div class="menu-name">
 
+                   </div>
 
+                  <img style="height: 120px;width: 100%;" src="/assets/diwali.jpg">
 
+                </ion-card>
+             </ion-slide>
+             <ion-slide style="padding:0px;width: fit-content;width: 100%" >
+              <ion-card style="height: 120px;border-radius:0px;width: 100%">
 
-  </ion-slides>
-  <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+               <div class="menu-name">
 
+                 </div>
 
+                <img style="height: 120px;width: 100%;" src="/assets/veggies1.jpg">
 
+              </ion-card>
+           </ion-slide>
 
-    <ion-slide style="padding:0px;width: fit-content;" (click)="RestaurantPage('Juice')" >
 
-      <ion-card>
-        <ion-card-header>
-<div class="main" >
 
-  <img src="assets/cool.png">
-</div>
 
+           </ion-slides>
+          </div> -->
+<!-- <div *ngIf="orderDetails.length">
 
-        </ion-card-header>
-        <ion-card-content class="ion-text-left">
-
-          <ion-card-title class="ion-margin-bottom" style="text-align: center;">Drinks | Juices</ion-card-title>
-          <ion-card-subtitle style="font-size: 12px;">Cool | Fruits | Beverages</ion-card-subtitle>
-        </ion-card-content>
-      </ion-card>
-
-
-
-
-    </ion-slide>
-    <ion-slide style="padding:0px;width: fit-content;" >
-
-      <ion-card >
-        <ion-card-header>
-<div class="main" >
-
-  <img src="assets/veg.png">
-</div>
-
-
-        </ion-card-header>
-        <ion-card-content class="ion-text-left">
-
-          <ion-card-title class="ion-margin-bottom" style="text-align: center;">    Vegetables    </ion-card-title>
-          <ion-card-subtitle style="font-size: 12px;">Directly From Farmers</ion-card-subtitle>
-        </ion-card-content>
-      </ion-card>
-
-
-
-
-    </ion-slide>
-
-
-
-
-
-  </ion-slides> -->
-
-  <div class="categories" (click)="RestaurantPage('Food')"> <ion-label class="food">FOODS</ion-label><p class="fooddes">RESTAURANTS | HOTELS | HOME MADES</p><img src="assets/foods.jpg"></div>
-  <div class="categories" (click)="RestaurantPage('Vegetable')"> <ion-label class="vegies">VEGETABLES</ion-label> <img src="assets/veggies.jpg"></div>
-  <div class="categories"  (click)="RestaurantPage('Juice')"> <ion-label class="food">JUICES</ion-label> <img src="assets/jucies.jpg"></div>
-
-  <div class="categories" (click)="RestaurantPage('Fruit')"><ion-label class="fruit">FRUITS</ion-label>  <img src="assets/fruit.jpg"></div>
-
-  <div class="categories" (click)="RestaurantPage('Grocery')"><ion-label class="vegies">GROCERIES</ion-label>  <img src="assets/grocery.jpg"></div>
-  <div class="categories" (click)="RestaurantPage('Meat')"> <ion-label class="meat">MEATS</ion-label> <img src="assets/MEAT.jpg"></div>
-  <div class="categories" (click)="RestaurantPage('Seafood')"> <ion-label class="sea">SEA FOODS</ion-label>  <img src="assets/seafoods.jpg"></div>
-  <div class="categories" (click)="RestaurantPage('Medicine')"> <ion-label class="medicine">MEDICINES</ion-label> <img src="assets/medicine.jpg"></div>
-
-
-
-</div>
-<div class="container" *ngIf="orderDetails.length">
-  <h3>
-    In Progress Orders
-  </h3>
-  <div *ngFor="let orders of orderDetails;let i=index">
-  <ion-item lines="none" (click)="OrdersPage()" *ngIf="orders.Status!='Completed'">
-    <ion-grid>
-      <ion-row class="ion-align-items-center">
-        <ion-col size="2">
-          <ion-button color="light" fill="clear">
-            <ion-icon slot="icon-only" name="list"></ion-icon>
-
-          </ion-button>
-        </ion-col>
-        <ion-col size="8">
-          <ion-label >
-            <h4>
-              {{orders.RestaurantName}}
-            </h4>
-<h6 style="margin-top: -18px;">ORD-{{orders._id.substr(orders._id.length - 3)}} | {{orders.ItemCount}} Items | Rs.{{orders.TotalAmount.toFixed(2)}}</h6>
-<!-- <h6 style="margin-top: -18px;">Restaurant</h6> -->
-</ion-label>
-        </ion-col>
-        <ion-col size="2">
-          <ion-button color="light" fill="clear">
-            <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
-
-          </ion-button>
-        </ion-col>
-
-
-
-      </ion-row>
-      <ion-row >
-       <h4 *ngIf="orders.DeliveryPartnerStatus!='Accepted by Delivery Partner'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.DeliveryPartnerStatus}}</i></span></h4>
-       <h4 *ngIf="orders.DeliveryPartnerStatus=='Accepted by Delivery Partner'"> Status: <span style="font-size: 12px;color:rgba(255,255,255,.66);"><i>{{orders.DeliveryPartnerStatus}}&nbsp;[On the way]</i></span></h4>
-
-
-       <ion-progress-bar color="success" *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer'" value='0.3' ></ion-progress-bar>
-        <ion-progress-bar color="success" *ngIf="orders.DeliveryPartnerStatus=='Accepted by Delivery Partner'" value='0.6' ></ion-progress-bar>
-
-        <!-- <ion-progress-bar color="success" *ngIf="orders.Status=='Ready'" value='0.9' ></ion-progress-bar> -->
-
-      </ion-row>
-
-
-    </ion-grid>
-
-  </ion-item>
-</div>
-</div>
+</div> -->
 </ion-content>
+
+<ion-footer id="footer" *ngIf="orderDetails.length" class="container1">
+
+
+
+<div class="delivery-boy">
+  <ion-button (click)="hide()" fill="clear" slot="end" class="icon-button" color="primary">
+
+    <ion-icon name="chevron-down-outline" ></ion-icon>
+
+    </ion-button>
+  <img src="/assets/delivery_boy.gif">
+
+
+</div>
+
+<div *ngFor="let orders of orderDetails;let i=index">
+<ion-card style="border-radius: 0px; " >
+  <ion-card-subtitle>Restaurant Name:&nbsp;&nbsp;{{orders.RestaurantName}}</ion-card-subtitle>
+<ion-card-content>
+  <ion-row >
+    <ion-col>
+No. Of Items:&nbsp;&nbsp;{{orders.ItemCount}}
+    </ion-col>
+    <ion-col>
+      To Pay:&nbsp;&nbsp;{{orders.TotalAmount}}.00
+          </ion-col>
+  </ion-row>
+  <ion-row >
+    <ion-col>
+Ordered Time:&nbsp;&nbsp;{{orders.CreatedTime}}
+    </ion-col>
+    <ion-col>
+      Expected Delivery:&nbsp;&nbsp;With in 30 Mins
+          </ion-col>
+  </ion-row>
+</ion-card-content>
+</ion-card>
+</div>
+</ion-footer>

@@ -48,11 +48,8 @@ export class ProductPagePage implements OnInit {
     {},
     {}
     ]
-   removeCart={
-     Status:'Removed',
-     ActiveYn:false,
-     DeleteYn:true
-   }
+    removeCart;
+
 
 
 
@@ -77,7 +74,12 @@ export class ProductPagePage implements OnInit {
   isLoading = false;
   type:String;
 
-
+  opts = {
+    freeMode:true,
+    slidesPreview:2.8,
+    slidesOffsetBefore:30,
+    slidesOffsetAfter:100
+  }
   constructor(private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
@@ -95,6 +97,7 @@ export class ProductPagePage implements OnInit {
   ionViewWillEnter(){
    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 
+
     this.searchMenu="";
     this.isSearch=true;
     //this.present();
@@ -102,7 +105,13 @@ export class ProductPagePage implements OnInit {
     this.products.length=0;
 
         this.getCartAll();
+      this.removeCart={
+          Status:'Removed',
+          ActiveYn:false,
+          DeleteYn:true,
+          UserId:this.user[0]._id,
 
+        }
         var getCart={
           UserId:this.user[0]._id,
           Status:"Cart",
@@ -643,8 +652,9 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
 
                    this.cartService.AddCart(addCart).subscribe((res)=>{
                      this.cartItems=res as Cart[];
+                     this.getCartAll();
                    })
-                   this.getCartAll();
+
                  });
         }
       }

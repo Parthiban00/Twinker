@@ -1,6 +1,11 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="primary" no-border>
+    <ion-buttons slot="start">
+      <ion-button  (click)="CancelModel()">
+        <ion-icon name="arrow-back-outline"></ion-icon>
 
+        </ion-button>
+        </ion-buttons>
     <ion-title style="font-family: lato;">
       Offers
     </ion-title>
@@ -27,8 +32,10 @@
         <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
         <!-- <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p> -->
         <p  style="font-size: 12px;margin-top: 0px;">Code:&nbsp;&nbsp;{{item.Code}}</p>
-        <ion-button (click)="CopyCode(item.Code)" color="success" style="--border-radius:0px !important;position: absolute;right: 10px;bottom: 15px;" slot="end">copy code</ion-button>
+         <!-- <ion-button (click)="CopyCode(item.Code)" color="success" style="--border-radius:0px !important;position: absolute;right: 10px;bottom: 15px;size: 10px;" slot="end">copy code</ion-button> -->
+         <ion-button (click)="CopyCode(item.Code)" style="--border-radius:0px;" color="success" size="small">Copy Code</ion-button>
       </ion-label>
+
     </ion-item>
 
   </ion-card>

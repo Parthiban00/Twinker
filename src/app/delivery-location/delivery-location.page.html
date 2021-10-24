@@ -1,45 +1,72 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar  no-border>
-      <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-      </ion-buttons>
-    <ion-title style="font-family: lato;">
-      SetUp Your Location
-    </ion-title>
-     <ion-buttons slot="end">
-      <ion-button >
-      <ion-icon name="home"></ion-icon>
-      </ion-button>
-          </ion-buttons>
+  <ion-toolbar color="primary">
+    <ion-searchbar [(ngModel)]="autocomplete.input" show-cancel="true" (ionChange)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
   </ion-toolbar>
+  <ion-list [hidden]="autocompleteItems.length == 0">
+    <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
+      {{ item.description }}
+    </ion-item>
+  </ion-list>
+
+  <ion-row >
+
+    <ion-col  >
+      <ion-button style="width: 100%;" (click)="loadMap()" color="primary">
+        <ion-icon slot="start" name="locate"></ion-icon>
+          Pick My Location
+        </ion-button>
+    </ion-col>
+  </ion-row>
 </ion-header>
 
 
 
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
+  <!-- <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-fab-button (click)="ShowCords()" ion-fab color="tertiary">
+      <ion-icon name="information-circle-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab> -->
+  <div class="map-wrapper" style="height: 100%;">
+    <div id="map_center">
+      <ion-icon name="pin" size="large" color="danger"></ion-icon>
+    </div>
+  <!-- <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Draggable Marker</ion-title>
     </ion-toolbar>
-  </ion-header>
+  </ion-header> -->
   <!-- <input type="text" id="input-search" class="form-control" [(ngModel)]="address"  placeholder="Address"> -->
   <!-- <ion-item>
   <ion-label position="floating">Search Address</ion-label>
   <ion-input id="autocomplete" name="searchAddress" (keyup.enter)="initAutoComplete()" #searchAddress="ngModel"ngModel></ion-input>
 </ion-item> -->
-<p style="padding: 10px;color: red;">Note: Drag the Location Marker to Change Your Location</p>
-  <div #mapElement style="width: 100%;height: 400px;"  id="map"></div>
-
-  <ion-card>
+<!-- <p style="padding: 10px;color: red;">Note: Drag the Location Marker to Change Your Location</p> -->
+  <div #mapElement  style="height: 100%;"  id="map"></div>
+</div>
+  <!-- <ion-card>
   <ion-card-subtitle>Address:</ion-card-subtitle>
 
   <ion-card-content>{{formattedAddress}} </ion-card-content>
-  </ion-card>
+  </ion-card> -->
 
-  <ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current Location</ion-button>
-  <ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;--border-radius: 0px !important;" (click)="ApplyDeliveryDetails()">Apply</ion-button>
 
+
+<!-- <ion-button color="primary" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px;" (click)="setCurrentLocation();">Set Current Location</ion-button>
+  <ion-button color="success" style="width:calc(100% - 20px); margin-left: 10px;--border-radius: 0px !important;" (click)="ApplyDeliveryDetails()">Apply</ion-button> -->
 
 </ion-content>
+ <ion-footer >
+  <ion-toolbar >
 
+<div >
+    <ion-text class="title">{{formattedAddress}}</ion-text>
+
+  </div>
+
+
+    <ion-button  slot="end"  (click)="ApplyDeliveryDetails()" >Save</ion-button>
+  </ion-toolbar>
+
+</ion-footer>

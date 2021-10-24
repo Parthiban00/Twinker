@@ -175,7 +175,7 @@ this.network.onDisconnect().subscribe(() => {
       () => {
 
       },
-      error => this.presentAlertConfirm()
+      error => navigator["app"].exitApp()
     );
 
   }

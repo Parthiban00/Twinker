@@ -81,49 +81,9 @@
 
 
 
-    <div class="ad-slides">
-
-      <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
-         <ion-slide style="padding:0px;width: fit-content;"  *ngFor="let product of productDetails;let i=index">
-           <ion-card *ngIf="product.Offer && product.AvailableStatus">
-<div class="offer">TRENDING</div>
-<div class="offer-content">
-<p style="color: white; margin-top: 5px; font-size: small;">{{product.ProductName}}</p>
-<p style="color: white;margin-top:-10px ;"> Rs.&nbsp;{{product.OfferPrice}}&nbsp;Only</p>
-<ion-button color="danger" (click)="IncreaseItemOffer(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add +</ion-button>
-
-
-</div>
-             <img src="{{product.ImageUrl}}">
-           </ion-card>
-         </ion-slide >
 
 
 
-      </ion-slides>
-      </div>
-
- <div  class="navbar" *ngIf="isSearch">
-
-
-
-
-
-  <ion-segment  scrollable [(ngModel)]="menu" color="danger" (ionChange)="segmentChanged($event)">
-    <ion-segment-button *ngIf="!mainMenu.length">
-      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-    </ion-segment-button>
-    <ion-segment-button *ngIf="!mainMenu.length">
-      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
-    </ion-segment-button>
-
-    <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
-      {{menus.MenuName}}
-    </ion-segment-button>
-
-  </ion-segment>
-
-</div>
 
 </ion-header>
 
@@ -131,10 +91,68 @@
 
 
     <ion-content >
+      <div class="ad-slides">
+
+        <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
+           <ion-slide style="padding:0px;width: fit-content;"  *ngFor="let product of productDetails;let i=index">
+             <ion-card *ngIf="product.Offer && product.AvailableStatus">
+  <div class="offer">TRENDING</div>
+  <div class="offer-content">
+  <p style="color: white; margin-top: 5px; font-size: small;">{{product.ProductName}}</p>
+  <p style="color: white;margin-top:-10px ;"> Rs.&nbsp;{{product.OfferPrice}}&nbsp;Only</p>
+  <ion-button color="danger" (click)="IncreaseItemOffer(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add +</ion-button>
+
+
+  </div>
+               <img src="{{product.ImageUrl}}">
+             </ion-card>
+           </ion-slide >
 
 
 
+        </ion-slides>
+        </div>
+
+      <!-- <div class="table">
+        <img src="assets\shop_specs.png">
+        <div class="shop-specs">
+          <ion-grid>
+            <ion-row>
+              <ion-col size="4" size-sm>
+                Rating: 4.5
+              </ion-col>
+              <ion-col size="4" size-sm>
+                Taste: 4.5
+              </ion-col>
+              <ion-col size="4" size-sm>
+                <ion-icon name="time-sharp"></ion-icon>&nbsp;20-30 mins
+              </ion-col>
+
+            </ion-row>
+            </ion-grid>
+        </div>
+        </div> -->
       <div >
+        <!-- <div   class="navbar" *ngIf="isSearch"> -->
+
+
+
+          <ion-item-divider color="light" sticky>
+
+          <ion-segment  scrollable [(ngModel)]="menu" color="danger" (ionChange)="segmentChanged($event)">
+            <ion-segment-button *ngIf="!mainMenu.length">
+              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+            </ion-segment-button>
+            <ion-segment-button *ngIf="!mainMenu.length">
+              <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+            </ion-segment-button>
+
+            <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
+              {{menus.MenuName}}
+            </ion-segment-button>
+
+          </ion-segment>
+</ion-item-divider>
 
         <!-- <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
 

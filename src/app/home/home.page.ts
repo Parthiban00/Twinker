@@ -16,7 +16,9 @@ import { PopoverComponent } from '../popover/popover.component';
 import{PopoverTypesPage} from '../popover-types/popover-types.page';
 import { PopoverTypesPageRoutingModule } from '../popover-types/popover-types-routing.module';
 import { ViewportScroller } from '@angular/common';
+//import io from 'socket.io-client';
 
+//const socket=io("http://localhost:5000");
 
 
 @Component({
@@ -33,7 +35,9 @@ content:IonContent
 
 
   public list: Array<Object> = [];
-  searchedItem: any;
+  searchedItem=[];
+  //SortedArray=[];
+  searchedItem1:any;
 toastMsg="";
   searchHotel:any;
 getData:any;
@@ -82,7 +86,7 @@ skeleton=[
 
   ngOnInit(): void {
 
-
+// socket.emit('message',"He i am socker");
   }
 
   openSelect() {
@@ -95,7 +99,7 @@ skeleton=[
 
    // this.dismiss();
 
-
+   this.searchedItem=[];
     //this.present();
    const m=moment();
    console.log(m.toString());
@@ -159,7 +163,11 @@ this.restaurantService.GetCategory(getRest).subscribe((res)=>{
 
 
       this.restaurantDetails=res as Restaurant[];
-      this.searchedItem = res as Restaurant[];
+      this.searchedItem1 = res as Restaurant[];
+      //this.searchedItem = res as Restaurant[];
+     // var sortedArray: number[] = restaurantDetails.sort((n1,n2) => n1 - n2);
+
+
       this.dismiss();
 
       this.list=[];
@@ -175,11 +183,13 @@ this.restaurantService.GetCategory(getRest).subscribe((res)=>{
 
                 }
 
-
-
-
-
-
+               this.searchedItem1.sort((a, b) => {
+                  return a.Distance - b.Distance;
+              });
+              this.searchedItem1.forEach((e) => {
+                console.log(`${e.RestaurantName}  ${e.Distance}`);
+                this.searchedItem.push(e);
+            });
     });
 
 

@@ -108,6 +108,9 @@ type:String
     },
     CategoryId:{
       type:String
+    },
+    DeliveryTime:{
+      type:Number
     }
 
 

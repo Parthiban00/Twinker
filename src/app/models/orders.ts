@@ -36,7 +36,8 @@ DiscountDescription:string;
 DiscountCode:string;
 CreatedTime;
 Latitude:number;
-Longitude:number
+Longitude:number;
+DeliveryTime:number
 
  }
 

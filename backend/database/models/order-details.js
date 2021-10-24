@@ -116,6 +116,9 @@ type:Array
     },
     Longitude:{
       type:Number
+    },
+    DeliveryTime:{
+      type:Number
     }
 
 

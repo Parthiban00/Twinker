@@ -4,10 +4,10 @@
       <ion-menu-button color="primary"></ion-menu-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
-     {{category}}
+     Products
     </ion-title>
     <ion-buttons slot="end">
-<ion-button (click)="RedirectToHome()">
+<ion-button>
 <ion-icon  color="primary" name="home"></ion-icon>
 </ion-button>
     </ion-buttons>
@@ -17,70 +17,12 @@
 </ion-header>
 
 <ion-content>
-  <ion-row *ngIf="!products.length">
-    <ion-col *ngFor="let dummy of skeleton" style="padding: 0px;"  >
-      <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
-  <div class="product" >
-
-
-    <div style="height:150px;width: 160px;background-color: rgb(231, 231, 231);"></div>
-  <div class="menu">
-    <p style="font-weight: 400;width: 200px;"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></p>
-
-    <p style="margin-top: -10px;color: rgb(189, 189, 189);"><ion-skeleton-text animated style="width:80%"></ion-skeleton-text></p>
-
-    <div class="price">
-      <p><ion-skeleton-text animated style="width: 20%"></ion-skeleton-text></p>
-  </div>
-
-
-    </div>
-  </div>
-  </ion-col>
-  </ion-row>
-  <ion-row>
-
-  <ion-col style="padding: 0px;" *ngFor="let products of products;let i=index">
-<div class="product">
-  <div class="rest-name">{{products.RestaurantName}}</div>
-  <img src="{{products.ImageUrl}}">
-<div class="menu">
-  <p>{{products.ProductName}}</p>
-  <!-- <p style="margin-top: -15px;color: rgb(189, 189, 189);">[from Hotel vani]</p> -->
-  <p style="margin-top: -15px;color: rgb(189, 189, 189);">{{products.Description}}</p>
-
-  <div class="price">
-    <p>Rs.{{products.Price}}</p>
-</div>
-
-  <div class="qty-selector" *ngIf="products.AvailableStatus && products.ItemCount">
-  <ion-button fill="clear" (click)="DecreaseItem(i,products.MenuId,products.RestaurantId,products.RestaurantName);" >-</ion-button>
-<ion-label>{{products.ItemCount}}</ion-label>
-<ion-button fill="clear" (click)="IncreaseItem(i,products.MenuId,products.RestaurantId,products.RestaurantName)">+</ion-button>
-</div>
-
-<div  class="add-btn">
-  <ion-button color="danger" *ngIf="!products.ItemCount && products.AvailableStatus" (click)="IncreaseItem(i,products.MenuId,products.RestaurantId,products.RestaurantName)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add</ion-button>
-  </div>
-
-  <div  *ngIf="!products.AvailableStatus">
-    <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
-  </div>
-
-  </div>
-</div>
-</ion-col>
-
-  </ion-row>
+<ion-slides [options]="opts">
+  <ion-slide *ngFor="let menus of mainMenu">
+    <ion-button fill="clear">
+      {{menus.MenuName}}
+    </ion-button>
+  </ion-slide>
+</ion-slides>
 </ion-content>
-<ion-footer *ngIf="showCart.length">
-  <ion-toolbar (click)="ViewCart()">
-    <!-- <ion-title>4 Items</ion-title> -->
 
-    <ion-text class="title">{{showCart.length}} Items</ion-text>
-    <ion-text class="description">from {{restaurantName1}}</ion-text>
-
-
-    <ion-icon slot="end" name="cart"></ion-icon>
-  </ion-toolbar>
-</ion-footer>

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild ,ElementRef} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild ,ElementRef,NgZone} from '@angular/core';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ActivatedRoute } from '@angular/router';
@@ -23,12 +23,22 @@ export class ChangeLocationPage implements AfterViewInit {  public folder: strin
   lng;
 presentAddress;
 changedAddress;
+
+
+autocomplete: { input: string; };
+autocompleteItems: any[];
+GoogleAutocomplete: any;
+placeid: any;
   @ViewChild('mapElement', {static: false}) mapElement;
   public formattedAddress;
 
-  constructor(private activatedRoute: ActivatedRoute,public modalController: ModalController,private navParams:NavParams,private geolocation: Geolocation) {
+  constructor(private zone:NgZone,private activatedRoute: ActivatedRoute,public modalController: ModalController,private navParams:NavParams,private geolocation: Geolocation) {
 this.presentAddress=this.navParams.data;
 console.log('present address '+this.presentAddress.address);
+
+this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
+this.autocomplete = { input: '' };
+this.autocompleteItems = [];
    }
 
   ngOnInit() {
@@ -53,16 +63,17 @@ this.InitMap(this.presentAddress.lat,this.presentAddress.lon);
       center: myLatlng
     };
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapOptions);
-    this.marker = new google.maps.Marker({
-      position: myLatlng,
-      map: this.map,
-      draggable: true,
-      title: 'Drag me!'
+    this.map.addListener('tilesloaded', () => {
+      console.log('accuracy',this.map, this.map.center.lat());
+
+      this.lat = this.map.center.lat()
+      this.lng = this.map.center.lng()
+      this.getAddress(this.map.center.lat(), this.map.center.lng())
     });
-    this.geocodePosition(this.marker.getPosition());
-    google.maps.event.addListener(this.marker, 'dragend', () => {
-      this.geocodePosition(this.marker.getPosition());
-    });
+    // this.geocodePosition(this.marker.getPosition());
+    // google.maps.event.addListener(this.marker, 'dragend', () => {
+    //   this.geocodePosition(this.marker.getPosition());
+    // });
   }
 
   setCurrentLocation() {
@@ -94,13 +105,20 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
-          this.address = results[0].formatted_address;
+          //this.address = results[0].formatted_address;
+
           console.log("getAddress "+this.address);
-          this.changedAddress={
+           this.changedAddress={
+             lat:latitude,
+             lon:longitude,
+            address:this.address
+         }
+          this.presentAddress={
             lat:latitude,
             lon:longitude,
-            address:this.address
+            address:results[0].formatted_address,
           }
+          this.formattedAddress = results[0].formatted_address;
 
         } else {
           window.alert('No results found');
@@ -133,6 +151,25 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
   }
 
 
+  GetCoordFromPlaceId(){
+    this.geocoder.geocode({ placeId: this.placeid })
+    .then(({ results }) => {
+      // this.map.setZoom(11);
+       this.map.setCenter(results[0].geometry.location);
+      console.log(results[0].geometry.location);
+
+      // Set the position of the marker using the place ID and location.
+      // @ts-ignore TODO(jpoehnelt) This should be in @typings/googlemaps.
+      // marker.setPlace({
+      //   placeId: this.placeid,
+      //   location: results[0].geometry.location,
+      // });
+
+
+    })
+    .catch((e) => window.alert("Geocoder failed due to: " + e));
+
+  }
 
   ApplyDeliveryDetails(){
 
@@ -143,4 +180,34 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
         this.modalController.dismiss();
       }
 
+      // ----------------------------------------auto complete section---------------------
+      UpdateSearchResults(){
+        if (this.autocomplete.input == '') {
+          this.autocompleteItems = [];
+          return;
+        }
+        this.GoogleAutocomplete.getPlacePredictions({ input: this.autocomplete.input },
+        (predictions, status) => {
+          this.autocompleteItems = [];
+          this.zone.run(() => {
+            predictions.forEach((prediction) => {
+              this.autocompleteItems.push(prediction);
+            });
+          });
+        });
+      }
+
+      SelectSearchResult(item) {
+        ///WE CAN CONFIGURE MORE COMPLEX FUNCTIONS SUCH AS UPLOAD DATA TO FIRESTORE OR LINK IT TO SOMETHING
+       // alert(JSON.stringify(item))
+        this.placeid = item.place_id
+        this.GetCoordFromPlaceId();
+        this.autocompleteItems = [];
+        this.autocomplete.input = ''
+      }
+
+      ClearAutocomplete(){
+        this.autocompleteItems = []
+        this.autocomplete.input = ''
+      }
 }

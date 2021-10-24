@@ -56,6 +56,12 @@ const TaskSchema = new mongoose.Schema({
     },
     Offer:{
       type:Number
+    },
+    CreatedDate:{
+      type:String
+    },
+    CreatedTime:{
+      type:String
     }
 
 });

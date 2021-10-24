@@ -34,8 +34,10 @@ return this.webService.patch(`carts/${data.RestaurantId}/${data.MenuId}/${data.P
        }
 
    RemoveCart(data:any){
-    return this.webService.patch('carts',data);
+    return this.webService.patch('removecarts',data);
    }
+
+
 
    ItemCountZero(data:any){
      console.log("item count zero")
@@ -65,7 +67,7 @@ return this.webService.patch(`carts/${data.RestaurantId}/${data.MenuId}/${data.P
 
 
    UpdateCartPlaced(data:any){
-return this.webService.patch('carts',data);
+return this.webService.patch('removecarts',data);
    }
 
    GetRestaurant(data:any){

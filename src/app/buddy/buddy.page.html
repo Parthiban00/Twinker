@@ -1,0 +1,154 @@
+
+<ion-header class="ion-no-border">
+
+  <ion-toolbar  no-border>
+    <ion-buttons fill="clear" slot="start">
+    <ion-menu-button color="primary"></ion-menu-button>
+    </ion-buttons>
+
+  <ion-title >
+
+   Hey Buddy...
+  </ion-title>
+  <ion-buttons slot="end">
+<ion-button fill="clear">
+  <ion-button slot="end" class="icon-button" color="primary" >
+
+    <ion-icon name="home"></ion-icon>
+
+    </ion-button>
+<!-- <ion-icon color="primary" name="notifications"></ion-icon> -->
+</ion-button>
+
+  </ion-buttons>
+</ion-toolbar>
+<div class="buddy-header">
+<div >
+
+
+</div>
+</div>
+</ion-header>
+
+<ion-content>
+  <ion-card style="--border-radius:0px !important;">
+    <ion-card-title class="cart_title">
+      Just Tell Me... What U Need...
+    </ion-card-title>
+  <div>
+  <form  [formGroup]="MyForm">
+    <ion-card >
+<ion-item>
+  <ion-label>Category</ion-label>
+  <ion-select interface="popover"   (ionChange)="onChange(selectedValue)">
+    <ion-select-option  ></ion-select-option>
+
+  </ion-select>
+</ion-item>
+  <ion-item   >
+
+    <ion-label position="stacked" >Shop Name</ion-label>
+    <ion-input formControlName="shopname"   required   type="text" class="form-control" placeholder="xxxx store"></ion-input>
+  </ion-item>
+
+
+    <ion-item   >
+
+      <ion-label position="stacked">Shop Location</ion-label>
+      <ion-textarea formControlName="shoplocation"    required  placeholder="xxxx street or road"></ion-textarea>
+      <ion-button color="secondary" (click)="ChangeLocation()">Choose Location</ion-button>
+
+    </ion-item>
+
+<ion-item><ion-list>
+  <ion-radio-group value="upload" formControlName="inputtype"  (ionChange)="radioGroupChange($event)">
+    <ion-list-header>
+      <ion-label>Choose your input type</ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>Upload Image</ion-label>
+      <ion-radio slot="start" value="upload"></ion-radio>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Enter Mannualy</ion-label>
+      <ion-radio slot="start" value="manual"></ion-radio>
+    </ion-item>
+  </ion-radio-group>
+</ion-list>
+
+</ion-item>
+<ion-item *ngIf="uploadBtn">
+<div class="upload-div">
+  <ul>
+    <li>
+      Upload product or item image - or
+    </li>
+    <li>
+      Just write item name on paper and upload it
+    </li>
+  </ul>
+   <ion-button  (click)="selectImageSource()"  color="danger"><ion-icon lazy="true" slot="start" name="image"></ion-icon>Upload</ion-button>
+  <ion-button expand="full" style="display: none;">
+
+    <input type="file" #fileInput  (change)="uploadFile($event)"
+      accept="image/png, image/jpeg">
+  </ion-button>
+</div>
+
+</ion-item>
+<ion-list *ngIf="manualDiv">
+  <ion-item>
+  <ion-label position="stacked" >Item 1</ion-label>
+  <ion-input  required type="text" class="form-control" placeholder="Item Name"></ion-input>
+
+</ion-item>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-item>
+  <ion-label position="stacked" >Quantity</ion-label>
+  <ion-input  required type="number" class="form-control" placeholder="1"></ion-input>
+</ion-item>
+  </ion-col>
+
+  <ion-col>
+
+  <ion-label>Quantity Type</ion-label>
+  <ion-select interface="popover"   (ionChange)="onChange(selectedValue)">
+    <ion-select-option  ></ion-select-option>
+
+  </ion-select>
+
+  </ion-col>
+  </ion-row>
+  </ion-grid>
+
+  <div class="qty-selector" >
+    <ion-button color="danger" (click)="DecreaseCount(i)">-</ion-button>
+
+    <ion-button  color="success"  (click)="IncreaseCount(i)" >+</ion-button>
+
+          </div>
+</ion-list>
+
+
+
+</ion-card>
+
+
+ <div padding style="margin-top: 20px;">
+
+    <ion-button  type="submit" (click)="SubmitForm()" color="success" style="font-size: 14px;"    size="large"  expand="block">SUBMIT</ion-button>
+  </div>
+
+
+
+
+
+</form>
+</div>
+</ion-card>
+</ion-content>

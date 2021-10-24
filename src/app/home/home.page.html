@@ -8,9 +8,7 @@
       {{type}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="RedirectToHome()">
-        <ion-icon  color="primary" name="cart"></ion-icon>
-        </ion-button>
+
 <ion-button (click)="RedirectToHome()">
 <ion-icon  color="primary" name="home"></ion-icon>
 </ion-button>
@@ -192,7 +190,7 @@
 </div> -->
 
 
-<div class="ion-list" *ngIf="!searchedItem">
+<div class="ion-list" *ngIf="!searchedItem.length">
 
   <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
     <ion-list style="margin-top: -5px;" lines="none" *ngFor="let dummy of skeleton" >
@@ -235,7 +233,7 @@
     <div *ngFor="let item of searchedItem;let i=index">
     <ion-list style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
 
-<ion-card class="ion-card"  style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus,'close':!item.AvailableStatus}">
+<ion-card class="ion-card" style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus,'close':!item.AvailableStatus}">
     <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
 
       <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
@@ -253,6 +251,7 @@
 
   </ion-card>
     </ion-list>
+
   </div>
     </div>
 

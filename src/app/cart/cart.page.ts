@@ -100,7 +100,8 @@ location;
 applied:boolean;
 couponApplied:boolean;
   cartItemsAll:Cart[]=[];
-
+today1;
+time;
   placeOder:PlaceOrder[]=[];
 
    placeOrderArr=new Array;
@@ -112,8 +113,25 @@ couponApplied:boolean;
 
 
   ionViewWillEnter(){
+    // ---------------------------------------------------------------------getDate------------------------
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    let today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+
+     this.today1 = yyyy + '-' + mm + '-' + dd;
+// --------------------------------------------------------------------------get Date end----------------------
+// ----------------------------------------------------------------------------get Time-----------------------------
+var d = new Date(); // for now
+d.getHours(); // => 9
+d.getMinutes(); // =>  30
+d.getSeconds(); // => 51
+this.time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+// ----------------------------------------------------------------------------get Time end-----------------------------
+
+
 this.applied=false;
 this.coupon="";
 this.discount=0;
@@ -176,7 +194,7 @@ console.log("all coupons"+this.coupons[0]);
 if(this.cartItemsAll.length==0){
 //this.dismiss();
 
- this.cartEmpty();
+ //this.cartEmpty();
 }
 
 var restaurantCredential={
@@ -467,50 +485,20 @@ IncreaseCount(i:any){
   PlaceOrder(){
 
 
-    var d = new Date(); // for now
-d.getHours(); // => 9
-d.getMinutes(); // =>  30
-d.getSeconds(); // => 51
-var time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 
-//this.presentAlertConfirm1();
- //this.selectedLocation="Idaamelur";
+
+
 
     this.present();
 
     if(this.selectedLocation=="" || this.selectedLocation==undefined || this.selectedLocation==null){
       this.dismiss();
      this.presentAlertConfirm1();
+
     }
     else{
 
-    let today = new Date();
-var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
 
-var today1 = yyyy + '-' + mm + '-' + dd;
-
-  //   var orderId1="ORD_ID-";
-  //   let orderId2:number=0;
-
-  //   let ExistingOrderId:string= this.allOrders[this.allOrders.length-1].OrderId;
-  //   if(ExistingOrderId==undefined || ExistingOrderId==null || ExistingOrderId==" "){
-  //     ExistingOrderId="ORD_ID-0"
-  //   }
-  //   else{
-  //   var subs=ExistingOrderId.split("-");
-  // let idIncrement:number=parseInt(subs[1])+1;
-
-
-  //   var orderId=orderId1+idIncrement;
-  //   }
-
-
-
-
-
-    //var date=this.currentYear+'-'+(this.currentMonth+1)+'-'+this.currentDay;
 
 
     this.placeOrderArr=[];
@@ -520,20 +508,21 @@ var today1 = yyyy + '-' + mm + '-' + dd;
    var updateCartPlaced={
      Status:'Placed',
      ActiveYn:true,
-     DeleteYn:false
+     DeleteYn:false,
+     UserId:this.user[0]._id,
 
     }
 
     for(var i=0;i<this.cartItemsAll.length;i++){
 
   this.placeOrderArr.push( this.cartItemsAll[i]);
-  //this.placeOrderArr.push(this.cartItemsAll[i]);
+
     }
 
-    //console.log(this.placeOrderArr);
+
 
    var billDetials={
-    // OrderId:orderId,
+
 
      UserId:this.user[0]._id,
      UserName:this.user[0].FirstName,
@@ -546,7 +535,7 @@ var today1 = yyyy + '-' + mm + '-' + dd;
      ActiveYn:true,
      DeleteYn:false,
      Status:'Placed',
-     CreatedDate:today1,
+     CreatedDate:this.today1,
      CreatedBy:this.user[0]._id,
      ItemCount:this.cartItemsAll.length,
      MobileNo:this.user[0].MobileNo,
@@ -554,12 +543,13 @@ var today1 = yyyy + '-' + mm + '-' + dd;
      ItemDetails:this.placeOrderArr,
      DeliveryPartnerStatus:"Placed by Customer",
      ActualAmount:parseFloat(this.AmountWithCharges).toFixed(2),
-CreatedTime:time,
+CreatedTime:this.time,
 Discount:this.discount,
 DiscountDescritpion:this.discountDescription,
 DiscountCode:this.discountCode,
 Latitude:this.location.lat,
-Longitude:this.location.lon
+Longitude:this.location.lon,
+DeliveryTime:this.restaurantDetails[0].DeliveryTime
 
 
    }
@@ -574,10 +564,6 @@ Longitude:this.location.lon
       this.cartService.UpdateCartPlaced(updateCartPlaced).subscribe((res)=>{
 
        })
-
-  //    // this.openDialog();
-  //   //this.reloadCurrentRoute();
-  //this.presentToast();
   this.dismiss();
   this.presentAlertConfirm();
 
@@ -852,7 +838,7 @@ this.presentActionSheet();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
      // header: 'Successfull',
-      message: '<strong>Order Placed...</strong><img  src="assets/order_placed.gif">',
+      message: '<img  src="assets/order_placedNew.gif">',
       buttons: [
        {
           text: 'Okay',
@@ -931,7 +917,7 @@ this.presentActionSheet();
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Ooops!',
-      message: '<small>Make sure gps location on your device. We cannot take your delivery location automatically. kindly <strong>Click Okay</strong> to try again.</small>',
+      message: '<small>kindly Set Your Delivery Location...</small>',
       buttons: [
 
        {
@@ -939,8 +925,9 @@ this.presentActionSheet();
           text: 'Okay',
           handler: () => {
             console.log('Confirm Okay');
+            this.ChangeLocation();
+         // this.ionViewWillEnter();
 
-          this.ionViewWillEnter();
 
           }
 
@@ -1236,6 +1223,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
           // this.couponPresent=false;
           //    this.couponApplied=false;
           //    this.applied=false;
+          this.couponPresent=false;
           this.presentToast();
         }
 
@@ -1256,7 +1244,8 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
 
       }
       else if(this.offers[i].Code==this.coupon && this.offers[i].CodeDescription=="Minimum Offfer All"){
-        if(this.offers[i].MinimumAmount==this.AmountWithCharges){
+
+        if(this.offers[i].MinimumAmount<=this.AmountWithCharges){
 
           console.log("get user in apply copon entered");
           discountPrice=this.AmountWithCharges-(this.AmountWithCharges*(this.offers[i].Discount/100));
@@ -1270,6 +1259,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
              this.couponApplied=true;
         }
         else{
+          this.couponPresent=false;
           this.presentToast();
         }
 

@@ -28,6 +28,7 @@ export default class Restaurant{
      ImageUrl:String;
      Category:string;
      CategoryId:string;
+     DeliveryTime:number;
 
 
  }
