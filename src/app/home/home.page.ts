@@ -16,6 +16,7 @@ import { PopoverComponent } from '../popover/popover.component';
 import{PopoverTypesPage} from '../popover-types/popover-types.page';
 import { PopoverTypesPageRoutingModule } from '../popover-types/popover-types-routing.module';
 import { ViewportScroller } from '@angular/common';
+import {StatusBar} from "@capacitor/status-bar"
 //import io from 'socket.io-client';
 
 //const socket=io("http://localhost:5000");
@@ -32,7 +33,7 @@ export class HomePage implements OnInit {
 @ViewChild(IonContent,{static:true})
 content:IonContent
 
-
+colorCodes:any[]=[{name:"red",code:"fb5b5b"},{name:"green",code:""}]
 
   public list: Array<Object> = [];
   searchedItem=[];
@@ -96,7 +97,7 @@ skeleton=[
   ionViewWillEnter(){
     this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-
+StatusBar.setBackgroundColor({color:'fb5b5b'});
    // this.dismiss();
 
    this.searchedItem=[];

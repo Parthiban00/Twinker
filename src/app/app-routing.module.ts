@@ -162,6 +162,10 @@ const routes: Routes = [
     loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
   },
   {
+    path: 'products',
+    loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
+  },
+  {
     path: 'payment/:totalAmount',
     loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   },

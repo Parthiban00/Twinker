@@ -17,6 +17,8 @@ import { base64StringToBlob } from 'blob-util';
 })
 export class BuddyPage implements OnInit {
 MyForm : FormGroup;
+values=[];
+
 @ViewChild('fileInput',{static:false})fileInput:ElementRef;
   constructor( private actionSheetCtrl:ActionSheetController ,private plt:Platform ,private fb:FormBuilder, public modalController: ModalController,private router:Router) {
 
@@ -30,7 +32,7 @@ MyForm : FormGroup;
 
   ngOnInit() {
   }
-
+  item1:string;
   user;
   time;
   today1;
@@ -169,5 +171,15 @@ console.log("blobData "+blob);
     return new Blob([ab], { type: 'image/jpeg' });
 }
 
+PushItem(){
+console.log("push item "+this.MyForm);
 
+}
+
+removeValue(i){
+  this.values.splice(i,1);
+}
+addValue(){
+  this.values.push({value:""});
+}
 }

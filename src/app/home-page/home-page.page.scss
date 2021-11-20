@@ -321,3 +321,42 @@ ion-col{
             transform: scale3d(1, 1, 1);
   }
 }
+
+
+.slide-items1{
+
+  ion-slides{
+
+
+    ion-slide{
+
+    //  margin-top: -20px;
+
+
+      ion-card{
+
+        position: relative;
+        width:150px;
+        height: 150px;
+        box-shadow: none;
+        border-radius: 0px !important;
+        justify-content: center;
+        align-items: center;
+
+
+
+
+
+
+        img{
+          object-fit: cover;
+          width: 150px;
+          height: 150px;
+         // transform:scale(1.1,1.1) rotate(1deg);
+
+         // opacity: 0.2;
+        }
+      }
+    }
+  }
+}

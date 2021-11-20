@@ -3,6 +3,9 @@ html {
 }
 
 ion-header{
+  // ion-toolbar{
+  //   height: 100px;
+  // }
   .banner{
     position: relative;
     margin-top: 20px;
@@ -131,6 +134,7 @@ ion-footer{
 ion-toolbar{
   --background:#f7714a;
   --color:white;
+
 }
   .title{
       display: flex;
@@ -340,17 +344,19 @@ letter-spacing: 1.5;
 .slide-items{
   margin-top: -20px;
 }
+
 .type{
   width: 100%;
   height: 30px;
  // background-color: gainsboro;
- padding-left: 10px;
+ //padding-left: 10px;
  position: relative;
  justify-content: center;
  align-items: center;
+
 p{
   position: absolute;
-  left: 20px;
+  left: 10px;
   top:5px;
   font-weight: 500;
 
@@ -362,5 +368,6 @@ p{
   width: 5px;
   height: 30px;
   background-color: tomato;
+
   }
 

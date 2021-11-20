@@ -41,6 +41,7 @@ export class ProductPagePage implements OnInit {
   searchMenu;
   searchedItem: any;
   user:any;
+  ViewType;
   skeleton=[
 
     {},
@@ -177,7 +178,12 @@ segmentChanged(ev: any) {
   this.products.length=0;
   console.log('Segment changed', ev.detail.value);
 //console.log(this.productDetails[1].MenuId);
-
+for(var j=0;j<this.mainMenu.length;j++){
+if(ev.detail.value==this.mainMenu[j]._id){
+  this.ViewType=this.mainMenu[j].ViewType;
+  console.log("view type "+this.ViewType)
+}
+}
    for(var k=0;k<this.productDetails.length;k++){
 
     if(ev.detail.value==this.productDetails[k].MenuId ){

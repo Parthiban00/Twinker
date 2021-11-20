@@ -349,7 +349,7 @@
 </ion-col>
 </ion-row>
 
-<ion-row>
+<ion-row *ngIf="ViewType=='Grid View'">
   <ion-col style="padding: 0px;" *ngFor="let product of products;let i=index">
     <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
 <div class="product" >
@@ -381,6 +381,60 @@
 
   </ion-row>
 
+
+  <div class="ion-list" *ngIf="ViewType=='List View'">
+
+    <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
+      <div >
+      <ion-list style="margin-top: -5px;" lines="none"  *ngFor="let product of products;let i=index">
+
+  <ion-card class="ion-card" style="border-radius:0px;" >
+      <ion-item >
+
+        <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+
+          <img src="assets\Grill.jpg">
+
+            <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" >Add</ion-button>
+            <div class="qty-selector-new" *ngIf="product.AvailableStatus && product.ItemCount">
+              <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+            <ion-label>{{product.ItemCount}}</ion-label>
+            <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+            </div>
+
+        </ion-thumbnail>
+
+        <ion-thumbnail *ngIf="!product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+
+
+
+            <ion-button *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" class="img-not-present">Add</ion-button>
+            <div class="qty-selector-new-notimage" *ngIf="product.AvailableStatus && product.ItemCount">
+              <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+            <ion-label>{{product.ItemCount}}</ion-label>
+            <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+            </div>
+
+        </ion-thumbnail>
+        <ion-label class="hotel-card">
+          <h4 style="font-weight: 400;width: 200px;">{{product.ProductName}}</h4>
+          <p  style="margin-top: -15px;font-size: 12px;">{{product.Description}}</p>
+          <div class="price">
+            <p>Rs.{{product.Price}}</p>
+        </div>
+        <div  *ngIf="!product.AvailableStatus">
+          <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
+        </div>
+          <!-- <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+          <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p> -->
+        </ion-label>
+      </ion-item>
+
+    </ion-card>
+      </ion-list>
+
+    </div>
+    </div>
   <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
     <ion-fab-button  >
       <ion-icon name="filter"></ion-icon>

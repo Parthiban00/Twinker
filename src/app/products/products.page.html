@@ -17,12 +17,88 @@
 </ion-header>
 
 <ion-content>
-<ion-slides [options]="opts">
+<!-- <ion-slides [options]="opts">
   <ion-slide *ngFor="let menus of mainMenu">
     <ion-button fill="clear">
       {{menus.MenuName}}
     </ion-button>
   </ion-slide>
-</ion-slides>
+</ion-slides> -->
+<div class="ion-list" >
+
+  <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
+    <div>
+    <ion-list style="margin-top: -5px;" lines="none"  >
+
+<ion-card class="ion-card" style="border-radius:0px;" >
+    <ion-item >
+
+      <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+
+        <img src="assets\Grill.jpg">
+
+          <!-- <ion-button class="img-present">Add</ion-button> -->
+          <div class="qty-selector">
+            <ion-button fill="clear"  >-</ion-button>
+          <ion-label>0</ion-label>
+          <ion-button fill="clear"  >+</ion-button>
+          </div>
+
+      </ion-thumbnail>
+
+      <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;display: none;" slot="end">
+
+
+
+          <ion-button class="img-not-present">Add</ion-button>
+
+      </ion-thumbnail>
+      <ion-label class="hotel-card">
+        <h4 style="font-weight: 400;width: 200px;">Grill Full</h4>
+        <p  style="margin-top: -15px;font-size: 12px;">Full Grill Chicken</p>
+         <p  style="margin-top: -15px;font-size: 12px;">Rs. 360</p>
+        <!-- <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+        <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p> -->
+      </ion-label>
+    </ion-item>
+
+  </ion-card>
+    </ion-list>
+
+  </div>
+  <div>
+    <ion-list style="margin-top: -5px;" lines="none"  >
+
+      <ion-card class="ion-card" style="border-radius:0px;" >
+          <ion-item >
+
+            <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+
+              <img src="assets\Grill.jpg">
+
+                <ion-button class="img-present">Add</ion-button>
+
+            </ion-thumbnail>
+
+            <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;display: none;" slot="end">
+
+
+
+                <ion-button class="img-not-present">Add</ion-button>
+
+            </ion-thumbnail>
+            <ion-label class="hotel-card">
+              <h4 style="font-weight: 400;width: 200px;">Grill Full</h4>
+              <p  style="margin-top: -15px;font-size: 12px;">Full Grill Chicken</p>
+               <p  style="margin-top: -15px;font-size: 12px;">Rs. 360</p>
+              <!-- <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+              <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p> -->
+            </ion-label>
+          </ion-item>
+
+        </ion-card>
+          </ion-list>
+  </div>
+    </div>
 </ion-content>
 

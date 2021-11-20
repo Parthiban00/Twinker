@@ -496,6 +496,7 @@ IncreaseCount(i:any){
      this.presentAlertConfirm1();
 
     }
+
     else{
 
 
@@ -944,7 +945,10 @@ this.presentActionSheet();
 
 
   async presentAlertConfirmtToPlace() {
-
+     if(!this.restaurantDetails[0].AvailableStatus){
+      this.presentAlertConfirm3();
+    }
+    else{
     const alert = await this.alertController.create({
       cssClass: 'my-custom-class',
       header: 'Payment Type',
@@ -988,6 +992,7 @@ this.presentActionSheet();
 
     await alert.present();
   }
+  }
 
 
   async presentAlertConfirm2() {
@@ -1019,6 +1024,35 @@ this.presentActionSheet();
     await alert.present();
   }
 
+
+  async presentAlertConfirm3() {
+    //this.dismiss();
+        const alert = await this.alertController.create({
+          cssClass: 'my-custom-class',
+          header: 'Ooops!',
+          message: '<small>Sorry, Currently this restaurant is unavailable. Kindly try when this is available. Thanks</small>',
+          buttons: [
+
+           {
+
+              text: 'Okay',
+              handler: () => {
+                console.log('Confirm Okay');
+
+              this.ionViewWillEnter();
+
+              }
+
+
+
+            }
+
+
+          ]
+        });
+
+        await alert.present();
+      }
 
 
   GetSuggestions(restaurantId:String){

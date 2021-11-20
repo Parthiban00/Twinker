@@ -99,39 +99,18 @@
 
 </ion-item>
 <ion-list *ngIf="manualDiv">
-  <ion-item>
+  <ion-item *ngFor="let value of values;let i=index">
   <ion-label position="stacked" >Item 1</ion-label>
-  <ion-input  required type="text" class="form-control" placeholder="Item Name"></ion-input>
-
+  <ion-input (keyup)="PushItem()"  [(ngModel)]="value.value" type="text" class="form-control" placeholder="Item Name"></ion-input>
+<ion-button (click)="removeValue(i)">Remove</ion-button>
 </ion-item>
-
+<ion-button (click)="addValue()">Add</ion-button>
   <ion-grid>
     <ion-row>
-      <ion-col>
-        <ion-item>
-  <ion-label position="stacked" >Quantity</ion-label>
-  <ion-input  required type="number" class="form-control" placeholder="1"></ion-input>
-</ion-item>
-  </ion-col>
 
-  <ion-col>
-
-  <ion-label>Quantity Type</ion-label>
-  <ion-select interface="popover"   (ionChange)="onChange(selectedValue)">
-    <ion-select-option  ></ion-select-option>
-
-  </ion-select>
-
-  </ion-col>
   </ion-row>
   </ion-grid>
 
-  <div class="qty-selector" >
-    <ion-button color="danger" (click)="DecreaseCount(i)">-</ion-button>
-
-    <ion-button  color="success"  (click)="IncreaseCount(i)" >+</ion-button>
-
-          </div>
 </ion-list>
 
 

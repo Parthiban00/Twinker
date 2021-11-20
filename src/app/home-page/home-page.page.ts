@@ -323,5 +323,9 @@ this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
                 })
               })
   }
-
+  GoToBuddy(){
+    console.log("go to buddy");
+  //  this.router.navigate(['buddy']);
+  this.router.navigate(['products']);
+  }
 }

@@ -108,9 +108,9 @@
       <P>TWINKER BUDDY (Soon)</P>
         </div>
         </div>
-        <div class="slide-items" >
+        <div class="slide-items1" >
 
-          <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
+          <!-- <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
             <ion-slide *ngFor="let buddy of buddySlide" style="padding:0px;width: fit-content;width: 100%;">
               <ion-card style="height: 120px;border-radius:0px;width: 100%;">
 
@@ -122,23 +122,43 @@
 
               </ion-card>
            </ion-slide>
-           <!-- <ion-slide style="padding:0px;width: fit-content;width: 100%" >
-            <ion-card style="height: 120px;border-radius:0px;width: 100%">
+
+
+
+
+
+         </ion-slides> -->
+
+
+
+          <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+            <ion-slide (click)="GoToBuddy();" style="padding:0px;width: fit-content;">
+              <ion-card  style="height: 150px;border-radius:0px">
+
+               <div class="menu-name">
+                <!-- {{list.Category}} -->
+                 </div>
+
+                <img style="height: 150px;width: 150px;" src="/assets/ASMA_NEW.jpg">
+
+              </ion-card>
+           </ion-slide>
+
+           <ion-slide style="padding:0px;width: fit-content;">
+            <ion-card  style="height: 150px;border-radius:0px">
 
              <div class="menu-name">
-
+              <!-- {{list.Category}} -->
                </div>
 
-              <img style="height: 120px;width: 100%;" src="/assets/diwali.jpg">
+              <img style="height: 150px;width: 150px;" src="/assets/SEEMAI_KOORAI.jpg">
 
             </ion-card>
-         </ion-slide> -->
-
-
-
+         </ion-slide>
 
          </ion-slides>
         </div>
+
         <!-- <div class="ion-list" >
           <div class="type" >
             <div class="start"></div>

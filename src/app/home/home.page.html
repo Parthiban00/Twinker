@@ -21,7 +21,7 @@
 
 
 
-<div class="ad-slides">
+
 
 <div style="position: relative;">
       <div class="search">
@@ -36,7 +36,7 @@
     </div>
     </div>
 
-      </div>
+
 
 
 </ion-header>
@@ -45,11 +45,7 @@
 
 
 
-<ion-content [fullscreen]="true" [scrollEvents]="true" delegate-handle="content">
-
-
-
-
+<ion-content [fullscreen]="true"  [scrollEvents]="true" delegate-handle="content">
   <div class="slide-items" >
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
@@ -69,6 +65,46 @@
 
    </ion-slides>
   </div>
+  <ion-item-group *ngFor="let category of shopCategory;let k=index" id={{category._id}}>
+    <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->
+      <ion-item-divider sticky>
+      <div class="type">
+        <div class="start"></div>
+    <P>{{category.Category}}</P>
+      </div>
+
+
+      </ion-item-divider>
+      <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
+        <div *ngFor="let item of searchedItem;let i=index">
+        <ion-list style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
+
+    <ion-card class="ion-card" style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus,'close':!item.AvailableStatus}">
+        <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
+
+          <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
+
+            <img  src="{{item.ImageUrl}}">
+          </ion-thumbnail>
+          <ion-label class="hotel-card">
+            <h4 style="font-weight: 400;width: 200px;">{{item.RestaurantName}}</h4>
+            <p  style="margin-top: -15px;font-size: 12px;">{{item.RestaurantType}}</p>
+            <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p>
+            <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+            <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
+          </ion-label>
+        </ion-item>
+
+      </ion-card>
+        </ion-list>
+
+      </div>
+        <!-- </div> -->
+    </ion-item-group>
+
+
+
+
   <div class="slide-items" *ngIf="!category" >
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
@@ -224,48 +260,18 @@
     </div>
 
 
-<div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}>
-  <div class="type" >
-    <div class="start"></div>
-<P>{{category.Category}}</P>
-  </div>
-  <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
-    <div *ngFor="let item of searchedItem;let i=index">
-    <ion-list style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
-
-<ion-card class="ion-card" style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus,'close':!item.AvailableStatus}">
-    <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
-
-      <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
-
-        <img  src="{{item.ImageUrl}}">
-      </ion-thumbnail>
-      <ion-label class="hotel-card">
-        <h4 style="font-weight: 400;width: 200px;">{{item.RestaurantName}}</h4><div class="offer-circle"><p>10%</p></div>
-        <p  style="margin-top: -15px;font-size: 12px;">{{item.RestaurantType}}</p>
-        <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p>
-        <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
-        <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p>
-      </ion-label>
-    </ion-item>
-
-  </ion-card>
-    </ion-list>
-
-  </div>
-    </div>
 
     <!-- <p #target>Secret message!</p> -->
 
   </ion-content>
 
-  <!-- <div style="margin-bottom:20px;width: 100%; align-items: center;
+  <div style="margin-bottom:20px;width: 100%; align-items: center;
   justify-content: center;display: flex;">
 
   <ion-button style="--border-radius: 20px;" color="danger"  (click)="presentPopover($event)">Types</ion-button>
 
 
-</div> -->
+</div>
   <ion-footer *ngIf="cartItemsAll.length">
     <ion-toolbar (click)="viewCart()">
 

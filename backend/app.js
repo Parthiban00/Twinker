@@ -24,6 +24,7 @@ const MainCategory=require('./database/models/main-category');
 const AddSlide = require('./database/models/add-slide.js');
 const BuddySlide = require('./database/models/buddy-slide.js');
 const BookingSlide = require('./database/models/bokking-slide.js');
+const DeliveryCharge = require('./database/models/delivery-charges');
 // const server=require('http').createServer(app);
 
 app.use(express.json());
@@ -340,7 +341,7 @@ console.log(today1);
         app.post('/restaurants/:restId/mainmenus',(req,res)=>{
 
 
-            (new MainMenu ({'RestaurantId': req.params.restId,'MenuName':req.body.MenuName,'AvailableTime':req.body.AvailableTime,'AvailableStatus':req.body.AvailableStatus,'AvailableDays':req.body.AvailableDays,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn}))
+            (new MainMenu ({'RestaurantId': req.params.restId,'MenuName':req.body.MenuName,'AvailableTime':req.body.AvailableTime,'AvailableStatus':req.body.AvailableStatus,'AvailableDays':req.body.AvailableDays,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'ViewType':req.body.ViewType}))
             .save()
             .then((mainmenus)=> res.send(mainmenus))
             .catch((error)=>console.log(error));
@@ -428,9 +429,9 @@ console.log(today1);
 
                 app.patch('/carts', (req,res)=>{
                   if(req.body.Status=="Placed"){
-                    Cart.updateMany({Status: 'Cart',ActiveYn:true,DeleteYn:false,UserId:orderPlacedUserId}, {$set: {Status:req.body.Status,ActiveYn:req.body.ActiveYn,DeleteYn:req.body.DeleteYn}})
-                    .then((carts)=> res.send(carts))
-                    .catch((error)=>console.log(error));
+                     Cart.updateMany({Status: 'Cart',ActiveYn:true,DeleteYn:false,UserId:orderPlacedUserId}, {$set: {Status:req.body.Status,ActiveYn:req.body.ActiveYn,DeleteYn:req.body.DeleteYn}})
+                     .then((carts)=> res.send(carts))
+                     .catch((error)=>console.log(error));
                   }
                   else if(req.body.Status=="Removed"){
                     Cart.updateMany({Status: 'Cart',ActiveYn:true,DeleteYn:false,UserId:cartRemovedUserId}, {$set: {Status:req.body.Status,ActiveYn:req.body.ActiveYn,DeleteYn:req.body.DeleteYn}})
@@ -764,7 +765,7 @@ updateMainMenu(req.params.restId,req.params.menuId,req.body.availableStatus);
                                                                                                               });
                                                                                                               app.get('/categories/:type/:activeYn',(req,res)=>{
 
-                                                                                                                Category.find({Type: req.params.type,ActiveYn:req.params.activeYn,AvailableStatus:true})
+                                                                                                                Category.find({Type: req.params.type,ActiveYn:false,AvailableStatus:true})
                                                                                                                 .then(categories=>res.send(categories))
                                                                                                                 .catch((error)=>console.log(error));
                                                                                                             });
@@ -867,6 +868,15 @@ app.post('/bookingslides',(req,res)=>{
  (new BookingSlide ({'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn,'Type':req.body.Type,'ImageUrl':req.body.ImageUrl}))
  .save()
  .then((bookingslides)=> res.send(bookingslides))
+ .catch((error)=>console.log(error));
+
+ });
+ app.post('/deliverycharges',(req,res)=>{
+
+  console.log("save deliverycharges");
+ (new DeliveryCharge ({'Category':req.body.Category,'MinimumDeliveryCharge':req.body.MinimumDeliveryCharge,'PerKm':req.body.PerKm,'ActiveYn':req.body.ActiveYn,'DeleteYn':req.body.DeleteYn}))
+ .save()
+ .then((deliverycharges)=> res.send(deliverycharges))
  .catch((error)=>console.log(error));
 
  });

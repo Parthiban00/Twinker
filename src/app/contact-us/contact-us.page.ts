@@ -21,7 +21,9 @@ export class ContactUsPage implements OnInit {
      }
 
      WhatsApp(MobileNo:string){
-      this.url="https://wa.me/"+this.countryCode+this.whatsappnumber+"?text=Hey Twinker";
+
+      this.url="https://wa.me/"+this.countryCode+MobileNo+"?text=Hey Twinker";
+      window.open(this.url);
      }
 
      NavigateDirection(){

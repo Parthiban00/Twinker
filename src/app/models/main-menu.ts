@@ -7,4 +7,5 @@ export default class MainMenu{
      AvailableDays: string="";
      ActiveYn: boolean=true;
      DeleteYn: boolean=false;
+     ViewType:string;
  }
