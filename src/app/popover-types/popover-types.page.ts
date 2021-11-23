@@ -14,11 +14,14 @@ list:any=[
 ]
 newArrayDataOfOjbect;
 category=[];
+categoryFromParant=[];
 
   constructor(private navParams:NavParams,public popoverController: PopoverController) {
     this.category=Object.values(this.navParams.data)
+    console.log(typeof(this.category))
+    console.log(this.category.length);
     // this.newArrayDataOfOjbect = Object.values(this.category1);
-   // console.log("converted array"+this.newArrayDataOfOjbect);
+    //console.log("converted array"+this.newArrayDataOfOjbect);
   }
 
   ngOnInit() {

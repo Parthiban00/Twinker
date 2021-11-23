@@ -1,19 +1,33 @@
 
  <ion-header class="ion-no-border">
-  <ion-toolbar  no-border>
-      <ion-buttons slot="start">
-      <ion-menu-button color="primary"></ion-menu-button>
+  <ion-toolbar color="primary" no-border>
+       <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
       </ion-buttons>
-    <ion-title style="font-family: lato;">
+    <!-- <ion-title style="font-family: lato;">
       {{type}}
     </ion-title>
     <ion-buttons slot="end">
 
 <ion-button (click)="RedirectToHome()">
-<ion-icon  color="primary" name="home"></ion-icon>
+<ion-icon name="home"></ion-icon>
 </ion-button>
 
-    </ion-buttons>
+    </ion-buttons> -->
+
+
+<div style="position: relative;">
+  <div class="search" style="margin-top:12px">
+
+    <ion-searchbar id="custom-search" style="height:35px;font-size:13px" debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)" placeholder="Search Restaurant"></ion-searchbar>
+
+    <div class="veg" *ngIf="type=='Food'">
+
+      <ion-label>Veg</ion-label>
+          <ion-toggle class="veg-only toggle" [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)"></ion-toggle>
+        </div>
+</div>
+</div>
   </ion-toolbar>
 
 
@@ -23,18 +37,6 @@
 
 
 
-<div style="position: relative;">
-      <div class="search">
-
-        <ion-searchbar   debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
-
-        <div class="veg" *ngIf="type=='Food'">
-
-          <ion-label>Veg</ion-label>
-              <ion-toggle class="veg-only" color="secondary" [(ngModel)]="isToggle" (ionChange)="ToggleEvent($event)"></ion-toggle>
-            </div>
-    </div>
-    </div>
 
 
 
@@ -67,16 +69,19 @@
   </div>
   <ion-item-group *ngFor="let category of shopCategory;let k=index" id={{category._id}}>
     <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->
-      <ion-item-divider sticky>
-      <div class="type">
-        <div class="start"></div>
-    <P>{{category.Category}}</P>
+
+      <ion-item-divider sticky >
+         <div class="start"></div>
+      <div class="type" id={{category._id}}>
+
+    <P >{{category.Category}}</P>
       </div>
 
 
       </ion-item-divider>
       <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
-        <div *ngFor="let item of searchedItem;let i=index">
+     <div class="items" >
+        <div  *ngFor="let item of searchedItem;let i=index">
         <ion-list style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
 
     <ion-card class="ion-card" style="border-radius:0px;" [ngClass]="{'available-status-yes':item.AvailableStatus,'available-status-no':!item.AvailableStatus,'close':!item.AvailableStatus}">
@@ -97,7 +102,7 @@
 
       </ion-card>
         </ion-list>
-
+</div>
       </div>
         <!-- </div> -->
     </ion-item-group>

@@ -1,4 +1,4 @@
-import { Component , ViewChild, OnInit,OnDestroy, HostListener} from '@angular/core';
+import { Component , ViewChild, OnInit,OnDestroy, HostListener, ElementRef} from '@angular/core';
 import { ToastController,IonContent } from '@ionic/angular';
 import {Router,ActivatedRoute} from '@angular/router';
 import{RestaurantsService} from 'src/app/restaurants.service';
@@ -17,6 +17,7 @@ import{PopoverTypesPage} from '../popover-types/popover-types.page';
 import { PopoverTypesPageRoutingModule } from '../popover-types/popover-types-routing.module';
 import { ViewportScroller } from '@angular/common';
 import {StatusBar} from "@capacitor/status-bar"
+import { Content } from '@angular/compiler/src/render3/r3_ast';
 //import io from 'socket.io-client';
 
 //const socket=io("http://localhost:5000");
@@ -30,9 +31,11 @@ import {StatusBar} from "@capacitor/status-bar"
 export class HomePage implements OnInit {
   @ViewChild('search', { static: false }) search: IonSearchbar;
   @ViewChild('mySelect', { static: false }) selectRef: IonSelect;
-@ViewChild(IonContent,{static:true})
-content:IonContent
-
+  //@ViewChild(IonList,{read:ElementRef}) lists:ElementRef;
+  @ViewChild(IonList) lists: IonList;
+//@ViewChild(IonContent,{static:true})
+//content:IonContent
+@ViewChild(IonContent) content: IonContent;
 colorCodes:any[]=[{name:"red",code:"fb5b5b"},{name:"green",code:""}]
 
   public list: Array<Object> = [];
@@ -158,6 +161,7 @@ Type:this.type
 }
 this.restaurantService.GetCategory(getRest).subscribe((res)=>{
   this.shopCategory=res as ShopCategory[];
+  console.log("shop category length "+this.shopCategory.length)
 })
 
     this.restaurantService.GetRestaurants1(getRest).subscribe((res)=>{
@@ -432,9 +436,13 @@ AvailableTime(stime,etime,k){
 
 scrollFn(anchor: string): void{
   console.log("hi scroll"+anchor);
-  this._vps.scrollToAnchor(anchor);
-this.content.scrollToBottom(2000)
-//this.content.scrollX(0, , 4000)
+//   this._vps.scrollToAnchor(anchor);
+// let arr=this.lists.nativeElement.children;
+// let item=arr[anchor];
+// item.scrollIntoView({behaviour:'smooth',block:'start'});
+  //this.content.scrollX(0, , 4000)
+  let y = document.getElementById(anchor).offsetTop;
+        this.content.scrollToPoint(0,y,1000);
 
 }
 

@@ -25,3 +25,17 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+#custom-search input.searchbar-input.sc-ion-searchbar-md{
+
+  padding-top: 0!important;
+
+  padding-bottom: 0!important;
+  font-size: 13px;
+
+
+}
+#custom-search ion-icon.searchbar-search-icon.sc-ion-searchbar-md{
+  width: 15px;
+  margin-top: -5px;
+  margin-left: -5px;
+}

@@ -2,9 +2,9 @@
 
 <ion-content>
 <ion-list>
-  <ion-item button *ngFor="let items of category" (click)="_dismiss(items._id)" >
+  <ion-item button *ngFor="let items of category;let i=index" (click)="_dismiss(items._id)" >
     <div class="start"></div>
-<label  id={{items._id}}>{{items.Category}}</label>
+<label  id={{items._id}} >{{items.Category}}</label>
 
   </ion-item>
   </ion-list>
