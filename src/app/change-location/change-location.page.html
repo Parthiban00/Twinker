@@ -27,7 +27,8 @@
 <ion-content [fullscreen]="true">
   <div class="map-wrapper" style="height: 100%;">
     <div id="map_center">
-      <ion-icon name="pin" size="large" color="danger"></ion-icon>
+       <ion-icon name="pin" size="large" color="danger"></ion-icon>
+      <!-- <img src="/assets/map_pin.gif"> -->
     </div>
 
   <!-- <ion-header collapse="condense">
@@ -51,7 +52,17 @@
 <!-- <ion-button color="danger" style="width:calc(100% - 20px); margin-left: 10px;border-radius: 0px" (click)="CancelModel()">Cancel</ion-button> -->
 
 </ion-content>
+
 <ion-footer >
+
+  <ion-item style="display: flex;" [ngClass]="{'locality':!selectedValue}">
+    <ion-label>Choose Locality</ion-label>
+    <ion-select interface="popover" [(ngModel)]="selectedValue" >
+      <ion-select-option *ngFor="let list of locality" value={{list.Locality}} >{{list.Locality}}</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
   <ion-toolbar >
 
 <div >

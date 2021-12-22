@@ -14,8 +14,21 @@ export class CategoriesService {
      return this.webService.get(`categories/${data.Type}/${data.ActiveYn}`);
    }
 
+
    GetCategoryProducts(data:any){
     return this.webService.get(`random/products/${data.Category}`);
 
    }
+   GetSpecificCategory(data:any){
+
+
+    return this.webService.get(`specificcategories/${data.Type}/${data.ActiveYn}`);
+  }
+
+
+   GetSpecialOffers(data:any){
+
+
+    return this.webService.get(`specialoffers/${data.Type}/${data.ActiveYn}`);
+  }
 }

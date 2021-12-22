@@ -7,6 +7,13 @@ import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 import {CallNumber} from "@ionic-native/call-number/ngx";
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
+// import { Vibration } from '@ionic-native/vibration/ngx';
+import { AudioManagement } from '@ionic-native/audio-management/ngx';
+//  import io from 'socket.io-client';
+
+//  const socket=io("http://localhost:5000");
+import  {SocketService} from '../socket.service';
 
 @Component({
   selector: 'app-orders-delivery-partner',
@@ -26,36 +33,83 @@ export class OrdersDeliveryPartnerPage implements OnInit {
 totalCompletedOrders=0;
 totalCompletedAmount=0;
 segment;
-
+placedOrders:Orders[]=[];
+orderDetailsFromSocket=[];
+orderDetailsFromSocket1;
+orderDetailsFromSocket11=[];
+location;
 myDate="All";
-  constructor(private call:CallNumber,private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
+deliveryBoys;
+a=[];
+n=0;
+public alertMode: any;
+public loopMode: any;
+  constructor(private nativeAudio: NativeAudio, private audio: AudioManagement,private socketService:SocketService,private call:CallNumber,private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
     this.today1=new Date().toISOString();
     console.log("today date "+this.today1);
     this.defaultSegment="Delivery";
     this.default="Ready";
+    this.setRingtone();
+
+   // this.socketService.NewOrderPlaced().subscribe(data=>this.placedOrders.push());
+
+
 
 
    }
 
+
   orderDetails:Orders[]=[];
   orderDetails1:Orders[]=[];
+
   itemDetails:any[]=[];
   itemDetails1:any[]=[];
   panelOpenState = false;
 user:any;
   isLoading = false;
+
   //this.deliveryPartnerDetails=this.user[0];
 
 currentUserId:any;
   ngOnInit() {
 
-
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 
 
 
   }
   ionViewWillEnter(){
+
+    var data={
+      room:this.location.locality,
+      user:'delivery boy'
+    }
+this.socketService.JoinRoom(data);
+
+
     this.GetOrderDetails();
+
+    //  socket.on('orderPlaced',data=>{
+    //    console.log("response from socekt------- "+data);
+    //  })
+
+    //  socket.emit('orderPlaced');
+    this.socketService.NewOrderPlaced().subscribe((data)=>{
+
+      this.orderDetailsFromSocket=[];
+      console.log("hi this sockert"+data);
+      //this.orderDetailsFromSocket1.push(data.data);
+      this.orderDetailsFromSocket.push(data.data);
+      console.log("orderDetailsFromSocket -----------"+JSON.stringify(this.orderDetailsFromSocket));
+
+      console.log("orderDetailsFromSocket1111111111111 -----------"+this.orderDetailsFromSocket[0].length);
+
+      this.createAlert();
+
+      });
+
+
+
 
 
   }
@@ -63,7 +117,13 @@ currentUserId:any;
 
   GetOrderDetails(){
 this.present();
+
+var data1={
+  Locality:this.location.locality
+  }
 console.log(this.segment);
+
+
 
 this.totalCompletedOrders=0;
 this.totalCompletedItems=0;
@@ -79,7 +139,8 @@ console.log('current user  '+this.user[0]);
 
 
 var getOrders={
- ActiveYn:true
+ ActiveYn:true,
+ Locality:this.location.locality
 
 }
 
@@ -89,10 +150,10 @@ var getOrders={
 //    UserId:this.user[0]._id,
 //  }
 
-this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
+this.deliveryService.GetOrdersLocality(getOrders).subscribe((res)=>{
   this.orderDetails=res as Orders[];
-  console.log(this.orderDetails[0]);
-
+  console.log("hi this is order "+this.orderDetails);
+  this.orderDetailsFromSocket[0]=this.orderDetails;
   for(var i=0;i<this.orderDetails.length;i++){
 
     //ELEMENT_DATA.length=0;
@@ -105,6 +166,16 @@ this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
   this.CompletedOrders(this.segment);
   this.dismiss();
 })
+  }
+
+  indexOfSmallest(a){
+    var lowest=0;
+    for(var i=1;i<a.length;i++){
+      if(a[i]<a[lowest]){
+        lowest=i;
+      }
+    }
+    return lowest;
   }
 
 //   Accepted(id:any,restaurantId:any) {
@@ -139,7 +210,7 @@ this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
 //   }
 
 
-Accepted(id:any,restaurantId:any) {
+Accepted(id:any,restaurantId:any,userId:any,ImageUrl) {
 
   this.present();
 
@@ -147,7 +218,7 @@ Accepted(id:any,restaurantId:any) {
     _id:id,
     DeliveryPartnerStatus:'Accepted by Delivery Partner',
     RestaurantId:restaurantId,
-    DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id},
+    DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id,ImageUrl:ImageUrl},
     ModifiedBy:this.user[0],
     ModifiedDate: this.myDate.substring(0,10),
     ActiveYn:true,
@@ -159,6 +230,14 @@ Accepted(id:any,restaurantId:any) {
     this.owenerService.DeliveryPartnerAccept(acceptedOrders).subscribe((res)=>{
   this.dismiss();
   console.log("result   "+res);
+
+  var data={
+    room:this.location.locality,
+    user:'delivery boy',
+    orderUserId:userId
+  }
+this.socketService.OrderAcceptedByDeliveryPartner(data);
+
   if(res==null || res==undefined){
     this.presentAlertConfirm1();
   }
@@ -383,5 +462,46 @@ console.log("dfasfas"+ segment);
     //let url="https://www.google.com/maps/dir/?api=1&travelmode="+modeVal+"&layer=traffic&origin="+lat+","+lon+"&destination"+lat+","+lon;
 window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lon)
 //window.open(url);
+  }
+
+
+
+  setRingtone() {
+    // Preload the audio track
+    this.nativeAudio.preloadSimple('uniqueId1', 'assets/notification_ring/alert.mp3');
+  }
+
+  getAudioMode() {
+    return new Promise(async (resolve, reject) => {
+      this.audio.getAudioMode().then((value) => {
+        if (value.audioMode == 0 || value.audioMode == 1) { // this will cause vibration in silent mode as well
+          this.alertMode = 'Vibrate';
+          resolve(false);
+        } else {
+          this.alertMode = 'Ring';
+          resolve(true);
+        }
+      }).catch((error) => {
+        resolve(false);
+      })
+    });
+  }
+
+  async createAlert() {
+    const audioMode = await this.getAudioMode();
+    if (audioMode) { // ring mode
+       this.playSingle();
+    } else {
+      this.playSingle();
+    }
+  }
+
+  playSingle() {
+    this.nativeAudio.play('uniqueId1').then(() => {
+      console.log('Successfully played');
+     // this.showAlert();
+    }).catch((err) => {
+      console.log('error', err);
+    });
   }
 }

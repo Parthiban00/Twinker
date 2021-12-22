@@ -27,6 +27,7 @@ export default class Orders{
       MobileNo:String;
       UserType:String;
       UserId:String;
+      ImageUrl:String;
 
     };
     DeliveryPartnerStatus:String;
@@ -37,7 +38,8 @@ DiscountCode:string;
 CreatedTime;
 Latitude:number;
 Longitude:number;
-DeliveryTime:number
+DeliveryTime:number;
+Locality:string;
 
  }
 

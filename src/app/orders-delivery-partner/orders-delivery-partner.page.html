@@ -14,12 +14,12 @@
   </ion-toolbar>
   <div >
 
-    <div class="banner">
-      <img src="assets\delivery_banner.png" />
-      <div class="caption ion-padding">
+    <div >
+      <!-- <img src="assets\delivery_banner.png" /> -->
+      <div >
 
 
-        <ion-segment scrollable [(ngModel)]='defaultSegment' color="tertiary" (ionChange)="segmentChanged($event)">
+        <ion-segment scrollable [(ngModel)]='defaultSegment' color="danger" (ionChange)="segmentChanged($event)">
           <ion-segment-button  value="Delivery">
             Delivery
           </ion-segment-button>
@@ -93,10 +93,10 @@
 </ion-refresher>
 
 <div *ngIf="default=='Ready' && defaultSegment=='Delivery'">
-  <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
-    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer'">
+  <div *ngFor="let orders of orderDetailsFromSocket[0];let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
+    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer' && orders.DeliveryPartnerDetails.UserId==currentUserId">
 
-        <mat-expansion-panel hideToggle>
+        <mat-expansion-panel hideToggle style="border-radius: 0px;">
             <mat-expansion-panel-header>
               <mat-panel-title style="font-size: small;">
              {{orders.RestaurantName}}
@@ -109,7 +109,7 @@
 
             <mat-accordion>
                 <mat-expansion-panel (opened)="panelOpenState = true"
-                (closed)="panelOpenState = false">
+                (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
 <mat-panel-title  style="font-size: small;">
 Order Details
@@ -194,7 +194,7 @@ Order Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                 (closed)="panelOpenState = false">
+                 (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
 <mat-panel-title  style="font-size: small;">
 Item Details
@@ -211,6 +211,7 @@ Item Details
   <ion-col>
     Item
   </ion-col>
+
   <ion-col>
     Price
   </ion-col>
@@ -226,6 +227,7 @@ Item Details
   <ion-col *ngIf="items.RestaurantId==orders.RestaurantId">
 {{items.ProductName}}
   </ion-col>
+
   <ion-col *ngIf="items.RestaurantId==orders.RestaurantId">
      {{items.Price}}
   </ion-col>
@@ -241,7 +243,7 @@ Item Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                     (closed)="panelOpenState = false">
+                     (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
   <mat-expansion-panel-header>
     <mat-panel-title  style="font-size: small;">
     Bill Details
@@ -317,7 +319,7 @@ Item Details
 
 <mat-accordion>
     <mat-expansion-panel (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false">
+                         (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
       <mat-expansion-panel-header>
         <mat-panel-title  style="font-size: small;">
         Delivery Details
@@ -377,7 +379,7 @@ Item Details
 
             <mat-action-row >
               <ion-text  style="position: absolute;left: 0; margin-left: 10px;color: crimson;">Restaurant:&nbsp;<span>{{orders.Status}}</span></ion-text>
-              <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId)" >Accept</button>
+              <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId,orders.UserId,orders.DeliveryPartnerDetails.ImageUrl)" >Accept</button>
 
             </mat-action-row>
           </mat-expansion-panel>
@@ -630,10 +632,10 @@ Item Details
   </div> -->
 
   <div *ngIf="default=='Accepted' && defaultSegment=='Delivery'">
-    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+    <div *ngFor="let orders of orderDetailsFromSocket[0];let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
       <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Accepted by Delivery Partner' && orders.DeliveryPartnerDetails.UserId==currentUserId">
 
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle style="border-radius: 0px;">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: small;">
                {{orders.RestaurantName}}
@@ -646,7 +648,7 @@ Item Details
 
               <mat-accordion>
                   <mat-expansion-panel (opened)="panelOpenState = true"
-                  (closed)="panelOpenState = false">
+                  (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
  <mat-panel-title  style="font-size: small;">
  Order Details
@@ -749,7 +751,7 @@ Item Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                   (closed)="panelOpenState = false">
+                   (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
   <mat-panel-title  style="font-size: small;">
   Item Details
@@ -853,7 +855,7 @@ Item Details
 
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+                       (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
     <mat-expansion-panel-header>
       <mat-panel-title  style="font-size: small;">
       Bill Details
@@ -954,7 +956,7 @@ Item Details
 
   <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+                           (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
         <mat-expansion-panel-header>
           <mat-panel-title  style="font-size: small;">
           Delivery Details
@@ -1067,10 +1069,10 @@ Item Details
 
 
   <div *ngIf="default=='Completed' && defaultSegment=='Delivery'">
-    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
       <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Completed'  && orders.DeliveryPartnerDetails.UserId==currentUserId">
 
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle  style="border-radius: 0px;">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: small;">
                {{orders.RestaurantName}}
@@ -1083,7 +1085,7 @@ Item Details
 
               <mat-accordion>
                   <mat-expansion-panel (opened)="panelOpenState = true"
-                  (closed)="panelOpenState = false">
+                  (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
  <mat-panel-title  style="font-size: small;">
  Order Details
@@ -1167,7 +1169,7 @@ Item Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                   (closed)="panelOpenState = false">
+                   (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
   <mat-panel-title  style="font-size: small;">
   Item Details
@@ -1213,7 +1215,7 @@ Item Details
 
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+                       (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
     <mat-expansion-panel-header>
       <mat-panel-title  style="font-size: small;">
       Bill Details
@@ -1288,7 +1290,7 @@ Item Details
 
   <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+                           (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
         <mat-expansion-panel-header>
           <mat-panel-title  style="font-size: small;">
           Delivery Details
@@ -1380,10 +1382,10 @@ Item Details
   </div>
 
   <div *ngIf="default=='Placed' && defaultSegment=='Restaurant'">
-    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
       <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Placed'">
 
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle  style="border-radius: 0px;">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: small;">
                {{orders.RestaurantName}}
@@ -1396,7 +1398,7 @@ Item Details
 
               <mat-accordion>
                   <mat-expansion-panel (opened)="panelOpenState = true"
-                  (closed)="panelOpenState = false">
+                  (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
  <mat-panel-title  style="font-size: small;">
  Order Details
@@ -1479,7 +1481,7 @@ Item Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                   (closed)="panelOpenState = false">
+                   (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
   <mat-panel-title  style="font-size: small;">
   Item Details
@@ -1525,7 +1527,7 @@ Item Details
 
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+                       (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
     <mat-expansion-panel-header>
       <mat-panel-title  style="font-size: small;">
       Bill Details
@@ -1600,7 +1602,7 @@ Item Details
 
   <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+                           (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
         <mat-expansion-panel-header>
           <mat-panel-title  style="font-size: small;">
           Delivery Details
@@ -1667,10 +1669,10 @@ Item Details
   </div>
 
   <div *ngIf="default=='Accepted' && defaultSegment=='Restaurant'">
-    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
       <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Accepted by Restaurant Owner'">
 
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle  style="border-radius: 0px;">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: small;">
                {{orders.RestaurantName}}
@@ -1683,7 +1685,7 @@ Item Details
 
               <mat-accordion>
                   <mat-expansion-panel (opened)="panelOpenState = true"
-                  (closed)="panelOpenState = false">
+                  (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
  <mat-panel-title  style="font-size: small;">
  Order Details
@@ -1766,7 +1768,7 @@ Item Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                   (closed)="panelOpenState = false">
+                   (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
   <mat-panel-title  style="font-size: small;">
   Item Details
@@ -1812,7 +1814,7 @@ Item Details
 
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+                       (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
     <mat-expansion-panel-header>
       <mat-panel-title  style="font-size: small;">
       Bill Details
@@ -1887,7 +1889,7 @@ Item Details
 
   <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+                           (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
         <mat-expansion-panel-header>
           <mat-panel-title  style="font-size: small;">
           Delivery Details
@@ -1954,10 +1956,10 @@ Item Details
   </div>
 
   <div *ngIf="default=='Ready' && defaultSegment=='Restaurant'">
-    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;">
+    <div *ngFor="let orders of orderDetails;let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
       <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Ready'">
 
-          <mat-expansion-panel hideToggle>
+          <mat-expansion-panel hideToggle  style="border-radius: 0px;">
               <mat-expansion-panel-header>
                 <mat-panel-title style="font-size: small;">
                {{orders.RestaurantName}}
@@ -1970,7 +1972,7 @@ Item Details
 
               <mat-accordion>
                   <mat-expansion-panel (opened)="panelOpenState = true"
-                  (closed)="panelOpenState = false">
+                  (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
  <mat-panel-title  style="font-size: small;">
  Order Details
@@ -2053,7 +2055,7 @@ Item Details
 
 <mat-accordion>
 <mat-expansion-panel (opened)="panelOpenState = true"
-                   (closed)="panelOpenState = false">
+                   (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
 <mat-expansion-panel-header>
   <mat-panel-title  style="font-size: small;">
   Item Details
@@ -2099,7 +2101,7 @@ Item Details
 
 <mat-accordion>
   <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+                       (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
     <mat-expansion-panel-header>
       <mat-panel-title  style="font-size: small;">
       Bill Details
@@ -2174,7 +2176,7 @@ Item Details
 
   <mat-accordion>
       <mat-expansion-panel (opened)="panelOpenState = true"
-                           (closed)="panelOpenState = false">
+                           (closed)="panelOpenState = false" style="border-radius: 0px;margin-bottom: 2px;">
         <mat-expansion-panel-header>
           <mat-panel-title  style="font-size: small;">
           Delivery Details

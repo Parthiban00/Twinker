@@ -8,9 +8,11 @@ import Cart from '../models/cart';
 import { LoadingController } from '@ionic/angular';
 import { IonSearchbar,IonSelect,IonList} from '@ionic/angular';
 import Category from '../models/category';
+import SpecificCategory from '../models/specific-category';
 import{CategoriesService} from 'src/app/categories.service';
 import * as moment from 'moment';
 import ShopCategory from '../models/shop-category';
+import SpecialOffers from '../models/special-offers';
 import { PopoverController } from '@ionic/angular';
 import { PopoverComponent } from '../popover/popover.component';
 import{PopoverTypesPage} from '../popover-types/popover-types.page';
@@ -18,9 +20,13 @@ import { PopoverTypesPageRoutingModule } from '../popover-types/popover-types-ro
 import { ViewportScroller } from '@angular/common';
 import {StatusBar} from "@capacitor/status-bar"
 import { Content } from '@angular/compiler/src/render3/r3_ast';
-//import io from 'socket.io-client';
+import {ChangeLocationPage} from '../change-location/change-location.page';
+import { ModalController } from '@ionic/angular';
+import DeliveryCharges from '../models/delivery-charges';
+import  {SocketService} from '../socket.service';
+ import io from 'socket.io-client';
 
-//const socket=io("http://localhost:5000");
+ //const socket=io("http://localhost:5000");
 
 
 @Component({
@@ -61,8 +67,12 @@ selected;
 unit="K";
 coord:any;
 user:any;
+deliveryCharges:DeliveryCharges[];
 type:string;
 currentTime1;
+showRestaurants=true;
+specialOffers;
+specificCategory:SpecificCategory[];
 skeleton=[
 
 {},
@@ -80,7 +90,7 @@ skeleton=[
 
 
    images=['assets/images/food_delivery.3jpg.jpg','assets/images/food_delivery4.jpg','assets/images/food_delivery2.jpg']
-  constructor(private _vps: ViewportScroller,public popoverController: PopoverController,private categoriesService:CategoriesService,private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
+  constructor(public modalController: ModalController,private _vps: ViewportScroller,public popoverController: PopoverController,private categoriesService:CategoriesService,private router:Router,private activatedRouter:ActivatedRoute,private restaurantService:RestaurantsService,private cartService:CartService,public loadingController: LoadingController,public toastController: ToastController) {
 
 
 
@@ -90,7 +100,7 @@ skeleton=[
 
   ngOnInit(): void {
 
-// socket.emit('message',"He i am socker");
+  //socket.emit('message',"He i am socker");
   }
 
   openSelect() {
@@ -100,7 +110,7 @@ skeleton=[
   ionViewWillEnter(){
     this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-StatusBar.setBackgroundColor({color:'fb5b5b'});
+StatusBar.setBackgroundColor({color:'f7714a'});
    // this.dismiss();
 
    this.searchedItem=[];
@@ -118,11 +128,20 @@ StatusBar.setBackgroundColor({color:'fb5b5b'});
 
 
     //  });
+    var data1={
+      type:this.type
+    }
+    this.cartService.GetDeliveryChargeDetails(data1).subscribe((res)=>{
+      this.deliveryCharges=res as DeliveryCharges[];
+      console.log("delivery charge "+typeof(this.deliveryCharges[0].PerKm));
+
+    })
 
 
      var data={
       Type:this.type,
-      ActiveYn:true
+      ActiveYn:true,
+      Locality:this.location.locality
     }
 
     this.categoriesService.GetCategory(data).subscribe((res)=>{
@@ -130,6 +149,18 @@ StatusBar.setBackgroundColor({color:'fb5b5b'});
      //console.log("categories "+this.category);
 
     })
+    this.categoriesService.GetSpecialOffers(data).subscribe((res)=>{
+      this.specialOffers=res as SpecialOffers[];
+      console.log("special offers "+this.specialOffers.length)
+      //console.log("categories "+this.category);
+
+     })
+     this.categoriesService.GetSpecificCategory(data).subscribe((res)=>{
+      this.specificCategory=res as SpecificCategory[];
+      console.log("specific ---------------------------- categories "+this.specificCategory.length);
+
+     })
+
 
 
 this.searchHotel="";
@@ -193,8 +224,17 @@ this.restaurantService.GetCategory(getRest).subscribe((res)=>{
               });
               this.searchedItem1.forEach((e) => {
                 console.log(`${e.RestaurantName}  ${e.Distance}`);
+
                 this.searchedItem.push(e);
             });
+            if(this.searchedItem[0].Distance<=this.deliveryCharges[0].Around){
+              console.log("distance true");
+              this.showRestaurants=true;
+            }
+            else{
+              console.log("distance false");
+              this.showRestaurants=false;
+            }
     });
 
 
@@ -378,6 +418,10 @@ Products(restaurantName:string,restaurantId:string,type:string){
    //this.router.navigate(['products/'+category+'/'+this.type]);
   }
 
+  Category(category:any){
+    this.router.navigate(['products/'+category+'/'+this.type]);
+  }
+
 async presentPopover(ev: any) {
   const popover = await this.popoverController.create({
     component: PopoverTypesPage,
@@ -444,6 +488,38 @@ scrollFn(anchor: string): void{
   let y = document.getElementById(anchor).offsetTop;
         this.content.scrollToPoint(0,y,1000);
 
+}
+
+
+  ChangeLocation(){
+    this.modalController.create({
+      component:ChangeLocationPage,
+      componentProps:this.location
+              }).then(modalres=>{
+                modalres.present();
+
+                modalres.onDidDismiss().then(res=>{
+                  if(res.data!=null){
+                    localStorage.removeItem('LocationAddress');
+console.log('changed address '+res.data.address);
+//this.selectedLocation=res.data.address;
+
+localStorage.setItem('LocationAddress',JSON.stringify(res.data));
+this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+this.ionViewWillEnter();
+                  }
+                  else{
+                    console.log('resposnse null');
+                  }
+                })
+              })
+
+
+
+}
+
+GoToRestaurant(restaurantName:string,restaurantId:string,menuId:string,type:string){
+  this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId+'/'+menuId+'/'+type]);
 }
 
 

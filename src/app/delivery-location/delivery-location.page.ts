@@ -4,7 +4,8 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { ActivatedRoute,Router } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
-
+import{GeocodingService} from 'src/app/geocoding.service';
+import Locality from '../models/locality';
 
 
 declare var google;
@@ -28,9 +29,10 @@ export class DeliveryLocationPage implements AfterViewInit {  public folder: str
  locationAddress;
  //autocomplete;
 
-
+ locality:Locality[];
+ selectedValue: string="";
 formattedAddress;
-
+user;
 autocomplete: { input: string; };
 autocompleteItems: any[];
 GoogleAutocomplete: any;
@@ -39,7 +41,7 @@ placeid: any;
   @ViewChild('mapElement', {static: false}) mapElement;
 
 map:any;
-  constructor(private alertController:AlertController,private zone:NgZone,private activatedRoute: ActivatedRoute,private router:Router,private geolocation:Geolocation,private nativeGeocoder:NativeGeocoder) {
+  constructor(private geoCodingService:GeocodingService ,private alertController:AlertController,private zone:NgZone,private activatedRoute: ActivatedRoute,private router:Router,private geolocation:Geolocation,private nativeGeocoder:NativeGeocoder) {
 
     this.GoogleAutocomplete = new google.maps.places.AutocompleteService();
 this.autocomplete = { input: '' };
@@ -47,7 +49,12 @@ this.autocompleteItems = [];
   }
 
   ngOnInit() {
+    this.geoCodingService.GetLocality().subscribe((res)=>{
+      this.locality=res as Locality[];
+      console.log("locality   "+this.locality)
+    })
 
+    this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
 
   ngAfterViewInit(): void {
@@ -174,7 +181,8 @@ getAddress(latitude, longitude) {
          this.locationAddress={
           lat:latitude,
           lon:longitude,
-          address:this.address
+          address:this.address,
+          locality:this.selectedValue
         }
       } else {
         window.alert('No results found');
@@ -200,7 +208,8 @@ geocodePosition(pos) {
       this.locationAddress={
         lat:this.latitude,
         lon:this.longitude,
-        address:this.formattedAddress
+        address:this.formattedAddress,
+        locality:this.selectedValue
       }
     } else {
     }
@@ -224,8 +233,15 @@ geocodePosition(pos) {
     if(this.formattedAddress=="" || this.formattedAddress==undefined || this.formattedAddress==null){
 this.presentAlertConfirm();
     }
+    else if(this.selectedValue==""|| this.selectedValue==null||this.selectedValue==undefined){
+      this.presentAlertConfirm1();
+    }
     else{
+this.locationAddress.locality=this.selectedValue;
+this.locationAddress.id=this.user[0]._id;
+this.geoCodingService.UpdateAddress(this.locationAddress).subscribe((res)=>{
 
+})
     localStorage.setItem("LocationAddress",JSON.stringify(this.locationAddress));
     this.router.navigate(['home-page']);
   }
@@ -305,6 +321,28 @@ this.presentAlertConfirm();
               handler: () => {
                 console.log('Confirm Okay');
     this.getAddress(this.lat,this.lng);
+                //this.router.navigate(['home-page']);
+
+              }
+            }
+          ]
+        });
+
+        await alert.present();
+      }
+
+      async presentAlertConfirm1() {
+
+        const alert = await this.alertController.create({
+          cssClass: 'my-custom-class',
+         // header: 'Successfull',
+          message: 'Kindly choose your locality...',
+          buttons: [
+           {
+              text: 'Ok',
+              handler: () => {
+             //   console.log('Confirm Okay');
+   // this.getAddress(this.lat,this.lng);
                 //this.router.navigate(['home-page']);
 
               }

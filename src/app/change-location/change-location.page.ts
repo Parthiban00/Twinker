@@ -1,9 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild ,ElementRef,NgZone} from '@angular/core';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, UrlHandlingStrategy } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
-
+import{GeocodingService} from 'src/app/geocoding.service';
+import Locality from '../models/locality';
+import { AlertController } from '@ionic/angular';
 declare var google;
 @Component({
   selector: 'app-change-location',
@@ -23,8 +25,9 @@ export class ChangeLocationPage implements AfterViewInit {  public folder: strin
   lng;
 presentAddress;
 changedAddress;
-
-
+locality:Locality[];
+selectedValue: string="";
+user;
 autocomplete: { input: string; };
 autocompleteItems: any[];
 GoogleAutocomplete: any;
@@ -32,7 +35,7 @@ placeid: any;
   @ViewChild('mapElement', {static: false}) mapElement;
   public formattedAddress;
 
-  constructor(private zone:NgZone,private activatedRoute: ActivatedRoute,public modalController: ModalController,private navParams:NavParams,private geolocation: Geolocation) {
+  constructor(private alertController:AlertController,private geoCodingService:GeocodingService ,private zone:NgZone,private activatedRoute: ActivatedRoute,public modalController: ModalController,private navParams:NavParams,private geolocation: Geolocation) {
 this.presentAddress=this.navParams.data;
 console.log('present address '+this.presentAddress.address);
 
@@ -43,6 +46,15 @@ this.autocompleteItems = [];
 
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id');
+    this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
+this.geoCodingService.GetLocality().subscribe((res)=>{
+  this.locality=res as Locality[];
+  console.log("locality   "+this.locality)
+  this.selectedValue=this.presentAddress.Locality;
+console.log(this.presentAddress.Locality)
+})
+
+
   }
 
   ngAfterViewInit(): void {
@@ -106,7 +118,7 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
         if (results[0]) {
           this.zoom = 12;
           //this.address = results[0].formatted_address;
-
+//console.log("formatted address "+JSON.stringify(results[0].address_components[3]));
           console.log("getAddress "+this.address);
            this.changedAddress={
              lat:latitude,
@@ -117,6 +129,7 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
             lat:latitude,
             lon:longitude,
             address:results[0].formatted_address,
+            locality:this.selectedValue
           }
           this.formattedAddress = results[0].formatted_address;
 
@@ -143,7 +156,8 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
         this.presentAddress={
           lat:this.latitude,
           address:this.formattedAddress,
-          lon:this.longitude
+          lon:this.longitude,
+          locality:this.selectedValue
         }
       } else {
       }
@@ -174,7 +188,20 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
   ApplyDeliveryDetails(){
 
     //localStorage.setItem("LocationAddress",JSON.stringify(this.changedAddress));
+    console.log(this.selectedValue);
+    if(this.selectedValue=="" || this.selectedValue==null || this.selectedValue==undefined){
+      this.presentAlertConfirm1();
+    }
+    else{
+      this.presentAddress.locality=this.selectedValue;
+      console.log(this.presentAddress.locality);
+
+      this.presentAddress.id=this.user[0]._id;
+this.geoCodingService.UpdateAddress(this.presentAddress).subscribe((res)=>{
+
+})
     this.modalController.dismiss(this.presentAddress);
+  }
       }
       CancelModel(){
         this.modalController.dismiss();
@@ -209,5 +236,27 @@ console.log("lat lng "+this.latitude+' '+this.longitude);
       ClearAutocomplete(){
         this.autocompleteItems = []
         this.autocomplete.input = ''
+      }
+
+      async presentAlertConfirm1() {
+
+        const alert = await this.alertController.create({
+          cssClass: 'my-custom-class',
+         // header: 'Successfull',
+          message: 'Kindly choose your locality...',
+          buttons: [
+           {
+              text: 'Ok',
+              handler: () => {
+             //   console.log('Confirm Okay');
+   // this.getAddress(this.lat,this.lng);
+                //this.router.navigate(['home-page']);
+
+              }
+            }
+          ]
+        });
+
+        await alert.present();
       }
 }

@@ -10,6 +10,7 @@ import { LoadingController } from '@ionic/angular';
 import {OwnersService} from 'src/app/owners.service';
 import {CallNumber} from "@ionic-native/call-number/ngx";
 import { AlertController } from '@ionic/angular';
+import  {SocketService} from '../socket.service';
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.page.html',
@@ -28,8 +29,10 @@ orderDetails2:Orders[]=[];
 default:string="";
 isLoading = false;
 user:any;
+locality;
+location;
 
-  constructor(private alertController:AlertController,private call:CallNumber,private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
+  constructor(private socketService:SocketService,private alertController:AlertController,private call:CallNumber,private ownerService:OwnersService,private ordersService:OrdersService,private router:Router,public actionSheetController: ActionSheetController,private matexpansionpanel:MatExpansionModule,public loadingController: LoadingController) {
 
     this.default="Placed";
    }
@@ -40,6 +43,7 @@ ionViewWillEnter(){
 
   this.present();
 this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
   var getOrders={
     Status:"Placed",
     ActiveYn:true,
@@ -67,7 +71,7 @@ console.log("ite detailassss   "+ this.itemDetails[0]);
   ActiveYn:true,
   UserId:this.user[0]._id
 }
-
+this.locality=this.location.locality;
 
 this.ordersService.GetPlacedOrders(getOrders1).subscribe((res)=>{
   this.orderDetails1=res as Orders[];
@@ -249,7 +253,11 @@ console.log("Order details is clicked");
             this.ownerService.CancelOders(cancelOrders).subscribe((res)=>{
              // this.ngOnInit();
              // this.orderDetails=res as Orders[];
-
+             var data={
+              room:this.locality,
+              user:'user'
+            }
+          this.socketService.OrderPlaced(data);
              this.dismiss();
              this.ionViewWillEnter();
 

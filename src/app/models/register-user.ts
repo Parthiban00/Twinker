@@ -14,6 +14,7 @@ export default class Register{
     DeleteYn: Boolean;
     _id:String;
     WelcomeOffer:Boolean;
-    Offer:Number
+    Offer:Number;
+    Locality:string;
 
 }

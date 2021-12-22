@@ -29,6 +29,7 @@ DiscountDescription:string;
 DiscountCode:string;
 Latitude:number;
 Longitude:number;
+Type:string;
 
 
  }

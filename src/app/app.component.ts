@@ -32,18 +32,20 @@ export class AppComponent {
   public geocoder;
   constructor(private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
 
-    this.splashScreen.show();
+    this.splashScreen.hide();
 
     //localStorage.removeItem('LocationAddress');
   //  this.geocoder = new google.maps.Geocoder();
-
+  this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
     if(!localStorage.getItem('currentUser')){
       console.log("no");
-
+this.router.navigate['login-page'];
           }
-          if(localStorage.getItem('currentUser') && !localStorage.getItem('LocationAddress')){
+        else  if(!localStorage.getItem('currentUser') && !localStorage.getItem('LocationAddress') || !this.location.locality){
             console.log('lcoation no');
-            this.router.navigate(['delivery-location'])
+             this.router.navigate(['delivery-location'])
+
+           // this.router.navigate(['setup-location']);
           }
           else{
 

@@ -58,6 +58,13 @@
 
 </ion-content>
  <ion-footer >
+  <ion-item style="display: flex;" [ngClass]="{'locality':!selectedValue}">
+    <ion-label>Locality</ion-label>
+    <ion-select interface="popover" [(ngModel)]="selectedValue" >
+      <ion-select-option *ngFor="let list of locality" value={{list.Locality}} >{{list.Locality}}</ion-select-option>
+
+    </ion-select>
+  </ion-item>
   <ion-toolbar >
 
 <div >

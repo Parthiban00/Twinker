@@ -2,15 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
 import{MainMenuService} from 'src/app/main-menu.service';
-import { AlertController } from '@ionic/angular';
+import { AlertController, IonSegment } from '@ionic/angular';
 import{ProductsService} from 'src/app/products.service';
 import MainMenu from '../models/main-menu';
 import Product from '../models/products';
 import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
-
+import { PopoverController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
-
+import{PopoverTypesPage} from '../popover-types/popover-types.page';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 
 @Component({
@@ -20,7 +21,8 @@ import { LoadingController } from '@ionic/angular';
 })
 export class ProductPagePage implements OnInit {
   @ViewChild('search') search : any;
-
+  @ViewChild(IonSegment) segment: IonSegment;
+completedCount=0;
   selectedMenuName:String="";
   showProgress:boolean=false;
   menu:String="";
@@ -74,6 +76,7 @@ export class ProductPagePage implements OnInit {
   products:Product[]=[];
   isLoading = false;
   type:String;
+  paramsMenuId:string;
 
   opts = {
     freeMode:true,
@@ -81,7 +84,7 @@ export class ProductPagePage implements OnInit {
     slidesOffsetBefore:30,
     slidesOffsetAfter:100
   }
-  constructor(private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
+  constructor(public popoverController: PopoverController,private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
 
@@ -133,6 +136,7 @@ export class ProductPagePage implements OnInit {
         this.whichRestaurant=this.activateRoute.snapshot.params.name;
         this.restaurantId=this.activateRoute.snapshot.params.restId;
         this.type=this.activateRoute.snapshot.params.type;
+        this.paramsMenuId=this.activateRoute.snapshot.params.menuId;
         console.log(this.activateRoute.snapshot.params);
         console.log(localStorage.getItem('currentUser'));
 
@@ -140,9 +144,18 @@ export class ProductPagePage implements OnInit {
     this.mainMenu = res as MainMenu[];
     console.log(this.mainMenu);
 
-    this.menu=this.mainMenu[0]._id;
+    if(this.paramsMenuId==null || this.paramsMenuId==undefined || this.paramsMenuId==""){
+      this.menu=this.mainMenu[0]._id;
+    }
+    else{
+      this.menu=this.paramsMenuId;
+    //  this.segmentChangedSpecialOffers();
 
-    this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
+
+    }
+
+
+   this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
     this.productDetails=res as Product[];
 
 
@@ -151,9 +164,13 @@ export class ProductPagePage implements OnInit {
 
 
     for(var i=0;i<this.productDetails.length;i++){
+      this.completedCount+=1;
 
       if(this.mainMenu[0]._id==this.productDetails[i].MenuId){
         this.products.push(this.productDetails[i]);
+      }
+      if(this.completedCount==this.productDetails.length && this.paramsMenuId){
+        this.segmentChangedSpecialOffers();
       }
     }
 
@@ -164,14 +181,79 @@ export class ProductPagePage implements OnInit {
 
 
 
+
     })
-    this.dismiss();
+
+
+
+
+    // this.dismiss();
 
 
 
       });
   }
 
+  getProducts(fn){
+
+    this.productService.GetProducts(this.restaurantId).subscribe((res)=>{
+      this.productDetails=res as Product[];
+
+
+      this.searchedItem=res as Product[];
+      console.log(this.productDetails);
+
+
+      for(var i=0;i<this.productDetails.length;i++){
+
+        if(this.mainMenu[0]._id==this.productDetails[i].MenuId){
+          this.products.push(this.productDetails[i]);
+        }
+      }
+      fn(this.segmentChangedSpecialOffers);
+
+
+
+
+
+
+
+
+
+      })
+
+  }
+
+
+
+  segmentChangedSpecialOffers(){
+
+    this.products.length=0;
+    console.log('Segment changed -----', this.paramsMenuId);
+  //console.log(this.productDetails[1].MenuId);
+  for(var j=0;j<this.mainMenu.length;j++){
+  if(this.paramsMenuId==this.mainMenu[j]._id){
+    this.ViewType=this.mainMenu[j].ViewType;
+    console.log("view type "+this.ViewType)
+  }
+  }
+     for(var k=0;k<this.productDetails.length;k++){
+
+      if(this.paramsMenuId==this.productDetails[k].MenuId ){
+         this.products.push(this.productDetails[k]);
+       }
+     }
+     console.log("special offers menu id chagend "+this.products);
+
+     for(var i=0;i<this.mainMenu.length;i++){
+       if(this.paramsMenuId==this.mainMenu[i]._id){
+         this.selectedMenuName=this.mainMenu[i]._id;
+       }
+     }
+  }
+// ionViewDidEnter(){
+//   console.log("hi and hello  im parhtiban");
+// }
 
 segmentChanged(ev: any) {
 
@@ -246,7 +328,8 @@ console.log("dsfasdfasf"+i);
     OfferDescription:this.products[i].OfferDescription,
     Commission:this.products[i].Commission,
     ActualAmount:this.products[i].ActualAmount,
-    Description:this.products[i].Description
+    Description:this.products[i].Description,
+    Type:this.type
 
 
 
@@ -407,7 +490,8 @@ console.log("dsfasdfasf"+i);
     OfferDescription:this.productDetails[i].OfferDescription,
     Commission:this.productDetails[i].Commission,
     ActualAmount:this.productDetails[i].ActualAmount,
-    Description:this.productDetails[i].Description
+    Description:this.productDetails[i].Description,
+    Type:this.type
 
 
 
@@ -735,6 +819,42 @@ SearchChange(event:any){
     })
   }
 
+}
+
+async presentPopover(ev: any) {
+  const popover = await this.popoverController.create({
+    component: PopoverTypesPage,
+    cssClass: 'my-custom-class',
+    event: ev,
+    translucent: true,
+    componentProps:this.mainMenu
+  });
+
+  popover.onDidDismiss().then((data:any)=>{
+console.log("from popover data  "+data.data.fromPopover);
+//this.scrollFn(data.data.fromPopover);
+this.menu=data.data.fromPopover;
+  })
+  await popover.present();
+
+  const { role } = await popover.onDidDismiss();
+  console.log('onDidDismiss resolved with role', role);
+}
+
+scrollFn(anchor: string): void{
+  console.log("hi scroll"+anchor);
+//   this._vps.scrollToAnchor(anchor);
+// let arr=this.lists.nativeElement.children;
+// let item=arr[anchor];
+// item.scrollIntoView({behaviour:'smooth',block:'start'});
+  //this.content.scrollX(0, , 4000)
+ // let y = document.getElementById(anchor).offsetTop;
+     //   this.segment.
+      document.getElementById(anchor).scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center'
+        });
 }
 }
 

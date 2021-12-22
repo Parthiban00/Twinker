@@ -61,7 +61,7 @@ return this.webService.patch(`carts/${data.RestaurantId}/${data.MenuId}/${data.P
 
    OrderDetails(data:any){
 
-    //console.log(data);
+    console.log(data.Locality);
      return this.webService.post('orderdetails',data);
    }
 
@@ -106,6 +106,10 @@ return this.webService.patch('removecarts',data);
   GetOffers(){
     return this.webService.get('offers');
 
+  }
+
+  GetDeliveryChargeDetails(data){
+    return this.webService.get(`deliverycharges/${data.type}`);
   }
 
 

@@ -6,6 +6,10 @@
     <param name="android-package" value="mx.ferreyra.callnumber.CFCallNumber"/>
   </feature>
 
+  <feature name="AudioManagement">
+    <param name="android-package" value="com.cedricclovel.audiomanagement.AudioManagement"/>
+  </feature>
+
   <feature name="Clipboard">
     <param name="android-package" value="com.verso.cordova.clipboard.Clipboard"/>
   </feature>
@@ -37,6 +41,10 @@
 
   <feature name="Geolocation">
     <param name="android-package" value="org.apache.cordova.geolocation.Geolocation"/>
+  </feature>
+
+  <feature name="NativeAudio">
+    <param name="android-package" value="com.rjfun.cordova.plugin.nativeaudio.NativeAudio"/>
   </feature>
 
   <feature name="NativeGeocoder">

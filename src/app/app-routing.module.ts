@@ -69,6 +69,11 @@ const routes: Routes = [
     canActivate:[AuthenticationGuard]
   },
   {
+    path: 'product-page/:name/:restId/:menuId/:type',
+    loadChildren: () => import('./product-page/product-page.module').then( m => m.ProductPagePageModule),
+    canActivate:[AuthenticationGuard]
+  },
+  {
     path: 'cart',
     loadChildren: () => import('./cart/cart.module').then( m => m.CartPageModule),
     canActivate:[AuthenticationGuard]
@@ -161,8 +166,9 @@ const routes: Routes = [
     path: 'products/:name/:restId/:type',
     loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
   },
+
   {
-    path: 'products',
+    path: 'products/:category/:type',
     loadChildren: () => import('./products/products.module').then( m => m.ProductsPageModule)
   },
   {
@@ -193,6 +199,10 @@ const routes: Routes = [
   {
     path: 'contact-us',
     loadChildren: () => import('./contact-us/contact-us.module').then( m => m.ContactUsPageModule)
+  },
+  {
+    path: 'setup-location',
+    loadChildren: () => import('./setup-location/setup-location.module').then( m => m.SetupLocationPageModule)
   },
 
 

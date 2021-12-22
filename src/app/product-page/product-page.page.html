@@ -13,7 +13,7 @@
       <ion-buttons slot="start">
       <ion-menu-button color="primary"></ion-menu-button>
       </ion-buttons>
-    <ion-title style="font-family: lato;">
+    <ion-title>
       {{whichRestaurant}}
     </ion-title>
     <ion-buttons slot="end">
@@ -90,8 +90,8 @@
 
 
 
-    <ion-content >
-      <div class="ad-slides">
+    <ion-content [fullscreen]="true" >
+      <!-- <div class="ad-slides">
 
         <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
            <ion-slide style="padding:0px;width: fit-content;"  *ngFor="let product of productDetails;let i=index">
@@ -111,7 +111,50 @@
 
 
         </ion-slides>
-        </div>
+        </div> -->
+
+
+        <div class="suggestions">
+
+
+                <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+                  <ion-slide style="padding:0px;width: fit-content;border-radius: 0px;" *ngFor="let product of productDetails;let i=index" >
+
+                  <ion-card  style="border-radius: 0px !important ;" *ngIf="product.Offer && product.AvailableStatus">
+                    <ion-card-header>
+            <div class="main" >
+
+              <img src="{{product.ImageUrl}}">
+            </div>
+            <!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
+                    </ion-card-header>
+                    <ion-card-content class="ion-text-left">
+
+                      <!-- <ion-card-title class="ion-margin-bottom" style="text-align: center;">Restaurants</ion-card-title>-->
+
+
+                        <ion-card-subtitle style="font-size: 12px;">{{product.ProductName}}</ion-card-subtitle>
+          <p style="color: orangered;"> Rs: {{product.Price}}.0</p>
+                        <div class="qty-selector1" >
+                          <!-- <ion-button fill="clear" (click)="DecreaseItem(i,suggestion.MenuId)" >-</ion-button>
+                          <ion-label>{{suggestion.ItemCount}}</ion-label>
+                          <ion-button fill="clear" (click)="IncreaseItem(i,suggestion.MenuId)"  >+</ion-button> -->
+
+
+                                </div>
+                                <ion-button class ="add-btn11" color="danger"  (click)="IncreaseItemOffer(i,product.MenuId)" style="height: 20px;--border-radius: 2px;">Add +</ion-button>
+                      </ion-card-content>
+                  </ion-card>
+
+
+
+
+                </ion-slide>
+
+
+              </ion-slides>
+              </div>
 
       <!-- <div class="table">
         <img src="assets\shop_specs.png">
@@ -147,7 +190,7 @@
               <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
             </ion-segment-button>
 
-            <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}}>
+            <ion-segment-button *ngFor="let menus of mainMenu;let j=index" value={{menus._id}} id={{menus._id}}>
               {{menus.MenuName}}
             </ion-segment-button>
 
@@ -393,7 +436,7 @@
 
         <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
 
-          <img src="assets\Grill.jpg">
+          <img src="{{product.ImageUrl}}">
 
             <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" >Add</ion-button>
             <div class="qty-selector-new" *ngIf="product.AvailableStatus && product.ItemCount">
@@ -452,16 +495,22 @@
 
 </ion-content>
 
+<div style="margin-bottom:20px;width: 100%; align-items: center;
+justify-content: center;display: flex;">
+
+<ion-button style="--border-radius: 20px;" color="danger"  (click)="presentPopover($event)">MENU</ion-button>
 
 
-<ion-footer *ngIf="showCart.length">
+</div>
+
+<ion-footer *ngIf="showCart.length" class="slide-in-bottom">
   <ion-toolbar (click)="ViewCart()">
     <!-- <ion-title>4 Items</ion-title> -->
 
     <ion-text class="title">{{showCart.length}} Items</ion-text>
     <ion-text class="description">from {{restaurantName1}}</ion-text>
 
-
+    <!-- <ion-spinner slot="end" name="dots" style="margin-right: 20px;"></ion-spinner> -->
     <ion-icon slot="end" name="cart"></ion-icon>
   </ion-toolbar>
 </ion-footer>

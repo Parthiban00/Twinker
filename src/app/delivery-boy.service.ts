@@ -10,12 +10,22 @@ export class DeliveryBoyService {
     return this.webService.get(`orderdetails/${data.ActiveYn}`)
 
   }
+
+  GetOrdersLocality(data:any){
+    return this.webService.get(`deliveryboy/orderdetails/${data.ActiveYn}/${data.Locality}`)
+
+  }
   GetAcceptedOrders(data:any){
     return this.webService.get(`orderdetails/${data.ActiveYn}/${data.UserId}/${data.DeleteYn}`)
   }
 
   GetFilteredOrders(data:any){
     return this.webService.get(`delivery/orderdetails/${data.ActiveYn}/${data.DeleteYn}/${data.CreatedDate}`)
+  }
+
+  GetDeliveryBoys(data:any){
+    return this.webService.get(`deliveryboys/${data.Locality}`)
+
   }
 }
 

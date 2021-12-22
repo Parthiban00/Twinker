@@ -1,3 +1,110 @@
+
+
+// ion-header{
+// //   ion-toolbar {
+// //     --background: linear-gradient(162deg, rgba(255, 255, 255, 0.8) 20%, rgba(255, 255, 255, 0.8) 100%), url('https://www.nexiga.com/geomarketing-blog/wp-content/uploads/2017/11/shutterstock_654668191_Parkhaus.jpg') bottom no-repeat;
+// // }
+// ion-toolbar {
+
+// }
+// }
+
+.product{
+  position: relative;
+  margin-top: 10px;
+  margin-left: 10px;
+  height: 240px;
+  width: 160px;
+  background-color: beige;
+
+}
+
+.menu{
+  width: 160px;
+  height: 120px;
+  position: absolute;
+  bottom: 0;
+  background-color: rgb(255, 255, 255);
+  padding-left: 5px;
+  padding-top: 5px;
+  font-size: 12px;
+
+
+
+
+}
+
+.qty-selector{
+  display: flex;
+  position: absolute;
+  bottom: 5px;
+
+  justify-content: center;
+  align-items: center;
+  background: #f6f6f6;
+  border-radius:2px;
+  margin-top:10px;
+  width:fit-content;
+  height: 25px;
+  margin-left: 35px;
+
+}
+
+.price{
+  margin-top: -10px;
+  color: orangered;
+}
+.rest-name{
+  padding: 2px 2px 2px 2px;
+  font-size: 12px;
+  color: #f6f6f6;
+  height: 20px;
+  width: fit-content;
+  position: absolute;
+  background-color: tomato;
+}
+ion-footer{
+
+  ion-toolbar{
+    --background:#f7714a;
+    --color:white;
+}
+.title{
+    display: flex;
+    margin-top: 0px;
+    margin-left: 10px;
+    font-size: 14px;
+
+
+}
+.description{
+    display: flex;
+    margin-top: 0px;
+    margin-left: 10px;
+    color:rgb(255, 255, 255);
+    font-size: 14px;
+
+
+
+}
+
+ion-icon{
+  height: 30px;
+  width: 30px;
+  margin-right: 20px;
+      }
+
+
+
+
+
+}
+.add-btn{
+  position: absolute;
+  bottom: 5px;
+  margin-left:45px;
+  margin-top:10px;
+}
 .ion-list{
   margin-top: 10px;
 
@@ -30,7 +137,7 @@ width: 70px;
 
 .img-not-present{
   position: absolute;
-
+left: 13px;
 bottom: 28px;
 --background:seagreen !important;
 --color:white;
@@ -52,5 +159,42 @@ width: 70px;
   height: 25px;
   font-size: 12px;
   // margin-left: 35px;
+
+}
+.qty-selector-new-notimage{
+  display: flex;
+  position: absolute;
+  bottom: 28px;
+  left: 12px;
+  justify-content: center;
+  align-items: center;
+  background: #f6f6f6;
+  border-radius:2px;
+  margin-top:10px;
+  width:fit-content;
+  height: 25px;
+  font-size: 12px;
+  // margin-left: 35px;
+
+}
+
+.ion-list{
+  margin-top: 10px;
+
+
+  .ion-card{
+
+    //position: relative;
+    margin-top: -10px;
+
+          ion-item{
+            ion-thumbnail{
+
+             position: relative;
+
+
+            }
+          }
+  }
 
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit,OnDestroy, HostListener } from '@angular/core';
 import {Router} from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import Orders from '../models/orders';
 import{OrdersService} from 'src/app/orders.service';
 import { Platform } from '@ionic/angular';
@@ -20,10 +20,14 @@ import BuddySlide from '../models/buddy-slide';
 import BookingSlide from '../models/booking-slide';
 import {DashboardService} from '../dashboard.service';
 import {OffersPage} from '../offers/offers.page';
-
+import  {SocketService} from '../socket.service';
 import { ModalController } from '@ionic/angular';
-
+import {CallNumber} from "@ionic-native/call-number/ngx";
 import {ChangeLocationPage} from '../change-location/change-location.page';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+
+
+
 
 
 @Component({
@@ -54,17 +58,56 @@ addSlide:AddSlide[];
 buddySlide:BuddySlide[];
 bookingSlide:BookingSlide[];
 itemTotal=0;
-  constructor(private dashboardService:DashboardService,public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+orderDetailsFromSocket=[];
+skeleton=[
 
+  {},
+  {},
+  {},
+  {},
+  {},
+  {}
+  ]
+  addskeleton=[
 
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+    ]
+    buddyskeleton=[
+
+      {},
+      {},
+      {},
+      {},
+      {},
+      {}
+      ]
+  constructor(private call:CallNumber,private plt:Platform,private localNotifications:LocalNotifications,private alertCtrl:AlertController,private socketService:SocketService ,private dashboardService:DashboardService,public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+
+this.plt.ready().then(()=>{
+  this.localNotifications.on('click').subscribe(res=>{
+
+  });
+  this.localNotifications.on('trigger').subscribe(res=>{
+
+  });
+  this.repeatingDaily();
+});
 
 
 
   }
   ngOnInit(): void {
 
+
+
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
     console.log('location'+this.location.address)
+
 
 
     // this.dashboardService.GetBookingSlide().subscribe((res)=>{
@@ -72,7 +115,23 @@ itemTotal=0;
     // })
   }
 
+scheduleNotifications(){
 
+}
+recurringNotifications(){
+
+}
+repeatingDaily(){
+this.localNotifications.schedule({
+  id:42,
+  title:'What would you like to eat...',
+  text:'Lets find your favorite menus from your favorite sopts...Tap to Order now...',
+  trigger:{every:{hour:1,minute:50}}
+});
+}
+getAll(){
+
+}
 
   slidesOptions={
 
@@ -88,7 +147,8 @@ itemTotal=0;
       this.router.navigate(['restaurant-owner-dashboard']);
     }
     else if(this.userType=='D'){
-      this.router.navigate(['delivery-partner-dashboard']);
+     this.router.navigate(['delivery-partner-dashboard']);
+    // this.router.navigate(['setup-location']);
     }
     else if(this.userType=='A'){
       this.router.navigate(['admin-dashboard']);
@@ -181,9 +241,16 @@ token:String;
    }
 
    ionViewWillEnter(){
-     console.log('1');
-    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');;
 
+
+     console.log('1');
+    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    //this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    var data={
+      room:this.location.locality,
+      user:'user'
+    }
+this.socketService.JoinRoom(data);
     var getCart={
       UserId:this.user[0]._id,
       Status:"Cart",
@@ -246,13 +313,29 @@ UserId:this.user[0]._id
 
 this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
   this.orderDetails=res as Orders[];
- // console.log(this.orderDetails);
+  console.log(this.orderDetails[0].DeliveryPartnerDetails.ImageUrl);
+ this.orderDetailsFromSocket[0]=this.orderDetails;
 
 console.log(this.orderDetails[0].DeliveryTime);
 
 
 
      });
+
+
+     this.socketService.GetEmitedAcceptedOrders().subscribe((data)=>{
+
+      this.orderDetailsFromSocket=[];
+      console.log("hi this sockert"+data);
+      //this.orderDetailsFromSocket1.push(data.data);
+      this.orderDetailsFromSocket.push(data.data);
+      console.log("orderDetailsFromSocket -----------"+JSON.stringify(this.orderDetailsFromSocket));
+
+      console.log("orderDetailsFromSocket1111111111111 -----------"+this.orderDetailsFromSocket[0].length);
+
+      //this.createAlert();
+
+      });
 
 
 
@@ -293,7 +376,7 @@ this.selectedLocation=res.data.address;
 
 localStorage.setItem('LocationAddress',JSON.stringify(res.data));
 this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-//this.ionViewWillEnter();
+this.ionViewWillEnter();
                   }
                   else{
                     console.log('resposnse null');
@@ -324,8 +407,15 @@ this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
               })
   }
   GoToBuddy(){
-    console.log("go to buddy");
-  //  this.router.navigate(['buddy']);
-  this.router.navigate(['products']);
+    // console.log("go to buddy");
+    // this.router.navigate(['buddy']);
+  //this.router.navigate(['products']);
   }
+  CalltoDeliveryBoy(mobileNo:any){
+    this.call.callNumber(mobileNo,true)  .then(res => console.log('Launched dialer!', res))
+    .catch(err => console.log('Error launching dialer', err));
+  }
+
 }
+
+

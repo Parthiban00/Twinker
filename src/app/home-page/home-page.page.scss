@@ -32,7 +32,7 @@ p{
   margin-left: 10px;
   height: 150px;
   width: 100px;
-  background-color: beige;
+ // background-color: beige;
 font-size: 12px;
 }
 .menu{
@@ -80,7 +80,7 @@ font-size: 12px;
 .container1{
   -webkit-animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 	        animation: slide-in-bottom 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-  height: 300px;
+  height: 380px;
   overflow-x: hidden;
   overflow-y: auto;
   width: 100%;
@@ -359,4 +359,237 @@ ion-col{
       }
     }
   }
+}
+
+
+
+// *********************************** //
+// AusPost Stepper | 2016
+// Author: iamtyce.com
+// *********************************** //
+
+$stepper-desktop-padding: 20px;
+$stepper-mobile-padding: 10px;
+$stepper-font-size: 13px;
+$stepper-color-done: #178A00;
+$stepper-color-current: #006DFF;
+$stepper-color-pending: #807370;
+$stepper-color-hover: #000;
+$stepper-divider-color: #E2DFDA;
+
+$font-size-base: 15px !default;
+
+// Breakpoints
+
+$screen-xsm: 400px / $font-size-base + 0em;
+$screen-sm: 720px / $font-size-base + 0em;
+$screen-lg: 960px;
+
+// Placeholder Styles
+
+body {
+  padding: 20px;
+  background: #F3F1EE;
+}
+
+.wrapper {
+  margin: 10px;
+  background: #fff;
+  border: 1px solid #dad0ca;
+  border-radius: 3px;
+  position:relative;
+
+  @media (min-width: $screen-sm) {
+    max-width: 300px;
+  }
+}
+
+// Stepper
+
+.stepper {
+  padding: $stepper-mobile-padding;
+  font-size: $stepper-font-size;
+
+  @media (min-width: $screen-sm) {
+    padding: $stepper-desktop-padding;
+  }
+
+  // List
+
+  &__list {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+
+    @media (min-width: $screen-sm) {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    // Items
+    &__item {
+      padding: 3px 5px;
+      text-align: center;
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      @media (min-width: $screen-sm) {
+        padding: 10px;
+        flex-direction: column;
+        flex: 1;
+      }
+
+      // background: #f6f6f6;
+
+      &:after {
+        content: "";
+        display: block;
+        position: absolute;
+        z-index: 2;
+
+        // Mobile only
+        // border-right: 2px dotted $stepper-divider-color;
+        // height: 20%;
+        // left: 16px;
+        // top: 31px;
+
+        // Tablet and desktop
+        @media (min-width: $screen-sm) {
+          width: calc(100% - 100px);
+          top: 28%;
+          left: calc(50% + 50px);
+          border-top: 2px dotted $stepper-divider-color;
+          // border-right: none;
+        }
+      }
+
+      // Done
+      &--done {
+        color: $stepper-color-done;
+        transition: all .1s;
+
+        &:after {
+          // border-right-style: solid;
+          // border-right-width: 1px;
+
+          @media (min-width: $screen-sm) {
+            border-top-style: solid;
+            border-top-width: 1px;
+            // border-right: none;
+          }
+        }
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+          // color: $stepper-color-hover;
+          cursor: pointer;
+        }
+      }
+
+      // Current
+      &--current {
+        color: $stepper-color-current;
+
+        // FIX
+        &:last-of-type,
+        &:only-of-type {
+          &:after {
+            height: 30%;
+          }
+        }
+      }
+
+      &:last-of-type {
+        &:after {
+          display: none;
+        }
+      }
+
+      // Pending
+      &--pending {
+        color: $stepper-color-pending;
+
+        &:after {
+          height: 30%;
+        }
+      }
+    }
+
+    &__title {
+      margin: 1px 0 0;
+
+      @media (min-width: $screen-sm) {
+        margin: 0;
+      }
+    }
+
+    // Icons
+    &__icon {
+      margin: 0 10px 0 0;
+      height: 2em;
+      width: 2em;
+
+      @media (min-width: $screen-sm) {
+        margin: 0 0 15px;
+      }
+
+      path {
+        fill: currentColor;
+      }
+      ellipse,
+      circle {
+        stroke: currentColor;
+      }
+    }
+  }
+}
+
+.s_color{
+--color:green !important;
+}
+
+
+.deliveryboy_main{
+//background-color: #178A00;
+height: 130px;
+width: 100px;
+position: absolute;
+right:10px;
+top:10px;
+
+.profile{
+  height: 80px;
+  width: 80px;
+  background-color: #dbdbdb;
+  border-radius: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  img{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+  }
+}
+p{
+  text-align: center;
+  margin-top: 2px;
+  font-weight: 500;
+}
+ion-button{
+  height: 20px;
+  width: 50px;
+  --border-radius:2px !important;
+display: block;
+margin-left: auto;
+margin-right: auto;
+font-size: 12px;
+--box-shadow: none !important;
+
+--background: seagreen !important;
+}
 }

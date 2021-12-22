@@ -21,13 +21,17 @@ import MainMenu from '../models/main-menu';
 import Product from '../models/products';
 import Coupons from '../models/coupons';
 import Register from '../models/register-user';
-
+import DeliveryCharges from '../models/delivery-charges';
+import  {SocketService} from '../socket.service';
 import { ModalController } from '@ionic/angular';
+import{DeliveryBoyService} from 'src/app/delivery-boy.service';
 import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.page';
 import {ChangeLocationPage} from '../change-location/change-location.page';
 import {OffersPage} from '../offers/offers.page';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+// import io from 'socket.io-client';
 
+// const socket=io("http://localhost:5000");
 declare var Razorpay:any;
 
 //import { AlertController } from '@ionic/angular';
@@ -42,6 +46,7 @@ export class CartPage  {
   productDetails:Product[]=[];
   products:Product[]=[];
   deliveryPartnerFee1:String;
+  deliveryCharges:DeliveryCharges[];
 totalAmount=0;
 totalAmount1;
 discount=0;
@@ -67,7 +72,33 @@ selectedLocation:any;
   getUser:Register[];
   offers:Offers[];
   toastMsg:string;
-  constructor( public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
+  locality;
+  deliveryBoyImage;
+  totalCompletedItems=0;
+  totalCompletedOrders=0;
+  totalCompletedAmount=0;
+  segment;
+  placedOrders:Orders[]=[];
+  orderDetailsFromSocket=[];
+  orderDetailsFromSocket1;
+  orderDetailsFromSocket11=[];
+  orderDetails:Orders[]=[];
+  orderDetails1:Orders[]=[];
+
+  itemDetails:any[]=[];
+  itemDetails1:any[]=[];
+  myDate="All";
+  deliveryBoys;
+  a=[];
+n=0;
+deliveryPartnerDetails=new Array;
+billDetials:any;
+currentUserId:any;
+deliveryBoyId;
+deliveryBoyName;
+deliveryBoyMobileNo;
+deliveryBoyType;
+  constructor(private deliveryService:DeliveryBoyService,private socketService:SocketService ,public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
 
@@ -113,6 +144,17 @@ time;
 
 
   ionViewWillEnter(){
+
+    // socket.emit('cartPageCheck',"cart page entered successfull");
+    // socket.on('orderPlaced',data=>{
+    //   console.log("response from socekt------- "+data);
+    // })
+//     var data={
+//       room:'twinker',
+//       user:'user'
+//     }
+// this.socketService.JoinRoom(data);
+
     // ---------------------------------------------------------------------getDate------------------------
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
@@ -154,10 +196,13 @@ this.couponApplied=false;
     }
 
 
+    this.GetDeliveryBoys();
 
-
-console.log("locationa ddress "+this.location.address);
+console.log("location address "+this.location.address);
 this.selectedLocation=this.location.address;
+this.locality=this.location.locality;
+console.log('locality '+this.location.locality)
+
 this.cartService.GetUserDetails(this.user[0]._id).subscribe((res)=>{
 this.getUser=res as Register[];
 console.log('get user for welcome offer '+this.getUser.length);
@@ -191,6 +236,8 @@ console.log("all coupons"+this.coupons[0]);
       this.cartItemsAll=res as Cart[];
       console.log(this.cartItemsAll);
 
+
+
 if(this.cartItemsAll.length==0){
 //this.dismiss();
 
@@ -206,44 +253,56 @@ var restaurantCredential={
 this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
   this.restaurantDetails=res as Restaurant[];
 this.Charges=this.restaurantDetails[0].Charges;
+console.log("restaurant type "+this.restaurantDetails[0].Type);
 
-
-
-
-if(this.location.lat==null || this.location.lat=="" || this.location.lat==undefined || this.location.lat==NaN){
-  this.geolocation.getCurrentPosition({
-
-
-
-    timeout:10000,
-    enableHighAccuracy:true
-  }).then((resp) => {
-
-    this.lat=resp.coords.latitude;
-    this.lon=resp.coords.longitude;
-
-    const getAddress= this.ReverseGeocoding(this.lat,this.lon);
-    this.selectedLocation=getAddress;
-
-   }).catch((error) => {
-     console.log('Error getting location', error);
-   });
-
-   setTimeout(() => {
-    const deliveryCharge=this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
-    console.log("delivery charges "+deliveryCharge);
-    this.DeliveryChargeCal(deliveryCharge);
-   }, 2000);
-
-
-
+var data={
+  type:this.cartItemsAll[0].Type
 }
+this.cartService.GetDeliveryChargeDetails(data).subscribe((res)=>{
+  this.deliveryCharges=res as DeliveryCharges[];
+  console.log("delivery charge "+typeof(this.deliveryCharges[0].PerKm));
 
-else{
   const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
   console.log("delivery charges "+deliveryCharge);
-  this.DeliveryChargeCal(deliveryCharge);
-}
+  this.DeliveryChargeCal(deliveryCharge,this.deliveryCharges);
+})
+
+
+
+// if(this.location.lat==null || this.location.lat=="" || this.location.lat==undefined || this.location.lat==NaN){
+//   this.geolocation.getCurrentPosition({
+
+
+
+//     timeout:10000,
+//     enableHighAccuracy:true
+//   }).then((resp) => {
+
+//     this.lat=resp.coords.latitude;
+//     this.lon=resp.coords.longitude;
+
+//     const getAddress= this.ReverseGeocoding(this.lat,this.lon);
+//     this.selectedLocation=getAddress;
+
+//    }).catch((error) => {
+//      console.log('Error getting location', error);
+//    });
+
+//    setTimeout(() => {
+//     const deliveryCharge=this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+//     console.log("delivery charges "+deliveryCharge);
+//     this.DeliveryChargeCal(deliveryCharge);
+//    }, 2000);
+
+
+
+// }
+
+// else{
+//   const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+//   console.log("delivery charges "+deliveryCharge);
+//   this.DeliveryChargeCal(deliveryCharge);
+// }
 
 
 
@@ -522,7 +581,7 @@ IncreaseCount(i:any){
 
 
 
-   var billDetials={
+   this. billDetials={
 
 
      UserId:this.user[0]._id,
@@ -550,7 +609,11 @@ DiscountDescritpion:this.discountDescription,
 DiscountCode:this.discountCode,
 Latitude:this.location.lat,
 Longitude:this.location.lon,
-DeliveryTime:this.restaurantDetails[0].DeliveryTime
+DeliveryTime:this.restaurantDetails[0].DeliveryTime,
+Locality:this.locality,
+ DeliveryPartnerDetails:{
+   UserId:this.deliveryBoyId,FirstName:this.deliveryBoyName,MobileNo:this.deliveryBoyMobileNo,UserType:this.deliveryBoyType,ImageUrl:this.deliveryBoyImage
+ }
 
 
    }
@@ -560,14 +623,19 @@ DeliveryTime:this.restaurantDetails[0].DeliveryTime
 
    //console.log(billDetials);
 
-     this.cartService.OrderDetails(billDetials).subscribe((res)=>{
+     this.cartService.OrderDetails(this.billDetials).subscribe((res)=>{
+      // socket.emit('orderPlaced',"orderPlaced successful");
 
       this.cartService.UpdateCartPlaced(updateCartPlaced).subscribe((res)=>{
 
        })
   this.dismiss();
   this.presentAlertConfirm();
-
+  var data={
+    room:this.locality,
+    user:'user'
+  }
+this.socketService.OrderPlaced(data);
 
    })
   }
@@ -604,17 +672,18 @@ console.log("distance d "+ d);
 
 
 // ---------------------------------------------------------------------------------delivery charge calc-------------------------
-DeliveryChargeCal(d){
+DeliveryChargeCal(d,deliveryChargeDetails:any){
 
   console.log("delivery carge cal entered "+d);
+  console.log("delivery charge cal with delivery charge details "+deliveryChargeDetails[0].MinimumDeliveryCharge);
 this.distanceKm=d;
 
   if(d>=3){
    // console.log("delivery carge cal entered "+d);
 
     console.log("distance d  >2"+ d);
-          this.deliveryPartnerFee=Math.round((d*7));
-          this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
+          this.deliveryPartnerFee=Math.round((d*deliveryChargeDetails[0].PerKm));
+          this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(1);
 
 
 
@@ -631,8 +700,8 @@ this.dismiss();
          else if(d<3){
           console.log("delivery carge cal entered 2 if "+d);
 
-          this.deliveryPartnerFee=20;
-          this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(2);
+          this.deliveryPartnerFee=deliveryChargeDetails[0].MinimumDeliveryCharge;
+          this.deliveryPartnerFee1=this.deliveryPartnerFee.toFixed(1);
 
           this.AmountWithCharges=Math.round(((this.itemAmount*(this.Charges/100))+this.itemAmount).toFixed(2));
           this.totalAmount=Math.round(parseFloat(this.AmountWithCharges)+this.deliveryPartnerFee);
@@ -867,7 +936,7 @@ this.presentActionSheet();
   }
 
   doRefresh(event) {
-   // this.ngOnInit();
+   // this.IningOnt();
    this.ionViewWillEnter();
 
     setTimeout(() => {
@@ -947,6 +1016,9 @@ this.presentActionSheet();
   async presentAlertConfirmtToPlace() {
      if(!this.restaurantDetails[0].AvailableStatus){
       this.presentAlertConfirm3();
+    }
+    else if(this.deliveryBoys.length<1){
+      this.presentAlertConfirm4();
     }
     else{
     const alert = await this.alertController.create({
@@ -1054,6 +1126,35 @@ this.presentActionSheet();
         await alert.present();
       }
 
+
+      async presentAlertConfirm4() {
+        //this.dismiss();
+            const alert = await this.alertController.create({
+              cssClass: 'my-custom-class',
+              header: 'Ooops!',
+              message: '<small>Sorry, All delivery boys are busy, Kindly try after some few minutes. Thank you</small>',
+              buttons: [
+
+               {
+
+                  text: 'Okay',
+                  handler: () => {
+                    console.log('Confirm Okay');
+
+                  this.ionViewWillEnter();
+
+                  }
+
+
+
+                }
+
+
+              ]
+            });
+
+            await alert.present();
+          }
 
   GetSuggestions(restaurantId:String){
 console.log("enter suggestions "+restaurantId);
@@ -1337,6 +1438,7 @@ component:DeliveryCustomisePage
                         localStorage.removeItem('LocationAddress');
 console.log('changed address '+res.data.address);
 this.selectedLocation=res.data.address;
+this.locality=res.data.locality;
 
 localStorage.setItem('LocationAddress',JSON.stringify(res.data));
 this.ionViewWillEnter();
@@ -1442,6 +1544,106 @@ rzp1.open();
       RemoveCoupon(){
         this.ionViewWillEnter();
       }
-}
+
+GetDeliveryBoys(){
+
+
+  var data1={
+    Locality:this.location.locality
+    }
+  console.log(this.segment);
+
+  this.totalCompletedOrders=0;
+  this.totalCompletedItems=0;
+  this.totalCompletedAmount=0;
+  this.orderDetails=[];
+  this.itemDetails=[];
+  this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+  this.currentUserId=this.user[0]._id;
+
+  this.deliveryPartnerDetails.push(this.user[0]);
+  console.log('current user  '+this.user[0]);
+
+
+
+  var getOrders={
+   ActiveYn:true,
+   Locality:this.location.locality
+
+  }
+
+  //  var getAcceptedOrders={
+  //    ActiveYn:true,
+  //    DeleteYn:false,
+  //    UserId:this.user[0]._id,
+  //  }
+
+  this.deliveryService.GetOrdersLocality(getOrders).subscribe((res)=>{
+    this.orderDetails=res as Orders[];
+    console.log("order details "+this.orderDetails[0]);
+    // this.orderDetailsFromSocket[0]=this.orderDetails;
+    this.orderDetailsFromSocket11[0]=this.orderDetails;
+
+
+    this.deliveryService.GetDeliveryBoys(data1).subscribe((res)=>{
+      this.deliveryBoys=res;
+      console.log("dlivery boys "+this.deliveryBoys.length)
+
+      if(this.deliveryBoys.length<=1){
+  // this.orderDetailsFromSocket[0]=this.orderDetailsFromSocket1[0];
+ // this.orderDetailsFromSocket[0]=this.orderDetailsFromSocket11[0];
+   this.deliveryBoyId=this.deliveryBoys[0]._id;
+ this.deliveryBoyName=this.deliveryBoys[0].FirstName;
+ this.deliveryBoyMobileNo=this.deliveryBoys[0].MobileNo;
+ this.deliveryBoyType=this.deliveryBoys[0].UserType;
+ this.deliveryBoyImage=this.deliveryBoys[0].ImageUrl;
+      }
+      else{
+        this.a=[];
+     //   console.log(this.orderDetailsFromSocket11[0][0].RestaurantName)
+  for(var i=0;i<this.deliveryBoys.length;i++){
+  for(var j=0;j<this.orderDetailsFromSocket11[0].length;j++){
+    if(this.orderDetailsFromSocket11[0][j].DeliveryPartnerStatus=="Accepted by Delivery Partner"){
+      console.log("accepted by delivery parterh ");
+  if(this.deliveryBoys[i]._id==this.orderDetailsFromSocket11[0][j].DeliveryPartnerDetails.UserId){
+    console.log("user id matched "+this.orderDetailsFromSocket11[0][j].DeliveryPartnerDetails.FirstName);
+  this.n+=1;
+
+  }
+  }
+
+  }
+  this.a.push(this.n);
+  this.n=0;
+  }
+  console.log("dafffffffffffffffffffffffffffffffff "+ this.a);
+  console.log(this.indexOfSmallest(this.a));
+
+this.deliveryBoyId=this.deliveryBoys[this.indexOfSmallest(this.a)]._id;
+this.deliveryBoyName=this.deliveryBoys[this.indexOfSmallest(this.a)].FirstName;
+this.deliveryBoyMobileNo=this.deliveryBoys[this.indexOfSmallest(this.a)].MobileNo;
+this.deliveryBoyType=this.deliveryBoys[this.indexOfSmallest(this.a)].UserType;
+this.deliveryBoyImage=this.deliveryBoys[this.indexOfSmallest(this.a)].ImageUrl;
+
+
+      }
+            })
+
+
+  })
+
+    }
+
+    indexOfSmallest(a){
+      var lowest=0;
+      for(var i=1;i<a.length;i++){
+        if(a[i]<a[lowest]){
+          lowest=i;
+        }
+      }
+      return lowest;
+    }
+  }
+
 
 

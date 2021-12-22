@@ -31,6 +31,10 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrdersAdminPipe } from './orders-admin.pipe';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
+import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
+//import { Vibration } from '@ionic-native/vibration/ngx';
+import { AudioManagement } from '@ionic-native/audio-management/ngx';
+import { NativeAudio } from '@ionic-native/native-audio/ngx';
 @NgModule({
   declarations: [AppComponent, OrdersAdminPipe],
   entryComponents: [],
@@ -38,8 +42,9 @@ import { Clipboard } from '@ionic-native/clipboard/ngx';
 imports: [MatSelectModule,MatListModule,BrowserModule, IonicModule.forRoot(), AppRoutingModule,HttpClientModule,FormsModule, BrowserAnimationsModule,MatExpansionModule,MatGridListModule,DeliveryCustomisePageModule,MatTimepickerModule],
   providers: [NativeGeocoder,Geolocation,HttpClientModule,HttpClient,FormsModule,ToastController,SplashScreen, AndroidPermissions,LocationAccuracy,MatDatepickerModule,Network,
     DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,MatTimepickerModule,CallNumber,Clipboard,
+    AudioManagement,NativeAudio,
 
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP,LocalNotifications],
   bootstrap: [AppComponent],
   // schemas: [
   //   CUSTOM_ELEMENTS_SCHEMA
