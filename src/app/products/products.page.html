@@ -22,8 +22,10 @@
   </div>
   <ion-item-group style="margin-top: 12px;" *ngFor="let list of restaurantDetails;let k=index" id={{list._id}}>
     <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->
+      <div style="height: 25px;" id={{list._id}}>
 
-      <ion-item-divider sticky >
+      </div>
+      <ion-item-divider sticky  >
          <div class="start"></div>
       <div class="type" id={{list._id}}>
 
@@ -32,7 +34,7 @@
 
 
       </ion-item-divider>
-      <div class="ion-list">
+      <div class="ion-list" style="margin-top: 30px;">
 
 
           <div  *ngFor="let products of products;let i=index">

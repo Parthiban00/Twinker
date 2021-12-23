@@ -35,7 +35,7 @@
     </div>
   </ion-card> -->
 
-  <div class="ad-slides" *ngIf="!productDetails.length">
+  <!-- <div class="ad-slides" *ngIf="!productDetails.length">
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
        <ion-slide style="padding:0px;width: fit-content;">
@@ -77,7 +77,7 @@
 
 
     </ion-slides>
-    </div>
+    </div> -->
 
 
 
@@ -90,7 +90,22 @@
 
 
 
-    <ion-content [fullscreen]="true" >
+    <ion-content  [fullscreen]="true" >
+
+      <ion-item-group style="margin-top: 0px;" *ngFor="let list of mainMenu;let j=index" >
+        <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->
+<div style="height: 25px;" id={{list._id}}>
+
+</div>
+          <ion-item-divider sticky >
+             <div class="start" id=triangle-left></div>
+          <div class="type" >
+
+        <P style="font-weight: 500;">{{list.MenuName}}</P>
+          </div>
+
+
+          </ion-item-divider>
       <!-- <div class="ad-slides">
 
         <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}" class="ion-margin-top">
@@ -112,7 +127,7 @@
 
         </ion-slides>
         </div> -->
-
+<!--
 
         <div class="suggestions">
 
@@ -126,20 +141,18 @@
 
               <img src="{{product.ImageUrl}}">
             </div>
-            <!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
                     </ion-card-header>
                     <ion-card-content class="ion-text-left">
 
-                      <!-- <ion-card-title class="ion-margin-bottom" style="text-align: center;">Restaurants</ion-card-title>-->
+
 
 
                         <ion-card-subtitle style="font-size: 12px;">{{product.ProductName}}</ion-card-subtitle>
           <p style="color: orangered;"> Rs: {{product.Price}}.0</p>
                         <div class="qty-selector1" >
-                          <!-- <ion-button fill="clear" (click)="DecreaseItem(i,suggestion.MenuId)" >-</ion-button>
-                          <ion-label>{{suggestion.ItemCount}}</ion-label>
-                          <ion-button fill="clear" (click)="IncreaseItem(i,suggestion.MenuId)"  >+</ion-button> -->
+
 
 
                                 </div>
@@ -154,33 +167,15 @@
 
 
               </ion-slides>
-              </div>
+              </div> -->
 
-      <!-- <div class="table">
-        <img src="assets\shop_specs.png">
-        <div class="shop-specs">
-          <ion-grid>
-            <ion-row>
-              <ion-col size="4" size-sm>
-                Rating: 4.5
-              </ion-col>
-              <ion-col size="4" size-sm>
-                Taste: 4.5
-              </ion-col>
-              <ion-col size="4" size-sm>
-                <ion-icon name="time-sharp"></ion-icon>&nbsp;20-30 mins
-              </ion-col>
 
-            </ion-row>
-            </ion-grid>
-        </div>
-        </div> -->
-      <div >
-        <!-- <div   class="navbar" *ngIf="isSearch"> -->
+      <div style="margin-top: 30px;" >
 
 
 
-          <ion-item-divider color="light" sticky>
+
+          <!-- <ion-item-divider color="light" sticky>
 
           <ion-segment  scrollable [(ngModel)]="menu" color="danger" (ionChange)="segmentChanged($event)">
             <ion-segment-button *ngIf="!mainMenu.length">
@@ -195,184 +190,22 @@
             </ion-segment-button>
 
           </ion-segment>
-</ion-item-divider>
+</ion-item-divider> -->
 
-        <!-- <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
 
-          <ion-slide  *ngFor="let menus of mainMenu"> -->
-
-      <!-- <div class="main" *ngIf="isSearch"> -->
-        <div class="main" *ngIf="isSearch">
+        <!-- <div class="main" *ngIf="isSearch">
 
       <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
         <ion-refresher-content>
     </ion-refresher-content>
     </ion-refresher>
 
-      <!-- <div class="todays-offers">
-
-        <div *ngFor="let product of productDetails;let i=index">
-
-          <div class="cart-items">
-        <ion-card *ngIf="product.Offer">
-          <div class="offers" *ngIf="product.Offer">
-            -&nbsp;{{product.Offer}}% Off
-            </div>
-          <ion-card-content>
-            <div class="item-img">
-              <img src="assets\chicken_biryani.jpg" />
-            </div>
-
-            <div class="item-info">
-              <p>{{product.ProductName}}</p>
-            <p>{{product.Description}}</p>
-            <div class="price">
-            <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
-               <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
-            <div class="qty-selector" >
-      <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
-      <ion-label>{{product.ItemCount}}</ion-label>
-      <ion-button fill="clear" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
-
-            </div>
-            <ion-icon  name="heart-outline" size="medium" class="heart"></ion-icon>
-
-            </div>
-
-          </ion-card-content>
-          </ion-card>
-          </div>
-        </div>
-
-      </div> -->
-
-
-
-<!-- --------------------------------------------------------------------edit -->
-
-  <!-- <div *ngFor="let product of products;let i=index">
-
-    <div class="cart-items">
-
-    <ion-card *ngIf="product.Offer">
-
-    <div class="offers" *ngIf="product.Offer">
-      -&nbsp;{{product.Offer}}% Off
-      </div>
-    <ion-card-content>
-      <div class="item-img">
-        <img src="{{product.ImageUrl}}" />
-      </div>
-
-      <div class="item-info">
-        <p>{{product.ProductName}}</p>
-      <p>{{product.Description}}</p>
-      <div class="price">
-      <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
-         <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
-      <div class="qty-selector" >
-<ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
-<ion-label>{{product.ItemCount}}</ion-label>
-<ion-button fill="clear" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
-
-      </div>
-      <ion-icon  name="heart-outline" size="medium" class="heart"></ion-icon>
-
-      </div>
-
-    </ion-card-content>
-    </ion-card>
-    </div>
-  </div> -->
-
-
-<!--
-  <div *ngFor="let product of products;let i=index">
-    <div class="cart-items">
-  <ion-card *ngIf="!product.Offer">
-    <div class="offers" *ngIf="product.Offer">
-      -&nbsp;{{product.Offer}}% Off
-      </div>
-    <ion-card-content>
-      <div class="item-img">
-
-        <img src="{{product.ImageUrl}}"/>
-      </div>
-
-      <div class="item-info">
-        <p>{{product.ProductName}}</p>
-      <p>{{product.Description}}</p>
-      <div class="price">
-      <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
-         <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
-      <div class="qty-selector" *ngIf="product.AvailableStatus">
-<ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
-<ion-label>{{product.ItemCount}}</ion-label>
-<ion-button fill="clear" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
-
-      </div>
-      <div  *ngIf="!product.AvailableStatus">
-        <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
-      </div>
-      <ion-icon  name="heart-outline" size="medium" class="heart"></ion-icon>
-
-      </div>
-
-    </ion-card-content>
-    </ion-card>
-    </div>
-  </div> -->
-</div>
-
-
-<!-- <div class="search-div" *ngIf="!isSearch" >
-
-  <div class="search">
-
-    <ion-searchbar #search debounce="500" [(ngModel)]="searchMenu" (ionChange)="SearchChange($event)"></ion-searchbar>
-
-
-</div>
-
-<div *ngFor="let product of products;let i=index">
-  <div class="cart-items">
-<ion-card *ngIf="!product.Offer">
-  <div class="offers" *ngIf="product.Offer">
-    -&nbsp;{{product.Offer}}% Off
-    </div>
-  <ion-card-content>
-    <div class="item-img">
-      <img src="assets/menu.jpg" />
-    </div>
-
-    <div class="item-info">
-      <p>{{product.ProductName}}</p>
-    <p>{{product.Description}}</p>
-    <div class="price">
-    <p [ngClass]="product.Offer?'offer-price':''">Rs.{{product.Price}}.0</p>
-       <p *ngIf="product.Offer">Rs.{{product.OfferPrice}}.0</p></div>
-    <div class="qty-selector" >
-<ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount">-</ion-button>
-<ion-label>{{product.ItemCount}}</ion-label>
-<ion-button fill="clear" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
-
-    </div>
-    <ion-icon  name="heart-outline" size="medium" class="heart"></ion-icon>
-
-    </div>
-
-  </ion-card-content>
-  </ion-card>
-  </div>
-</div>
-
-</div> -->
-
+    </div> -->
 
 
 <ion-row *ngIf="!productDetails.length">
   <ion-col *ngFor="let dummy of skeleton" style="padding: 0px;"  >
-    <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+
 <div class="product" >
 
 
@@ -392,9 +225,10 @@
 </ion-col>
 </ion-row>
 
-<ion-row *ngIf="ViewType=='Grid View'">
-  <ion-col style="padding: 0px;" *ngFor="let product of products;let i=index">
-    <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+<ion-row *ngIf="list.ViewType=='Grid View'">
+  <div *ngFor="let product of productDetails;let i=index">
+  <ion-col style="padding: 0px;" *ngIf="product.MenuId==list._id">
+
 <div class="product" >
 
   <img src="{{product.ImageUrl}}">
@@ -412,27 +246,29 @@
 <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
 </div>
 <div  class="add-btn">
-<ion-button color="danger" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px">Add</ion-button>
+<ion-button  *ngIf="!product.ItemCount && product.AvailableStatus" color="danger" (click)="IncreaseItem(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px;--box-shadow: none !important; height: 25px;width: 60px;">Add</ion-button>
 </div>
 <div  *ngIf="!product.AvailableStatus">
   <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
 </div>
   </div>
 </div>
-</ion-col>
 
+
+</ion-col>
+</div>
 
   </ion-row>
 
 
-  <div class="ion-list" *ngIf="ViewType=='List View'">
+  <div class="ion-list"  *ngIf="list.ViewType=='List View'">
 
-    <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
-      <div >
-      <ion-list style="margin-top: -5px;" lines="none"  *ngFor="let product of products;let i=index">
+
+      <div *ngFor="let product of productDetails;let i=index" style="margin-top: 20px;">
+      <ion-list style="margin-top: -5px;" lines="none" *ngIf="product.MenuId==list._id" >
 
   <ion-card class="ion-card" style="border-radius:0px;" >
-      <ion-item >
+      <ion-item  >
 
         <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
 
@@ -468,37 +304,25 @@
         <div  *ngIf="!product.AvailableStatus">
           <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
         </div>
-          <!-- <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
-          <p style="font-size: 12px;margin-top: -5px;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km | 20-35 mins </p> -->
+
         </ion-label>
       </ion-item>
 
     </ion-card>
+
       </ion-list>
 
     </div>
     </div>
-  <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
-    <ion-fab-button  >
-      <ion-icon name="filter"></ion-icon>
-    </ion-fab-button>
-     <ion-fab-list side="top">
-      <ion-fab-button><ion-icon name="search" (click)="SearchMenu()"></ion-icon></ion-fab-button>
-      <ion-fab-button><ion-icon name="list" (click)="CancelSearch()"></ion-icon></ion-fab-button>
 
-
-    </ion-fab-list>
-  </ion-fab> -->
-  <!-- </ion-slide>
-  </ion-slides> -->
   </div>
+  </ion-item-group>
 
 </ion-content>
-
-<div style="margin-bottom:20px;width: 100%; align-items: center;
+<div style="margin-bottom:20px; align-items: center;
 justify-content: center;display: flex;">
 
-<ion-button style="--border-radius: 20px;" color="danger"  (click)="presentPopover($event)">MENU</ion-button>
+<ion-button style="--border-radius: 20px; --background:rgb(31, 29, 41)"  (click)="presentPopover($event)">BROWSE MENUS</ion-button>
 
 
 </div>

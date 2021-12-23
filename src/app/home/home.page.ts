@@ -57,7 +57,7 @@ getData:any;
   isLoading = false;
 restaurantDetails:Restaurant[]=[];
 isToggle:boolean;
-category:Category[];
+category:Category[]=[];
 location;
 cartItemsAll:Cart[]=[];
 shopCategory:ShopCategory[];
@@ -71,8 +71,8 @@ deliveryCharges:DeliveryCharges[];
 type:string;
 currentTime1;
 showRestaurants=true;
-specialOffers;
-specificCategory:SpecificCategory[];
+specialOffers:SpecialOffers[]=[];
+specificCategory:SpecificCategory[]=[];
 skeleton=[
 
 {},

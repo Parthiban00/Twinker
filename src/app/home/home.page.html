@@ -58,13 +58,17 @@
 
 
 <div  *ngIf="showRestaurants">
-  <div class="slide-items1" *ngIf="specialOffers">
 
+  <div class="slide-items1" *ngIf="specialOffers.length">
 
+    <div class="type" style="margin-left: 5px;margin-top:10px">
+
+      <P >Today's Deals &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
+        </div>
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
       <ion-slide class="slide-in-top"  *ngFor="let offers of specialOffers" (click)="GoToRestaurant(offers.RestaurantName,offers.RestaurantId,offers.MenuId,offers.Type)" style="padding:0px;width: fit-content;">
-        <ion-card  style="height: 150px;border-radius:0px">
+        <ion-card  style="height: 120px;border-radius:0px">
 
          <div class="menu-name">
           <!-- {{list.Category}} -->
@@ -85,7 +89,10 @@
 
 
   <div class="slide-items" >
+    <div class="type" style="margin-left: 5px;margin-top:5px" *ngIf="category.length" >
 
+      <P >Best Offers &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
+        </div>
     <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
       <ion-slide class="swing-in-top-fwd"  style="padding:0px;width: fit-content;" *ngFor="let list of category">
         <ion-card  (click)="Products(list.RestaurantName,list.RestaurantId,list.Type);" style="height: 150px;border-radius:0px">
@@ -106,7 +113,10 @@
 
 
   <div class="slide-items2" >
+    <div class="type" style="margin-left: 5px;margin-top:5px" *ngIf="specificCategory.length" >
 
+      <P >Find for yours &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
+        </div>
     <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
       <ion-slide class="slide-in-fwd-center" style="padding:0px;width: fit-content;display:inline-block" *ngFor="let list of specificCategory">
         <div>

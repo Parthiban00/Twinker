@@ -1,3 +1,8 @@
+
+// ion-content {
+//   --offset-top: 0 !important;
+// }
+
 ion-slides{
 
 
@@ -231,6 +236,7 @@ border-radius: 2px;
   bottom: 5px;
   margin-left:45px;
   margin-top:10px;
+
 }
 
 .price{
@@ -443,4 +449,13 @@ position: relative;
 
      bottom: 15px;
      margin-left: 20px;
+    }
+
+
+    #triangle-left {
+       width: 0;
+       height: 0;
+      border-top: 7px solid transparent;
+      border-right: 14px solid rgb(81, 110, 206);
+      border-bottom: 7px solid transparent;margin-top:-12px;margin-right:10px
     }

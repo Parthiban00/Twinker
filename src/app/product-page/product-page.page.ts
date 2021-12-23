@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Router} from '@angular/router';
 import{MainMenuService} from 'src/app/main-menu.service';
-import { AlertController, IonSegment } from '@ionic/angular';
+import { AlertController, IonContent, IonSegment } from '@ionic/angular';
 import{ProductsService} from 'src/app/products.service';
 import MainMenu from '../models/main-menu';
 import Product from '../models/products';
@@ -21,6 +21,7 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 })
 export class ProductPagePage implements OnInit {
   @ViewChild('search') search : any;
+  @ViewChild(IonContent) content: IonContent;
   @ViewChild(IonSegment) segment: IonSegment;
 completedCount=0;
   selectedMenuName:String="";
@@ -44,6 +45,9 @@ completedCount=0;
   searchedItem: any;
   user:any;
   ViewType;
+behaviour="start";
+block="smooth";
+parthi=true;
   skeleton=[
 
     {},
@@ -292,15 +296,15 @@ if(ev.detail.value==this.mainMenu[j]._id){
 
 
 console.log("dsfasdfasf"+i);
-  this.products[i].ItemCount=this.products[i].ItemCount+1;
-   if(this.products[i].Offer){
-   this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
-   this.products[i].ActualAmount=this.products[i].OfferPrice*this.products[i].ItemCount;
+  this.productDetails[i].ItemCount=this.productDetails[i].ItemCount+1;
+   if(this.productDetails[i].Offer){
+   this.productDetails[i].Amount=this.productDetails[i].OfferPrice*this.productDetails[i].ItemCount;
+   this.productDetails[i].ActualAmount=this.productDetails[i].OfferPrice*this.productDetails[i].ItemCount;
 
    }
    else{
-    this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
-    this.products[i].ActualAmount=this.products[i].Price*this.products[i].ItemCount;
+    this.productDetails[i].Amount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
+    this.productDetails[i].ActualAmount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
    }
 
    var addCartItems={
@@ -309,12 +313,12 @@ console.log("dsfasdfasf"+i);
     RestaurantName:this.whichRestaurant,
     MenuId:menuId,
     MenuName:this.selectedMenuName,
-    ProductId:this.products[i]._id,
-    ProductName:this.products[i].ProductName,
-    ActualPrice:this.products[i].Price,
-    Price:this.products[i].Price,
-    ItemCount:this.products[i].ItemCount,
-    Amount:this.products[i].Amount,
+    ProductId:this.productDetails[i]._id,
+    ProductName:this.productDetails[i].ProductName,
+    ActualPrice:this.productDetails[i].Price,
+    Price:this.productDetails[i].Price,
+    ItemCount:this.productDetails[i].ItemCount,
+    Amount:this.productDetails[i].Amount,
     UserId:this.user[0]._id,
     UserName:this.user[0].FirstName,
     MobileNo:this.user[0].MobileNo,
@@ -324,11 +328,11 @@ console.log("dsfasdfasf"+i);
     Status:"Cart",
     ActiveYn:true,
     DeleteYn:false,
-    Offer:this.products[i].Offer,
-    OfferDescription:this.products[i].OfferDescription,
-    Commission:this.products[i].Commission,
-    ActualAmount:this.products[i].ActualAmount,
-    Description:this.products[i].Description,
+    Offer:this.productDetails[i].Offer,
+    OfferDescription:this.productDetails[i].OfferDescription,
+    Commission:this.productDetails[i].Commission,
+    ActualAmount:this.productDetails[i].ActualAmount,
+    Description:this.productDetails[i].Description,
     Type:this.type
 
 
@@ -336,14 +340,14 @@ console.log("dsfasdfasf"+i);
 
    }
 
-   if(this.products[i].Offer){
-    addCartItems.Price=this.products[i].OfferPrice;
+   if(this.productDetails[i].Offer){
+    addCartItems.Price=this.productDetails[i].OfferPrice;
       }
 
    var getCart={
      UserId:this.user[0]._id,
     MenuId:menuId,
-    ProductId:this.products[i]._id,
+    ProductId:this.productDetails[i]._id,
      Status:"Cart",
      ActiveYn:true
    }
@@ -610,14 +614,14 @@ this.dismiss();
 
  DecreaseItem(i:any,menuId:any){
 this.present();
-  this.products[i].ItemCount=this.products[i].ItemCount-1;
-  if(this.products[i].Offer){
-    this.products[i].Amount=this.products[i].OfferPrice*this.products[i].ItemCount;
-    this.products[i].ActualAmount=this.products[i].OfferPrice*this.products[i].ItemCount;
+  this.productDetails[i].ItemCount=this.productDetails[i].ItemCount-1;
+  if(this.productDetails[i].Offer){
+    this.productDetails[i].Amount=this.productDetails[i].OfferPrice*this.productDetails[i].ItemCount;
+    this.productDetails[i].ActualAmount=this.productDetails[i].OfferPrice*this.productDetails[i].ItemCount;
     }
     else{
-     this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
-     this.products[i].ActualAmount=this.products[i].Price*this.products[i].ItemCount;
+     this.productDetails[i].Amount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
+     this.productDetails[i].ActualAmount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
     }
 
   let date: Date = new Date();
@@ -627,11 +631,11 @@ this.present();
     RestaurantName:this.whichRestaurant,
     MenuId:menuId,
     MenuName:this.selectedMenuName,
-    ProductId:this.products[i]._id,
-    ProductName:this.products[i].ProductName,
-    Price:this.products[i].Price,
-    ItemCount:this.products[i].ItemCount,
-    Amount:this.products[i].Amount,
+    ProductId:this.productDetails[i]._id,
+    ProductName:this.productDetails[i].ProductName,
+    Price:this.productDetails[i].Price,
+    ItemCount:this.productDetails[i].ItemCount,
+    Amount:this.productDetails[i].Amount,
     UserId:this.user[0]._id,
     UserName:this.user[0].FirstName,
     MobileNo:this.user[0].MobileNo,
@@ -641,20 +645,20 @@ this.present();
     Status:"Cart",
     ActiveYn:true,
     DeleteYn:false,
-    ActualPrice:this.products[i].Price,
-    Offer:this.products[i].Offer,
-    OfferDescription:this.products[i].OfferDescription,
-    Commission:this.products[i].Commission,
-    ActualAmount:this.products[i].ActualAmount,
-    Description:this.products[i].Description,
+    ActualPrice:this.productDetails[i].Price,
+    Offer:this.productDetails[i].Offer,
+    OfferDescription:this.productDetails[i].OfferDescription,
+    Commission:this.productDetails[i].Commission,
+    ActualAmount:this.productDetails[i].ActualAmount,
+    Description:this.productDetails[i].Description,
    }
 
-   if(this.products[i].Offer){
-    addCartItems.Price=this.products[i].OfferPrice;
+   if(this.productDetails[i].Offer){
+    addCartItems.Price=this.productDetails[i].OfferPrice;
       }
 
 
-if(this.products[i].ItemCount>0){
+if(this.productDetails[i].ItemCount>0){
 
   this.cartService.UpdateCart(addCartItems).subscribe((res)=>{
     this.cartItems=res as Cart[];
@@ -662,7 +666,7 @@ if(this.products[i].ItemCount>0){
     this.getCartAll();
   });
 }
-else if(this.products[i].ItemCount==0){
+else if(this.productDetails[i].ItemCount==0){
 
   console.log('item count 0');
 
@@ -832,7 +836,7 @@ async presentPopover(ev: any) {
 
   popover.onDidDismiss().then((data:any)=>{
 console.log("from popover data  "+data.data.fromPopover);
-//this.scrollFn(data.data.fromPopover);
+this.scrollFn(data.data.fromPopover);
 this.menu=data.data.fromPopover;
   })
   await popover.present();
@@ -841,20 +845,20 @@ this.menu=data.data.fromPopover;
   console.log('onDidDismiss resolved with role', role);
 }
 
+
+
 scrollFn(anchor: string): void{
   console.log("hi scroll"+anchor);
+  this.parthi=false;
 //   this._vps.scrollToAnchor(anchor);
 // let arr=this.lists.nativeElement.children;
 // let item=arr[anchor];
 // item.scrollIntoView({behaviour:'smooth',block:'start'});
   //this.content.scrollX(0, , 4000)
- // let y = document.getElementById(anchor).offsetTop;
-     //   this.segment.
-      document.getElementById(anchor).scrollIntoView({
-          behavior: 'smooth',
-          block: 'center',
-          inline: 'center'
-        });
+  let y = document.getElementById(anchor).offsetTop;
+        this.content.scrollToPoint(0,y,1000);
+
+
 }
 }
 
