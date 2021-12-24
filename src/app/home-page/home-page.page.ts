@@ -250,6 +250,9 @@ token:String;
       room:this.location.locality,
       user:'user'
     }
+    var data1={
+      locality:this.location.locality
+    }
 this.socketService.JoinRoom(data);
     var getCart={
       UserId:this.user[0]._id,
@@ -273,10 +276,10 @@ this.socketService.JoinRoom(data);
       console.log(this.mainCategory);
     })
 
-    this.dashboardService.GetAddSlide().subscribe((res)=>{
+    this.dashboardService.GetAddSlide(data1).subscribe((res)=>{
       this.addSlide=res as AddSlide[];
     })
-    this.dashboardService.GetBuddySlide().subscribe((res)=>{
+    this.dashboardService.GetBuddySlide(data1).subscribe((res)=>{
       this.buddySlide=res as BuddySlide[];
     })
 this.currentUrl=this.router.url;

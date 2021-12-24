@@ -196,6 +196,8 @@ this.couponApplied=false;
     }
 
 
+
+
     this.GetDeliveryBoys();
 
 console.log("location address "+this.location.address);
@@ -203,12 +205,16 @@ this.selectedLocation=this.location.address;
 this.locality=this.location.locality;
 console.log('locality '+this.location.locality)
 
+var data={
+Locality:this.locality
+}
+
 this.cartService.GetUserDetails(this.user[0]._id).subscribe((res)=>{
 this.getUser=res as Register[];
 console.log('get user for welcome offer '+this.getUser.length);
 })
 
-this.cartService.GetOffers().subscribe((res)=>{
+this.cartService.GetOffers(data).subscribe((res)=>{
   this.offers=res as Offers[];
   console.log("offers "+this.offers[1].Code);
 })

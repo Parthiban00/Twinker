@@ -5,16 +5,16 @@
 </ion-header> -->
 
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
+  <ion-toolbar  no-border>
       <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button color="primary"></ion-menu-button>
       </ion-buttons>
     <ion-title>
       Cart
     </ion-title>
      <ion-buttons slot="end">
       <ion-button (click)="RedirectToHome()">
-      <ion-icon name="home"></ion-icon>
+      <ion-icon color="primary" name="home"></ion-icon>
       </ion-button>
           </ion-buttons>
   </ion-toolbar>
@@ -30,7 +30,7 @@
     {{restaurantName}}<br>
 
    <i> {{cartItemsAll.length}} items</i>
-   <ion-button color="tertiary" (click)="OpenOffers()">Offers</ion-button>
+   <ion-button color="tertiary" (click)="OpenOffers()">Coupons</ion-button>
   </div>
 
   </div>
@@ -38,7 +38,7 @@
 <div *ngIf="cartItemsAll.length">
   <ion-header>
 <ion-toolbar>
-  <ion-segment [(ngModel)]="default" color="primary" (ionChange)="segmentChanged($event)">
+  <ion-segment [(ngModel)]="default" color="danger" (ionChange)="segmentChanged($event)">
 <ion-segment-button value="Delivery">
   <ion-label>Delivery</ion-label>
   </ion-segment-button>
@@ -120,12 +120,12 @@
 
     <div class="suggestions" *ngIf="products.length">
 
-<p style="margin-left: 5px;color: orangered;font-weight: 500; font-size: small;">Suggestions.. Must Try...</p>
+<p style="margin-left: 5px;font-weight: 500; font-size: small;">Suggestions.. Must Try...</p>
       <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
         <ion-slide style="padding:0px;width: fit-content;border-radius: 0px;" *ngFor="let suggestion of products;let i=index" >
 
         <ion-card  style="border-radius: 0px !important ;">
-          <ion-card-header>
+          <ion-card-header *ngIf="suggestion.ImageUrl">
   <div class="main" >
 
     <img src="{{suggestion.ImageUrl}}">
@@ -267,7 +267,7 @@
     <ion-text class="description">Amount Rs:{{totalAmount1}}</ion-text>
 
 
-    <ion-button  slot="end" (click)="presentAlertConfirmtToPlace()" >PLACE ORDER</ion-button>
+     <ion-button  slot="end" (click)="presentAlertConfirmtToPlace()" >PLACE ORDER</ion-button>
     <!-- <ion-button  slot="end" (click)="RedirectToPayment()" >PROCEED TO PAY</ion-button> -->
     <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
   </ion-toolbar>

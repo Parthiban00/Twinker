@@ -110,7 +110,7 @@ skeleton=[
   ionViewWillEnter(){
     this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-StatusBar.setBackgroundColor({color:'f7714a'});
+//StatusBar.setBackgroundColor({color:'ffffff'});
    // this.dismiss();
 
    this.searchedItem=[];
@@ -188,7 +188,8 @@ this.searchHotel="";
 
 var getRest={
 ActiveYn:true,
-Type:this.type
+Type:this.type,
+Locality:this.location.locality
 }
 this.restaurantService.GetCategory(getRest).subscribe((res)=>{
   this.shopCategory=res as ShopCategory[];

@@ -198,3 +198,11 @@ width: 70px;
   }
 
 }
+
+#triangle-left {
+  width: 0;
+  height: 0;
+ border-top: 7px solid transparent;
+ border-right: 14px solid rgb(81, 110, 206);
+ border-bottom: 7px solid transparent;margin-top:-12px;margin-right:10px
+}

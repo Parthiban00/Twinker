@@ -118,10 +118,7 @@ const routes: Routes = [
     loadChildren: () => import('./orders-delivery-partner/orders-delivery-partner.module').then( m => m.OrdersDeliveryPartnerPageModule),
     canActivate:[AuthenticationGuard]
   },
-  {
-    path: 'splash-screen',
-    loadChildren: () => import('./splash-screen/splash-screen.module').then( m => m.SplashScreenPageModule)
-  },
+
   {
     path: 'otp-verification/:mobileNo/:firstName/:userType/:otpType',
     loadChildren: () => import('./otp-verification/otp-verification.module').then( m => m.OtpVerificationPageModule)
@@ -200,10 +197,8 @@ const routes: Routes = [
     path: 'contact-us',
     loadChildren: () => import('./contact-us/contact-us.module').then( m => m.ContactUsPageModule)
   },
-  {
-    path: 'setup-location',
-    loadChildren: () => import('./setup-location/setup-location.module').then( m => m.SetupLocationPageModule)
-  },
+
+
 
 
 

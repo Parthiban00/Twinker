@@ -9,6 +9,7 @@ import { Platform } from '@ionic/angular';
 import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
+import {StatusBar} from "@capacitor/status-bar"
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 declare var google;
 @Component({
@@ -33,7 +34,7 @@ export class AppComponent {
   constructor(private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
 
     this.splashScreen.hide();
-
+    StatusBar.setBackgroundColor({color:'ffffff'});
     //localStorage.removeItem('LocationAddress');
   //  this.geocoder = new google.maps.Geocoder();
   this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');

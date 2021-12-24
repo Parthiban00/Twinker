@@ -42,6 +42,7 @@ export class ProductsPage implements OnInit {
   removeCart;
   specificCategory:SpecificCategory[];
   bannerImage;
+  location;
 
   @ViewChild(IonContent) content: IonContent;
   constructor(public popoverController: PopoverController,private restaurantService:RestaurantsService,private categoriesService:CategoriesService,private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) { }
@@ -55,12 +56,13 @@ this.getCartAll();
   this.category=this.activatedRouter.snapshot.params.category;
   this.type=this.activateRoute.snapshot.params.type;
   console.log(this.category.toLocaleLowerCase);
-
+  this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 
   var data={
     Category:this.category,
     ActiveYn:true,
     Type:this.type
+
   }
 
   this.categoriesService.GetSpecificCategory(data).subscribe((res)=>{
@@ -77,7 +79,8 @@ this.categoriesService.GetCategoryProducts(data).subscribe((res)=>{
 
 var getRest={
   ActiveYn:true,
-  Type:this.type
+  Type:this.type,
+  Locality:this.location.locality
   }
 
   this.restaurantService.GetRestaurants1(getRest).subscribe((res)=>{
@@ -125,7 +128,7 @@ console.log("dsfasdfasf"+i);
     RestaurantId:restId,
     RestaurantName:restName,
     MenuId:menuId,
-
+    MenuName:"",
     ProductId:this.products[i]._id,
     ProductName:this.products[i].ProductName,
     ActualPrice:this.products[i].Price,
@@ -150,6 +153,7 @@ console.log("dsfasdfasf"+i);
 
 
 
+
    }
 
    if(this.products[i].Offer){
@@ -169,7 +173,7 @@ console.log("dsfasdfasf"+i);
 this.cartService.GetCartAll(getCart).subscribe((res)=>{
   this.cartItemsAll=res as Cart[];
 
-})
+
 // -------------------------------------------- ----------------------------------------
 
    console.log(addCartItems);
@@ -250,7 +254,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
 
     }
 
-
+  })
 
 
 
@@ -398,8 +402,9 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
 
                     this.cartService.AddCart(addCart).subscribe((res)=>{
                       this.cartItems=res as Cart[];
+                      this.getCartAll();
                     })
-                    this.getCartAll();
+
                   });
          }
        }
@@ -425,6 +430,7 @@ IncreaseItem1(i:any,menuId:any,restId:any,restName:any){
   this.present();
 
 
+
   let date: Date = new Date();
 
 
@@ -439,7 +445,13 @@ console.log("dsfasdfasf"+i);
     this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
     this.products[i].ActualAmount=this.products[i].Price*this.products[i].ItemCount;
    }
-
+   var getCart={
+    UserId:this.user[0]._id,
+   MenuId:menuId,
+   ProductId:this.products[i]._id,
+    Status:"Cart",
+    ActiveYn:true
+  }
    var addCartItems={
 
     RestaurantId:restId,
@@ -477,19 +489,14 @@ console.log("dsfasdfasf"+i);
     addCartItems.Price=this.products[i].OfferPrice;
       }
 
-   var getCart={
-     UserId:this.user[0]._id,
-    MenuId:menuId,
-    ProductId:this.products[i]._id,
-     Status:"Cart",
-     ActiveYn:true
-   }
+
 
    // --------------------------------------------  to get all cart items----------------------------------------
 
 this.cartService.GetCartAll(getCart).subscribe((res)=>{
   this.cartItemsAll=res as Cart[];
-
+  console.log("rest id "+restId);
+  console.log("cart rest id "+this.cartItemsAll[0].RestaurantId);
 })
 // -------------------------------------------- ----------------------------------------
 
@@ -525,6 +532,7 @@ this.cartService.GetCartAll(getCart).subscribe((res)=>{
         })
         }
         else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=restId){
+
 
 
           this.dismiss();

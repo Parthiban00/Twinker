@@ -22,4 +22,5 @@ export default class Product{
      ActualAmount:number;
      Category:string;
      RestaurantName:string;
+     Recommended:Boolean;
  }

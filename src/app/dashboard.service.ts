@@ -12,20 +12,20 @@ export class DashboardService {
 
     return this.webService.get('maincategories');
   }
-  GetAddSlide(){
+  GetAddSlide(data){
 
 
-    return this.webService.get('addslides');
+    return this.webService.get(`addslides/${data.locality}`);
   }
-  GetBuddySlide(){
+  GetBuddySlide(data){
 
 
-    return this.webService.get('buddyslides');
+    return this.webService.get(`buddyslides/${data.locality}`);
   }
-  GetBookingSlide(){
+  GetBookingSlide(data){
 
 
-    return this.webService.get('bookingslides');
+    return this.webService.get(`bookingslides/${data.locality}`);
   }
 
 }

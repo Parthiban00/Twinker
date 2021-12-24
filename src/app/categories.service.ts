@@ -11,7 +11,7 @@ export class CategoriesService {
   GetCategory(data:any){
 
 
-     return this.webService.get(`categories/${data.Type}/${data.ActiveYn}`);
+     return this.webService.get(`categories/${data.Type}/${data.ActiveYn}/${data.Locality}`);
    }
 
 
@@ -29,6 +29,6 @@ export class CategoriesService {
    GetSpecialOffers(data:any){
 
 
-    return this.webService.get(`specialoffers/${data.Type}/${data.ActiveYn}`);
+    return this.webService.get(`specialoffers/${data.Type}/${data.ActiveYn}/${data.Locality}`);
   }
 }

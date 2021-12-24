@@ -6,7 +6,7 @@ ion-header{
   // ion-toolbar{
   //   height: 100px;
   // }
-  background-color: #f7714a;
+ // background-color: #f7714a;
   ion-toolbar{
 color: white;
   }
@@ -137,6 +137,7 @@ ion-toolbar{
   --background:#f7714a;
   --color:white;
 
+
 }
   .title{
       display: flex;
@@ -244,7 +245,7 @@ ion-label{
 
   top: 0px;
   font-size: 12px;
-  color: white
+  color:  #f7714a;
 }
 ion-toggle{
   position: absolute;

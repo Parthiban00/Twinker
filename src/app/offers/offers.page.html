@@ -1,19 +1,19 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
+  <ion-toolbar  no-border>
     <ion-buttons slot="start">
       <ion-button  (click)="CancelModel()">
-        <ion-icon name="arrow-back-outline"></ion-icon>
+        <ion-icon color="primary" name="arrow-back-outline"></ion-icon>
 
         </ion-button>
         </ion-buttons>
-    <ion-title style="font-family: lato;">
-      Offers
+    <ion-title style="font-weight: 500;">
+      Coupons
     </ion-title>
 
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [scrollEvents]="true">
 
   <div class="ion-list" *ngFor="let item of offers;let i=index">
 
@@ -26,7 +26,7 @@
         <img  src="{{item.ImageUrl}}">
       </ion-thumbnail>
       <ion-label class="hotel-card">
-        <h4 style="font-weight: 400;width: 200px;">{{item.ShortDescription}}</h4>
+        <h4 style="font-weight: 500;width: 200px;">{{item.ShortDescription}}</h4>
         <p  style="margin-top: -15px;font-size: 12px;">{{item.Discount}}%&nbsp;Discount from Total Amount</p>
         <!-- <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p> -->
         <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
@@ -53,7 +53,7 @@
 
 
 
-    <ion-button color="danger" slot="end" (click)="CancelModel()" >CANCEL</ion-button>
+    <ion-button color="danger" slot="end" style="width: 100%;" (click)="CancelModel()" >CANCEL</ion-button>
     <!-- <ion-button  slot="end" (click)="RedirectToPayment()" >PROCEED TO PAY</ion-button> -->
     <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
   </ion-toolbar>

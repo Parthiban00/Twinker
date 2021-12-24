@@ -103,8 +103,8 @@ return this.webService.patch('removecarts',data);
     return this.webService.patch(`userregisters/${data}`,data);
   }
 
-  GetOffers(){
-    return this.webService.get('offers');
+  GetOffers(data:any){
+    return this.webService.get(`offers/${data.Locality}`);
 
   }
 

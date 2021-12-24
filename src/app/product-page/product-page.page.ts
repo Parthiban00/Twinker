@@ -104,7 +104,12 @@ parthi=true;
   }
   ionViewWillEnter(){
    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
-
+   this.whichRestaurant=this.activateRoute.snapshot.params.name;
+   this.restaurantId=this.activateRoute.snapshot.params.restId;
+   this.type=this.activateRoute.snapshot.params.type;
+   this.paramsMenuId=this.activateRoute.snapshot.params.menuId;
+   console.log(this.activateRoute.snapshot.params);
+   console.log(localStorage.getItem('currentUser'));
 
     this.searchMenu="";
     this.isSearch=true;
@@ -137,16 +142,11 @@ parthi=true;
         })
 
 
-        this.whichRestaurant=this.activateRoute.snapshot.params.name;
-        this.restaurantId=this.activateRoute.snapshot.params.restId;
-        this.type=this.activateRoute.snapshot.params.type;
-        this.paramsMenuId=this.activateRoute.snapshot.params.menuId;
-        console.log(this.activateRoute.snapshot.params);
-        console.log(localStorage.getItem('currentUser'));
 
+console.log("rest id "+this.restaurantId);
       this.mainMenuService.GetMainMenu(this.restaurantId).subscribe((res)=>{
     this.mainMenu = res as MainMenu[];
-    console.log(this.mainMenu);
+    console.log("ain menus "+this.mainMenu);
 
     if(this.paramsMenuId==null || this.paramsMenuId==undefined || this.paramsMenuId==""){
       this.menu=this.mainMenu[0]._id;

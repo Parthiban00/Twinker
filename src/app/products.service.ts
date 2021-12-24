@@ -10,7 +10,7 @@ export class ProductsService {
   GetProducts(data:any){
 
 
-     return this.webService.get(`restaurants/${data}/mainmenus/products`);
+     return this.webService.get(`restaurants/${data}/mainmenus/products/get`);
    }
 
    GetSuggestionProducts(data:any){

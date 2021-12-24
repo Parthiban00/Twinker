@@ -10,6 +10,6 @@ export class MainMenuService {
 
   GetMainMenu(data:String){
 
-    return this.webService.get(`restaurants/${data}/${this.ActiveYn}/mainmenus`);
+    return this.webService.get(`restaurants/${data}/${this.ActiveYn}/mainmenus/get`);
   }
 }

@@ -12,6 +12,8 @@ import { ToastController } from '@ionic/angular';
 })
 export class OffersPage  {
 offers:Offers[];
+location;
+locality;
   constructor( public toastController: ToastController,private clipboard:Clipboard,private activatedRoute: ActivatedRoute,public modalController: ModalController,private navParams:NavParams,private cartService:CartService) { }
 
   ngOnInit() {
@@ -21,7 +23,13 @@ offers:Offers[];
     this.modalController.dismiss();
   }
   ionViewWillEnter(){
-    this.cartService.GetOffers().subscribe((res)=>{
+    this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    this.locality=this.location.locality;
+    console.log('locality '+this.location.locality)
+    var data={
+      Locality:this.location.locality
+    }
+    this.cartService.GetOffers(data).subscribe((res)=>{
       this.offers=res as Offers[];
       console.log("offers "+this.offers[1].Code);
     })

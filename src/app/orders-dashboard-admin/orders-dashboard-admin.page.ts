@@ -32,4 +32,8 @@ this.router.navigate(['orders-delivery-admin']);
   RestaurantOrders(){
     this.router.navigate(['orders-admin']);
   }
+  Orders(){
+//this.router.navigate(['admin-orders'])
+  }
 }
+

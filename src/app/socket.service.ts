@@ -45,4 +45,8 @@ return()=>{this.socket.disconnect();}
           });
           return obervable;
   }
+
+  OrderAcceptedByRestaurant(data){
+    this.socket.emit('OrderAcceptedbyRestaurant',data);
+  }
 }
