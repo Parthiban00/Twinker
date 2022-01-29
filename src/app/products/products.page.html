@@ -15,10 +15,10 @@
 
 
 </ion-header>
-
-<ion-content [fullscreen]="true" scrollEvents="true" [appHideHeader]="toolbar">
+<!-- [appHideHeader]="toolbar" -->
+<ion-content [fullscreen]="true" scrollEvents="true">
    <div *ngIf="bannerImage">
-    <img src="{{bannerImage}}" style="width: 100%;">
+    <img src="{{bannerImage}}" style="width: 100%;border-radius: 0px 0px 20px 20px;">
   </div>
   <ion-item-group style="margin-top: 12px;" *ngFor="let list of restaurantDetails;let k=index" id={{list._id}}>
     <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->

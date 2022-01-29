@@ -147,6 +147,7 @@ skeleton=[
     this.categoriesService.GetCategory(data).subscribe((res)=>{
      this.category=res as Category[];
      //console.log("categories "+this.category);
+    this. shuffle(this.category);
 
     })
     this.categoriesService.GetSpecialOffers(data).subscribe((res)=>{
@@ -157,6 +158,7 @@ skeleton=[
      })
      this.categoriesService.GetSpecificCategory(data).subscribe((res)=>{
       this.specificCategory=res as SpecificCategory[];
+     this.shuffle(this.specificCategory);
       console.log("specific ---------------------------- categories "+this.specificCategory.length);
 
      })
@@ -522,7 +524,23 @@ this.ionViewWillEnter();
 GoToRestaurant(restaurantName:string,restaurantId:string,menuId:string,type:string){
   this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId+'/'+menuId+'/'+type]);
 }
+shuffle(array) {
+  let currentIndex = array.length,  randomIndex;
 
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+console.log(array);
+  return array;
+}
 
 }
 

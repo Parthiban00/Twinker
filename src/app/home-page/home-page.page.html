@@ -26,6 +26,7 @@
 
               </ion-button>
       <ion-button slot="end"  color="primary" *ngIf="userType!='C'" (click)="Dashboard()">
+        <!-- Dashboard() -->
         <ion-icon color="secondary" name="apps"></ion-icon>
         </ion-button>
         </ion-buttons>
@@ -33,9 +34,9 @@
 
 <div class="slide-items" >
 
-  <ion-slides *ngIf="addSlide"   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true,pagination: true}"  pager>
+  <ion-slides *ngIf="addSlide"  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true,pagination: true}"  >
     <ion-slide  *ngFor="let adds of addSlide" style="padding:0px;width: fit-content;width: 100%;" >
-      <ion-card style="height: 120px;border-radius:0px;width: 100%;">
+       <ion-card style="height: 120px;border-radius:5px;width: 100%;">
 
        <div class="menu-name">
 
@@ -52,7 +53,7 @@
 
  </ion-slides>
 
- <ion-slides *ngIf="!addSlide"   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true,pagination: true}"  pager>
+ <ion-slides *ngIf="!addSlide" autoplay="5000" loop="true" speed="500" class="slides" pager="true">
   <ion-slide  *ngFor="let adds of addskeleton" style="padding:0px;width: fit-content;width: 100%;" >
     <ion-card style="height: 120px;border-radius:0px;width: 100%;">
 
@@ -74,7 +75,17 @@
 
 </ion-header>
 
-<ion-content >
+<ion-content *ngIf="showApp" >
+
+  <!-- <div >
+    <img src="/assets/food_not_found.gif" style="display: block;margin-left: auto;margin-right: auto;width: 250px;margin-top: 100px;">
+    <div  class="no-rest">
+    <label>We are can't deliver here at this moment!</label><br>
+    <label>Don't worry, We will be here at soon...</label>
+
+  </div>
+  <ion-button style="display: block;margin-left: auto;margin-right: auto;width: fit-content;" color="danger" (click)="ChangeLocation()">Change Location</ion-button>
+  </div> -->
 
   <div class="ion-list" >
     <div class="type" >
@@ -91,11 +102,19 @@
 
           <ion-row style="margin-bottom: 10px;margin-right: 10px;">
             <ion-col (click)="RestaurantPage(list.Type)" style="padding: 0px;" *ngFor="let list of mainCategory;let i=index">
+
               <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
           <div class="product" >
 
+<div style="height: 90px;width: 98.42px;position: relative;">
+
             <img src="{{list.ImageUrl}}" style="height: 90px;" alt="Category Icon">
-          <div class="menu">
+            <div class="ribbon-wrapper" *ngIf="list.Badge">
+              <div class="ribbon">{{list.BadgeDescription}}</div>
+            </div>
+</div>
+            <div class="menu">
+
             <p style="font-weight: 500;">{{list.Category}}</p>
 
             <p style="margin-top: -15px;color: gray;">{{list.Description}}</p>
@@ -110,6 +129,8 @@
             </ion-row>
 
       </ion-card>
+
+
       </div>
 
       <div *ngIf="!mainCategory">
@@ -120,11 +141,11 @@
 
             <ion-row style="margin-bottom: 10px;margin-right: 10px;">
               <ion-col  style="padding: 0px;" *ngFor="let dummy of skeleton">
-                <!-- <ion-col style="padding: 0px;" *ngFor="let product of productDetails;let i=index"> -->
+
             <div class="product" >
               <ion-skeleton-text animated ></ion-skeleton-text>
 
-              <!-- <img src="" style="height: 90px;"> -->
+
             <div class="menu">
               <p><ion-skeleton-text animated  ></ion-skeleton-text></p>
 
@@ -141,7 +162,7 @@
 
         </ion-card>
         </div>
-      <div class="ion-list" >
+      <!-- <div class="ion-list" >
         <div class="type" >
           <div class="start"></div>
       <P>TWINKER BUDDY (Soon)</P>
@@ -149,36 +170,24 @@
         </div>
         <div class="slide-items1" >
 
-          <!-- <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
-            <ion-slide *ngFor="let buddy of buddySlide" style="padding:0px;width: fit-content;width: 100%;">
-              <ion-card style="height: 120px;border-radius:0px;width: 100%;">
-
-               <div class="menu-name">
-
-                 </div>
-
-                <img style="height: 120px;width: 100%;" src="{{buddy.ImageUrl}}">
-
-              </ion-card>
-           </ion-slide>
 
 
 
 
 
-         </ion-slides> -->
+
+
 
 
 
           <ion-slides *ngIf="buddySlide"  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
-            <ion-slide  *ngFor="let buddy of buddySlide" (click)="GoToBuddy();" style="padding:0px;width: fit-content;">
-              <ion-card  style="height: 150px;border-radius:0px">
+            <ion-slide   *ngFor="let buddy of buddySlide" (click)="GoToBuddy();" style="padding:0px;width: fit-content;border-radius:5px">
+              <ion-card  style="height: 150px;--border-radius:5px !important">
 
                <div class="menu-name">
-                <!-- {{list.Category}} -->
                  </div>
 
-                <img style="height: 150px;width: 150px;" src="{{buddy.ImageUrl}}">
+                <img style="height: 150px;width: 150px;border-radius:5px" src="{{buddy.ImageUrl}}" >
 
               </ion-card>
            </ion-slide>
@@ -192,10 +201,10 @@
             <ion-card  style="height: 150px;border-radius:0px">
 
              <div class="menu-name">
-              <!-- {{list.Category}} -->
+
                </div>
 
-              <!-- <img style="height: 150px;width: 150px;" src="{{buddy.ImageUrl}}"> -->
+
               <ion-skeleton-text animated style="height: 150px;width: 150px;"></ion-skeleton-text>
             </ion-card>
          </ion-slide>
@@ -203,48 +212,91 @@
 
 
        </ion-slides>
-        </div>
+        </div> -->
+        <!-- <div class="slide-items4" >
+          <div class="type" style="margin-left: 5px;margin-top:5px"  >
 
-        <!-- <div class="ion-list" >
-          <div class="type" >
-            <div class="start"></div>
-        <P>BOOKINGS - Let's book for your's...</P>
-          </div>
-          </div> -->
-          <!-- <div class="slide-items" >
+            <P >Hey I'm waiting to serve your needs.. &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
+              </div>
+          <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+            <ion-slide class="swing-in-top-fwd"  style="padding:0px;width:fit-content;" *ngFor="let slide of buddyBanners" >
 
-            <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
-              <ion-slide style="padding:0px;width: fit-content;width: 100%;" >
-                <ion-card style="height: 120px;border-radius:0px;width: 100%;">
+                <ion-button color="clear" (click)="GoToBuddy()"  style="height: 120px;width: 100%;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('{{slide.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
+      </ion-button>
 
-                 <div class="menu-name">
+           </ion-slide>
 
-                   </div>
 
-                  <img style="height: 120px;width: 100%;" src="/assets/diwali.jpg">
 
-                </ion-card>
-             </ion-slide>
-             <ion-slide style="padding:0px;width: fit-content;width: 100%" >
-              <ion-card style="height: 120px;border-radius:0px;width: 100%">
+         </ion-slides>
+        </div> -->
+
+
+        <div class="slide-items" >
+
+          <ion-slides *ngIf="buddyBanners"  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true,pagination: true}"  >
+            <ion-slide  *ngFor="let slide of buddyBanners" style="padding:0px;width: fit-content;width: 100%;" (click)="GoToBuddy()">
+               <ion-card style="height: 120px;border-radius:5px;width: 100%;">
 
                <div class="menu-name">
 
                  </div>
 
-                <img style="height: 120px;width: 100%;" src="/assets/veggies1.jpg">
+                <img style="height: 120px;width: 100%;" src="{{slide.ImageUrl}}">
 
               </ion-card>
            </ion-slide>
+          </ion-slides>
+          </div>
 
 
 
 
-           </ion-slides>
-          </div> -->
-<!-- <div *ngIf="orderDetails.length">
 
-</div> -->
+
+
+
+
+
+
+
+  <div class="slide-items2" *ngIf="specialOffers.length">
+
+    <div class="type" style="margin-left: 5px;margin-top:10px">
+
+      <P >Top Deals and Offers... &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
+        </div>
+
+    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true,pagination: true}">
+      <ion-slide class="slide-in-top"  *ngFor="let offers of specialOffers" (click)="GoToRestaurant(offers.RestaurantName,offers.RestaurantId,offers.MenuId,offers.Type)" style="padding:0px;width: fit-content;">
+
+
+        <ion-button color="clear" style="height: 120px;width: 250px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('{{offers.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
+
+
+         </ion-button>
+     </ion-slide>
+
+
+
+
+
+   </ion-slides>
+  </div>
+
+
+</ion-content>
+
+<ion-content *ngIf="!showApp">
+  <div >
+    <img src="/assets/food_not_found.gif" style="display: block;margin-left: auto;margin-right: auto;width: 250px;margin-top: 100px;">
+    <div  class="no-rest">
+    <label>We are can't deliver here at this moment!</label><br>
+    <label>Don't worry, We will be here at soon...</label>
+
+  </div>
+  <ion-button style="display: block;margin-left: auto;margin-right: auto;width: fit-content;" color="danger" (click)="ChangeLocation()">Change Location</ion-button>
+  </div>
 </ion-content>
 
 <ion-footer id="footer" *ngIf="orderDetails.length" class="container1">
@@ -275,7 +327,7 @@
 <ion-button (click)="CalltoDeliveryBoy(orders.DeliveryPartnerDetails.MobileNo)">Call</ion-button>
       </div>
     <p style="margin-top:5px;margin-left:10px;font-weight:500">From : {{orders.RestaurantName}}</p>
-    <nav class="stepper">
+    <nav class="stepper" style="width: 250px;">
       <ul class="stepper__list">
         <li class="stepper__list__item"  [ngClass]="orders.Status == 'Accepted by Restaurant' || orders.DeliveryPartnerStatus=='Accepted by Delivery Partner' ? 'stepper__list__item--done' : 'stepper__list__item--current'" >
           <svg class="stepper__list__icon" *ngIf="orders.Status=='Accepted by Restaurant' || orders.DeliveryPartnerStatus=='Accepted by Delivery Partner'"  viewbox="0 0 24 24">
@@ -328,7 +380,7 @@
 
 
 
-  <!-- <ion-card-subtitle>Restaurant Name:&nbsp;&nbsp;{{orders.RestaurantName}}</ion-card-subtitle> -->
+
 <ion-card-content>
   <ion-row >
     <ion-col>
@@ -339,12 +391,7 @@ No. Of Items:&nbsp;&nbsp;{{orders.ItemCount}}
           </ion-col>
   </ion-row>
   <ion-row >
-    <!-- <ion-col>
-Ordered Time:&nbsp;&nbsp;{{orders.CreatedTime}}
-    </ion-col> -->
-    <!-- <ion-col>
-      Expected Delivery:&nbsp;&nbsp;With in 30 Mins
-          </ion-col> -->
+
   </ion-row>
 </ion-card-content>
 </ion-card>

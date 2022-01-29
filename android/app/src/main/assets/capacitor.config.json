@@ -2,5 +2,13 @@
 	"appId": "com.twinkersvg.herokuapp",
 	"appName": "Twinker",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+	"plugins": {
+		"LocalNotifications": {
+			"iconColor": "#ff6b00",
+			"sound": "notification.wav",
+			"smallIcon": "ic_launcher_adaptive_fore",
+			"largeIcon": "ic_launcher_adaptive_fore"
+		}
+	}
 }

@@ -1,0 +1,91 @@
+
+<ion-header class="ion-no-border">
+
+  <ion-toolbar  no-border>
+    <ion-buttons slot="start">
+      <ion-button (click)="RedirectToBuddy()">
+        <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+        </ion-button>
+  </ion-buttons>
+
+  <ion-title >
+
+   Add Items
+  </ion-title>
+  <!-- <ion-buttons slot="end">
+<ion-button fill="clear">
+  <ion-button slot="end" class="icon-button" color="primary" >
+
+    <ion-icon name="home"></ion-icon>
+
+    </ion-button>
+
+</ion-button>
+
+  </ion-buttons> -->
+</ion-toolbar>
+<!-- <div class="buddy-header">
+<div >
+
+
+</div>
+</div> -->
+<div class="items" >
+  <div >
+  <!-- <ion-list  style="margin-top: -5px;" lines="none"   > -->
+
+<ion-card class="ion-card" style="border-radius:0px;box-shadow: none;">
+  <ion-item >
+
+    <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;background-color: antiquewhite;" slot="start">
+
+      <img  src="assets/buddy_item.jpg" style="border-radius: 5px;">
+    </ion-thumbnail>
+    <ion-label class="hotel-card" >
+      <h4 style="font-weight: 500;width: 200px;">{{shopName}}</h4>
+
+      <p  style="margin-top: -15px;font-size: 12px;">{{shopCategory}}</p>
+      <p  style="margin-top: -15px;font-size: 12px;">{{shopLocation}}</p>
+      <!-- <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;"> -->
+      <!-- <p style="font-size: 12px;margin-top: 0px;"><ion-icon name="star" color="primary"></ion-icon>&nbsp;{{restaurantDetails[0].OverallRating}} |&nbsp; <ion-icon name="navigate-circle"></ion-icon>&nbsp;{{restaurantDetails[0].Distance}} km |&nbsp;<ion-icon name="time"></ion-icon>&nbsp; {{restaurantDetails[0].DeliveryTime}}</p> -->
+      <ion-button class="add_item" fill="clear" style="background: seagreen;color: white;border-radius: 5px;" (click)="addValue()">
+        Add Item +
+      </ion-button>
+    </ion-label>
+  </ion-item>
+
+</ion-card>
+  <!-- </ion-list> -->
+</div>
+</div>
+</ion-header>
+
+
+<ion-content>
+
+
+
+
+  <form #addressForm="ngForm" class="container mt-3" (ngSubmit)="presentAlertConfirmtToPlace()">
+<div class="container scale-up-top" *ngFor="let item of items;let i=index" >
+  <label>Item {{i+1}}</label>
+
+  <ion-item>
+    <ion-label position="stacked">Item Details</ion-label>
+    <ion-textarea
+    placeholder="Enter item name and quantity with description..."
+      value="" [(ngModel)]="item.item"  name="items_{{item.id}}"  ngModel required >
+    </ion-textarea>
+  </ion-item>
+
+  <ion-row>
+    <ion-button fill="clear" (click)="removeValue(i)" *ngIf="!hideRemoveBtn">
+      Remove
+    </ion-button>
+
+  </ion-row>
+</div>
+<ion-button type="submit" color="success" slot="end" style="width: 100%;" [disabled]="!addressForm.valid">({{items.length}}&nbsp;Items) Submit</ion-button>
+</form>
+</ion-content>
+

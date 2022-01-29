@@ -10,8 +10,12 @@ import {CallNumber} from "@ionic-native/call-number/ngx";
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
 // import { Vibration } from '@ionic-native/vibration/ngx';
 import { AudioManagement } from '@ionic-native/audio-management/ngx';
+import {LocalNotificationService} from '../local-notification.service';
+
+import  {BuddyService} from '../buddy.service';
 //  import io from 'socket.io-client';
 
+import { LocalNotifications } from '@capacitor/local-notifications';
 //  const socket=io("http://localhost:5000");
 import  {SocketService} from '../socket.service';
 
@@ -29,6 +33,7 @@ export class OrdersDeliveryPartnerPage implements OnInit {
   public currentDay: number = this.today.getDate();
   deliveryPartnerDetails=new Array;
   today1;
+  today22;
   totalCompletedItems=0;
 totalCompletedOrders=0;
 totalCompletedAmount=0;
@@ -42,14 +47,16 @@ myDate="All";
 deliveryBoys;
 a=[];
 n=0;
+orderDetails11;
+itemDetails11;
 public alertMode: any;
 public loopMode: any;
-  constructor(private nativeAudio: NativeAudio, private audio: AudioManagement,private socketService:SocketService,private call:CallNumber,private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
+  constructor(private buddyService:BuddyService,private localNotification : LocalNotificationService,private nativeAudio: NativeAudio, private audio: AudioManagement,private socketService:SocketService,private call:CallNumber,private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
     this.today1=new Date().toISOString();
     console.log("today date "+this.today1);
     this.defaultSegment="Delivery";
     this.default="Ready";
-    this.setRingtone();
+
 
    // this.socketService.NewOrderPlaced().subscribe(data=>this.placedOrders.push());
 
@@ -67,6 +74,7 @@ public loopMode: any;
   panelOpenState = false;
 user:any;
   isLoading = false;
+  buddyorder:any;
 
   //this.deliveryPartnerDetails=this.user[0];
 
@@ -79,7 +87,14 @@ currentUserId:any;
 
   }
   ionViewWillEnter(){
+    let today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
 
+     this.today22= yyyy + '-' + mm + '-' + dd;
+     console.log("created date "+this.today22)
+    this.setRingtone();
     var data={
       room:this.location.locality,
       user:'delivery boy'
@@ -95,7 +110,7 @@ this.socketService.JoinRoom(data);
 
     //  socket.emit('orderPlaced');
     this.socketService.NewOrderPlaced().subscribe((data)=>{
-
+      this.sendLocalNotification ();
       this.orderDetailsFromSocket=[];
       console.log("hi this sockert"+data);
       //this.orderDetailsFromSocket1.push(data.data);
@@ -108,9 +123,16 @@ this.socketService.JoinRoom(data);
 
       });
 
+var data1={
+Locality:this.location.locality,
+CreatedDate:this.today22
+}
 
+this.buddyService.GetSubmittedOrders(data1).subscribe((res)=>{
 
-
+this.buddyorder = res
+console.log('buddy orders'+this.buddyorder[0].UserDetails.FirstName)
+})
 
   }
 
@@ -129,6 +151,7 @@ this.totalCompletedOrders=0;
 this.totalCompletedItems=0;
 this.totalCompletedAmount=0;
 this.orderDetails=[];
+this.orderDetails11=[];
 this.itemDetails=[];
 this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
 this.currentUserId=this.user[0]._id;
@@ -140,7 +163,8 @@ console.log('current user  '+this.user[0]);
 
 var getOrders={
  ActiveYn:true,
- Locality:this.location.locality
+ Locality:this.location.locality,
+ CreatedDate:this.today22
 
 }
 
@@ -149,6 +173,23 @@ var getOrders={
 //    DeleteYn:false,
 //    UserId:this.user[0]._id,
 //  }
+
+this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
+  this.orderDetails11=res as Orders[];
+  console.log("hi this is order ddd "+this.orderDetails11);
+  // this.orderDetails11=this.orderDetails;
+  for(var i=0;i<this.orderDetails11.length;i++){
+
+    //ELEMENT_DATA.length=0;
+    for(var j=0;j<this.orderDetails11[i].ItemDetails.length;j++){
+
+     //ELEMENT_DATA.push({position:this.orderDetails[i].RestaurantId,ItemName:this.orderDetails[i].ItemDetails[j].ProductName,Price:this.orderDetails[i].ItemDetails[j].Price,Quantity:this.orderDetails[i].ItemDetails[j].ItemCount,Amount:this.orderDetails[i].ItemDetails[j].Amount});
+  this.itemDetails11.push(this.orderDetails11[i].ItemDetails[j])
+    }
+  }
+  this.CompletedOrders(this.segment);
+  this.dismiss();
+})
 
 this.deliveryService.GetOrdersLocality(getOrders).subscribe((res)=>{
   this.orderDetails=res as Orders[];
@@ -282,8 +323,11 @@ this.dismiss();
     if(ev.detail.value=="Delivery"){
       this.default="Ready";
     }
-    if(ev.detail.value=="Restaurant"){
-      this.default="Placed";
+    // if(ev.detail.value=="Restaurant"){
+    //   this.default="Placed";
+    // }
+    if(ev.detail.value=="Buddy"){
+      this.default="Submited";
     }
   //console.log(this.productDetails[1].MenuId);
   //this.default=ev.detail.value;
@@ -468,7 +512,8 @@ window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lon)
 
   setRingtone() {
     // Preload the audio track
-    this.nativeAudio.preloadSimple('uniqueId1', 'assets/notification_ring/alert.mp3');
+    console.log("set ringtone entered   ------");
+    this.nativeAudio.preloadSimple('uniqueId1', 'assets/notification.mp3');
   }
 
   getAudioMode() {
@@ -495,7 +540,9 @@ window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lon)
       this.playSingle();
     }
   }
-
+  sendLocalNotification () {
+    this.localNotification.showLocalNotification ( 1 , " New Order Placed ", "You have a New Order, Tap to find this...");
+  }
   playSingle() {
     this.nativeAudio.play('uniqueId1').then(() => {
       console.log('Successfully played');

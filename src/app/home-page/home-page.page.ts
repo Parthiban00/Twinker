@@ -24,9 +24,10 @@ import  {SocketService} from '../socket.service';
 import { ModalController } from '@ionic/angular';
 import {CallNumber} from "@ionic-native/call-number/ngx";
 import {ChangeLocationPage} from '../change-location/change-location.page';
-import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
+import {LocalNotificationService} from '../local-notification.service';
+import BuddyBanner from '../models/buddy-banner';
 
-
+import SpecialOffers from '../models/special-offers';
 
 
 
@@ -47,6 +48,7 @@ export class HomePagePage implements  OnInit {
   orderStatus:String;
   tokens:Tokens[]=[];
   lat;
+  showApp=true;
   lon;
   selectedLocation:any;
   reverseGeocodingResults:any;
@@ -54,11 +56,13 @@ export class HomePagePage implements  OnInit {
   countdown;
   locCords: any;
   mainCategory:MainCategory[];
-addSlide:AddSlide[];
+addSlide:AddSlide[]=[];
 buddySlide:BuddySlide[];
 bookingSlide:BookingSlide[];
 itemTotal=0;
 orderDetailsFromSocket=[];
+specialOffers:SpecialOffers[]=[];
+buddyBanners:BuddyBanner[]=[];
 skeleton=[
 
   {},
@@ -86,16 +90,10 @@ skeleton=[
       {},
       {}
       ]
-  constructor(private call:CallNumber,private plt:Platform,private localNotifications:LocalNotifications,private alertCtrl:AlertController,private socketService:SocketService ,private dashboardService:DashboardService,public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
+  constructor(private localNotification : LocalNotificationService,private call:CallNumber,private plt:Platform,private alertCtrl:AlertController,private socketService:SocketService ,private dashboardService:DashboardService,public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 this.plt.ready().then(()=>{
-  this.localNotifications.on('click').subscribe(res=>{
 
-  });
-  this.localNotifications.on('trigger').subscribe(res=>{
-
-  });
-  this.repeatingDaily();
 });
 
 
@@ -105,14 +103,19 @@ this.plt.ready().then(()=>{
 
 
 
+
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
     console.log('location'+this.location.address)
 
+    var data={
+      room:this.location.locality,
+      user:'user'
+    }
+    this.socketService.JoinRoom(data);
 
-
-    // this.dashboardService.GetBookingSlide().subscribe((res)=>{
-    //   this.bookingSlide=res as BookingSlide[];
-    // })
+    this.dashboardService.GetBookingSlide(data).subscribe((res)=>{
+      this.bookingSlide=res as BookingSlide[];
+   })
   }
 
 scheduleNotifications(){
@@ -121,14 +124,14 @@ scheduleNotifications(){
 recurringNotifications(){
 
 }
-repeatingDaily(){
-this.localNotifications.schedule({
-  id:42,
-  title:'What would you like to eat...',
-  text:'Lets find your favorite menus from your favorite sopts...Tap to Order now...',
-  trigger:{every:{hour:1,minute:50}}
-});
-}
+// repeatingDaily(){
+// this.localNotifications.schedule({
+//   id:42,
+//   title:'What would you like to eat...',
+//   text:'Lets find your favorite menus from your favorite sopts...Tap to Order now...',
+//   trigger:{every:{hour:1,minute:50}}
+// });
+// }
 getAll(){
 
 }
@@ -241,19 +244,28 @@ token:String;
    }
 
    ionViewWillEnter(){
+     this.showApp=true;
+    // this.sendLocalNotification ();
 
+    //  this.localNotification.showLocalNotification1 ();
+     this.localNotification.showLocalNotification730 ();
+     this.localNotification.showLocalNotification830 ();
+     this.localNotification.showLocalNotification10 ();
+     this.localNotification.showLocalNotification2 ();
+     this.localNotification.showLocalNotification3 ();
+     this.localNotification.showLocalNotification5 ();
+     this.localNotification.showLocalNotification630 ();
+     this.localNotification.showLocalNotification8 ();
+     this.localNotification.showLocalNotification9 ();
 
      console.log('1');
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     //this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
-    var data={
-      room:this.location.locality,
-      user:'user'
-    }
+
     var data1={
       locality:this.location.locality
     }
-this.socketService.JoinRoom(data);
+
     var getCart={
       UserId:this.user[0]._id,
       Status:"Cart",
@@ -271,6 +283,8 @@ this.socketService.JoinRoom(data);
 
     })
 
+
+
     this.dashboardService.GetMainCategory().subscribe((res)=>{
       this.mainCategory=res as MainCategory[];
       console.log(this.mainCategory);
@@ -278,10 +292,30 @@ this.socketService.JoinRoom(data);
 
     this.dashboardService.GetAddSlide(data1).subscribe((res)=>{
       this.addSlide=res as AddSlide[];
+      if(this.addSlide.length<1){
+        this.showApp=false;
+      }
     })
-    this.dashboardService.GetBuddySlide(data1).subscribe((res)=>{
+     this.dashboardService.GetBuddyBanner(data1).subscribe((res)=>{
+       this.buddyBanners=res as BuddyBanner[];
+     })
+
+     this.dashboardService.GetBuddySlide(data1).subscribe((res)=>{
       this.buddySlide=res as BuddySlide[];
     })
+    var data={
+      // Type:'Food',
+      ActiveYn:true,
+      Locality:this.location.locality
+    }
+
+
+    this.categoriesService.GetSpecialOffersAll(data).subscribe((res)=>{
+      this.specialOffers=res as SpecialOffers[];
+      console.log("special offers "+this.specialOffers.length)
+      //console.log("categories "+this.category);
+
+     })
 this.currentUrl=this.router.url;
 
 console.log("current url "+this.currentUrl);
@@ -344,6 +378,9 @@ console.log(this.orderDetails[0].DeliveryTime);
 
 
   }
+  sendLocalNotification () {
+    this.localNotification.showLocalNotification1 ();
+  }
   onDestroy(){
     console.log("page destroyed");
   }
@@ -380,6 +417,12 @@ this.selectedLocation=res.data.address;
 localStorage.setItem('LocationAddress',JSON.stringify(res.data));
 this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 this.ionViewWillEnter();
+
+var data={
+  room:this.location.locality,
+  user:'user'
+}
+this.socketService.JoinRoom(data);
                   }
                   else{
                     console.log('resposnse null');
@@ -411,13 +454,20 @@ this.ionViewWillEnter();
   }
   GoToBuddy(){
     // console.log("go to buddy");
-    // this.router.navigate(['buddy']);
+     this.router.navigate(['buddy']);
   //this.router.navigate(['products']);
   }
   CalltoDeliveryBoy(mobileNo:any){
+    console.log(mobileNo);
     this.call.callNumber(mobileNo,true)  .then(res => console.log('Launched dialer!', res))
     .catch(err => console.log('Error launching dialer', err));
   }
+
+
+  GoToRestaurant(restaurantName:string,restaurantId:string,menuId:string,type:string){
+    this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId+'/'+menuId+'/'+type]);
+  }
+
 
 }
 

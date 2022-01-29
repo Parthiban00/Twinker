@@ -40,6 +40,13 @@ Latitude:number;
 Longitude:number;
 DeliveryTime:number;
 Locality:string;
-
+Suggestions:String;
+PaymentDetails:{
+  PaymentType:string;
+  Status:string;
+  RazorpayPaymentId:string;
+  RazorPayOrderId:string;
+  RazorPaySignature:string;
+}
  }
 

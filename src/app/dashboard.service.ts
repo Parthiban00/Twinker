@@ -28,4 +28,10 @@ export class DashboardService {
     return this.webService.get(`bookingslides/${data.locality}`);
   }
 
+  GetBuddyBanner(data){
+
+
+    return this.webService.get(`buddybanners/${data.locality}`);
+  }
+
 }

@@ -29,6 +29,7 @@ import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.
 import {ChangeLocationPage} from '../change-location/change-location.page';
 import {OffersPage} from '../offers/offers.page';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import {BillDetailsService} from 'src/app/bill-details.service';
 // import io from 'socket.io-client';
 
 // const socket=io("http://localhost:5000");
@@ -98,7 +99,8 @@ deliveryBoyId;
 deliveryBoyName;
 deliveryBoyMobileNo;
 deliveryBoyType;
-  constructor(private deliveryService:DeliveryBoyService,private socketService:SocketService ,public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
+wishes:String="";
+  constructor(private billDetailsService:BillDetailsService,private deliveryService:DeliveryBoyService,private socketService:SocketService ,public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) {
 
 this.default="Delivery";
 
@@ -617,6 +619,7 @@ Latitude:this.location.lat,
 Longitude:this.location.lon,
 DeliveryTime:this.restaurantDetails[0].DeliveryTime,
 Locality:this.locality,
+Suggestions:this.wishes,
  DeliveryPartnerDetails:{
    UserId:this.deliveryBoyId,FirstName:this.deliveryBoyName,MobileNo:this.deliveryBoyMobileNo,UserType:this.deliveryBoyType,ImageUrl:this.deliveryBoyImage
  }
@@ -1484,7 +1487,7 @@ amountInPaisa:payableAmountInPaisa,
           "currency": "INR",
           "name": "TWINKER - ORDER ONLINE",
           "description": "Payable Amount",
-          "image": "https://firebasestorage.googleapis.com/v0/b/twinker-70d21.appspot.com/o/512x512.png?alt=media&token=32c59b60-e104-49be-a809-a665fb9bad67",
+          "image": "https://firebasestorage.googleapis.com/v0/b/twinker-70d21.appspot.com/o/logo.png?alt=media&token=95e046de-463d-4271-8f78-68dfc4be67e0",
           "order_id": res.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
           "handler": function (response){
               alert(response.razorpay_payment_id);
@@ -1500,7 +1503,7 @@ amountInPaisa:payableAmountInPaisa,
               "address": "Razorpay Corporate Office"
           },
           "theme": {
-              "color": "#ff7f24"
+              "color": "#f7714a"
           }
       };
 
@@ -1518,6 +1521,10 @@ amountInPaisa:payableAmountInPaisa,
         alert(response.error.metadata.payment_id);
 });
 
+// rzp1.on('payment.success',function(response){
+//   console.log("payment success "+response.success.status);
+// })
+
 
 
 rzp1.open();
@@ -1527,7 +1534,74 @@ rzp1.open();
 
 
       RedirectToPayment(){
+
+        if(!this.restaurantDetails[0].AvailableStatus){
+          this.presentAlertConfirm3();
+        }
+        else if(this.deliveryBoys.length<1){
+          this.presentAlertConfirm4();
+        }
+        else{
+
+        this.placeOrderArr=[];
+
+        for(var i=0;i<this.cartItemsAll.length;i++){
+
+          this.placeOrderArr.push( this.cartItemsAll[i]);
+
+            }
+
+
+
+           this. billDetials={
+
+
+             UserId:this.user[0]._id,
+             UserName:this.user[0].FirstName,
+             RestaurantId:this.cartItemsAll[0].RestaurantId,
+             RestaurantName:this.cartItemsAll[0].RestaurantName,
+             ItemTotal:this.itemAmount,
+             DeliveryPartnerFee:this.deliveryPartnerFee,
+             TaxesAndCharges:this.Charges,
+             TotalAmount:parseFloat(this.totalAmount1),
+             ActiveYn:true,
+             DeleteYn:false,
+             Status:'Placed',
+             CreatedDate:this.today1,
+             CreatedBy:this.user[0]._id,
+             ItemCount:this.cartItemsAll.length,
+             MobileNo:this.user[0].MobileNo,
+             Address:this.selectedLocation,
+             ItemDetails:this.placeOrderArr,
+             DeliveryPartnerStatus:"Placed by Customer",
+             ActualAmount:parseFloat(this.AmountWithCharges).toFixed(2),
+        CreatedTime:this.time,
+        Discount:this.discount,
+        DiscountDescritpion:this.discountDescription,
+        DiscountCode:this.discountCode,
+        Latitude:this.location.lat,
+        Longitude:this.location.lon,
+        DeliveryTime:this.restaurantDetails[0].DeliveryTime,
+        Locality:this.locality,
+        Suggestions:this.wishes,
+         DeliveryPartnerDetails:{
+           UserId:this.deliveryBoyId,FirstName:this.deliveryBoyName,MobileNo:this.deliveryBoyMobileNo,UserType:this.deliveryBoyType,ImageUrl:this.deliveryBoyImage
+         },
+         PaymentDetails:{
+           PaymentType:"",
+           Status:"",
+           RazorpayPaymentId:"",
+           RazorPayOrderId:"",
+           RazorPaySignature:""
+         }
+
+
+           }
+
+        console.log("redirect to payment page "+this.billDetials);
+        this.billDetailsService.setExtras(this.billDetials);
         this.router.navigate(['payment/'+this.totalAmount1]);
+          }
       }
 
       EditLocation(){

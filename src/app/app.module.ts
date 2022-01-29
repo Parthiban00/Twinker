@@ -31,7 +31,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { OrdersAdminPipe } from './orders-admin.pipe';
 import { Clipboard } from '@ionic-native/clipboard/ngx';
-import {LocalNotifications} from '@ionic-native/local-notifications/ngx';
+
 //import { Vibration } from '@ionic-native/vibration/ngx';
 import { AudioManagement } from '@ionic-native/audio-management/ngx';
 import { NativeAudio } from '@ionic-native/native-audio/ngx';
@@ -44,7 +44,7 @@ imports: [MatSelectModule,MatListModule,BrowserModule, IonicModule.forRoot(), Ap
     DatePicker,MatFormFieldModule,MatMomentDateModule,MomentDateAdapter,MatTimepickerModule,CallNumber,Clipboard,
     AudioManagement,NativeAudio,
 
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP,LocalNotifications],
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },HTTP],
   bootstrap: [AppComponent],
   // schemas: [
   //   CUSTOM_ELEMENTS_SCHEMA

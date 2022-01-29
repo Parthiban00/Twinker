@@ -1,3 +1,6 @@
+
+
+
 html {
   scroll-behavior: smooth;
 }
@@ -26,6 +29,7 @@ color: white;
 
 
     margin:0px 0px 16px 0px;
+    border-radius: 5px;
 
 
 
@@ -379,6 +383,8 @@ p{
   left: 10px;
   top:5px;
   font-weight: 500;
+  color: #212121;
+  font-size: 12px;
 
 
 }
@@ -619,6 +625,7 @@ margin-top: 10px;
 .caption{
 font-size: 12px;
 font-weight: 500;
+padding: 5px;
 }
 
 
@@ -672,3 +679,8 @@ font-weight: 500;
     opacity: 1;
   }
 }
+
+
+
+
+

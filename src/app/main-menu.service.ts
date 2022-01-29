@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import {WebService} from 'src/app/web.service';
 
@@ -11,5 +12,10 @@ export class MainMenuService {
   GetMainMenu(data:String){
 
     return this.webService.get(`restaurants/${data}/${this.ActiveYn}/mainmenus/get`);
+
+  }
+
+  AddMainMenu(data){
+    return this.webService.post(`restaurants/${data.RestId}/mainmenus`,data)
   }
 }

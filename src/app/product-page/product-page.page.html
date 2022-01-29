@@ -92,11 +92,62 @@
 
     <ion-content  [fullscreen]="true" >
 
+      <div class="items" >
+        <div >
+        <!-- <ion-list  style="margin-top: -5px;" lines="none"   > -->
+
+      <ion-card class="ion-card" style="border-radius:0px;box-shadow: none;" *ngIf="restaurantDetails.length">
+        <ion-item >
+
+          <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
+
+            <img  src="{{restaurantDetails[0].ImageUrl}}" style="border-radius: 5px;">
+          </ion-thumbnail>
+          <ion-label class="hotel-card" >
+            <h4 style="font-weight: 500;width: 200px;">{{restaurantDetails[0].RestaurantName}}</h4>
+
+            <p  style="margin-top: -15px;font-size: 12px;">{{restaurantDetails[0].Description}}</p>
+            <p  style="margin-top: -15px;font-size: 12px;">{{restaurantDetails[0].RestaurantType}}</p>
+            <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
+            <p style="font-size: 12px;margin-top: 0px;"><ion-icon name="star" color="primary"></ion-icon>&nbsp;{{restaurantDetails[0].OverallRating}} |&nbsp; <ion-icon name="navigate-circle"></ion-icon>&nbsp;{{restaurantDetails[0].Distance}} km |&nbsp;<ion-icon name="time"></ion-icon>&nbsp; {{restaurantDetails[0].DeliveryTime}}</p>
+
+          </ion-label>
+        </ion-item>
+
+      </ion-card>
+        <!-- </ion-list> -->
+      </div>
+      </div>
+
+      <div class="slide-items1"  *ngIf="offers">
+
+        <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+          <ion-slide class="slide-in-top"   style="padding:0px;width: fit-content;" *ngFor="let offers of offers">
+            <ion-card  style="height: 40px;border-radius:0px;justify-content: center;align-items: center;" (click)="GoToOffers();">
+
+
+<p style="margin-top: 8px;font-weight: 500;font-size: 12px;color: tomato;"><ion-icon name="sparkles" color="primary"></ion-icon>&nbsp;{{offers.ShortDescription}}</p>
+
+
+            </ion-card>
+         </ion-slide>
+
+
+
+       </ion-slides>
+      </div>
+
       <ion-item-group style="margin-top: 0px;"  >
         <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->
 <div style="height: 25px;">
 
 </div>
+
+
+
+
+
+
 
 <ion-item-divider sticky >
   <div class="start" id=triangle-left></div>
@@ -114,14 +165,14 @@
 
 
     <div *ngFor="let product of productDetails;let i=index" style="margin-top: 20px;">
-    <ion-list style="margin-top: -5px;" lines="none" *ngIf="product.Recommended" >
+    <ion-list style="margin-top: -5px;" lines="none" *ngIf="product.Recommended && product.AvailableStatus" >
 
-<ion-card class="ion-card" style="border-radius:0px;" [ngClass]="{'close':!product.AvailableStatus}" >
+<ion-card class="ion-card" style="border-radius:5px;" [ngClass]="{'close':!product.AvailableStatus}" >
     <ion-item  >
 
       <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
 
-        <img src="{{product.ImageUrl}}">
+        <img src="{{product.ImageUrl}}" style="border-radius:5px;">
 
           <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" >Add</ion-button>
           <div class="qty-selector-new" *ngIf="product.AvailableStatus && product.ItemCount">
@@ -145,17 +196,22 @@
 
       </ion-thumbnail>
       <ion-label class="hotel-card">
-        <h4 style="font-weight: 400;width: 200px;">{{product.ProductName}}</h4>
+        <h4 style="font-weight: 400;width: 200px;font-size: 12px;">{{product.ProductName}}</h4>
         <p  style="margin-top: -15px;font-size: 12px;">{{product.Description}}</p>
         <div class="price">
-          <p>Rs.{{product.Price}}</p>
+          <p style="font-size:12px;">Rs.{{product.Price}}</p>
       </div>
       <div  *ngIf="!product.AvailableStatus">
         <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
       </div>
 
       </ion-label>
+      <div style="height: 20px; width: 80px; background-color: rgb(218, 31, 102);position:absolute;bottom:5px;text-align: center;">
+      <p style="font-size:10px;color:white">Recommended</p>
+      </div>
     </ion-item>
+
+
 
   </ion-card>
 
@@ -287,6 +343,7 @@
 
   <div style="height:150px;width: 160px;background-color: rgb(231, 231, 231);"></div>
 <div class="menu">
+
   <p style="font-weight: 400;width: 200px;"><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></p>
 
   <p style="margin-top: -10px;color: rgb(189, 189, 189);"><ion-skeleton-text animated style="width:80%"></ion-skeleton-text></p>
@@ -297,17 +354,22 @@
 
 
   </div>
+
 </div>
 </ion-col>
 </ion-row>
 
-<ion-row *ngIf="list.ViewType=='Grid View'">
+<ion-row *ngIf="list.ViewType=='Grid View'" >
   <div *ngFor="let product of productDetails;let i=index">
   <ion-col style="padding: 0px;" *ngIf="product.MenuId==list._id" >
 
 <div class="product" [ngClass]="{'close':!product.AvailableStatus}">
+  <!-- <div class="ribbon-wrapper">
+    <div class="ribbon">NEW</div>
+  </div> -->
 
-  <img src="{{product.ImageUrl}}">
+  <span *ngIf="product.Badge" class="ribbon3">{{product.BadgeDescription}}</span>
+  <img src="{{product.ImageUrl}}" style="border-radius:5px;">
 <div class="menu">
   <p>{{product.ProductName}}</p>
 
@@ -317,18 +379,21 @@
     <p>Rs.{{product.Price}}</p>
 </div>
   <div class="qty-selector" *ngIf="product.AvailableStatus && product.ItemCount">
-  <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
-<ion-label>{{product.ItemCount}}</ion-label>
-<ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+  <ion-button fill="clear" color="success" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+<ion-label >{{product.ItemCount}}</ion-label>
+<ion-button fill="clear" color="success" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
 </div>
 <div  class="add-btn">
-<ion-button  *ngIf="!product.ItemCount && product.AvailableStatus" color="danger" (click)="IncreaseItem(i,product.MenuId)" style="height: 20px;--border-radius: 2px;position: sticky;bottom:10px;--box-shadow: none !important; height: 25px;width: 60px;">Add</ion-button>
+<ion-button  *ngIf="!product.ItemCount && product.AvailableStatus" color="danger" (click)="IncreaseItem(i,product.MenuId)" style="height: 25px;--border-radius: 2px;position: sticky;bottom:10px;--box-shadow: none !important; height: 25px;width: 60px;">Add</ion-button>
 </div>
 <div  *ngIf="!product.AvailableStatus">
   <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
 </div>
   </div>
 </div>
+
+<!-- <div class="box bestseller">
+</div> -->
 
 
 </ion-col>
@@ -343,12 +408,12 @@
       <div *ngFor="let product of productDetails;let i=index" style="margin-top: 20px;">
       <ion-list style="margin-top: -5px;" lines="none" *ngIf="product.MenuId==list._id" >
 
-  <ion-card class="ion-card" style="border-radius:0px;"  [ngClass]="{'close':!product.AvailableStatus}">
+  <ion-card class="ion-card" style="border-radius:5px;"  [ngClass]="{'close':!product.AvailableStatus}">
       <ion-item  >
 
         <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
 
-          <img src="{{product.ImageUrl}}">
+          <img src="{{product.ImageUrl}}" style="border-radius:5px;">
 
             <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" >Add</ion-button>
             <div class="qty-selector-new" *ngIf="product.AvailableStatus && product.ItemCount">
@@ -372,10 +437,17 @@
 
         </ion-thumbnail>
         <ion-label class="hotel-card">
-          <h4 style="font-weight: 400;width: 200px;">{{product.ProductName}}</h4>
+
+          <div  [ngClass]="{'main_egg': product.Type === 'Egg', 'main_nonveg' : product.Type === 'NonVeg','main_veg':product.Type==='Veg' }">
+            <div [ngClass]="{'in_egg': product.Type === 'Egg', 'in_nonveg' : product.Type === 'NonVeg','in_veg':product.Type==='Veg' }">
+              <div  [ngClass]="{'round_egg': product.Type === 'Egg', 'round_nonveg' : product.Type === 'NonVeg','round_veg':product.Type==='Veg' }"></div>
+            </div>
+          </div>
+          <h4 style="width: 200px;font-size: 12px;">{{product.ProductName}}</h4>
+
           <p  style="margin-top: -15px;font-size: 12px;">{{product.Description}}</p>
           <div class="price">
-            <p>Rs.{{product.Price}}</p>
+            <p style="font-size: 12px;">Rs.{{product.Price}}</p>
         </div>
         <div  *ngIf="!product.AvailableStatus">
           <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
@@ -404,6 +476,9 @@ justify-content: center;display: flex;">
 </div>
 
 <ion-footer *ngIf="showCart.length" class="slide-in-bottom">
+  <!-- <div style="height: 20px;width: 100%;background-color: black;padding-left: 10px;">
+  <p style="color:yellow;font-size: 10px;font-weight: 500;">Add one more to get 10% OFF</p>
+  </div> -->
   <ion-toolbar (click)="ViewCart()">
     <!-- <ion-title>4 Items</ion-title> -->
 

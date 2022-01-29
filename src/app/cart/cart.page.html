@@ -30,7 +30,7 @@
     {{restaurantName}}<br>
 
    <i> {{cartItemsAll.length}} items</i>
-   <ion-button color="tertiary" (click)="OpenOffers()">Coupons</ion-button>
+   <!-- <ion-button color="tertiary" >Coupons</ion-button> -->
   </div>
 
   </div>
@@ -68,19 +68,7 @@
 
     <!-- <ion-button disabled (click)="CustomizeDeliveryDetails()" style="width: calc(100% - 20px);margin-left: 10px;margin-top: 10px;" color="primary">Schedule Delivery (soon...)</ion-button> -->
 
-    <div class="deliverylocation">
-    <ion-card style="border-radius: 0px;">
-      <ion-card-header class="heartbeat">
-         Delivery Location
-         <!-- <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button> -->
-         <ion-button fill="clear" (click)="ChangeLocation()"><ion-icon   name="create-outline"></ion-icon></ion-button>
-      </ion-card-header>
-      <ion-card-content>
-        {{selectedLocation}}
-        <!-- {{selectedLocation}} -->
-      </ion-card-content>
-    </ion-card>
-    </div>
+
 
     <div class="cart-items">
       <ion-card-subtitle style="margin-left: 10px;margin-top: 10px;">Items :</ion-card-subtitle>
@@ -114,17 +102,27 @@
 
       </div>
 
+
     </ion-card-content>
     </ion-card>
     </div>
+    <div style="padding: 5px;">
 
+
+
+      <ion-item style="border-top:2px solid rgb(207, 207, 207);border-right:2px solid rgb(207, 207, 207);border-left:2px solid rgb(207, 207, 207);border-radius:5px;font-size: 12px;">
+        <ion-label position="floating" style="color: gray;">Write your wishes to this spot...</ion-label>
+        <ion-input [(ngModel)]="wishes"></ion-input>
+      </ion-item>
+
+  </div>
     <div class="suggestions" *ngIf="products.length">
 
 <p style="margin-left: 5px;font-weight: 500; font-size: small;">Suggestions.. Must Try...</p>
       <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
         <ion-slide style="padding:0px;width: fit-content;border-radius: 0px;" *ngFor="let suggestion of products;let i=index" >
 
-        <ion-card  style="border-radius: 0px !important ;">
+        <ion-card  style="border-radius: 5px !important ;">
           <ion-card-header *ngIf="suggestion.ImageUrl">
   <div class="main" >
 
@@ -204,6 +202,7 @@
     </div>
 
 
+
     <div class="coupon" >
       <ion-card style="border-radius:0px !important;">
 
@@ -214,10 +213,14 @@
     <ion-input [disabled]="applied" name="coupon" [(ngModel)]="coupon" #coupon1="ngModel" minlength="5" maxlength="10" ngModel></ion-input>
 
   </ion-item>
+  <ion-card style="text-align: center;height: 40px;justify-content: center;align-items: center;border:2px solid rgb(251, 155, 138)" (click)="OpenOffers()">
+ <p style="font-size: 12px; color: black;margin-top:10px;"><ion-icon name="sparkles" color="primary"></ion-icon>&nbsp;Tap to find offers and coupons for you...</p>
+</ion-card>
   <small *ngIf="!couponPresent" style="color:crimson;">Invalid or Coupon expired...</small>
   <small *ngIf="couponApplied" style="color: seagreen;">Coupon Applied...</small>
-  <ion-button color="primary"  *ngIf="!applied" id="applybtn" (click)="ApplyCoupon()">Apply</ion-button>
+  <ion-button color="primary" style="--border-radius: 5px !important" *ngIf="!applied" id="applybtn" (click)="ApplyCoupon()">Apply</ion-button>
   <ion-button color="primary"  *ngIf="applied" id="removebtn" (click)="RemoveCoupon()">Remove</ion-button>
+
   </form>
         </ion-card-content>
       </ion-card>
@@ -260,6 +263,19 @@
 </ion-content>
 
 <ion-footer  *ngIf="cartItemsAll.length" class="slide-in-bottom">
+  <div class="deliverylocation">
+    <ion-card style="border-radius: 0px;width:100%;border-bottom:2px solid tomato;box-shadow:none;">
+      <ion-card-header>
+         Delivery Location
+         <!-- <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button> -->
+         <ion-button fill="clear" (click)="ChangeLocation()"><ion-icon   name="create-outline"></ion-icon></ion-button>
+      </ion-card-header>
+      <ion-card-content>
+        {{selectedLocation}}
+        <!-- {{selectedLocation}} -->
+      </ion-card-content>
+    </ion-card>
+    </div>
   <ion-toolbar >
     <!-- <ion-title>4 Items</ion-title> -->
 
@@ -267,8 +283,8 @@
     <ion-text class="description">Amount Rs:{{totalAmount1}}</ion-text>
 
 
-     <ion-button  slot="end" (click)="presentAlertConfirmtToPlace()" >PLACE ORDER</ion-button>
-    <!-- <ion-button  slot="end" (click)="RedirectToPayment()" >PROCEED TO PAY</ion-button> -->
+     <!-- <ion-button class="placeorder_btn" slot="end" (click)="presentAlertConfirmtToPlace()" >PLACE ORDER</ion-button> -->
+     <ion-button  slot="end" class="placeorder_btn" (click)="RedirectToPayment()" >MAKE PAYMENT</ion-button>
     <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
   </ion-toolbar>
 </ion-footer>

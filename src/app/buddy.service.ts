@@ -21,5 +21,22 @@ uploadImageFile(file:File){
   return this.webService.post(`saveCatelog`,formData)
 }
 
+getCategory(data){
+  return this.webService.get(`buddycategories/${data.Locality}`);
+}
+
+SaveBuddyOrders(data){
+  return this.webService.post('buddyorders',data);
+
+
+}
+
+GetSubmittedOrders(data){
+  console.log('created date on budddy sevice '+data.CreatedDate)
+  return this.webService.get(`buddyorders/${data.Locality}/${data.CreatedDate}`)
+}
+
+
+
 
 }

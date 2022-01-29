@@ -18,4 +18,16 @@ export class ProductsService {
 
     return this.webService.get(`restaurants/${data.restaurantId}/mainmenus/products/${data.suggestion}`);
   }
+
+  GetOffers(data){
+    return this.webService.get(`offers/${data.locality}/${data.restaurantId}`);
+  }
+
+  UpdateProduct(data){
+    return this.webService.patch(`products/${data._id}`,data);
+  }
+
+  UpdateMainMenu(data){
+    return this.webService.patch(`mainmenus/${data._id}`,data);
+  }
 }

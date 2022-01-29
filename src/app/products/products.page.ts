@@ -55,19 +55,19 @@ this.bannerImage="";
 this.getCartAll();
   this.category=this.activatedRouter.snapshot.params.category;
   this.type=this.activateRoute.snapshot.params.type;
-  console.log(this.category.toLocaleLowerCase);
+  console.log(this.category);
   this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 
   var data={
     Category:this.category,
     ActiveYn:true,
-    Type:this.type
+    Type:this.type,
 
   }
 
-  this.categoriesService.GetSpecificCategory(data).subscribe((res)=>{
+  this.categoriesService.GetSpecificCategory1(data).subscribe((res)=>{
     this.specificCategory=res as SpecificCategory[];
-    console.log("specific ---------------------------- categories "+this.specificCategory[0].BannerImage);
+    console.log("specific ---------------------------- categories "+this.specificCategory.length);
     this.bannerImage=this.specificCategory[0].BannerImage;
 
    })
@@ -80,10 +80,11 @@ this.categoriesService.GetCategoryProducts(data).subscribe((res)=>{
 var getRest={
   ActiveYn:true,
   Type:this.type,
-  Locality:this.location.locality
+  Locality:this.location.locality,
+  AvailableStatus:true
   }
 
-  this.restaurantService.GetRestaurants1(getRest).subscribe((res)=>{
+  this.restaurantService.GetRestaurants11(getRest).subscribe((res)=>{
 
 
     this.restaurantDetails=res as Restaurant[];

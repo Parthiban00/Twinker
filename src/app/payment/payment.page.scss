@@ -1,10 +1,20 @@
 .total-amount{
-  height: 80px;
+  height: 100px;
   padding: 5px;
+  ion-card-subtitle{
+    margin-top: 5px;
+    margin-left: 5px;
+    color:#f7714a;
+  }
 
 }
 .payment-type{
   padding: 5px;
+  ion-card-subtitle{
+    margin-top: 5px;
+    margin-left: 5px;
+    color:#f7714a;
+  }
 
 }
 ion-footer{

@@ -165,3 +165,51 @@ ul{
   margin-right: auto;
 }
 }
+.slide-items3{
+  // margin-top: -20px;
+  margin-top: 10px;
+}
+
+.container{
+  // background-color: antiquewhite;
+height: 500px;
+width: 100%;
+margin-top: 20px;
+padding: 10px;
+ion-item{
+  border-radius: 5px;
+margin-top: 10px;
+border: 1px solid rgb(230, 230, 230);
+
+}
+
+ion-button{
+  margin-top: 10px;
+height: 40px;
+width: 100%;
+background: #ff2c54;
+border-radius: 5px;
+color: white;
+}
+.add_item{
+  margin-top: 10px;
+  height: 40px;
+  width: 100%;
+  background: #33974f;
+  border-radius: 5px;
+  color: white;
+}
+}
+
+input.ng-touched.ng-invalid{
+  border:1px solid red;
+}
+.container1{
+  height:auto;
+
+margin-top: 20px;
+padding: 10px;
+border: 1px solid tomato;
+margin-left: 5px;
+margin-right: 5px
+}

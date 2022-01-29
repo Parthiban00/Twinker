@@ -1,29 +1,39 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>payment</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar  no-border>
+    <ion-buttons slot="start">
+      <!-- <ion-menu-button></ion-menu-button> -->
+
+
+        <ion-button (click)="RedirectToHome()">
+        <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+        </ion-button>
+
+
+      </ion-buttons>
+    <ion-title>Make Payment</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
 <ion-card class="total-amount">
-  <ion-card-subtitle>TOTAL AMOUNT : 220.00</ion-card-subtitle>
-  <ion-card-content>Two Hundred Twenty Rupees Only</ion-card-content>
+  <ion-card-subtitle>TOTAL AMOUNT Rs : {{totalAmout}}</ion-card-subtitle>
+  <ion-card-content>{{amountInWords}}&nbsp;Rupees Only</ion-card-content>
 </ion-card>
 <ion-card class="payment-type">
   <ion-card-subtitle>PAYMENT TYPE</ion-card-subtitle>
   <ion-card-content>
     <ion-list>
-      <ion-radio-group value="biff">
+      <ion-radio-group [value]="paymentType" (ionChange)="radioGroupChange($event)">
 
 
-        <ion-item>
+        <ion-item style="font-size: 12px; font-weight: 500;margin-left:-20px">
           <ion-label>Cash On Delivery(Cash | UPI)</ion-label>
-          <ion-radio slot="start" value="biff"></ion-radio>
+          <ion-radio slot="start" value="COD"></ion-radio>
         </ion-item>
 
-        <ion-item>
+        <ion-item style="font-size: 12px; font-weight: 500;;margin-left:-20px" disabled="true">
           <ion-label  >Online Banking(Cards, Net Banking, UPI Payments, etc.,)</ion-label>
-          <ion-radio slot="start" value="griff"></ion-radio>
+          <ion-radio slot="start" value="PG" ></ion-radio>
         </ion-item>
 
       </ion-radio-group>
@@ -35,12 +45,13 @@
   <ion-toolbar >
     <!-- <ion-title>4 Items</ion-title> -->
 
-    <ion-text class="title">2 Items</ion-text>
-    <ion-text class="description">Amount Rs: 200.0</ion-text>
+    <!-- <ion-text class="title">2 Items</ion-text>
+    <ion-text class="description">Amount Rs: 200.0</ion-text> -->
 
 
     <!-- <ion-button  slot="end" (click)="Payment()" >PROCEED TO PAY</ion-button> -->
-    <ion-button  slot="end" >PLACE ORDER</ion-button>
+    <ion-button  slot="end" style="width: 100%;" (click)="Payment()">PLACE ORDER</ion-button>
+     <ion-button *ngIf="showSnipper" slot="end" style="width: 100%;"><ion-spinner name="dots"></ion-spinner></ion-button>
     <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
   </ion-toolbar>
 </ion-footer>

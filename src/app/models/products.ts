@@ -23,4 +23,8 @@ export default class Product{
      Category:string;
      RestaurantName:string;
      Recommended:Boolean;
+     Badge:Boolean;
+     BadgeDescription:string;
+     Type:string;
+     Suggestion:Boolean
  }

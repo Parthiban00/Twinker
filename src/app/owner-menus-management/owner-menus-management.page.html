@@ -1,0 +1,156 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Manage Menus
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="apps"></ion-icon>
+      </ion-button>
+          </ion-buttons>
+  </ion-toolbar>
+
+
+  <ion-item>
+    <ion-label>Select Restaurant</ion-label>
+    <ion-select interface="popover"  [(ngModel)]="selectedValue" (ionChange)="onChange(selectedValue)">
+      <ion-select-option *ngFor="let rest of restaurants" value={{rest._id}}>{{rest.RestaurantName}}</ion-select-option>
+
+    </ion-select>
+  </ion-item>
+
+</ion-header>
+
+<ion-content>
+
+
+<ion-card class="available-status" *ngIf="showMenuStatus">
+  <ion-card-subtitle>Menus Status <ion-button style="height:30px;margin-top:-5px;position:absolute;right:0" color="success" (click)="AddMainMenuBtnClick()">Add+</ion-button></ion-card-subtitle>
+  <div class=button>
+    <ion-list>
+      <ion-item *ngFor="let menus of mainMenu;let i=index">
+        <ion-button color="danger" (click)="GetProducts(menus._id,menus.MenuName,menus.ViewType)">Edit</ion-button> <ion-label>&nbsp;&nbsp;{{menus.MenuName}}</ion-label>
+
+        <!-- <ion-toggle [(ngModel)]="menus.AvailableStatus" (ngModelChange)="ToggleEvent($event,menus._id)" style="position:absolute;right:10px;bottom:10px"></ion-toggle> -->
+        <ion-button (click)="ToggleEvent(false,menus._id)" color="danger">No</ion-button><ion-button (click)="ToggleEvent(true,menus._id)" color="success">Yes</ion-button>
+      </ion-item>
+    </ion-list>
+
+  </div>
+</ion-card>
+<ion-card style="padding: 10px;" *ngIf="showSumenu">
+  <form #mainMenuForm="ngForm">
+<p style="margin-left: 10px;font-weight: 500;margin-top: 10px;">Main Menu : {{productFrom}} </p>
+<ion-item>
+  <ion-label position="stacked">Main Menu</ion-label>
+  <ion-input #mainmenu='ngModel' ngModel name="mainmenu" [(ngModel)]="productFrom" required></ion-input>
+</ion-item>
+<ion-radio-group [(ngModel)]="viewType" ngModel name="viewtype" #viewtype='ngModel'>
+  <ion-list-header>
+    <ion-label>View Type</ion-label>
+  </ion-list-header>
+  <ion-item>
+    <ion-label>Grid View</ion-label>
+    <ion-radio slot="start"  value="Grid View"></ion-radio>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>List View</ion-label>
+    <ion-radio slot="start"  value="List View"></ion-radio>
+  </ion-item>
+
+</ion-radio-group>
+<div>
+  <ion-row>
+
+    <ion-col>
+      <ion-button color="danger"> Delete</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button *ngIf="role=='Edit'" color="success" (click)="UpdateMainMenu(mainMenuForm)"> Update</ion-button>
+      <ion-button *ngIf="role=='Add'" color="success" type="submit" [disabled]="!mainMenuForm.valid" (click)="AddMainMenu(mainMenuForm)"> Add</ion-button>
+
+    </ion-col>
+    <ion-col>
+      <ion-button color="success" (click)="AddMainMenuBtnClick()">Add Menu</ion-button>
+    </ion-col>
+  </ion-row>
+</div>
+<ion-card-content>
+
+</ion-card-content>
+</form>
+</ion-card>
+<ion-card class="available-status" *ngFor="let product of productDetails;let i=index"  >
+
+
+  <div class=button >
+    <ion-list >
+      <form #loginForm="ngForm" >
+      <ion-item >
+        <!-- <ion-label>&nbsp;&nbsp;{{product.ProductName}}</ion-label> -->
+
+
+
+<ion-row>
+  <ion-col style="width: 300px;">
+    <ion-input name="productname" #productname='ngModel' ngModel [(ngModel)]="product.ProductName" ></ion-input>
+  </ion-col>
+  <ion-col>
+    <ion-toggle [(ngModel)]="product.AvailableStatus" name="status" #status='ngModel' ngModel (ngModelChange)="ToggleEvent1($event,product._id)" style="position:absolute;right:10px;bottom:10px"></ion-toggle>
+  </ion-col>
+</ion-row>
+      </ion-item>
+      <ion-row>
+        <ion-col>
+        <ion-item>
+          <ion-label position="stacked">Description</ion-label>
+          <ion-input #productdescription='ngModel' ngModel name="productdescription" [(ngModel)]="product.Description"></ion-input>
+        </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+
+      <ion-item>
+        <ion-label position="stacked">Price</ion-label>
+        <ion-input #productprice='ngModel' ngModel name="productprice" [(ngModel)]="product.Price" ></ion-input>
+      </ion-item>
+
+
+    </ion-row>
+    <ion-item style="font-size: 12px;">
+      <ion-checkbox color="secondary" slot="start" name="recommended" [(ngModel)]="product.Recommended" ></ion-checkbox>
+      <ion-label>Recommended</ion-label>
+    </ion-item>
+    <ion-item style="font-size: 12px;">
+      <ion-checkbox color="secondary" slot="start" name="suggestion" [(ngModel)]="product.Suggestion" ></ion-checkbox>
+      <ion-label>Suggestion</ion-label>
+    </ion-item>
+    <!-- <ion-item style="font-size: 12px;">
+      <ion-checkbox color="secondary" slot="start" name="fromanywhere" [(ngModel)]="product.Recommended" ></ion-checkbox>
+      <ion-label>Bestseller / Trending</ion-label>
+    </ion-item> -->
+
+    <div>
+      <ion-row>
+
+        <ion-col>
+          <ion-button color="danger"> Delete</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button (click)="UpdateMenu(loginForm,product._id)" color="success"> Update</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </form>
+    </ion-list>
+
+  </div>
+
+
+</ion-card>
+
+</ion-content>

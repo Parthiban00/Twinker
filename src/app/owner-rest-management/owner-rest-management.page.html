@@ -1,0 +1,101 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary" no-border>
+      <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+    <ion-title style="font-family: lato;">
+      Restaurant Management
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="RedirectToHome()">
+      <ion-icon name="apps"></ion-icon>
+      </ion-button>
+          </ion-buttons>
+  </ion-toolbar>
+
+
+
+
+    <ion-card class="available-status">
+      <ion-card-subtitle>Shops Status </ion-card-subtitle>
+      <div class=button>
+        <ion-list *ngFor="let shop of restaurants;let i=index">
+          <ion-item >
+            <ion-label>{{shop.RestaurantName}}</ion-label>
+            <ion-toggle [(ngModel)]="shop.AvailableStatus" id={{shop._id}} (ngModelChange)="ToggleEvent($event,shop._id)" style="position:absolute;right:10px;bottom:10px" ngModel></ion-toggle>
+          </ion-item>
+        </ion-list>
+
+      </div>
+    </ion-card>
+
+
+
+
+
+
+
+
+
+
+</ion-header>
+
+<ion-content >
+
+  <div >
+    <ion-card class="available-status">
+      <ion-card-subtitle>Menus Management</ion-card-subtitle>
+      <div class=button>
+
+      <ion-button color="secondary" (click)="ManageMenus()" style="width: 100%;">Manage Menus</ion-button>
+      </div>
+    </ion-card>
+  </div>
+  <div >
+    <ion-card class="available-status">
+      <ion-card-subtitle>Restaurant Details</ion-card-subtitle>
+     <ion-card-content>
+       <form #restForm='ngForm'>
+        <ion-list *ngFor="let shop of restaurants;let i=index">
+        <ion-item>
+          <ion-label position="stacked">Restaurant Name</ion-label>
+          <ion-input #restname='ngModel' ngModel name="restname" [(ngModel)]="shop.RestaurantName"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="stacked">Address</ion-label>
+          <ion-input #address='ngModel' ngModel name="address" [(ngModel)]="shop.Address"></ion-input>
+        </ion-item>
+
+
+        <ion-item>
+          <ion-label position="stacked">Owners Mobile No</ion-label>
+          <ion-input #mobileno='ngModel' ngModel name="mobileno" [(ngModel)]="shop.MobileNo"></ion-input>
+        </ion-item>
+        <ion-radio-group [(ngModel)]="shop.RestaurantType" ngModel name="resttype" #resttype='ngModel'>
+          <ion-list-header>
+            <ion-label>Restaurant Type</ion-label>
+          </ion-list-header>
+          <ion-item>
+            <ion-label>Veg</ion-label>
+            <ion-radio slot="start"  value="Veg"></ion-radio>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Veg/Non-Veg</ion-label>
+            <ion-radio slot="start"  value="Veg/Non-Veg"></ion-radio>
+          </ion-item>
+
+        </ion-radio-group>
+        <ion-item>
+          <ion-label position="stacked">Description</ion-label>
+          <ion-input #description='ngModel' ngModel name="description" [(ngModel)]="shop.Description"></ion-input>
+        </ion-item>
+        <div class=button>
+        <ion-button type="submit"  style="width: 100%;" color="success" (click)="UpdateRestaurant(restForm)"> Update</ion-button>
+        </div>
+        </ion-list>
+       </form>
+     </ion-card-content>
+    </ion-card>
+  </div>
+  </ion-content>

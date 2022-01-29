@@ -26,4 +26,7 @@ this.router.navigate(['orders-management']);
   RedirectToHome(){
     this.router.navigate(['home-page']);
   }
+  RestaurantManagement(){
+this.router.navigate(['owner-rest-management']);
+  }
 }

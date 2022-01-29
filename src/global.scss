@@ -25,6 +25,7 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
+
 #custom-search input.searchbar-input.sc-ion-searchbar-md{
 
   padding-top: 0!important;
@@ -243,3 +244,97 @@
 ion-title{
   font-size: 14px;
 }
+
+
+.main_veg{
+
+
+width: 18.5px;
+  background-color: #178A00;
+  // padding: 2px 2px;
+  text-align: center;
+
+
+.in_veg{
+  // height: 11px;
+  // width: 11px;
+  background-color: white;
+// padding: 2px 2px;
+display: inline-block;
+margin: 0 auto;
+padding: 3.2px;
+margin-bottom: -1px;
+
+  .round_veg{
+
+      height: 7px;
+      width: 7px;
+      background-color: green;
+      border-radius: 50%;
+  }
+}
+
+}
+
+
+.main_nonveg{
+
+
+  width: 18.5px;
+    background-color: #be350c;
+    // padding: 2px 2px;
+    text-align: center;
+
+
+  .in_nonveg{
+    // height: 11px;
+    // width: 11px;
+    background-color: white;
+  // padding: 2px 2px;
+  display: inline-block;
+  margin: 0 auto;
+  padding: 3.2px;
+  margin-bottom: -1px;
+
+    .round_nonveg{
+
+        height: 7px;
+        width: 7px;
+        background-color: #be350c;
+        border-radius: 50%;
+    }
+  }
+
+  }
+
+
+  .main_egg{
+
+
+    width: 18.5px;
+    height: 18.5px;
+      background-color: #ffa631;
+      // padding: 2px 2px;
+      text-align: center;
+
+
+    .in_egg{
+      // height: 11px;
+      // width: 11px;
+      background-color: white;
+    // padding: 2px 2px;
+    display: inline-block;
+    margin: 0 auto;
+    padding: 3.2px;
+    margin-bottom: -1px;
+
+      .round_egg{
+
+          height: 7px;
+          width: 7px;
+          background-color: #ffa631;
+          border-radius: 50%;
+      }
+    }
+
+    }

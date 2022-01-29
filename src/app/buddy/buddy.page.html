@@ -2,36 +2,170 @@
 <ion-header class="ion-no-border">
 
   <ion-toolbar  no-border>
-    <ion-buttons fill="clear" slot="start">
-    <ion-menu-button color="primary"></ion-menu-button>
-    </ion-buttons>
-
+    <ion-buttons slot="start">
+    <ion-button (click)="RedirectToHome()">
+      <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+      </ion-button>
+</ion-buttons>
   <ion-title >
 
    Hey Buddy...
   </ion-title>
   <ion-buttons slot="end">
-<ion-button fill="clear">
+<!-- <ion-button fill="clear">
   <ion-button slot="end" class="icon-button" color="primary" >
 
     <ion-icon name="home"></ion-icon>
 
     </ion-button>
-<!-- <ion-icon color="primary" name="notifications"></ion-icon> -->
-</ion-button>
+
+</ion-button> -->
 
   </ion-buttons>
 </ion-toolbar>
-<div class="buddy-header">
+<!-- <div class="buddy-header">
 <div >
 
 
 </div>
-</div>
+</div> -->
 </ion-header>
 
 <ion-content>
-  <ion-card style="--border-radius:0px !important;">
+
+  <div class="slide-items3" *ngIf="buddySlide">
+    <!-- <div class="type" style="margin-left: 5px;margin-top:5px"  >
+
+      <P >Just tap to enjoy our services... &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
+        </div> -->
+    <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
+      <ion-slide class="swing-in-top-fwd"  style="padding:0px;width: fit-content;" *ngFor="let buddy of buddySlide" >
+        <!-- <ion-card  style="height: 150px;border-radius:5px;margin-top:10px"> -->
+
+
+
+          <!-- <img style="height: 180px;width: 150px;" src="{{list.ImageUrl}}"> -->
+          <ion-button color="clear"   style="height: 150px;width: 150px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('{{buddy.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
+</ion-button>
+        <!-- </ion-card> -->
+     </ion-slide>
+
+
+
+
+   </ion-slides>
+  </div>
+
+  <div class="slide-items3" *ngIf="!buddySlide" >
+
+    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+      <ion-slide style="padding:0px;width: fit-content;">
+        <ion-card  style="height: 150px;border-radius:0px">
+
+         <div class="menu-name">
+
+           </div>
+
+          <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+        </ion-card>
+     </ion-slide>
+     <ion-slide style="padding:0px;width: fit-content;">
+      <ion-card  style="height: 150px;border-radius:0px">
+
+       <div class="menu-name">
+
+         </div>
+
+        <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+      </ion-card>
+   </ion-slide>
+   <ion-slide style="padding:0px;width: fit-content;">
+    <ion-card  style="height: 150px;border-radius:0px">
+
+     <div class="menu-name">
+
+       </div>
+
+      <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+    </ion-card>
+ </ion-slide>
+ <ion-slide style="padding:0px;width: fit-content;">
+  <ion-card  style="height: 150px;border-radius:0px">
+
+   <div class="menu-name">
+
+     </div>
+
+    <div style="height: 150px;width: 150px;background-color: rgb(231, 231, 231);"></div>
+
+  </ion-card>
+</ion-slide>
+
+
+
+   </ion-slides>
+  </div>
+<div class="container1">
+  <p style="font-weight: 500;">How it's works...</p>
+  <ul>
+    <li>
+      Select your item category and choose from anywhere or enter your prefered shopname and location.
+    </li>
+    <li>
+      Then click ADD ITEMS button to enter items with item name with quanity.
+    </li>
+    <li>Click ADD ITEM button on top to enter more items.</li>
+    <li>Once verify the entered items and click SUBMIT button. That's it...</li>
+  </ul>
+</div>
+  <div class="container">
+    <form #signInForm="ngForm" (ngSubmit)="addItemPage(signInForm)">
+    <ion-item style="font-size: 12px;">
+      <ion-label>Item Category</ion-label>
+      <ion-select required interface="popover"  (ionChange)="onChange(selectedValue)" name="selectvalue" ngModel #selectvalue='ngModel'>
+        <ion-select-option *ngFor="let items of buddyCategories" value="{{items.Category}}">{{items.Category}}</ion-select-option>
+
+      </ion-select>
+    </ion-item>
+    <small style="color:red" *ngIf="selectvalue.touched && !selectvalue.valid">Please choose shop category...</small>
+    <ion-item style="font-size: 12px;">
+      <ion-checkbox color="secondary" slot="start" name="fromanywhere"  (ionChange)="FromAnyWhere($event)"></ion-checkbox>
+      <ion-label>From Anywhere</ion-label>
+    </ion-item>
+    <ion-item *ngIf="fromanywhere">
+      <ion-label position="stacked">Shop Name</ion-label>
+      <ion-input  name="shopname"  ngModel required  #shopname='ngModel'></ion-input>
+
+    </ion-item>
+   <!-- <small style="color:red" *ngIf="shopname.touched && !shopname.valid">Please enter shop name...</small> -->
+
+    <ion-item *ngIf="fromanywhere">
+      <ion-label position="stacked">Shop Location</ion-label>
+      <ion-textarea
+      placeholder="Enter or Just select shop locaiton below..."
+        value=""  name="shoplocation" [ngModel]="selectedLocation"  ngModel required #shoplocation='ngModel'>
+      </ion-textarea>
+
+    </ion-item >
+    <!-- <small *ngIf="shoplocation.touched && !shoplocation.valid" style="color:red">Please enter or choose shop shop location....</small> -->
+
+      <ion-button fill="clear" (click)="ChangeLocation()" *ngIf="fromanywhere">
+        Choose Shop Location
+      </ion-button>
+      <ion-button type="submit" class="add_item" [disabled]="!signInForm.valid" fill="clear" >
+        Add Items
+      </ion-button>
+    </form>
+  </div>
+
+
+
+
+
+  <!-- <ion-card style="--border-radius:0px !important;">
     <ion-card-title class="cart_title">
       Just Tell Me... What U Need...
     </ion-card-title>
@@ -100,7 +234,7 @@
 </ion-item>
 <ion-list *ngIf="manualDiv">
   <ion-item *ngFor="let value of values;let i=index">
-  <ion-label position="stacked" >Item 1</ion-label>
+  <ion-label position="stacked" >Item {{i+1}}</ion-label>
   <ion-input (keyup)="PushItem()"  [(ngModel)]="value.value" type="text" class="form-control" placeholder="Item Name"></ion-input>
 <ion-button (click)="removeValue(i)">Remove</ion-button>
 </ion-item>
@@ -129,5 +263,5 @@
 
 </form>
 </div>
-</ion-card>
+</ion-card> -->
 </ion-content>

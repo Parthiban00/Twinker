@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import {Router} from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import {ChangeLocationPage} from '../change-location/change-location.page';
@@ -10,6 +10,12 @@ import { Storage } from '@capacitor/storage';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { base64StringToBlob } from 'blob-util';
+import  {BuddyService} from '../buddy.service';
+import BuddyCategory from '../models/buddy-category';
+import {BuddyShopService} from 'src/app/buddy-shop.service';
+import BuddySlide from '../models/buddy-slide';
+import {DashboardService} from '../dashboard.service';
+
 @Component({
   selector: 'app-buddy',
   templateUrl: './buddy.page.html',
@@ -18,9 +24,13 @@ import { base64StringToBlob } from 'blob-util';
 export class BuddyPage implements OnInit {
 MyForm : FormGroup;
 values=[];
+shoplocation="";
+shopname="";
+shopLat="";
+shopLon="";
 
 @ViewChild('fileInput',{static:false})fileInput:ElementRef;
-  constructor( private actionSheetCtrl:ActionSheetController ,private plt:Platform ,private fb:FormBuilder, public modalController: ModalController,private router:Router) {
+  constructor(private dashboardService:DashboardService,private buddyShopService:BuddyShopService,private buddyService:BuddyService, private actionSheetCtrl:ActionSheetController ,private plt:Platform ,private fb:FormBuilder, public modalController: ModalController,private router:Router) {
 
     this.MyForm=this.fb.group({
       shopname:new FormControl('',Validators.compose([Validators.required,Validators.pattern('[a-zA-z0-9]')])),
@@ -33,7 +43,9 @@ values=[];
   ngOnInit() {
   }
   item1:string;
+  selectedValue="";
   user;
+  buddySlide:BuddySlide[];
   time;
   today1;
   location;
@@ -41,11 +53,27 @@ selectedLocation;
 inputType;
 uploadBtn:boolean=true;
 manualDiv:boolean=false;
+buddyCategories:BuddyCategory[];
+fromanywhere=true;
 
   ionViewWillEnter(){
     // ---------------------------------------------------------------------getDate------------------------
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    var data={
+      Locality:this.location.locality
+    }
+this.buddyService.getCategory(data).subscribe((res)=>{
+this.buddyCategories=res as BuddyCategory[];
+this.selectedValue='Others';
+})
+var data1={
+  locality:this.location.locality
+}
+this.dashboardService.GetBuddySlide(data1).subscribe((res)=>{
+  this.buddySlide=res as BuddySlide[];
+})
+
     let today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -75,8 +103,9 @@ this.time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 console.log('changed address '+res.data.address);
 this.selectedLocation=res.data.address;
 
-console.log("selected Location "+this.selectedLocation);
-
+console.log("selected Location "+res.data.lat+' lng'+res.data.lon);
+this.shopLat=res.data.lat;
+this.shopLon=res.data.lon
                   }
                   else{
                     console.log('resposnse null');
@@ -181,5 +210,42 @@ removeValue(i){
 }
 addValue(){
   this.values.push({value:""});
+}
+
+GoToAddItems(){
+
+}
+
+onChange(selectedValue){
+console.log(selectedValue);
+
+}
+addItemPage(signInForm:NgForm){
+console.log(signInForm.value);
+var formdata={
+  shopCategory:signInForm.value.selectvalue,
+  shopName:signInForm.value.shopname,
+  shopLocation:signInForm.value.shoplocation,
+  shopLat:this.shopLat,
+  shopLng:this.shopLon,
+  fromAnyWhere:this.fromanywhere
+}
+console.log(formdata);
+this.buddyShopService.setBuddy(formdata);
+this.router.navigate(['buddy-items']);
+}
+
+FromAnyWhere(ev){
+  console.log(ev.detail.checked)
+
+  if(ev.detail.checked){
+this.fromanywhere=false;
+  }
+  else{
+    this.fromanywhere=true
+  }
+}
+RedirectToHome(){
+  this.router.navigate(['home-page']);
 }
 }

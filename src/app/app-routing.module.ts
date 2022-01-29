@@ -197,6 +197,18 @@ const routes: Routes = [
     path: 'contact-us',
     loadChildren: () => import('./contact-us/contact-us.module').then( m => m.ContactUsPageModule)
   },
+  {
+    path: 'buddy-items',
+    loadChildren: () => import('./buddy-items/buddy-items.module').then( m => m.BuddyItemsPageModule)
+  },
+  {
+    path: 'owner-rest-management',
+    loadChildren: () => import('./owner-rest-management/owner-rest-management.module').then( m => m.OwnerRestManagementPageModule)
+  },
+  {
+    path: 'owner-menus-management',
+    loadChildren: () => import('./owner-menus-management/owner-menus-management.module').then( m => m.OwnerMenusManagementPageModule)
+  },
 
 
 

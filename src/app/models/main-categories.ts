@@ -9,5 +9,7 @@ ActiveYn:boolean;
 DeleteYn:boolean;
 Description:string;
 AvailableStatus:boolean;
+Badge:boolean;
+BadgeDescription:string;
 
 }

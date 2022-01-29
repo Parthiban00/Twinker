@@ -25,10 +25,22 @@ export class CategoriesService {
     return this.webService.get(`specificcategories/${data.Type}/${data.ActiveYn}`);
   }
 
+  GetSpecificCategory1(data:any){
+
+
+    return this.webService.get(`specificcategories/${data.Type}/${data.ActiveYn}/${data.Category}`);
+  }
+
 
    GetSpecialOffers(data:any){
 
 
     return this.webService.get(`specialoffers/${data.Type}/${data.ActiveYn}/${data.Locality}`);
+  }
+
+  GetSpecialOffersAll(data:any){
+
+
+    return this.webService.get(`specialoffersall/${data.ActiveYn}/${data.Locality}`);
   }
 }

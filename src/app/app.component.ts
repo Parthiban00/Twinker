@@ -9,7 +9,8 @@ import { Platform } from '@ionic/angular';
 import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
-import {StatusBar} from "@capacitor/status-bar"
+import {StatusBar, StatusBarStyle} from "@capacitor/status-bar"
+
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 declare var google;
 @Component({
@@ -30,14 +31,22 @@ export class AppComponent {
   latitude;
   longitude;
   address;
+  userName="buddy";
+  mobileNo="Login Pls...";
   public geocoder;
-  constructor(private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {  this.sideMenu();
+  constructor( private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {
+     this.sideMenu();
 
     this.splashScreen.hide();
-    StatusBar.setBackgroundColor({color:'ffffff'});
+
+    //this.statusBar.backgroundColorByName("white");
     //localStorage.removeItem('LocationAddress');
   //  this.geocoder = new google.maps.Geocoder();
+StatusBar.setStyle({style:StatusBarStyle.Light});
+StatusBar.setBackgroundColor({color:'ffffff'});
+
   this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+
     if(!localStorage.getItem('currentUser')){
       console.log("no");
 this.router.navigate['login-page'];
@@ -49,7 +58,10 @@ this.router.navigate['login-page'];
            // this.router.navigate(['setup-location']);
           }
           else{
+            this.userName=JSON.parse(localStorage.getItem('currentUser'))[0].FirstName;
 
+            this.mobileNo=JSON.parse(localStorage.getItem('currentUser'))[0].MobileNo;
+            console.log("userName "+this.userName)
             this.router.navigate(['home-page']);
             console.log("yes");
 
@@ -271,6 +283,8 @@ this.network.onDisconnect().subscribe(() => {
     localStorage.removeItem('currentUser');
    // localStorage.removeItem('LocationAddress');
     this.router.navigate(['login']);
+    this.mobileNo="Login Pls...";
+    this.userName="buddy";
    }
 
    async presentToast(){

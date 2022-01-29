@@ -12,8 +12,10 @@ import { PopoverController } from '@ionic/angular';
 import { LoadingController } from '@ionic/angular';
 import{PopoverTypesPage} from '../popover-types/popover-types.page';
 import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
-
-
+import Restaurant from '../models/restaurants';
+import Offers from '../models/offers';
+import { ModalController } from '@ionic/angular';
+import {OffersPage} from '../offers/offers.page';
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.page.html',
@@ -31,6 +33,7 @@ completedCount=0;
   restaurantName1:string="";
    showCart:Cart[]=[];
   itemTotal=0;
+  restaurantDetails:Restaurant[]=[];
    restaurantName:string="";
   cartItems:Cart[]=[];
   cartItemsAll:Cart[]=[];
@@ -48,6 +51,7 @@ completedCount=0;
 behaviour="start";
 block="smooth";
 parthi=true;
+unit='K';
   skeleton=[
 
     {},
@@ -74,21 +78,21 @@ parthi=true;
     itemcount:0,
     amount:0},
   ];*/
-
+  offers:Offers[];
   mainMenu:MainMenu[]=[];
   productDetails:Product[]=[];
   products:Product[]=[];
   isLoading = false;
   type:String;
   paramsMenuId:string;
-
+location;
   opts = {
     freeMode:true,
     slidesPreview:2.8,
     slidesOffsetBefore:30,
     slidesOffsetAfter:100
   }
-  constructor(public popoverController: PopoverController,private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
+  constructor(public modalController: ModalController,public popoverController: PopoverController,private activatedRouter:ActivatedRoute,private alertController:AlertController,private activateRoute:ActivatedRoute,private router:Router,private mainMenuService:MainMenuService,private productService:ProductsService,private cartService:CartService,public loadingController: LoadingController) {
 
 
 
@@ -104,12 +108,37 @@ parthi=true;
   }
   ionViewWillEnter(){
    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+   this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
    this.whichRestaurant=this.activateRoute.snapshot.params.name;
    this.restaurantId=this.activateRoute.snapshot.params.restId;
    this.type=this.activateRoute.snapshot.params.type;
    this.paramsMenuId=this.activateRoute.snapshot.params.menuId;
    console.log(this.activateRoute.snapshot.params);
    console.log(localStorage.getItem('currentUser'));
+
+
+   var restaurantCredential={
+    RestaurantId:this.restaurantId,
+
+        }
+
+        var data={
+          locality:this.location.locality,
+          restaurantId:this.restaurantId
+        }
+
+        this.productService.GetOffers(data).subscribe((res)=>{
+          this.offers=res as Offers[];
+          console.log("offers 111111111111111111111"+this.offers.length);
+        })
+
+       // this.dismiss();
+  this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
+    this.restaurantDetails=res as Restaurant[];
+var k=0;
+  console.log("restaurant type "+this.restaurantDetails[0].DeliveryTime);
+  this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude,this.unit,k);
+  })
 
     this.searchMenu="";
     this.isSearch=true;
@@ -154,6 +183,8 @@ console.log("rest id "+this.restaurantId);
     else{
       this.menu=this.paramsMenuId;
     //  this.segmentChangedSpecialOffers();
+
+
 
 
     }
@@ -726,7 +757,7 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
   console.log("clear cart "+clearCart+" add cart "+addCart);
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
-    header: 'Confirm!',
+    header: 'Replace Items...',
     message: 'Your cart contains items from <strong>'+this.restaurantName1+'</strong>, would you like to replace it?',
     buttons: [
       {
@@ -858,6 +889,50 @@ scrollFn(anchor: string): void{
   let y = document.getElementById(anchor).offsetTop;
         this.content.scrollToPoint(0,y,1000);
 
+
+}
+
+distance(lat1:any, lon1:any, lat2:any, lon2:any, unit:any,k:any) {
+
+  console.log(k);
+  if ((lat1 == lat2) && (lon1 == lon2)) {
+    return 0;
+  }
+  else {
+
+    var radlat1 = Math.PI * lat1/180;
+    var radlat2 = Math.PI * lat2/180;
+    var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
+    }
+    dist = Math.acos(dist);
+    dist = dist * 180/Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit=="K") { dist = dist * 1.609344
+    // console.log("distance between two coord   "+dist)
+    this.restaurantDetails[k].Distance=parseFloat(dist.toFixed(1));
+//this.dismiss();
+    }
+    if (unit=="N") { dist = dist * 0.8684 }
+    return dist;
+  }
+}
+
+GoToOffers(){
+
+    this.modalController.create({
+      component:OffersPage,
+      //componentProps:this.location
+              }).then(modalres=>{
+                modalres.present();
+
+                modalres.onDidDismiss().then(res=>{
+
+                })
+              })
 
 }
 }

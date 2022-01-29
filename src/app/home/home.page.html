@@ -23,10 +23,10 @@
     </ion-buttons> -->
 
 
-<div style="position: relative;">
+<div style="position: relative;border-radius: 5px;">
   <div class="search" style="margin-top:12px">
 
-    <ion-searchbar id="custom-search" style="height:35px;font-size:13px" debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)" placeholder="Search Restaurant"></ion-searchbar>
+    <ion-searchbar id="custom-search" style="height:35px;font-size:13px;border-radius: 5px;" debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)" placeholder="Search Restaurant"></ion-searchbar>
 
     <div class="veg" *ngIf="type=='Food'">
 
@@ -66,17 +66,19 @@
       <P >Today's Deals &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
         </div>
 
-    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+    <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
       <ion-slide class="slide-in-top"  *ngFor="let offers of specialOffers" (click)="GoToRestaurant(offers.RestaurantName,offers.RestaurantId,offers.MenuId,offers.Type)" style="padding:0px;width: fit-content;">
-        <ion-card  style="height: 120px;border-radius:0px">
+        <!-- <ion-card  style="height: 120px;border-radius:0px">
 
          <div class="menu-name">
-          <!-- {{list.Category}} -->
+
            </div>
 
          <img style="height: 150px;width: 250px;" src="{{offers.ImageUrl}}">
 
-        </ion-card>
+        </ion-card> -->
+        <ion-button color="clear" style="height: 120px;width: 250px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('{{offers.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
+          </ion-button>
      </ion-slide>
 
 
@@ -95,15 +97,14 @@
         </div>
     <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
       <ion-slide class="swing-in-top-fwd"  style="padding:0px;width: fit-content;" *ngFor="let list of category">
-        <ion-card  (click)="Products(list.RestaurantName,list.RestaurantId,list.Type);" style="height: 150px;border-radius:0px">
+        <!-- <ion-card  style="height: 150px;border-radius:5px;margin-top:10px"> -->
 
-         <div class="menu-name">
-          {{list.Category}}
-           </div>
 
-          <img style="height: 150px;width: 150px;" src="{{list.ImageUrl}}">
 
-        </ion-card>
+          <!-- <img style="height: 180px;width: 150px;" src="{{list.ImageUrl}}"> -->
+          <ion-button color="clear"  (click)="Products(list.RestaurantName,list.RestaurantId,list.Type);" style="height: 150px;width: 150px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('{{list.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
+</ion-button>
+        <!-- </ion-card> -->
      </ion-slide>
 
 
@@ -117,16 +118,21 @@
 
       <P >Find for yours &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P>
         </div>
+
     <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+
+
       <ion-slide class="slide-in-fwd-center" style="padding:0px;width: fit-content;display:inline-block" *ngFor="let list of specificCategory">
         <div>
-        <ion-card (click)="Category(list.Category);" style="height: 100px;width:100px;border-radius: 50%;margin-top: 10px;">
+        <!-- <ion-card (click)="Category(list.Category);" style="height: 100px;width:100px;border-radius: 50%;margin-top: 10px;"> -->
 
 
-          <img style="height: 150px;width: 150px;" src="{{list.ImageUrl}}">
+          <!-- <img style="height: 150px;width: 150px;" src="{{list.ImageUrl}}"> -->
+          <ion-button fill='clear' (click)="Category(list.Category);"  style="height: 80px;width:80px;border-radius: 50%;margin-top: 10px;margin-left: 10px;margin-right:10px;background-image: url('{{list.ImageUrl}}');background-repeat: no-repeat;background-size: cover;background-position: center;color:white">
+</ion-button>
+        <!-- </ion-card> -->
 
-
-        </ion-card></div>
+      </div>
         <span class="caption">{{list.Category}}</span>
      </ion-slide>
 
@@ -134,7 +140,7 @@
 
    </ion-slides>
   </div>
-  <ion-item-group style="margin-top: 12px;" *ngFor="let category of shopCategory;let k=index" id={{category._id}}>
+  <ion-item-group style="margin-top: 30px;" *ngFor="let category of shopCategory;let k=index" id={{category._id}}>
     <!-- <div class="ion-list" *ngFor="let category of shopCategory;let k=index" id={{category._id}}> -->
 
       <ion-item-divider sticky >
@@ -147,16 +153,19 @@
 
       </ion-item-divider>
       <!-- <ion-list style="margin-top: -10px;" lines="none" *ngFor="let item of searchedItem;let i=index"> -->
-     <div class="items">
+     <div class="items" style="margin-top:70px;">
         <div  *ngFor="let item of searchedItem;let i=index">
         <ion-list class="slide-in-left" style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
 
-    <ion-card class="ion-card" style="border-radius:0px;" [ngClass]="{'close':!item.AvailableStatus}">
+    <ion-card class="ion-card" style="border-radius:5px;" [ngClass]="{'close':!item.AvailableStatus}">
         <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
 
           <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
 
-            <img  src="{{item.ImageUrl}}">
+
+            <img  src="{{item.ImageUrl}}" style="border-radius:5px;">
+
+
           </ion-thumbnail>
           <ion-label class="hotel-card">
             <h4 style="font-weight: 500;width: 200px;">{{item.RestaurantName}}</h4>
@@ -164,6 +173,7 @@
             <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p>
             <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
             <p style="font-size: 12px;margin-top: -5px;font-style: italic;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km </p>
+
           </ion-label>
         </ion-item>
 
