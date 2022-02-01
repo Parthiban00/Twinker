@@ -2,32 +2,35 @@
 
   <ion-toolbar  no-border>
     <ion-buttons fill="clear" slot="start">
-    <ion-menu-button color="primary"></ion-menu-button>
+    <!-- <ion-menu-button color="primary"></ion-menu-button> -->
+    <ion-button (click)="RedirectToHome()">
+      <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+      </ion-button>
     </ion-buttons>
   <ion-title style="font-family: lato;">
     Restaurant - Dashboard
   </ion-title>
-  <ion-buttons slot="end">
+  <!-- <ion-buttons slot="end">
 <ion-button fill="clear" (click)="RedirectToHome()">
 <ion-icon color="primary" name="Home"></ion-icon>
 </ion-button>
-  </ion-buttons>
+  </ion-buttons> -->
 </ion-toolbar>
 
 
 </ion-header>
 <ion-content>
-<div class="slides ion-margin-bottom">
+<!-- <div class="slides ion-margin-bottom">
   <ion-slides [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
-    <ion-slide style="padding:0px;width: fit-content;" >
+    <ion-slide >
 
-      <ion-card style="width:180px;" (click)="RestaurantManagement()">
+      <ion-card  (click)="RestaurantManagement()">
         <ion-card-header>
 <div class="main" >
 
   <img src="assets/restaurant_icon.png">
 </div>
-<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
         </ion-card-header>
         <ion-card-content class="ion-text-left">
@@ -49,7 +52,7 @@
 
   <img src="assets/orders.png">
 </div>
-<!-- <img class="foods-row" src="assets/foods_row.png"> -->
+
 
         </ion-card-header>
         <ion-card-content class="ion-text-left">
@@ -72,5 +75,44 @@
   </ion-slides>
 
 
+</div> -->
+
+<div class="slide-items" >
+  <div class="type" style="margin-left: 5px;margin-top:5px" >
+
+    <!-- <P >Best Offers &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P> -->
+      </div>
+  <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
+    <ion-slide class="swing-in-top-fwd"  style="padding:0px;height: 250px;width: fit-content;" (click)="RestaurantManagement()">
+      <!-- <ion-card  style="height: 150px;border-radius:5px;margin-top:10px"> -->
+
+
+
+        <!-- <img style="height: 180px;width: 150px;" src="{{list.ImageUrl}}"> -->
+        <ion-button color="clear"  style="height: 150px;width: 150px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('assets/rest_manage.png');background-repeat: no-repeat;background-size: cover;margin-top:-80px">
+</ion-button>
+      <!-- </ion-card> -->
+      <div style="position:absolute;bottom:40px">
+        <p style="font-size: 14px;font-weight: 500;">Restaurant Mangement</p>
+      </div>
+   </ion-slide>
+
+   <ion-slide class="swing-in-top-fwd"  style="padding:0px;height: 250px;width: fit-content;" (click)="OrdersManagement()">
+    <!-- <ion-card  style="height: 150px;border-radius:5px;margin-top:10px"> -->
+
+
+
+      <!-- <img style="height: 180px;width: 150px;" src="{{list.ImageUrl}}"> -->
+      <ion-button color="clear"  style="height: 150px;width: 150px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('assets/orders_manage.png');background-repeat: no-repeat;background-size: cover;margin-top:-80px">
+</ion-button>
+    <!-- </ion-card> -->
+    <div style="position:absolute;bottom:40px">
+      <p style="font-size: 14px;font-weight: 500;">Orders Management</p>
+    </div>
+ </ion-slide>
+
+
+
+ </ion-slides>
 </div>
 </ion-content>

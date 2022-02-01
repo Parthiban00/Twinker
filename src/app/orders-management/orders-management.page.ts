@@ -8,7 +8,7 @@ import { LoadingController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as moment from 'moment';
-
+import{RestaurantsService} from 'src/app/restaurants.service';
 
 export interface PeriodicElement {
   itemName: string;
@@ -70,7 +70,7 @@ export class OrdersManagementPage implements OnInit {
   default:string="";
   isLoading = false;
 
-  constructor(private alertController:AlertController,private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
+  constructor(private restaurantService:RestaurantsService,private alertController:AlertController,private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
     this.default="Placed"
     this.today=new Date().toISOString();
     console.log("today date "+this.today);
@@ -96,8 +96,9 @@ export class OrdersManagementPage implements OnInit {
       ActiveYn:true,
       DeleteYn:false,
 
+
     }
-this.owenerService.GetRestaurants(getRestaurants).subscribe((res)=>{
+this.restaurantService.GetOwnersRestaurant(getRestaurants).subscribe((res)=>{
 
   this.restaurants=res as Restaurants[];
   console.log('restauratns mapped by users   '+this.restaurants);

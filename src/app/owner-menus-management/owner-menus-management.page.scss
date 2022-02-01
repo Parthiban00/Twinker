@@ -16,3 +16,6 @@ ion-item{
 input.ng-touched.ng-invalid{
   border:1px solid red;
 }
+ion-button{
+   --border-radius:20px
+}

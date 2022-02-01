@@ -25,6 +25,7 @@ export class RestManagmentService {
                }
 
                UpdateRestaurantDetails(data){
+                 console.log("service "+data.Description)
                  return this.webService.patch(`owner/restaurants/${data.id}`,data);
                }
 

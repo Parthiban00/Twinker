@@ -1,16 +1,18 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
-      <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-      </ion-buttons>
+  <ion-toolbar  no-border>
+    <ion-buttons fill="clear" slot="start">
+          <ion-button (click)="RedirectToHome()">
+            <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+            </ion-button>
+          </ion-buttons>
     <ion-title style="font-family: lato;">
       Restaurant Management
     </ion-title>
-    <ion-buttons slot="end">
+    <!-- <ion-buttons slot="end">
       <ion-button (click)="RedirectToHome()">
       <ion-icon name="apps"></ion-icon>
       </ion-button>
-          </ion-buttons>
+          </ion-buttons> -->
   </ion-toolbar>
 
 
@@ -91,7 +93,7 @@
           <ion-input #description='ngModel' ngModel name="description" [(ngModel)]="shop.Description"></ion-input>
         </ion-item>
         <div class=button>
-        <ion-button type="submit"  style="width: 100%;" color="success" (click)="UpdateRestaurant(restForm)"> Update</ion-button>
+        <ion-button type="submit"  style="display: block;margin-left: auto;margin-right: auto;" color="success" (click)="UpdateRestaurant(restForm)"> Update</ion-button>
         </div>
         </ion-list>
        </form>

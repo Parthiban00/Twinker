@@ -44,7 +44,7 @@ export class OwnerRestManagementPage implements OnInit {
    }
 
    RedirectToHome(){
-     this.router.navigate(['admin-dashboard']);
+     this.router.navigate(['restaurant-owner-dashboard']);
    }
 
    onChange(selectedValue){
@@ -196,7 +196,7 @@ console.log(this.selectedValue);
    }
 
    UpdateRestaurant(formDetails){
-     console.log(formDetails.form.value);
+     console.log(formDetails.form.value.description);
      var data={
 id:this.restaurants[0]._id,
     RestaurantName:formDetails.form.value.restname,

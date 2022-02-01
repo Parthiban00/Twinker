@@ -1,16 +1,14 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar color="primary" no-border>
-      <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+  <ion-toolbar no-border>
+    <ion-buttons fill="clear" slot="start">
+      <ion-button (click)="RedirectToHome()">
+        <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+        </ion-button>
       </ion-buttons>
     <ion-title style="font-family: lato;">
       Orders Management
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="RedirectToHome()">
-      <ion-icon name="apps"></ion-icon>
-      </ion-button>
-          </ion-buttons>
+
   </ion-toolbar>
   <div >
 
@@ -23,13 +21,13 @@
     </ion-select>
   </ion-item>
 
-
+<!--
   <div class="search">
 
     <ion-searchbar  debounce="500" [(ngModel)]="searchHotel" (ionChange)="SearchChange($event)"></ion-searchbar>
 
 
-</div>
+</div> -->
 <div class="datepicker-card">
   <ion-card>
 <ion-label>Date:&nbsp;{{myDate}}</ion-label>

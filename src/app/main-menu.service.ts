@@ -18,4 +18,13 @@ export class MainMenuService {
   AddMainMenu(data){
     return this.webService.post(`restaurants/${data.RestId}/mainmenus`,data)
   }
+
+  AddSubMenu(data){
+    console.log('image url in service page '+data.ImageUrl);
+    return this.webService.post(`restaurants/${data.restId}/mainmenus/${data.MenuId}/products`,data)
+  }
+
+  DeleteMainMenu(data){
+return this.webService.patch(`delete/mainmenus/${data.id}`,data);
+  }
 }

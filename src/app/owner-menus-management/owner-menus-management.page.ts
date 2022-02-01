@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {Router} from '@angular/router';
 import{RestaurantsService} from 'src/app/restaurants.service';
 import{MainMenuService} from 'src/app/main-menu.service';
@@ -8,14 +8,20 @@ import{RestManagmentService} from 'src/app/rest-managment.service';
 import{ProductsService} from 'src/app/products.service';
 import Product from '../models/products';
 import { ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
+import {OwnersService} from 'src/app/owners.service';
 @Component({
   selector: 'app-owner-menus-management',
   templateUrl: './owner-menus-management.page.html',
   styleUrls: ['./owner-menus-management.page.scss'],
 })
 export class OwnerMenusManagementPage implements OnInit {
+  @ViewChild('content') private content: any;
 
   selectedValue: string="";
+  addMenu=false;
+  addSubMenuRecommended=false
+  addSubMenuSuggestion=false
   user:any;
   restaurants:Restaurants[]=[];
  shopStatus:String;
@@ -26,12 +32,18 @@ export class OwnerMenusManagementPage implements OnInit {
  products:Product[]=[];
  menuId:string;
  viewType;
+ showMainMenuAdd=false;
 role="Edit";
  showSumenu=false;
+ AddBtn=false;
  showMenuStatus=false;
  productFrom:string;
  restId;
-   constructor(public toastController: ToastController,private productService:ProductsService,private router:Router,private restaurantService:RestaurantsService,private mainMenuService:MainMenuService,private restManagementService:RestManagmentService) { }
+ image:any;
+ uploadBtn=true;
+ menuImageUrl="";
+
+   constructor(private alertController:AlertController,private ownersService:OwnersService ,public toastController: ToastController,private productService:ProductsService,private router:Router,private restaurantService:RestaurantsService,private mainMenuService:MainMenuService,private restManagementService:RestManagmentService) { }
 
    ngOnInit() {
    }
@@ -42,7 +54,7 @@ role="Edit";
      this.GetRestaurants();
    }
    RedirectToHome(){
-     this.router.navigate(['admin-dashboard']);
+     this.router.navigate(['owner-rest-management']);
    }
 
 
@@ -133,6 +145,8 @@ this.restId=selectedValue;
        }
 
        GetProducts(id:string,menuName:string,viewType:string){
+this.addMenu=false;
+this.showMainMenuAdd=false;
         this.showSumenu=true;
         this.role="Edit";
          console.log(id);
@@ -303,10 +317,13 @@ this.GetMainMenu(this.restId);
       }
 
       AddMainMenuBtnClick(){
-        this.showSumenu=true;
+        this.showSumenu=false;
         this.role='Add';
         this.viewType='List View';
-
+        this.showMainMenuAdd=true;
+        this.addMenu=false;
+this.productFrom="";
+this.productDetails=[];
       }
 
       AddMainMenu(mainMenuForm){
@@ -323,8 +340,150 @@ var data={
 
 this.mainMenuService.AddMainMenu(data).subscribe((res)=>{
 this.presentToast('New Menu Added...');
+this.GetMainMenu(this.restId);
+this.AddBtn=true;
+mainMenuForm.reset();
 },err=>{console.log('error'+err)},()=>console.log('Process completed'))
       }
+
+      AddMenuBtnClick(){
+      //  this.content.scrollToBottom(300);
+      this.productDetails=[];
+      this.addMenu=true;
+      this.menuImageUrl="";
+      }
+
+      AddMenu(formDetails){
+console.log(formDetails.form.value);
+console.log("add menu button image url" +this.menuImageUrl);
+var data={
+  restId:this.restId,
+  MenuId:this.menuId,
+  ProductName:formDetails.form.value.productname,
+  Price:formDetails.form.value.productprice,
+  Size:"",
+  Description:formDetails.form.value.productdescription,
+  AvailableTime:"",
+  AvailableStatus:true,
+  AvailableDays:"",
+  ActiveYn:true,
+  DeleteYn:false,
+  Offer:0,
+  OfferPrice:0,
+  Commission:0,
+  Sort:1,
+  ItemCount:0,
+  ActualAmount:0,
+  ImageUrl:this.menuImageUrl,
+  RestaurantName:this.restaurants[0].RestaurantName,
+  Category:"",
+  Recommended:formDetails.form.value.recommended,
+  Badge:false,
+  BadgeDescription:"",
+  Bestseller:false,
+  Suggestion:formDetails.form.value.suggestion
+}
+
+this.mainMenuService.AddSubMenu(data).subscribe((res)=>
+{
+this.presentToast('SubMenu Added Successfully...');
+formDetails.reset();
+},err=>{console.log('error'+err)},()=>console.log('Process completed'))
+      }
+
+
+      DeleteMainMenu(MenuId){
+        var data={
+          id:MenuId
+        }
+
+
+this.mainMenuService.DeleteMainMenu(data).subscribe((res)=>{
+this.presentToast('Main Menu Deleted Successfully...')
+this.GetMainMenu(this.restId);
+},err=>{console.log('error'+err)},()=>console.log('Process completed'))
+
+
+
+
+
+
+
+      }
+
+
+
+      selectedFile(event){
+this.image=event.target.files[0];
+this.uploadBtn=false;
+      }
+sendData(){
+  var data={
+    _id:"",
+    imageUrl:"",
+    imageTitle:'ProductImage',
+    imageDesc:'Menu',
+  }
+
+  if(this.image=="" || this.image==undefined || this.image==null){
+
+  }else{
+  this.ownersService.addGallery(data, this.image)   .subscribe((res: any) => {
+
+    if (res.body) {
+    console.log(res.body.imageUrl);
+    this.menuImageUrl=res.body.imageUrl;
+    this.presentToast('Menu Image Uploaded...')
+    this.uploadBtn=true;
+    }
+  }, (err: any) => {
+    console.log(err);
+    this.presentToast('Menu Image Uploaded error!...')
+    this.uploadBtn=false;
+
+  });
+}
+
+
+}
+
+async presentAlertConfirm1(MenuId) {
+
+  const alert = await this.alertController.create({
+    cssClass: 'my-custom-class',
+    header: 'Confirm to delete...',
+    message: '<small>Are you sure to delete this menu?</small>',
+    buttons: [
+
+     {
+
+        text: 'Okay',
+        handler: () => {
+          console.log('Confirm Okay');
+
+       // this.ionViewWillEnter();
+       this.DeleteMainMenu(MenuId);
+
+        }
+
+
+
+      },
+      {
+        text: 'Cancel',
+        role: 'cancel',
+        cssClass: 'secondary',
+        handler: () => {
+
+        }
+      }
+
+
+    ]
+  });
+
+  await alert.present();
+}
  }
  interface SelectRestaurants {
    value: string;
