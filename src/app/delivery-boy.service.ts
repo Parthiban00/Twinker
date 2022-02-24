@@ -11,10 +11,17 @@ export class DeliveryBoyService {
 
   }
 
+  GetOrdersPlaced(data:any){
+    return this.webService.get(`placedorders/orderdetails`)
+
+  }
+
   GetOrdersLocality(data:any){
     return this.webService.get(`deliveryboy/orderdetails/${data.ActiveYn}/${data.Locality}/${data.CreatedDate}`)
 
   }
+
+
 
 
   GetAcceptedOrders(data:any){

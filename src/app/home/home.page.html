@@ -67,7 +67,7 @@
         </div>
 
     <ion-slides  [options]="{slidesPerView:'auto',zoom:false,grabCursor:true,autoplay:true}">
-      <ion-slide  class="slide-in-top"  *ngFor="let offers of specialOffers" (click)="GoToRestaurant(offers.RestaurantName,offers.RestaurantId,offers.MenuId,offers.Type)" style="padding:0px;width: fit-content;">
+      <ion-slide  class="slide-in-top"  *ngFor="let offers of specialOffers" (click)="GoToRestaurant(offers.RestaurantName,offers.RestaurantId,offers.MenuId,offers.Type)" style="padding:0px;width: fit-content;--border-radius: 12px;">
         <!-- <ion-card  style="height: 120px;border-radius:0px">
 
          <div class="menu-name">
@@ -96,13 +96,13 @@
       <!-- <P >Best Offers &nbsp;&nbsp;<ion-icon name="arrow-forward-outline"></ion-icon></P> -->
         </div>
     <ion-slides   [options]="{slidesPerView:'auto',zoom:false,grabCursor:true}">
-      <ion-slide class="swing-in-top-fwd"  style="padding:0px;width: fit-content;" *ngFor="let list of category">
+      <ion-slide class="swing-in-top-fwd"  style="padding:0px;width: fit-content;--border-radius:12px !important" *ngFor="let list of category">
         <!-- <ion-card  style="height: 150px;border-radius:5px;margin-top:10px"> -->
 
 
 
           <!-- <img style="height: 180px;width: 150px;" src="{{list.ImageUrl}}"> -->
-          <ion-button color="clear"  (click)="Products(list.RestaurantName,list.RestaurantId,list.Type);" style="height: 150px;width: 150px;border-radius:5px;margin-left: 10px;margin-right:10px;background-image: url('{{list.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
+          <ion-button color="clear"  (click)="Products(list.RestaurantName,list.RestaurantId,list.Type);" style="height: 200px;width: 200px;border-radius:12px;margin-left: 10px;margin-right:10px;background-image: url('{{list.ImageUrl}}');background-repeat: no-repeat;background-size: cover;">
 </ion-button>
         <!-- </ion-card> -->
      </ion-slide>
@@ -157,22 +157,23 @@
         <div  *ngFor="let item of searchedItem;let i=index">
         <ion-list class="slide-in-left" style="margin-top: -5px;" lines="none"  *ngIf="item.CategoryId==category._id" >
 
-    <ion-card class="ion-card" style="border-radius:5px;" [ngClass]="{'close':!item.AvailableStatus}">
-        <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)">
+    <ion-card class="ion-card" style="border-radius:8px;box-shadow: none;" [ngClass]="{'close':!item.AvailableStatus}">
+        <ion-item (click)="RestaurntClick(item.RestaurantName,item._id,item.AvailableStatus)" style="margin-left:-10px">
 
-          <ion-thumbnail style="height: 100px;width: 100px;border-radius: 2px;" slot="start">
+          <ion-thumbnail style="height: 130px;width: 120px;border-radius: 2px;" slot="start">
 
 
-            <img  src="{{item.ImageUrl}}" style="border-radius:5px;">
+            <img  src="{{item.ImageUrl}}" style="border-radius:8px;">
 
 
           </ion-thumbnail>
           <ion-label class="hotel-card">
-            <h4 style="font-weight: 500;width: 200px;">{{item.RestaurantName}}</h4>
+            <h4 style="font-weight: 500;width: 200px;font-size: 12px;">{{item.RestaurantName}}</h4>
             <p  style="margin-top: -15px;font-size: 12px;">{{item.RestaurantType}}</p>
             <p  style="margin-top: -15px;font-size: 12px;">{{item.Address}}</p>
             <hr style="background-color: rgb(236, 138, 45);margin-top: -10px;">
-            <p style="font-size: 12px;margin-top: -5px;font-style: italic;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km </p>
+            <!-- <p style="font-size: 12px;margin-top: -5px;font-style: italic;">Taste: 4.5 | Rating: 4.5 | {{item.Distance}} km </p> -->
+            <div class="rest_details">Rating: {{item.OverallRating}} | {{item.Distance}} km | {{item.DeliveryTime}}</div>
 
           </ion-label>
         </ion-item>
@@ -363,11 +364,11 @@
 
 
 </div> -->
-  <ion-footer *ngIf="cartItemsAll.length && showRestaurants" class="slide-in-bottom">
+  <ion-footer *ngIf="CartItemsLocal.length && showRestaurants" class="slide-in-bottom">
     <ion-toolbar (click)="viewCart()">
 
 
-      <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
+      <ion-text class="title">{{CartItemsLocal.length}} Items</ion-text>
       <ion-text class="description">from {{restaurantName}}</ion-text>
 
 

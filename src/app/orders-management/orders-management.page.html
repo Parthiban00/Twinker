@@ -87,8 +87,8 @@
 </ion-refresher-content>
 </ion-refresher>
   <div *ngIf="default=='Placed'">
-  <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
-    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Placed'">
+  <div *ngFor="let orders of orderDetailsFromSocket[0];let i=index" style="margin-top: 5px;">
+    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.RestaurantStatus=='Placed'">
 
         <mat-expansion-panel hideToggle>
             <mat-expansion-panel-header>
@@ -143,7 +143,7 @@
       </div>
         <div *ngIf="default=='Accepted'">
           <div *ngFor="let orders of searchedItem;let i=index" style="margin-top: 5px;">
-            <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.Status=='Accepted by Restaurant Owner'">
+            <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.RestaurantStatus=='Accepted by Restaurant'">
 
                 <mat-expansion-panel hideToggle>
                     <mat-expansion-panel-header>
@@ -363,7 +363,7 @@
                   </div>
           </div>
           <ion-fab vertical="bottom" horizontal="end" slot="fixed" >
-            <ion-fab-button size="small" >
+            <ion-fab-button size="large" >
               <ion-icon name="filter"></ion-icon>
             </ion-fab-button>
              <ion-fab-list side="top">

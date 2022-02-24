@@ -43,6 +43,7 @@ ion-slides{
     margin-top: -20px;
 
 
+
     ion-card{
 
       position: relative;
@@ -116,6 +117,7 @@ ion-card{
 
   .ion-card{
     //position: relative;
+    box-shadow: none;
     margin-top: -10px;
     .offers{
       position: relative;
@@ -138,7 +140,7 @@ ion-card{
 ion-footer{
 
 ion-toolbar{
-  --background:#f7714a;
+  --background:#ff4b1f;
   --color:white;
 
 
@@ -684,3 +686,16 @@ padding: 5px;
 
 
 
+.rest_details{
+  height:30px;
+  width: calc(100% - 10px);
+  background-image: linear-gradient(to right, #ff4b1f, #ff4f3a, #ff5650, #ff5e63, #ff6775);
+  border-radius: 0px;
+  align-items: center;
+  text-align: center;
+  color: white;
+font-size: 12px;
+padding-top: 5px;
+
+
+}

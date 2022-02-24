@@ -11,16 +11,14 @@
 <ion-header class="ion-no-border">
   <ion-toolbar  no-border>
       <ion-buttons slot="start">
-      <ion-menu-button color="primary"></ion-menu-button>
+        <ion-button (click)="RedirectToHome()">
+          <ion-icon name="arrow-back-outline" color="primary"></ion-icon>
+          </ion-button>
       </ion-buttons>
     <ion-title>
       {{whichRestaurant}}
     </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="RedirectToHome()">
-      <ion-icon color="primary" name="home"></ion-icon>
-      </ion-button>
-          </ion-buttons>
+
   </ion-toolbar>
   <!-- <ion-card style="height: 50px;">
   <div class="banner">
@@ -126,7 +124,7 @@
             <ion-card  style="height: 40px;border-radius:0px;justify-content: center;align-items: center;" (click)="GoToOffers();">
 
 
-<p style="margin-top: 8px;font-weight: 500;font-size: 12px;color: tomato;"><ion-icon name="sparkles" color="primary"></ion-icon>&nbsp;{{offers.ShortDescription}}</p>
+<p style="margin-top: 8px;font-weight: 500;font-size: 12px;color: white"><ion-icon name="sparkles" color="primary"></ion-icon>&nbsp;{{offers.ShortDescription}}</p>
 
 
             </ion-card>
@@ -170,15 +168,15 @@
 <ion-card class="ion-card" style="border-radius:5px;" [ngClass]="{'close':!product.AvailableStatus}" >
     <ion-item  >
 
-      <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+      <ion-thumbnail *ngIf="product.ImageUrl" style="height: 120px;width: 110px;border-radius: 2px;" slot="end">
 
         <img src="{{product.ImageUrl}}" style="border-radius:5px;">
 
-          <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" >Add</ion-button>
+          <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncraseItemLocalStorage(i,product.MenuId)" >Add</ion-button>
           <div class="qty-selector-new" *ngIf="product.AvailableStatus && product.ItemCount">
-            <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+            <ion-button fill="clear" (click)="DecreaseItemLocal(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
           <ion-label>{{product.ItemCount}}</ion-label>
-          <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+          <ion-button fill="clear"  (click)="IncraseItemLocalStorage(i,product.MenuId)">+</ion-button>
           </div>
 
       </ion-thumbnail>
@@ -187,11 +185,11 @@
 
 
 
-          <ion-button *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" class="img-not-present">Add</ion-button>
+          <ion-button *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncraseItemLocalStorage(i,product.MenuId)" class="img-not-present">Add</ion-button>
           <div class="qty-selector-new-notimage" *ngIf="product.AvailableStatus && product.ItemCount">
-            <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+            <ion-button fill="clear" (click)="DecreaseItemLocal(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
           <ion-label>{{product.ItemCount}}</ion-label>
-          <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+          <ion-button fill="clear"  (click)="IncraseItemLocalStorage(i,product.MenuId)">+</ion-button>
           </div>
 
       </ion-thumbnail>
@@ -359,9 +357,9 @@
 </ion-col>
 </ion-row>
 
-<ion-row *ngIf="list.ViewType=='Grid View'" >
+<ion-row *ngIf="list.ViewType=='Grid View'" style="padding-right: 5px;" >
   <div *ngFor="let product of productDetails;let i=index">
-  <ion-col style="padding: 0px;" *ngIf="product.MenuId==list._id" >
+  <ion-col style="padding: 0px;margin-left: 5px;"   *ngIf="product.MenuId==list._id" >
 
 <div class="product" [ngClass]="{'close':!product.AvailableStatus}">
   <!-- <div class="ribbon-wrapper">
@@ -379,12 +377,12 @@
     <p>Rs.{{product.Price}}</p>
 </div>
   <div class="qty-selector" *ngIf="product.AvailableStatus && product.ItemCount">
-  <ion-button fill="clear" color="success" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+  <ion-button fill="clear" color="success" (click)="DecreaseItemLocal(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
 <ion-label >{{product.ItemCount}}</ion-label>
-<ion-button fill="clear" color="success" (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+<ion-button fill="clear" color="success" (click)="IncraseItemLocalStorage(i,product.MenuId)">+</ion-button>
 </div>
 <div  class="add-btn">
-<ion-button  *ngIf="!product.ItemCount && product.AvailableStatus" color="danger" (click)="IncreaseItem(i,product.MenuId)" style="height: 25px;--border-radius: 2px;position: sticky;bottom:10px;--box-shadow: none !important; height: 25px;width: 60px;">Add</ion-button>
+<ion-button  *ngIf="!product.ItemCount && product.AvailableStatus" color="danger" (click)="IncraseItemLocalStorage(i,product.MenuId)" style="height: 25px;--border-radius: 2px;position: sticky;bottom:10px;--box-shadow: none !important; height: 25px;width: 60px;">Add</ion-button>
 </div>
 <div  *ngIf="!product.AvailableStatus">
   <p style="color:rgb(207, 3, 3);font-size: 12px;margin-top: 10px;font-style: italic;">Currently Not Available</p>
@@ -411,15 +409,15 @@
   <ion-card class="ion-card" style="border-radius:5px;"  [ngClass]="{'close':!product.AvailableStatus}">
       <ion-item  >
 
-        <ion-thumbnail *ngIf="product.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+        <ion-thumbnail *ngIf="product.ImageUrl" style="height: 120px;width: 110px;border-radius: 2px;" slot="end">
 
           <img src="{{product.ImageUrl}}" style="border-radius:5px;">
 
-            <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" >Add</ion-button>
+            <ion-button class="img-present" *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncraseItemLocalStorage(i,product.MenuId)" >Add</ion-button>
             <div class="qty-selector-new" *ngIf="product.AvailableStatus && product.ItemCount">
-              <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+              <ion-button fill="clear" (click)="DecreaseItemLocal(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
             <ion-label>{{product.ItemCount}}</ion-label>
-            <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+            <ion-button fill="clear"  (click)="IncraseItemLocalStorage(i,product.MenuId)">+</ion-button>
             </div>
 
         </ion-thumbnail>
@@ -428,11 +426,11 @@
 
 
 
-            <ion-button *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncreaseItem(i,product.MenuId)" class="img-not-present">Add</ion-button>
+            <ion-button *ngIf="!product.ItemCount && product.AvailableStatus" (click)="IncraseItemLocalStorage(i,product.MenuId)" class="img-not-present">Add</ion-button>
             <div class="qty-selector-new-notimage" *ngIf="product.AvailableStatus && product.ItemCount">
-              <ion-button fill="clear" (click)="DecreaseItem(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
+              <ion-button fill="clear" (click)="DecreaseItemLocal(i,product.MenuId);" [disabled]="!product.ItemCount" >-</ion-button>
             <ion-label>{{product.ItemCount}}</ion-label>
-            <ion-button fill="clear"  (click)="IncreaseItem(i,product.MenuId)">+</ion-button>
+            <ion-button fill="clear"  (click)="IncraseItemLocalStorage(i,product.MenuId)">+</ion-button>
             </div>
 
         </ion-thumbnail>
@@ -470,19 +468,19 @@
 <div style="margin-bottom:20px; align-items: center;
 justify-content: center;display: flex;">
 
-<ion-button style="--border-radius: 20px; --background:rgb(56, 94, 156)"  (click)="presentPopover($event)">BROWSE MENUS</ion-button>
+<ion-button style="--border-radius: 20px; --background:rgb(6, 29, 66);text-transform: capitalize;"  (click)="presentPopover($event)"><ion-icon name="menu"></ion-icon>&nbsp;Browse Menus</ion-button>
 
 
 </div>
 
-<ion-footer *ngIf="showCart.length" class="slide-in-bottom">
+<ion-footer *ngIf="CartItemsLocal.length" class="slide-in-bottom">
   <!-- <div style="height: 20px;width: 100%;background-color: black;padding-left: 10px;">
   <p style="color:yellow;font-size: 10px;font-weight: 500;">Add one more to get 10% OFF</p>
   </div> -->
   <ion-toolbar (click)="ViewCart()">
     <!-- <ion-title>4 Items</ion-title> -->
 
-    <ion-text class="title">{{showCart.length}} Items</ion-text>
+    <ion-text class="title">{{CartItemsLocal.length}} Items</ion-text>
     <ion-text class="description">from {{restaurantName1}}</ion-text>
 
     <!-- <ion-spinner slot="end" name="dots" style="margin-right: 20px;"></ion-spinner> -->

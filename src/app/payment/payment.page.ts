@@ -42,6 +42,9 @@ user;
 location;
 locality;
 showSnipper=false;
+placeOrderClicked=false;
+orderPlaced=false;
+showMainContent=false;
   constructor(private socketService:SocketService,private billDetailsService:BillDetailsService,private activateRoute:ActivatedRoute,public modalController: ModalController,private productService:ProductsService, public toastController: ToastController,private alertController:AlertController,private geolocation: Geolocation,private router:Router,private nativeGeocoder:NativeGeocoder,public actionSheetController: ActionSheetController,private cartService:CartService,private registerUserService:RegisterUserService,public loadingController: LoadingController) { }
 
   ngOnInit() {
@@ -125,6 +128,8 @@ showSnipper=false;
 
 
  Payment(){
+   this.placeOrderClicked=true;
+this.showMainContent=true;
 
 if(this.paymentType=="PG"){
   this.showSnipper=true;
@@ -161,13 +166,15 @@ else{
 
 
    this.cartService.OrderDetails(this.billDetails).subscribe((res)=>{
-    // socket.emit('orderPlaced',"orderPlaced successful");
+
 
     this.cartService.UpdateCartPlaced(updateCartPlaced).subscribe((res)=>{
 
      })
      this.showSnipper=false;
-this.presentAlertConfirm();
+     this.orderPlaced=true;
+// this.presentAlertConfirm();
+localStorage.removeItem('CartItems');
 var data={
   room:this.locality,
   user:'user'
@@ -274,5 +281,7 @@ async presentAlertConfirm() {
 RedirectToHome(){
   this.router.navigate(['cart']);
 }
-
+GoToHome(){
+  this.router.navigate(['home-page'])
+}
 }

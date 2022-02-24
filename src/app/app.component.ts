@@ -10,8 +10,9 @@ import { NavController,ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { Network } from '@ionic-native/network/ngx';
 import {StatusBar, StatusBarStyle} from "@capacitor/status-bar"
-
+import {LocalNotificationService} from './local-notification.service';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { BackgroundMode } from '@awesome-cordova-plugins/background-mode/ngx';
 declare var google;
 @Component({
   selector: 'app-root',
@@ -33,12 +34,16 @@ export class AppComponent {
   address;
   userName="buddy";
   mobileNo="Login Pls...";
+  encourageUsage=[
+    'Biriyani or Fried rice....Just tap to order now',
+    'Tandoori and Grill is waiting for you, Tap to order now...'
+  ]
   public geocoder;
-  constructor( private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {
+  constructor(private backgroundMode: BackgroundMode, private localNotification : LocalNotificationService,private nativeGeocoder:NativeGeocoder,private network:Network,private alertController:AlertController,private toastCtrl:ToastController,private router:Router,private splashScreen: SplashScreen,private androidPermissions: AndroidPermissions,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private platform:Platform,private navController:NavController) {
      this.sideMenu();
 
     this.splashScreen.hide();
-
+    this.backgroundMode.enable();
     //this.statusBar.backgroundColorByName("white");
     //localStorage.removeItem('LocationAddress');
   //  this.geocoder = new google.maps.Geocoder();
@@ -69,7 +74,7 @@ this.router.navigate['login-page'];
           }
 
 
-
+// this.localNotification.registerNotification();
 
 
   this.times = Date.now();

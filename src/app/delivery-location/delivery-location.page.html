@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="primary">
-    <ion-searchbar [(ngModel)]="autocomplete.input" show-cancel="true" (ionChange)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="autocomplete.input" style="--border-radius:20px;" show-cancel="true" (ionChange)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
   </ion-toolbar>
   <ion-list [hidden]="autocompleteItems.length == 0">
     <ion-item *ngFor="let item of autocompleteItems" tappable (click)="SelectSearchResult(item)">
@@ -11,7 +11,7 @@
   <ion-row >
 
     <ion-col  >
-      <ion-button style="width: 100%;" (click)="loadMap()" color="primary">
+      <ion-button style="width: 100%;" shape="round" (click)="loadMap()" color="primary">
         <ion-icon slot="start" name="locate"></ion-icon>
           Pick My Location
         </ion-button>

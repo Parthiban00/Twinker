@@ -182,7 +182,7 @@
       <ion-row>
 
         <ion-col>
-          <ion-button color="danger" > Delete</ion-button>
+          <ion-button color="danger" (click)="DeleteMenu(product._id)" > Delete</ion-button>
         </ion-col>
         <ion-col>
           <ion-button (click)="UpdateMenu(loginForm,product._id)" color="success"> Update</ion-button>
@@ -235,7 +235,7 @@
         <ion-row>
           <ion-col>
             <ion-label position="stacked">Menu Image</ion-label>
-      <ion-input type="file"  (change)="selectedFile($event)"></ion-input>
+      <ion-input type="file" name="menuimage" #menuimage='ngModel'  (change)="selectedFile($event)" ngModel></ion-input>
     </ion-col>
     <ion-col>
       <ion-button (click)="sendData()" [disabled]="uploadBtn">upload</ion-button>

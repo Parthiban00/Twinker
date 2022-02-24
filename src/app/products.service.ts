@@ -30,4 +30,7 @@ export class ProductsService {
   UpdateMainMenu(data){
     return this.webService.patch(`mainmenus/${data._id}`,data);
   }
+  DeleteProduct(data){
+    return this.webService.patch(`deleteproducts/products/${data._id}`,data);
+  }
 }

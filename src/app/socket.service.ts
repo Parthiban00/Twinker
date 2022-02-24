@@ -6,7 +6,7 @@ import io from 'socket.io-client';
   providedIn: 'root'
 })
 export class SocketService {
-// private  socket=io("http://localhost:9000");
+ //private  socket=io("http://localhost:9000");
 private  socket=io("http://207.180.242.26:9000");
 
   constructor() { }

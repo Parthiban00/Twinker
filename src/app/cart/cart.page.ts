@@ -28,7 +28,7 @@ import{DeliveryBoyService} from 'src/app/delivery-boy.service';
 import { DeliveryCustomisePage } from '../delivery-customise/delivery-customise.page';
 import {ChangeLocationPage} from '../change-location/change-location.page';
 import {OffersPage} from '../offers/offers.page';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+
 import {BillDetailsService} from 'src/app/bill-details.service';
 // import io from 'socket.io-client';
 
@@ -43,6 +43,7 @@ declare var Razorpay:any;
 })
 export class CartPage  {
   coupon;
+  cartLoading=true;
   mainMenu:MainMenu[]=[];
   productDetails:Product[]=[];
   products:Product[]=[];
@@ -51,6 +52,8 @@ export class CartPage  {
 totalAmount=0;
 totalAmount1;
 discount=0;
+CartItemsLocal=[];
+cartItemsLocal=[];
 AmountWithCharges;
   taxesAndCharges=0;
   deliveryPartnerFee:number;
@@ -73,6 +76,10 @@ selectedLocation:any;
   getUser:Register[];
   offers:Offers[];
   toastMsg:string;
+  restaurantId:any;
+  whichRestaurant:any;
+   selectedMenuName :any
+  type:any
   locality;
   deliveryBoyImage;
   totalCompletedItems=0;
@@ -139,14 +146,15 @@ time;
 
    placeOrderArr=new Array;
 
-
+   emptyCart=false;
    unit="K";
    coord:any;
 
 
 
   ionViewWillEnter(){
-
+    this.cartLoading=true;
+    this.emptyCart=false;
     // socket.emit('cartPageCheck',"cart page entered successfull");
     // socket.on('orderPlaced',data=>{
     //   console.log("response from socekt------- "+data);
@@ -157,9 +165,11 @@ time;
 //     }
 // this.socketService.JoinRoom(data);
 
+
     // ---------------------------------------------------------------------getDate------------------------
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
     let today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -175,7 +185,7 @@ d.getSeconds(); // => 51
 this.time=d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
 // ----------------------------------------------------------------------------get Time end-----------------------------
 
-
+this.GetItemsFromLocal();
 this.applied=false;
 this.coupon="";
 this.discount=0;
@@ -187,7 +197,7 @@ this.couponApplied=false;
     // element.disabled = false;
     // var element1 = <HTMLInputElement> document.getElementById("applybtn");
     // element1.disabled = false;
-    this.present();
+   // this.present();
 
  this.customizeDelivery={
    continuousDelivery:false,
@@ -200,7 +210,7 @@ this.couponApplied=false;
 
 
 
-    this.GetDeliveryBoys();
+    // this.GetDeliveryBoys();
 
 console.log("location address "+this.location.address);
 this.selectedLocation=this.location.address;
@@ -228,8 +238,7 @@ console.log("all coupons"+this.coupons[0]);
 
 
 
-    var itemTotal=0;
-    var itemActual=0;
+
 
     var getCart={
       UserId:this.user[0]._id,
@@ -240,107 +249,80 @@ console.log("all coupons"+this.coupons[0]);
 
 
 
-    this.cartService.GetCartAll(getCart).subscribe((res)=>{
-      this.cartItemsAll=res as Cart[];
-      console.log(this.cartItemsAll);
+// --------------------------------------------------------new------------------------
+
+
+// ---------------------------------------------------------------------new local cart end--------------
 
 
 
-if(this.cartItemsAll.length==0){
-//this.dismiss();
 
- //this.cartEmpty();
-}
+//     this.cartService.GetCartAll(getCart).subscribe((res)=>{
+//       this.cartItemsAll=res as Cart[];
+//       console.log(this.cartItemsAll);
 
-var restaurantCredential={
-  RestaurantId:this.cartItemsAll[0].RestaurantId,
+//       this.cartLoading=false;
 
-      }
+// if(this.cartItemsAll.length==0){
 
-     // this.dismiss();
-this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
-  this.restaurantDetails=res as Restaurant[];
-this.Charges=this.restaurantDetails[0].Charges;
-console.log("restaurant type "+this.restaurantDetails[0].Type);
-
-var data={
-  type:this.cartItemsAll[0].Type
-}
-this.cartService.GetDeliveryChargeDetails(data).subscribe((res)=>{
-  this.deliveryCharges=res as DeliveryCharges[];
-  console.log("delivery charge "+typeof(this.deliveryCharges[0].PerKm));
-
-  const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
-  console.log("delivery charges "+deliveryCharge);
-  this.DeliveryChargeCal(deliveryCharge,this.deliveryCharges);
-})
-
-
-
-// if(this.location.lat==null || this.location.lat=="" || this.location.lat==undefined || this.location.lat==NaN){
-//   this.geolocation.getCurrentPosition({
-
-
-
-//     timeout:10000,
-//     enableHighAccuracy:true
-//   }).then((resp) => {
-
-//     this.lat=resp.coords.latitude;
-//     this.lon=resp.coords.longitude;
-
-//     const getAddress= this.ReverseGeocoding(this.lat,this.lon);
-//     this.selectedLocation=getAddress;
-
-//    }).catch((error) => {
-//      console.log('Error getting location', error);
-//    });
-
-//    setTimeout(() => {
-//     const deliveryCharge=this.distance(this.lat,this.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
-//     console.log("delivery charges "+deliveryCharge);
-//     this.DeliveryChargeCal(deliveryCharge);
-//    }, 2000);
-
-
+// this.emptyCart=true;
 
 // }
 
-// else{
+// var restaurantCredential={
+//   RestaurantId:this.cartItemsAll[0].RestaurantId,
+
+//       }
+
+
+// this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
+//   this.restaurantDetails=res as Restaurant[];
+// this.Charges=this.restaurantDetails[0].Charges;
+// console.log("restaurant type "+this.restaurantDetails[0].Type);
+
+// var data={
+//   type:this.cartItemsAll[0].Type
+// }
+// this.cartService.GetDeliveryChargeDetails(data).subscribe((res)=>{
+//   this.deliveryCharges=res as DeliveryCharges[];
+//   console.log("delivery charge "+typeof(this.deliveryCharges[0].PerKm));
+
 //   const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
 //   console.log("delivery charges "+deliveryCharge);
-//   this.DeliveryChargeCal(deliveryCharge);
-// }
+//   this.DeliveryChargeCal(deliveryCharge,this.deliveryCharges);
+// })
 
 
 
 
 
 
-      })
 
 
 
-      for(var i=0;i<this.cartItemsAll.length;i++){
-
-        itemTotal+=this.cartItemsAll[i].Amount;
-        itemActual+=this.cartItemsAll[i].ActualAmount;
-        this.itemAmount=itemTotal;
-        this.actualAmount=itemActual;
-        this.restaurantName=this.cartItemsAll[i].RestaurantName;
-        }
+//       })
 
 
 
-        //console.log(itemTotal);
+//       for(var i=0;i<this.cartItemsAll.length;i++){
 
-        this.GetSuggestions(restaurantCredential.RestaurantId);
-    });
+//         itemTotal+=this.cartItemsAll[i].Amount;
+//         itemActual+=this.cartItemsAll[i].ActualAmount;
+//         this.itemAmount=itemTotal;
+//         this.actualAmount=itemActual;
+//         this.restaurantName=this.cartItemsAll[i].RestaurantName;
+//         }
 
 
-this.dismiss();
 
-this.GetAllOrders();
+
+//         this.GetSuggestions(restaurantCredential.RestaurantId);
+//     });
+
+
+
+
+// this.GetAllOrders();
    }
 
 
@@ -377,41 +359,47 @@ onChecked(event:any){
 IncreaseCount(i:any){
 
 //this.present();
-  this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
-  this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
-  this.cartItemsAll[i].ActualAmount=this.cartItemsAll[i].ActualPrice*this.cartItemsAll[i].ItemCount;
+  // this.cartItemsAll[i].ItemCount=this.cartItemsAll[i].ItemCount+1;
+  // this.cartItemsAll[i].Amount=this.cartItemsAll[i].Price*this.cartItemsAll[i].ItemCount;
+  // this.cartItemsAll[i].ActualAmount=this.cartItemsAll[i].ActualPrice*this.cartItemsAll[i].ItemCount;
+
+  this.CartItemsLocal[i].ItemCount=this.CartItemsLocal[i].ItemCount+1;
+  this.CartItemsLocal[i].Amount=this.CartItemsLocal[i].Price*this.CartItemsLocal[i].ItemCount;
+  this.CartItemsLocal[i].ActualAmount=this.CartItemsLocal[i].ActualPrice*this.CartItemsLocal[i].ItemCount;
+
+
 
 
 
 
   var addCartItems={
 
-    RestaurantId:this.cartItemsAll[i].RestaurantId,
-    RestaurantName:this.cartItemsAll[i].RestaurantName,
-    MenuId:this.cartItemsAll[i].MenuId,
-    MenuName:this.cartItemsAll[i].MenuName,
-    ProductId:this.cartItemsAll[i].ProductId,
-    ProductName:this.cartItemsAll[i].ProductName,
-    Price:this.cartItemsAll[i].Price,
-    ItemCount:this.cartItemsAll[i].ItemCount,
-    Amount:this.cartItemsAll[i].Amount,
-    UserId:this.cartItemsAll[i].UserId,
-    UserName:this.cartItemsAll[i].UserName,
-    MobileNo:this.cartItemsAll[i].MobileNo,
-    Address:this.cartItemsAll[i].Address,
-    CartItemId:this.cartItemsAll[i]._id,
-    ActualPrice:this.cartItemsAll[i].ActualPrice,
+    RestaurantId:this.CartItemsLocal[i].RestaurantId,
+    RestaurantName:this.CartItemsLocal[i].RestaurantName,
+    MenuId:this.CartItemsLocal[i].MenuId,
+    MenuName:this.CartItemsLocal[i].MenuName,
+    ProductId:this.CartItemsLocal[i].ProductId,
+    ProductName:this.CartItemsLocal[i].ProductName,
+    Price:this.CartItemsLocal[i].Price,
+    ItemCount:this.CartItemsLocal[i].ItemCount,
+    Amount:this.CartItemsLocal[i].Amount,
+    UserId:this.CartItemsLocal[i].UserId,
+    UserName:this.CartItemsLocal[i].UserName,
+    MobileNo:this.CartItemsLocal[i].MobileNo,
+    Address:this.CartItemsLocal[i].Address,
+    CartItemId:this.CartItemsLocal[i]._id,
+    ActualPrice:this.CartItemsLocal[i].ActualPrice,
     Status:"Cart",
     ActiveYn:true,
     DeleteYn:false,
-    Offer:this.cartItemsAll[i].Offer,
-    ActualAmount:this.cartItemsAll[i].ActualAmount
+    Offer:this.CartItemsLocal[i].Offer,
+    ActualAmount:this.CartItemsLocal[i].ActualAmount
 
 
    }
-   if(this.cartItemsAll[i].Offer){
-    addCartItems.Price=this.cartItemsAll[i].Price;
-      }
+  //  if(this.cartItemsAll[i].Offer){
+  //   addCartItems.Price=this.cartItemsAll[i].Price;
+  //     }
    //console.log(addCartItems);
 
 
@@ -1535,13 +1523,13 @@ rzp1.open();
 
       RedirectToPayment(){
 
-        if(!this.restaurantDetails[0].AvailableStatus){
-          this.presentAlertConfirm3();
-        }
-        else if(this.deliveryBoys.length<1){
-          this.presentAlertConfirm4();
-        }
-        else{
+         if(!this.restaurantDetails[0].AvailableStatus){
+           this.presentAlertConfirm3();
+         }
+        // else if(this.deliveryBoys.length<1){
+        //   this.presentAlertConfirm4();
+        // }
+       else{
 
         this.placeOrderArr=[];
 
@@ -1558,8 +1546,8 @@ rzp1.open();
 
              UserId:this.user[0]._id,
              UserName:this.user[0].FirstName,
-             RestaurantId:this.cartItemsAll[0].RestaurantId,
-             RestaurantName:this.cartItemsAll[0].RestaurantName,
+             RestaurantId:this.CartItemsLocal[0].RestaurantId,
+             RestaurantName:this.CartItemsLocal[0].RestaurantName,
              ItemTotal:this.itemAmount,
              DeliveryPartnerFee:this.deliveryPartnerFee,
              TaxesAndCharges:this.Charges,
@@ -1569,10 +1557,10 @@ rzp1.open();
              Status:'Placed',
              CreatedDate:this.today1,
              CreatedBy:this.user[0]._id,
-             ItemCount:this.cartItemsAll.length,
+             ItemCount:this.CartItemsLocal.length,
              MobileNo:this.user[0].MobileNo,
              Address:this.selectedLocation,
-             ItemDetails:this.placeOrderArr,
+             ItemDetails:this.CartItemsLocal,
              DeliveryPartnerStatus:"Placed by Customer",
              ActualAmount:parseFloat(this.AmountWithCharges).toFixed(2),
         CreatedTime:this.time,
@@ -1601,7 +1589,7 @@ rzp1.open();
         console.log("redirect to payment page "+this.billDetials);
         this.billDetailsService.setExtras(this.billDetials);
         this.router.navigate(['payment/'+this.totalAmount1]);
-          }
+         }
       }
 
       EditLocation(){
@@ -1648,7 +1636,8 @@ GetDeliveryBoys(){
 
   var getOrders={
    ActiveYn:true,
-   Locality:this.location.locality
+   Locality:this.location.locality,
+   CreatedDate:this.today1
 
   }
 
@@ -1680,10 +1669,10 @@ GetDeliveryBoys(){
       }
       else{
         this.a=[];
-     //   console.log(this.orderDetailsFromSocket11[0][0].RestaurantName)
+       console.log(this.orderDetailsFromSocket11[0][0].RestaurantName)
   for(var i=0;i<this.deliveryBoys.length;i++){
   for(var j=0;j<this.orderDetailsFromSocket11[0].length;j++){
-    if(this.orderDetailsFromSocket11[0][j].DeliveryPartnerStatus=="Accepted by Delivery Partner"){
+    if(this.orderDetailsFromSocket11[0][j].DeliveryPartnerStatus=="Placed by Customer" || this.orderDetailsFromSocket11[0][j].DeliveryPartnerStatus=="Accepted by Delivery Partner" ){
       console.log("accepted by delivery parterh ");
   if(this.deliveryBoys[i]._id==this.orderDetailsFromSocket11[0][j].DeliveryPartnerDetails.UserId){
     console.log("user id matched "+this.orderDetailsFromSocket11[0][j].DeliveryPartnerDetails.FirstName);
@@ -1723,6 +1712,311 @@ this.deliveryBoyImage=this.deliveryBoys[this.indexOfSmallest(this.a)].ImageUrl;
       }
       return lowest;
     }
+
+
+
+
+    IncraseItemLocalStorage(i:any,menuId:any,MenuName,productId){
+     // this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+
+     var productPresent=false;
+      this.CartItemsLocal[i].ItemCount=this.CartItemsLocal[i].ItemCount+1;
+     this.CartItemsLocal[i].Amount=this.CartItemsLocal[i].Price*this.CartItemsLocal[i].ItemCount;
+       this.CartItemsLocal[i].ActualAmount=this.CartItemsLocal[i].Price*this.CartItemsLocal[i].ItemCount;
+
+
+
+
+
+          console.log('present');
+
+
+
+
+     console.log('same')
+
+
+       console.log('same menu present index '+i)
+
+       var addCartItems1={
+
+         RestaurantId:this.restaurantId,
+         RestaurantName:this.whichRestaurant,
+         MenuId:menuId,
+         MenuName:MenuName,
+         ProductId:this.CartItemsLocal[i]._id,
+         ProductName:this.CartItemsLocal[i].ProductName,
+         ActualPrice:this.CartItemsLocal[i].Price,
+         Price:this.CartItemsLocal[i].Price,
+         ItemCount:this.CartItemsLocal[i].ItemCount,
+         Amount:this.CartItemsLocal[i].Amount,
+         UserId:this.user[0]._id,
+         UserName:this.user[0].FirstName,
+         MobileNo:this.user[0].MobileNo,
+         Address:this.user[0].Address,
+         CreatedDate:this.today1,
+         CreatedBy:this.user[0]._id,
+         Status:"Cart",
+         ActiveYn:true,
+         DeleteYn:false,
+         Offer:this.CartItemsLocal[i].Offer,
+         OfferDescription:this.CartItemsLocal[i].OfferDescription,
+         Commission:this.CartItemsLocal[i].Commission,
+         ActualAmount:this.CartItemsLocal[i].ActualAmount,
+         Description:this.CartItemsLocal[i].Description,
+         Type:this.type
+
+
+
+
+        }
+
+
+   productPresent=true;
+   this.CartItemsLocal[i]=addCartItems1;
+   console.log(this.CartItemsLocal)
+   localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+
+   this.GetItemsFromLocal();
+
+
+
+
+
+
+
+
+
+    }
+
+
+    IncraseItemSuggestion(i:any,menuId:any,productId){
+      // this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+
+      var productPresent=false;
+
+
+
+
+
+
+           console.log('present');
+
+
+
+
+      console.log('same')
+
+
+        console.log('same menu present index '+i)
+
+        var addCartItems1={
+
+          RestaurantId:this.restaurantId,
+          RestaurantName:this.whichRestaurant,
+          MenuId:menuId,
+          MenuName:'Suggestions',
+          ProductId:productId,
+          ProductName:this.products[i].ProductName,
+          ActualPrice:this.products[i].Price,
+          Price:this.products[i].Price,
+          ItemCount:this.products[i].ItemCount+1,
+          Amount:this.products[i].Price,
+          UserId:this.user[0]._id,
+          UserName:this.user[0].FirstName,
+          MobileNo:this.user[0].MobileNo,
+          Address:this.user[0].Address,
+          CreatedDate:this.today1,
+          CreatedBy:this.user[0]._id,
+          Status:"Cart",
+          ActiveYn:true,
+          DeleteYn:false,
+          Offer:this.products[i].Offer,
+          OfferDescription:this.products[i].OfferDescription,
+          Commission:this.products[i].Commission,
+          ActualAmount:this.products[i].ActualAmount,
+          Description:this.products[i].Description,
+          Type:this.type
+
+
+
+
+         }
+
+
+    productPresent=true;
+
+    this.CartItemsLocal.push(addCartItems1);
+    console.log(this.CartItemsLocal);
+    localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+    this.ionViewWillEnter();
+
+
+
+
+
+
+
+
+
+     }
+
+
+    DecreaseItemLocalStorage(i:any,menuId:any,MenuName,productId){
+      // this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+
+      var productPresent=false;
+      this.CartItemsLocal[i].ItemCount=this.CartItemsLocal[i].ItemCount-1;
+      this.CartItemsLocal[i].Amount=this.CartItemsLocal[i].Price*this.CartItemsLocal[i].ItemCount;
+        this.CartItemsLocal[i].ActualAmount=this.CartItemsLocal[i].Price*this.CartItemsLocal[i].ItemCount;
+
+
+
+
+
+           console.log('present');
+
+
+
+
+      console.log('same')
+
+
+        console.log('same menu present index '+i)
+
+        var addCartItems1={
+
+          RestaurantId:this.restaurantId,
+          RestaurantName:this.whichRestaurant,
+          MenuId:menuId,
+          MenuName:MenuName,
+          ProductId:this.CartItemsLocal[i]._id,
+          ProductName:this.CartItemsLocal[i].ProductName,
+          ActualPrice:this.CartItemsLocal[i].Price,
+          Price:this.CartItemsLocal[i].Price,
+          ItemCount:this.CartItemsLocal[i].ItemCount,
+          Amount:this.CartItemsLocal[i].Amount,
+          UserId:this.user[0]._id,
+          UserName:this.user[0].FirstName,
+          MobileNo:this.user[0].MobileNo,
+          Address:this.user[0].Address,
+          CreatedDate:this.today1,
+          CreatedBy:this.user[0]._id,
+          Status:"Cart",
+          ActiveYn:true,
+          DeleteYn:false,
+          Offer:this.CartItemsLocal[i].Offer,
+          OfferDescription:this.CartItemsLocal[i].OfferDescription,
+          Commission:this.CartItemsLocal[i].Commission,
+          ActualAmount:this.CartItemsLocal[i].ActualAmount,
+          Description:this.CartItemsLocal[i].Description,
+          Type:this.type
+
+
+
+
+         }
+
+
+    productPresent=true;
+    this.CartItemsLocal[i]=addCartItems1;
+    console.log(this.CartItemsLocal)
+    localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+
+
+
+
+    if(this.CartItemsLocal[i].ItemCount<=0){
+      console.log('0 entered '+JSON.stringify(this.CartItemsLocal));
+
+        console.log('for entred '+i)
+
+          console.log('product present '+typeof(this.CartItemsLocal))
+
+         this.CartItemsLocal.splice(i,1);
+          console.log(" dfddddddddddddd "+JSON.stringify(this.CartItemsLocal))
+          localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+        this.GetItemsFromLocal();
+
+    }
+
+    else{
+      this.GetItemsFromLocal();
+    }
+
+
+
+
+
+
+     }
+
+    GetItemsFromLocal(){
+
+      var itemTotal=0;
+      var itemActual=0;
+      if(!localStorage.getItem('CartItems') || !this.CartItemsLocal.length){
+
+   this.cartLoading=false;
+  this.emptyCart=true;
+}
+else{
+  this.cartLoading=false;
+  this.restaurantId=this.CartItemsLocal[0].RestaurantId;
+   this.whichRestaurant=this.CartItemsLocal[0].RestaurantName;
+  //  this.selectedMenuName=this.CartItemsLocal[0].RestaurantId
+    this.type=this.CartItemsLocal[0].Type;
+  console.log('Restaraut id from local cart '+this.CartItemsLocal[0].RestaurantId)
+  var restaurantCredential={
+    RestaurantId:this.CartItemsLocal[0].RestaurantId,
+
+        }
+
+        this.cartService.GetRestaurant(restaurantCredential).subscribe((res)=>{
+          this.restaurantDetails=res as Restaurant[];
+        this.Charges=this.restaurantDetails[0].Charges;
+        console.log("restaurant type "+this.restaurantDetails[0].Type);
+
+        var data={
+          type:this.CartItemsLocal[0].Type
+        }
+        this.cartService.GetDeliveryChargeDetails(data).subscribe((res)=>{
+          this.deliveryCharges=res as DeliveryCharges[];
+          console.log("delivery charge "+typeof(this.deliveryCharges[0].PerKm));
+
+          const deliveryCharge=this.distance(this.location.lat,this.location.lon,this.restaurantDetails[0].Latitude,this.restaurantDetails[0].Longitude);
+          console.log("delivery charges "+deliveryCharge);
+          this.DeliveryChargeCal(deliveryCharge,this.deliveryCharges);
+        })
+
+
+
+
+
+              })
+
+      for(var i=0;i<this.CartItemsLocal.length;i++){
+
+        itemTotal+=this.CartItemsLocal[i].Amount;
+        itemActual+=this.CartItemsLocal[i].ActualAmount;
+        this.itemAmount=itemTotal;
+        this.actualAmount=itemActual;
+        this.restaurantName=this.CartItemsLocal[i].RestaurantName;
+        }
+
+
+
+        //console.log(itemTotal);
+
+        this.GetSuggestions(restaurantCredential.RestaurantId);
+
+}
+    }
+
   }
 
 

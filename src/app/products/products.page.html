@@ -44,33 +44,33 @@
       <ion-card class="ion-card" style="border-radius:0px;" >
           <ion-item >
 
-            <ion-thumbnail *ngIf="products.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+            <ion-thumbnail *ngIf="products.ImageUrl" style="height: 120px;width: 110px;--border-radius: 2px;" slot="end">
 
-              <img src="{{products.ImageUrl}}">
+              <img src="{{products.ImageUrl}}" style="border-radius:5px;">
 
-                <ion-button class="img-present" *ngIf="!products.ItemCount && products.AvailableStatus" (click)="IncreaseItem(i,products.MenuId,list._id,list.RestaurantName)" >Add</ion-button>
+                <ion-button class="img-present" *ngIf="!products.ItemCount && products.AvailableStatus" (click)="IncraseItemLocalStorage(i,products.MenuId,list._id,list.RestaurantName)" >Add</ion-button>
                 <div class="qty-selector-new" *ngIf="products.AvailableStatus && products.ItemCount">
-                  <ion-button fill="clear" (click)="DecreaseItem(i,products.MenuId,list._id,list.RestaurantName);" [disabled]="!products.ItemCount" >-</ion-button>
+                  <ion-button fill="clear" (click)="DecreaseItemLocal(i,products.MenuId,list._id,list.RestaurantName);" [disabled]="!products.ItemCount" >-</ion-button>
                 <ion-label>{{products.ItemCount}}</ion-label>
-                <ion-button fill="clear"  (click)="IncreaseItem1(i,products.MenuId,list._id,list.RestaurantName)">+</ion-button>
+                <ion-button fill="clear"  (click)="IncraseItemLocalStorage(i,products.MenuId,list._id,list.RestaurantName)">+</ion-button>
                 </div>
 
             </ion-thumbnail>
 
-            <ion-thumbnail *ngIf="!products.ImageUrl" style="height: 100px;width: 100px;border-radius: 2px;" slot="end">
+            <ion-thumbnail *ngIf="!products.ImageUrl" style="height: 120px;width: 110px;--border-radius: 2px;" slot="end">
 
 
 
-                <ion-button *ngIf="!products.ItemCount && products.AvailableStatus" (click)="IncreaseItem(i,products.MenuId,list._id,list.RestaurantName)" class="img-not-present">Add</ion-button>
+                <ion-button *ngIf="!products.ItemCount && products.AvailableStatus" (click)="IncraseItemLocalStorage(i,products.MenuId,list._id,list.RestaurantName)" class="img-not-present">Add</ion-button>
                 <div class="qty-selector-new-notimage" *ngIf="products.AvailableStatus && products.ItemCount">
-                  <ion-button fill="clear" (click)="DecreaseItem(i,products.MenuId,list._id,list.RestaurantName);" [disabled]="!products.ItemCount" >-</ion-button>
+                  <ion-button fill="clear" (click)="DecreaseItemLocal(i,products.MenuId,list._id,list.RestaurantName);" [disabled]="!products.ItemCount" >-</ion-button>
                 <ion-label>{{products.ItemCount}}</ion-label>
-                <ion-button fill="clear"  (click)="IncreaseItem1(i,products.MenuId,list._id,list.RestaurantName)">+</ion-button>
+                <ion-button fill="clear"  (click)="IncraseItemLocalStorage(i,products.MenuId,list._id,list.RestaurantName)">+</ion-button>
                 </div>
 
             </ion-thumbnail>
             <ion-label class="hotel-card">
-              <h4 style="font-weight: 400;width: 200px;">{{products.ProductName}}</h4>
+              <h4 style="width: 200px;font-size: 12px;">{{products.ProductName}}</h4>
               <p  style="margin-top: -15px;font-size: 12px;">{{products.Description}}</p>
               <div class="price">
                 <p>Rs.{{products.Price}}</p>
@@ -94,15 +94,15 @@
 <div  style="margin-bottom:20px;width: 100%; align-items: center;
 justify-content: center;display: flex;">
 
-<ion-button  style="--border-radius: 20px;--background:rgb(56, 94, 156)"   (click)="presentPopover($event)">RESTAURANTS</ion-button>
+<ion-button  style="--border-radius: 20px; --background:rgb(6, 29, 66);text-transform: capitalize;"   (click)="presentPopover($event)">RESTAURANTS</ion-button>
 
 
 </div>
-<ion-footer *ngIf="showCart.length">
+<ion-footer *ngIf="CartItemsLocal.length">
   <ion-toolbar (click)="ViewCart()">
     <!-- <ion-title>4 Items</ion-title> -->
 
-    <ion-text class="title">{{showCart.length}} Items</ion-text>
+    <ion-text class="title">{{CartItemsLocal.length}} Items</ion-text>
     <ion-text class="description">from {{restaurantName1}}</ion-text>
 
 

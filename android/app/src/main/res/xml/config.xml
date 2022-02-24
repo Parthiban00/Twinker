@@ -43,6 +43,10 @@
     <param name="android-package" value="org.apache.cordova.geolocation.Geolocation"/>
   </feature>
 
+  <feature name="LocalNotification">
+    <param name="android-package" value="de.appplant.cordova.plugin.localnotification.LocalNotification"/>
+  </feature>
+
   <feature name="NativeAudio">
     <param name="android-package" value="com.rjfun.cordova.plugin.nativeaudio.NativeAudio"/>
   </feature>

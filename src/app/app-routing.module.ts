@@ -209,6 +209,11 @@ const routes: Routes = [
     path: 'owner-menus-management',
     loadChildren: () => import('./owner-menus-management/owner-menus-management.module').then( m => m.OwnerMenusManagementPageModule)
   },
+  {
+    path: 'order-track-modal',
+    loadChildren: () => import('./order-track-modal/order-track-modal.module').then( m => m.OrderTrackModalPageModule)
+  },
+
 
 
 

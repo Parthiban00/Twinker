@@ -59,7 +59,7 @@ ion-slides{
 ion-footer{
 
   ion-toolbar{
-    --background:#f7714a;
+    --background:#ff4b1f;
   --color:white;
 }
 .title{
@@ -194,9 +194,14 @@ border-radius: 2px;
   position: relative;
   margin-top: 10px;
   margin-left: 10px;
-  height: 240px;
+  height: 250px;
   width: 160px;
   background-color: beige;
+
+  img{
+    height: 120px;
+    width: 160px
+  }
 
 }
 
@@ -299,7 +304,7 @@ border-radius: 2px;
 
 .menu{
   width: 160px;
-  height: 120px;
+  height: 130px;
   position: absolute;
   bottom: 0;
   background-color: rgb(255, 255, 255);
@@ -556,7 +561,7 @@ position: relative;
        width: 0;
        height: 0;
       border-top: 7px solid transparent;
-      border-right: 14px solid rgb(81, 110, 206);
+      border-left: 14px solid rgb(81, 110, 206);
       border-bottom: 7px solid transparent;margin-top:-12px;margin-right:10px
     }
     .close{
@@ -595,17 +600,18 @@ position: relative;
 
           // background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 
-           background-color: #ffffff;
+          background-image: linear-gradient(to right, #ff4b1f, #ff4f3a, #ff5650, #ff5e63, #ff6775);
           // background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
 
- border: 2px solid #f0f0f0;
+//  border: 2px solid #f0f0f0;
           position: relative;
           width:250px;
           height: 50px;
           box-shadow: none;
-          border-radius: 10px !important;
+          border-radius: 20px !important;
           justify-content: center;
           align-items: center;
+
 
 
 
@@ -629,3 +635,18 @@ position: relative;
   // ion-row{
   //   width: calc(100% - 10px);
   // }
+
+
+  .my-custom-class {
+    --background: #ee5d5d;
+  }
+
+  /* DOES NOT WORK - not specific enough */
+.alert-wrapper {
+  background: #1b1212;
+}
+
+/* Works - pass "my-custom-class" in cssClass to increase specificity */
+.my-custom-class .alert-wrapper {
+  background: #40aa16;
+}

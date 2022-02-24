@@ -388,6 +388,7 @@ this.mainMenuService.AddSubMenu(data).subscribe((res)=>
 {
 this.presentToast('SubMenu Added Successfully...');
 formDetails.reset();
+this.menuImageUrl="";
 },err=>{console.log('error'+err)},()=>console.log('Process completed'))
       }
 
@@ -483,6 +484,16 @@ async presentAlertConfirm1(MenuId) {
   });
 
   await alert.present();
+}
+
+DeleteMenu(id:any){
+  var data={
+    _id:id
+  }
+this.productService.DeleteProduct(data).subscribe((res)=>{
+  this.presentToast('Menu Deleted Successfully...');
+  this.GetProducts(this.menuId,this.productFrom,this.viewType);
+})
 }
  }
  interface SelectRestaurants {

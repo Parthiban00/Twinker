@@ -25,6 +25,8 @@ import SpecificCategory from '../models/specific-category';
 })
 export class ProductsPage implements OnInit {
   products:Product[]=[];
+  CartItemsLocal=[];
+  cartItemsLocal=[];
   user = JSON.parse(localStorage.getItem('currentUser') || '{}');
   category:string;
   categoryProducts:Product[];
@@ -53,6 +55,10 @@ export class ProductsPage implements OnInit {
 ionViewWillEnter(){
 this.bannerImage="";
 this.getCartAll();
+this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+if(this.CartItemsLocal.length){
+  this.restaurantName1=this.CartItemsLocal[0].RestaurantName;
+}
   this.category=this.activatedRouter.snapshot.params.category;
   this.type=this.activateRoute.snapshot.params.type;
   console.log(this.category);
@@ -383,8 +389,8 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
    console.log("clear cart "+clearCart+" add cart "+addCart);
    const alert = await this.alertController.create({
      cssClass: 'my-custom-class',
-     header: 'Confirm!',
-     message: 'Your cart contains items from <strong>'+this.restaurantName1+'</strong>, would you like to replace it?',
+     header: 'Replace cart...',
+     message: 'Your cart contains items from  '+this.restaurantName1+', would you like to replace it?',
      buttons: [
        {
          text: 'Cancel',
@@ -398,15 +404,22 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
          handler: () => {
            console.log('Confirm Okay');
           // this.present();
-           this.cartService.RemoveCart(clearCart).subscribe((res)=>{
-                    this.cartItems=res as Cart[];
+          //  this.cartService.RemoveCart(clearCart).subscribe((res)=>{
+          //           this.cartItems=res as Cart[];
 
-                    this.cartService.AddCart(addCart).subscribe((res)=>{
-                      this.cartItems=res as Cart[];
-                      this.getCartAll();
-                    })
+          //           this.cartService.AddCart(addCart).subscribe((res)=>{
+          //             this.cartItems=res as Cart[];
+          //             this.getCartAll();
+          //           })
 
-                  });
+          //         });
+
+          this.cartItemsLocal=[];
+          this.cartItemsLocal.push(addCart);
+          console.log('cart item undefined')
+         localStorage.setItem("CartItems",JSON.stringify(this.cartItemsLocal));
+         this.restaurantName1=addCart.RestaurantName;
+         this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
          }
        }
      ]
@@ -619,4 +632,204 @@ scrollFn(anchor: string): void{
         this.content.scrollToPoint(0,y,1000);
 
 }
+
+
+IncraseItemLocalStorage(i:any,menuId:any,restId:any,restName:any){
+  let date: Date = new Date();
+  this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+
+ var productPresent=false;
+ this.products[i].ItemCount=this.products[i].ItemCount+1;
+ this.products[i].Amount=this.products[i].Price*this.products[i].ItemCount;
+   this.products[i].ActualAmount=this.products[i].Price*this.products[i].ItemCount;
+
+   var addCartItems={
+
+     RestaurantId:restId,
+     RestaurantName:restName,
+     MenuId:menuId,
+     MenuName:'',
+     ProductId:this.products[i]._id,
+     ProductName:this.products[i].ProductName,
+     ActualPrice:this.products[i].Price,
+     Price:this.products[i].Price,
+     ItemCount:this.products[i].ItemCount,
+     Amount:this.products[i].Amount,
+     UserId:this.user[0]._id,
+     UserName:this.user[0].FirstName,
+     MobileNo:this.user[0].MobileNo,
+     Address:this.user[0].Address,
+     CreatedDate:date,
+     CreatedBy:this.user[0]._id,
+     Status:"Cart",
+     ActiveYn:true,
+     DeleteYn:false,
+     Offer:this.products[i].Offer,
+     OfferDescription:this.products[i].OfferDescription,
+     Commission:this.products[i].Commission,
+     ActualAmount:this.products[i].ActualAmount,
+     Description:this.products[i].Description,
+     Type:this.type
+
+
+
+
+    }
+
+    if(!localStorage.getItem('CartItems') || !this.CartItemsLocal.length){
+      this.cartItemsLocal=[];
+      this.cartItemsLocal.push(addCartItems);
+      console.log('cart item undefined')
+     localStorage.setItem("CartItems",JSON.stringify(this.cartItemsLocal));
+     this.restaurantName1=restName;
+     this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+    }
+    else{
+      console.log('present');
+      if(localStorage.getItem('CartItems')){
+       this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+//console.log(this.CartItemsLocal[0].RestaurantId)
+if(this.CartItemsLocal[0].RestaurantId==restId){
+ console.log('same')
+
+for(var k=0;k<this.CartItemsLocal.length;k++){
+ if(this.CartItemsLocal[k].MenuId==menuId && this.CartItemsLocal[k].ProductId==this.products[i]._id){
+   console.log('same menu present index '+k)
+
+   var addCartItems1={
+
+     RestaurantId:restId,
+     RestaurantName:restName,
+     MenuId:menuId,
+     MenuName:'',
+     ProductId:this.products[i]._id,
+     ProductName:this.products[i].ProductName,
+     ActualPrice:this.products[i].Price,
+     Price:this.products[i].Price,
+     ItemCount:this.CartItemsLocal[k].ItemCount+1,
+     Amount:this.products[i].Amount,
+     UserId:this.user[0]._id,
+     UserName:this.user[0].FirstName,
+     MobileNo:this.user[0].MobileNo,
+     Address:this.user[0].Address,
+     CreatedDate:date,
+     CreatedBy:this.user[0]._id,
+     Status:"Cart",
+     ActiveYn:true,
+     DeleteYn:false,
+     Offer:this.products[i].Offer,
+     OfferDescription:this.products[i].OfferDescription,
+     Commission:this.products[i].Commission,
+     ActualAmount:this.products[i].ActualAmount,
+     Description:this.products[i].Description,
+     Type:this.type
+
+
+
+
+    }
+
+
+productPresent=true;
+this.CartItemsLocal[k]=addCartItems1;
+console.log(this.CartItemsLocal+' '+restName)
+localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+   break;
+ }
+
+}
+if(productPresent==false){
+ //this.cartItemsLocal.push(this.CartItemsLocal);
+ //this.cartItemsLocal.push(addCartItems);
+ this.CartItemsLocal.push(addCartItems);
+ console.log(this.CartItemsLocal);
+ localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+}
+
+}
+else if(this.CartItemsLocal[0].RestaurantId!=restId){
+console.log('Different restaurant cart items ');
+this.presentAlertConfirm(this.removeCart,addCartItems);
+}
+      }
+    }
+
+}
+
+
+DecreaseItemLocal(i:any,menuId:any,restId:any,restName:any){
+  let date: Date = new Date();
+  this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+
+  this.products[i].ItemCount=this.products[i].ItemCount-1;
+  console.log("item count "+this.products[i].ItemCount)
+  if(this.products[i].ItemCount>0){
+
+
+for(var k=0;k<this.CartItemsLocal.length;k++){
+  if(this.CartItemsLocal[k].MenuId==menuId && this.CartItemsLocal[k].ProductId==this.products[i]._id){
+    console.log('same menu present index '+k)
+
+    var addCartItems1={
+
+      RestaurantId:restId,
+      RestaurantName:restName,
+      MenuId:menuId,
+      MenuName:'',
+      ProductId:this.products[i]._id,
+      ProductName:this.products[i].ProductName,
+      ActualPrice:this.products[i].Price,
+      Price:this.products[i].Price,
+      ItemCount:this.CartItemsLocal[k].ItemCount-1,
+      Amount:this.products[i].Amount,
+      UserId:this.user[0]._id,
+      UserName:this.user[0].FirstName,
+      MobileNo:this.user[0].MobileNo,
+      Address:this.user[0].Address,
+      CreatedDate:date,
+      CreatedBy:this.user[0]._id,
+      Status:"Cart",
+      ActiveYn:true,
+      DeleteYn:false,
+      Offer:this.products[i].Offer,
+      OfferDescription:this.products[i].OfferDescription,
+      Commission:this.products[i].Commission,
+      ActualAmount:this.products[i].ActualAmount,
+      Description:this.products[i].Description,
+      Type:this.type
+
+
+
+
+     }
+
+
+
+this.CartItemsLocal[k]=addCartItems1;
+console.log(this.CartItemsLocal)
+localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+    break;
+  }
+
+}
+  }
+  else if(this.products[i].ItemCount<=0){
+    console.log('0 entered '+JSON.stringify(this.CartItemsLocal));
+    for(var l=0;l<this.CartItemsLocal.length;l++){
+      console.log('for entred '+l)
+      if(this.CartItemsLocal[l].MenuId==menuId && this.CartItemsLocal[l].ProductId==this.products[i]._id){
+        console.log('product present '+typeof(this.CartItemsLocal))
+var ll=l+1
+       this.CartItemsLocal.splice(l,1);
+        console.log(" dfddddddddddddd "+JSON.stringify(this.CartItemsLocal))
+        localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+      }}
+  }
+}
+
+
 }

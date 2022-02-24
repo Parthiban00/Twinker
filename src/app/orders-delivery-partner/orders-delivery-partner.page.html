@@ -60,7 +60,7 @@
         Accepted old
       </ion-segment-button>
       <ion-segment-button  value="Ready">
-        For You
+        New
       </ion-segment-button>
       <ion-segment-button  value="Accepted">
         Accepted
@@ -401,7 +401,7 @@ Item Details
 
             <mat-action-row >
               <ion-text  style="position: absolute;left: 0; margin-left: 10px;color: crimson;">Restaurant:&nbsp;<span>{{orders.Status}}</span></ion-text>
-              <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId,orders.UserId,orders.DeliveryPartnerDetails.ImageUrl)" >Accept</button>
+              <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId,orders.UserId)" >Accept</button>
 
             </mat-action-row>
           </mat-expansion-panel>
@@ -708,7 +708,7 @@ Item Details
 
 <div *ngIf="default=='Ready' && defaultSegment=='Delivery'">
   <div *ngFor="let orders of orderDetailsFromSocket[0];let i=index" style="margin-top: 5px;padding-left:  5px;padding-right: 5px;">
-    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer' && orders.DeliveryPartnerDetails.UserId==currentUserId">
+    <mat-accordion class="example-headers-align" style="padding: 0px;"  *ngIf="orders.DeliveryPartnerStatus=='Placed by Customer'">
 
         <mat-expansion-panel hideToggle style="border-radius: 0px;">
             <mat-expansion-panel-header>
@@ -992,8 +992,8 @@ Item Details
 
 
             <mat-action-row >
-              <ion-text  style="position: absolute;left: 0; margin-left: 10px;color: crimson;">Restaurant:&nbsp;<span>{{orders.Status}}</span></ion-text>
-              <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId,orders.UserId,orders.DeliveryPartnerDetails.ImageUrl)" >Accept</button>
+
+              <button mat-button color="primary" (click)="Accepted(orders._id,orders.RestaurantId,orders.UserId)" >Accept</button>
 
             </mat-action-row>
           </mat-expansion-panel>

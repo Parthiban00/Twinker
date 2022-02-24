@@ -9,7 +9,7 @@ import { AlertController } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import{RestaurantsService} from 'src/app/restaurants.service';
-
+import  {SocketService} from '../socket.service';
 export interface PeriodicElement {
   itemName: string;
   position: number;
@@ -59,7 +59,7 @@ export class OrdersManagementPage implements OnInit {
   totalOrders=0;
   currentSegment;
   today;
-  myDate="All";
+  myDate;
   myDate1="All";
   searchedItem: any;
   searchHotel:any;
@@ -69,8 +69,9 @@ export class OrdersManagementPage implements OnInit {
   selectedValue: string="";
   default:string="";
   isLoading = false;
-
-  constructor(private restaurantService:RestaurantsService,private alertController:AlertController,private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
+  orderDetailsFromSocket=[];
+location;
+  constructor(private socketService:SocketService,private restaurantService:RestaurantsService,private alertController:AlertController,private ordersService:OrdersService,private owenerService:OwnersService,private router:Router,public loadingController: LoadingController) {
     this.default="Placed"
     this.today=new Date().toISOString();
     console.log("today date "+this.today);
@@ -82,15 +83,44 @@ export class OrdersManagementPage implements OnInit {
   ngOnInit() {
   console.log("min date :"+this.currentYear+'-'+this.currentMonth+'-'+this.currentDay);
 
+  this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+
+  var data={
+    room:this.location.locality,
+    user:'delivery boy'
+  }
+this.socketService.JoinRoom(data);
+
+this.socketService.NewOrderPlaced().subscribe((data)=>{
+
+this.orderDetailsFromSocket=[];
+console.log("hi this sockert"+data);
+//this.orderDetailsFromSocket1.push(data.data);
+this.orderDetailsFromSocket.push(data.data);
+console.log("orderDetailsFromSocket -----------"+JSON.stringify(this.orderDetailsFromSocket));
+
+console.log("orderDetailsFromSocket1111111111111 -----------"+this.orderDetailsFromSocket[0].length);
+
+//this.createAlert();
+
+});
+
   }
   ionViewWillEnter(){
     this.myDate1="All";
-    this.myDate;
+   // this.myDate;
+
     //this.present();
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     //console.log(this.user[0]._id)
     this.currentSegment="Placed";
+    let today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
 
+     var today1 = yyyy + '-' + mm + '-' + dd;
+     this.myDate=today1;
     var getRestaurants={
       UserId:this.user[0]._id,
       ActiveYn:true,
@@ -107,7 +137,7 @@ this.restaurantService.GetOwnersRestaurant(getRestaurants).subscribe((res)=>{
     this.selectRestaurants.push({value:this.restaurants[i]._id,viewValue:this.restaurants[i].RestaurantName});
   }
   //this.dismiss();
-  this.presentAlertConfirm();
+  // this.presentAlertConfirm();
 })
   }
 
@@ -122,7 +152,7 @@ this.restaurantService.GetOwnersRestaurant(getRestaurants).subscribe((res)=>{
     //this.step++;
 var acceptedOrders={
   _id:id,
-  Status:'Accepted by Restaurant Owner',
+  RestaurantStatus:'Accepted by Restaurant',
   RestaurantId:restaurantId,
 
 }

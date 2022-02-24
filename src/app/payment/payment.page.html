@@ -14,7 +14,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="!showMainContent">
 <ion-card class="total-amount">
   <ion-card-subtitle>TOTAL AMOUNT Rs : {{totalAmout}}</ion-card-subtitle>
   <ion-card-content>{{amountInWords}}&nbsp;Rupees Only</ion-card-content>
@@ -41,6 +41,22 @@
   </ion-card-content>
 </ion-card>
 </ion-content>
+<ion-content *ngIf="showSnipper">
+  <div   class="empty-cart" style="display: block;margin-right: auto;margin-left: auto;width: 50%;margin-top: 200px;text-align: center;">
+    <img src="/assets/please_wait.gif">
+
+
+
+  </div>
+</ion-content>
+<ion-content *ngIf="orderPlaced">
+  <div   class="empty-cart" style="display: block;margin-right: auto;margin-left: auto;width: 50%;margin-top: 200px;text-align: center;">
+    <img src="/assets/place_order_new.gif">
+    <ion-label  style="display: block;margin-left: auto;margin-right: auto;font-weight: 500;color: black;font-size: 12px;">Order Placed</ion-label>
+    <ion-button (click)="RedirectToHome()" color="success" style="--border-radius: 20px !important;display: block;margin-left: auto;margin-right: auto;width: fit-content;" (click)="GoToHome()">Track Order</ion-button>
+
+  </div>
+</ion-content>
 <ion-footer  >
   <ion-toolbar >
     <!-- <ion-title>4 Items</ion-title> -->
@@ -50,7 +66,7 @@
 
 
     <!-- <ion-button  slot="end" (click)="Payment()" >PROCEED TO PAY</ion-button> -->
-    <ion-button  slot="end" style="width: 100%;" (click)="Payment()">PLACE ORDER</ion-button>
+    <ion-button  slot="end" style="width: 100%;" [disabled]="placeOrderClicked" (click)="Payment()">PLACE ORDER</ion-button>
      <ion-button *ngIf="showSnipper" slot="end" style="width: 100%;"><ion-spinner name="dots"></ion-spinner></ion-button>
     <!-- <ion-button color="success"  slot="end" (click)="presentAlertConfirmtToPlace()" >Place Order</ion-button> -->
   </ion-toolbar>

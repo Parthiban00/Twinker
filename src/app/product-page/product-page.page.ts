@@ -16,6 +16,7 @@ import Restaurant from '../models/restaurants';
 import Offers from '../models/offers';
 import { ModalController } from '@ionic/angular';
 import {OffersPage} from '../offers/offers.page';
+
 @Component({
   selector: 'app-product-page',
   templateUrl: './product-page.page.html',
@@ -48,8 +49,11 @@ completedCount=0;
   searchedItem: any;
   user:any;
   ViewType;
+  CartItemsLocal=[];
+  today1;
 behaviour="start";
 block="smooth";
+cartItemsLocal=[];
 parthi=true;
 unit='K';
   skeleton=[
@@ -109,12 +113,22 @@ location;
   ionViewWillEnter(){
    this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
    this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+   this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+   if(this.CartItemsLocal.length){
+     this.restaurantName1=this.CartItemsLocal[0].RestaurantName;
+   }
    this.whichRestaurant=this.activateRoute.snapshot.params.name;
    this.restaurantId=this.activateRoute.snapshot.params.restId;
    this.type=this.activateRoute.snapshot.params.type;
    this.paramsMenuId=this.activateRoute.snapshot.params.menuId;
    console.log(this.activateRoute.snapshot.params);
    console.log(localStorage.getItem('currentUser'));
+   let today = new Date();
+   var dd = String(today.getDate()).padStart(2, '0');
+   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+   var yyyy = today.getFullYear();
+
+    this.today1 = yyyy + '-' + mm + '-' + dd;
 
 
    var restaurantCredential={
@@ -319,7 +333,7 @@ if(ev.detail.value==this.mainMenu[j]._id){
 
  IncreaseItem(i:any,menuId:any){
 
-  //this.getCartAll();
+
   this.present();
 
 
@@ -388,94 +402,199 @@ console.log("dsfasdfasf"+i);
 this.cartService.GetCartAll(getCart).subscribe((res)=>{
   this.cartItemsAll=res as Cart[];
 
+  console.log(addCartItems);
+  this.cartService.GetCart(getCart).subscribe((res)=>{
+   this.cartItems=res as Cart[];
+   console.log("cart Items ---- "+this.cartItems);
+
+
+
+
+
+   if(!this.cartItemsAll.length){
+     if(!this.cartItems.length){
+
+       console.log("Cart is empty");
+       this.cartService.AddCart(addCartItems).subscribe((res)=>{
+         this.cartItems=res as Cart[];
+
+         this.getCartAll();
+
+       })
+     }
+   }
+     else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId==this.restaurantId){
+
+
+
+         console.log("Cart is empty");
+       this.cartService.AddCart(addCartItems).subscribe((res)=>{
+         this.cartItems=res as Cart[];
+         this.getCartAll();
+       })
+       }
+       else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.restaurantId){
+
+
+         this.dismiss();
+
+
+          this. presentAlertConfirm(this.removeCart,addCartItems);
+
+
+
+       }
+
+
+
+
+
+   else if( this.cartItems.length && this.cartItems[0].RestaurantId==addCartItems.RestaurantId){
+
+//update cart items(item count and amount)
+                 this.cartService.UpdateCart(addCartItems).subscribe((res)=>{
+                   this.cartItems=res as Cart[];
+
+                   this.getCartAll();
+                 });
+   }else {
+
+
+   }
+
+
+
+
+
+
+  })
 })
 // -------------------------------------------- ----------------------------------------
 
-   console.log(addCartItems);
-   this.cartService.GetCart(getCart).subscribe((res)=>{
-    this.cartItems=res as Cart[];
-    console.log("cart Items ---- "+this.cartItems);
-
-
-
-
-
-    if(!this.cartItemsAll.length){
-      if(!this.cartItems.length){
-
-        console.log("Cart is empty");
-        this.cartService.AddCart(addCartItems).subscribe((res)=>{
-          this.cartItems=res as Cart[];
-
-          this.getCartAll();
-
-        })
-      }
-    }
-      else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId==this.restaurantId){
-
-
-
-          console.log("Cart is empty");
-        this.cartService.AddCart(addCartItems).subscribe((res)=>{
-          this.cartItems=res as Cart[];
-          this.getCartAll();
-        })
-        }
-        else if(this.cartItemsAll.length && !this.cartItems.length && this.cartItemsAll[0].RestaurantId!=this.restaurantId){
-
-
-          this.dismiss();
-
-            // const dialogRef= this.dialog.open(DialogBoxComponent,{data:{key:'Your cart contains items from '+this.cartItemsAll[0].RestaurantName+'. Do you want to replace?'}});
-
-            // dialogRef.afterClosed().subscribe(result => {
-            //   console.log(result);
-            //   if(result=='Ok'){
-
-            //     this.cartService.RemoveCart(this.removeCart).subscribe((res)=>{
-            //       this.cartItems=res as Cart[];
-
-            //       this.cartService.AddCart(addCartItems).subscribe((res)=>{
-            //         this.cartItems=res as Cart[];
-            //       })
-
-            //     });
-
-
-
-            //   }
-            // });
-           this. presentAlertConfirm(this.removeCart,addCartItems);
-
-
-
-        }
-
-
-
-
-
-    else if( this.cartItems.length && this.cartItems[0].RestaurantId==addCartItems.RestaurantId){
-
-//update cart items(item count and amount)
-                  this.cartService.UpdateCart(addCartItems).subscribe((res)=>{
-                    this.cartItems=res as Cart[];
-
-                    this.getCartAll();
-                  });
-    }else {
-
-
-    }
-
-
-
-
-
-
-   })
 this.dismiss();
+
+ }
+
+ IncraseItemLocalStorage(i:any,menuId:any){
+   this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+
+  var productPresent=false;
+  this.productDetails[i].ItemCount=this.productDetails[i].ItemCount+1;
+  this.productDetails[i].Amount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
+    this.productDetails[i].ActualAmount=this.productDetails[i].Price*this.productDetails[i].ItemCount;
+
+    var addCartItems={
+
+      RestaurantId:this.restaurantId,
+      RestaurantName:this.whichRestaurant,
+      MenuId:menuId,
+      MenuName:this.selectedMenuName,
+      ProductId:this.productDetails[i]._id,
+      ProductName:this.productDetails[i].ProductName,
+      ActualPrice:this.productDetails[i].Price,
+      Price:this.productDetails[i].Price,
+      ItemCount:this.productDetails[i].ItemCount,
+      Amount:this.productDetails[i].Amount,
+      UserId:this.user[0]._id,
+      UserName:this.user[0].FirstName,
+      MobileNo:this.user[0].MobileNo,
+      Address:this.user[0].Address,
+      CreatedDate:this.today1,
+      CreatedBy:this.user[0]._id,
+      Status:"Cart",
+      ActiveYn:true,
+      DeleteYn:false,
+      Offer:this.productDetails[i].Offer,
+      OfferDescription:this.productDetails[i].OfferDescription,
+      Commission:this.productDetails[i].Commission,
+      ActualAmount:this.productDetails[i].ActualAmount,
+      Description:this.productDetails[i].Description,
+      Type:this.type
+
+
+
+
+     }
+
+     if(!localStorage.getItem('CartItems') || !this.CartItemsLocal.length){
+       this.cartItemsLocal=[];
+       this.cartItemsLocal.push(addCartItems);
+       console.log('cart item undefined')
+      localStorage.setItem("CartItems",JSON.stringify(this.cartItemsLocal));
+      this.restaurantName1=this.whichRestaurant;
+      this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+     }
+     else{
+       console.log('present');
+       if(localStorage.getItem('CartItems')){
+        this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+//console.log(this.CartItemsLocal[0].RestaurantId)
+if(this.CartItemsLocal[0].RestaurantId==this.restaurantId){
+  console.log('same')
+
+for(var k=0;k<this.CartItemsLocal.length;k++){
+  if(this.CartItemsLocal[k].MenuId==menuId && this.CartItemsLocal[k].ProductId==this.productDetails[i]._id){
+    console.log('same menu present index '+k)
+
+    var addCartItems1={
+
+      RestaurantId:this.restaurantId,
+      RestaurantName:this.whichRestaurant,
+      MenuId:menuId,
+      MenuName:this.selectedMenuName,
+      ProductId:this.productDetails[i]._id,
+      ProductName:this.productDetails[i].ProductName,
+      ActualPrice:this.productDetails[i].Price,
+      Price:this.productDetails[i].Price,
+      ItemCount:this.CartItemsLocal[k].ItemCount+1,
+      Amount:this.productDetails[i].Amount,
+      UserId:this.user[0]._id,
+      UserName:this.user[0].FirstName,
+      MobileNo:this.user[0].MobileNo,
+      Address:this.user[0].Address,
+      CreatedDate:this.today1,
+      CreatedBy:this.user[0]._id,
+      Status:"Cart",
+      ActiveYn:true,
+      DeleteYn:false,
+      Offer:this.productDetails[i].Offer,
+      OfferDescription:this.productDetails[i].OfferDescription,
+      Commission:this.productDetails[i].Commission,
+      ActualAmount:this.productDetails[i].ActualAmount,
+      Description:this.productDetails[i].Description,
+      Type:this.type
+
+
+
+
+     }
+
+
+productPresent=true;
+this.CartItemsLocal[k]=addCartItems1;
+console.log(this.CartItemsLocal+' '+this.whichRestaurant)
+localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+    break;
+  }
+
+}
+if(productPresent==false){
+  //this.cartItemsLocal.push(this.CartItemsLocal);
+  //this.cartItemsLocal.push(addCartItems);
+  this.CartItemsLocal.push(addCartItems);
+  console.log(this.CartItemsLocal);
+  localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+}
+
+}
+else if(this.CartItemsLocal[0].RestaurantId!=this.restaurantId){
+console.log('Different restaurant cart items ');
+this.presentAlertConfirm(this.removeCart,addCartItems);
+}
+       }
+     }
 
  }
 
@@ -641,7 +760,76 @@ this.dismiss();
 
  }
 
+DecreaseItemLocal(i:any,menuId:any){
+  this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
 
+  this.productDetails[i].ItemCount=this.productDetails[i].ItemCount-1;
+  console.log("item count "+this.productDetails[i].ItemCount)
+  if(this.productDetails[i].ItemCount>0){
+
+
+for(var k=0;k<this.CartItemsLocal.length;k++){
+  if(this.CartItemsLocal[k].MenuId==menuId && this.CartItemsLocal[k].ProductId==this.productDetails[i]._id){
+    console.log('same menu present index '+k)
+
+    var addCartItems1={
+
+      RestaurantId:this.restaurantId,
+      RestaurantName:this.whichRestaurant,
+      MenuId:menuId,
+      MenuName:this.selectedMenuName,
+      ProductId:this.productDetails[i]._id,
+      ProductName:this.productDetails[i].ProductName,
+      ActualPrice:this.productDetails[i].Price,
+      Price:this.productDetails[i].Price,
+      ItemCount:this.CartItemsLocal[k].ItemCount-1,
+      Amount:this.productDetails[i].Amount,
+      UserId:this.user[0]._id,
+      UserName:this.user[0].FirstName,
+      MobileNo:this.user[0].MobileNo,
+      Address:this.user[0].Address,
+      CreatedDate:this.today1,
+      CreatedBy:this.user[0]._id,
+      Status:"Cart",
+      ActiveYn:true,
+      DeleteYn:false,
+      Offer:this.productDetails[i].Offer,
+      OfferDescription:this.productDetails[i].OfferDescription,
+      Commission:this.productDetails[i].Commission,
+      ActualAmount:this.productDetails[i].ActualAmount,
+      Description:this.productDetails[i].Description,
+      Type:this.type
+
+
+
+
+     }
+
+
+
+this.CartItemsLocal[k]=addCartItems1;
+console.log(this.CartItemsLocal)
+localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+    break;
+  }
+
+}
+  }
+  else if(this.productDetails[i].ItemCount<=0){
+    console.log('0 entered '+JSON.stringify(this.CartItemsLocal));
+    for(var l=0;l<this.CartItemsLocal.length;l++){
+      console.log('for entred '+l)
+      if(this.CartItemsLocal[l].MenuId==menuId && this.CartItemsLocal[l].ProductId==this.productDetails[i]._id){
+        console.log('product present '+typeof(this.CartItemsLocal))
+var ll=l+1
+       this.CartItemsLocal.splice(l,1);
+        console.log(" dfddddddddddddd "+JSON.stringify(this.CartItemsLocal))
+        localStorage.setItem("CartItems",JSON.stringify(this.CartItemsLocal));
+
+      }}
+  }
+}
 
  DecreaseItem(i:any,menuId:any){
 this.present();
@@ -736,7 +924,7 @@ console.log("hi hi hi");
      this.restaurantName1=this.showCart[i].RestaurantName;
      }
 
-     //this.dismiss();
+     this.dismiss();
   })
  }
 ViewCart(){
@@ -757,8 +945,8 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
   console.log("clear cart "+clearCart+" add cart "+addCart);
   const alert = await this.alertController.create({
     cssClass: 'my-custom-class',
-    header: 'Replace Items...',
-    message: 'Your cart contains items from <strong>'+this.restaurantName1+'</strong>, would you like to replace it?',
+    header: 'Replace cart...',
+    message: 'Your cart contains items from <span style="font-weight:500">'+this.restaurantName1+'</span>, would you like to replace it?',
     buttons: [
       {
         text: 'Cancel',
@@ -771,16 +959,23 @@ async presentAlertConfirm(clearCart:any,addCart:any) {
         text: 'Okay',
         handler: () => {
           console.log('Confirm Okay');
-         // this.present();
-          this.cartService.RemoveCart(clearCart).subscribe((res)=>{
-                   this.cartItems=res as Cart[];
 
-                   this.cartService.AddCart(addCart).subscribe((res)=>{
-                     this.cartItems=res as Cart[];
-                     this.getCartAll();
-                   })
+          // this.cartService.RemoveCart(clearCart).subscribe((res)=>{
+          //          this.cartItems=res as Cart[];
 
-                 });
+          //          this.cartService.AddCart(addCart).subscribe((res)=>{
+          //            this.cartItems=res as Cart[];
+          //            this.getCartAll();
+          //          })
+
+          //        });
+
+          this.cartItemsLocal=[];
+          this.cartItemsLocal.push(addCart);
+          console.log('cart item undefined')
+         localStorage.setItem("CartItems",JSON.stringify(this.cartItemsLocal));
+         this.restaurantName1=this.whichRestaurant;
+         this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
         }
       }
     ]

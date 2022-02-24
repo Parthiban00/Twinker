@@ -73,6 +73,7 @@ currentTime1;
 showRestaurants=true;
 specialOffers:SpecialOffers[]=[];
 specificCategory:SpecificCategory[]=[];
+CartItemsLocal=[];
 skeleton=[
 
 {},
@@ -110,6 +111,11 @@ skeleton=[
   ionViewWillEnter(){
     this.user=JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
+    console.log(this.CartItemsLocal);
+    if(this.CartItemsLocal.length){
+      this.restaurantName=this.CartItemsLocal[0].RestaurantName;
+    }
 //StatusBar.setBackgroundColor({color:'ffffff'});
    // this.dismiss();
 
@@ -177,16 +183,16 @@ this.searchHotel="";
       ActiveYn:true,
       DeleteYn:false
     }
-    this.cartService.GetCartAll(getCart).subscribe((res)=>{
-      this.cartItemsAll=res as Cart[];
-      console.log(this.cartItemsAll);
+    // this.cartService.GetCartAll(getCart).subscribe((res)=>{
+    //   this.cartItemsAll=res as Cart[];
+    //   console.log(this.cartItemsAll);
 
-      for(var i=0;i<this.cartItemsAll.length;i++){
-       this.itemTotal+=this.cartItemsAll[i].Amount;
-        this.restaurantName=this.cartItemsAll[i].RestaurantName;
-        }
+    //   for(var i=0;i<this.cartItemsAll.length;i++){
+    //    this.itemTotal+=this.cartItemsAll[i].Amount;
+    //     this.restaurantName=this.cartItemsAll[i].RestaurantName;
+    //     }
 
-    })
+    // })
 
 var getRest={
 ActiveYn:true,
@@ -203,6 +209,7 @@ this.restaurantService.GetCategory(getRest).subscribe((res)=>{
 
       this.restaurantDetails=res as Restaurant[];
       this.searchedItem1 = res as Restaurant[];
+
       //this.searchedItem = res as Restaurant[];
      // var sortedArray: number[] = restaurantDetails.sort((n1,n2) => n1 - n2);
 
@@ -222,14 +229,18 @@ this.restaurantService.GetCategory(getRest).subscribe((res)=>{
 
                 }
 
-               this.searchedItem1.sort((a, b) => {
-                  return a.Distance - b.Distance;
-              });
+                this.searchedItem1.sort((a, b) => {
+                   return a.Distance - b.Distance;
+               });
+
+
               this.searchedItem1.forEach((e) => {
-                console.log(`${e.RestaurantName}  ${e.Distance}`);
+                console.log(`${e.RestaurantName}  ${e.Distance} ${e.AvailableStatus}`);
 
                 this.searchedItem.push(e);
             });
+
+
             if(this.searchedItem[0].Distance<=this.deliveryCharges[0].Around){
               console.log("distance true");
               this.showRestaurants=true;

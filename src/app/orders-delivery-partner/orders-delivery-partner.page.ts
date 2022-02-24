@@ -15,7 +15,7 @@ import {LocalNotificationService} from '../local-notification.service';
 import  {BuddyService} from '../buddy.service';
 //  import io from 'socket.io-client';
 
-import { LocalNotifications } from '@capacitor/local-notifications';
+
 //  const socket=io("http://localhost:5000");
 import  {SocketService} from '../socket.service';
 
@@ -48,7 +48,7 @@ deliveryBoys;
 a=[];
 n=0;
 orderDetails11;
-itemDetails11;
+itemDetails11=[];
 public alertMode: any;
 public loopMode: any;
   constructor(private buddyService:BuddyService,private localNotification : LocalNotificationService,private nativeAudio: NativeAudio, private audio: AudioManagement,private socketService:SocketService,private call:CallNumber,private alertController:AlertController,private loadingController:LoadingController,private deliveryService:DeliveryBoyService,private owenerService:OwnersService,private router:Router) {
@@ -81,12 +81,40 @@ user:any;
 currentUserId:any;
   ngOnInit() {
 
+
+
+
+
+
+
+
+
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
 
+    var data={
+      room:this.location.locality,
+      user:'delivery boy'
+    }
+this.socketService.JoinRoom(data);
 
+this.socketService.NewOrderPlaced().subscribe((data)=>{
+  // this.sendLocalNotification ();
+
+  this.orderDetailsFromSocket=[];
+  console.log("hi this sockert"+data);
+  //this.orderDetailsFromSocket1.push(data.data);
+  this.orderDetailsFromSocket.push(data.data);
+  console.log("orderDetailsFromSocket -----------"+JSON.stringify(this.orderDetailsFromSocket));
+
+  console.log("orderDetailsFromSocket1111111111111 -----------"+this.orderDetailsFromSocket[0].length);
+
+  //this.createAlert();
+
+  });
 
   }
   ionViewWillEnter(){
+    this.localNotification.scheduleNotification();
     let today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -95,11 +123,7 @@ currentUserId:any;
      this.today22= yyyy + '-' + mm + '-' + dd;
      console.log("created date "+this.today22)
     this.setRingtone();
-    var data={
-      room:this.location.locality,
-      user:'delivery boy'
-    }
-this.socketService.JoinRoom(data);
+
 
 
     this.GetOrderDetails();
@@ -109,19 +133,7 @@ this.socketService.JoinRoom(data);
     //  })
 
     //  socket.emit('orderPlaced');
-    this.socketService.NewOrderPlaced().subscribe((data)=>{
-      this.sendLocalNotification ();
-      this.orderDetailsFromSocket=[];
-      console.log("hi this sockert"+data);
-      //this.orderDetailsFromSocket1.push(data.data);
-      this.orderDetailsFromSocket.push(data.data);
-      console.log("orderDetailsFromSocket -----------"+JSON.stringify(this.orderDetailsFromSocket));
 
-      console.log("orderDetailsFromSocket1111111111111 -----------"+this.orderDetailsFromSocket[0].length);
-
-      this.createAlert();
-
-      });
 
 var data1={
 Locality:this.location.locality,
@@ -131,7 +143,7 @@ CreatedDate:this.today22
 this.buddyService.GetSubmittedOrders(data1).subscribe((res)=>{
 
 this.buddyorder = res
-console.log('buddy orders'+this.buddyorder[0].UserDetails.FirstName)
+//console.log('buddy orders'+this.buddyorder[0].UserDetails.FirstName)
 })
 
   }
@@ -174,7 +186,7 @@ var getOrders={
 //    UserId:this.user[0]._id,
 //  }
 
-this.deliveryService.GetOrders(getOrders).subscribe((res)=>{
+this.deliveryService.GetOrdersPlaced(getOrders).subscribe((res)=>{
   this.orderDetails11=res as Orders[];
   console.log("hi this is order ddd "+this.orderDetails11);
   // this.orderDetails11=this.orderDetails;
@@ -251,7 +263,7 @@ this.deliveryService.GetOrdersLocality(getOrders).subscribe((res)=>{
 //   }
 
 
-Accepted(id:any,restaurantId:any,userId:any,ImageUrl) {
+Accepted(id:any,restaurantId:any,userId:any) {
 
   this.present();
 
@@ -259,7 +271,7 @@ Accepted(id:any,restaurantId:any,userId:any,ImageUrl) {
     _id:id,
     DeliveryPartnerStatus:'Accepted by Delivery Partner',
     RestaurantId:restaurantId,
-    DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id,ImageUrl:ImageUrl},
+    DeliveryPartnerDetails:{FirstName:this.user[0].FirstName,MobileNo:this.user[0].MobileNo,UserType:this.user[0].UserType,UserId:this.user[0]._id,ImageUrl:this.user[0].ImageUrl},
     ModifiedBy:this.user[0],
     ModifiedDate: this.myDate.substring(0,10),
     ActiveYn:true,
@@ -540,9 +552,9 @@ window.open('https://www.google.com/maps/dir/?api=1&destination='+lat+','+lon)
       this.playSingle();
     }
   }
-  sendLocalNotification () {
-    this.localNotification.showLocalNotification ( 1 , " New Order Placed ", "You have a New Order, Tap to find this...");
-  }
+  // sendLocalNotification () {
+  //   this.localNotification.showLocalNotification ( 1 , " New Order Placed ", "You have a New Order, Tap to find this...");
+  // }
   playSingle() {
     this.nativeAudio.play('uniqueId1').then(() => {
       console.log('Successfully played');

@@ -6,7 +6,7 @@
 
       </ion-button>
       </ion-buttons>
-      <ion-searchbar [(ngModel)]="autocomplete.input" show-cancel="true" (ionChange)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
+      <ion-searchbar [(ngModel)]="autocomplete.input" style="--border-radius:20px;" show-cancel="true" (ionChange)="UpdateSearchResults()" placeholder="Search for a place"  (ionClear)="ClearAutocomplete()"></ion-searchbar>
 
   </ion-toolbar>
   <ion-list [hidden]="autocompleteItems.length == 0">
@@ -17,7 +17,7 @@
   <ion-row >
 
     <ion-col  >
-      <ion-button style="width: 100%;" (click)="setCurrentLocation()" color="primary">
+      <ion-button style="width: 100%;text-transform: capitalize;" shape="round" (click)="setCurrentLocation()" color="primary">
         <ion-icon slot="start" name="locate"></ion-icon>
           Pick My Location
         </ion-button>

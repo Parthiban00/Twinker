@@ -18,24 +18,33 @@
       </ion-button>
           </ion-buttons>
   </ion-toolbar>
-  <div  *ngIf="!cartItemsAll.length" class="empty-cart" style="display: block;margin-right: auto;margin-left: auto;width: 50%;margin-top: 200px;">
-    <img src="/assets/empty-cart.gif">
-    <ion-button (click)="RedirectToHome()" color="secondary" style="--border-radius: 0px !important;display: block;margin-left: auto;margin-right: auto;width: fit-content;">Add Items</ion-button>
+  <div  *ngIf="cartLoading" class="empty-cart" style="display: block;margin-right: auto;margin-left: auto;width: 30%;margin-top: 200px;text-align: center;">
+    <img src="/assets/cart_loading.gif">
+    <!-- <ion-button (click)="RedirectToHome()" color="secondary" style="--border-radius: 0px !important;display: block;margin-left: auto;margin-right: auto;width: fit-content;">Add Items</ion-button> -->
+<ion-label  style="display: block;margin-left: auto;margin-right: auto;font-weight: 500;color: black;font-size: 12px;">Loading...</ion-label>
+
+  </div>
+
+  <div  *ngIf="emptyCart" class="empty-cart" style="display: block;margin-right: auto;margin-left: auto;width: 50%;margin-top: 200px;text-align: center;">
+    <img src="/assets/empty_cart.gif">
+    <ion-button (click)="RedirectToHome()" color="secondary" style="--border-radius: 20px !important;display: block;margin-left: auto;margin-right: auto;width: fit-content;">Add Items</ion-button>
+
+
   </div>
 </ion-header>
 
-<div *ngIf="cartItemsAll.length" class="banner" style="height: 50px;">
+<div *ngIf="CartItemsLocal.length" class="banner" style="height: 50px; margin-top: 20px;">
   <!-- <img  src="assets\orange_banner1.png" /> -->
   <div class="caption ion-padding">
-    {{restaurantName}}<br>
+    {{CartItemsLocal[0].RestaurantName}}<br>
 
-   <i> {{cartItemsAll.length}} items</i>
+   <p style="font-size: 12px;"> {{CartItemsLocal.length}} items</p>
    <!-- <ion-button color="tertiary" >Coupons</ion-button> -->
   </div>
 
   </div>
 
-<div *ngIf="cartItemsAll.length">
+<!-- <div *ngIf="cartItemsAll.length">
   <ion-header>
 <ion-toolbar>
   <ion-segment [(ngModel)]="default" color="danger" (ionChange)="segmentChanged($event)">
@@ -53,13 +62,13 @@
   </ion-segment>
 </ion-toolbar>
 </ion-header>
-  </div>
+  </div> -->
 
 
 
     <!-- <ion-refresher-content>
       <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200"> -->
-<ion-content *ngIf="cartItemsAll.length">
+<ion-content *ngIf="CartItemsLocal.length">
 
   <ion-refresher (ionRefresh)="doRefresh($event)" slot="fixed" pullFactor="0.5" pullMin="100" pullMax="200">
     <ion-refresher-content></ion-refresher-content>
@@ -72,7 +81,7 @@
 
     <div class="cart-items">
       <ion-card-subtitle style="margin-left: 10px;margin-top: 10px;">Items :</ion-card-subtitle>
-  <ion-card *ngFor="let cartItem of cartItemsAll; let i=index">
+  <ion-card *ngFor="let cartItem of CartItemsLocal; let i=index">
 
     <!-- <div class="offers" *ngIf="cartItem.Offer">
       -&nbsp;{{cartItem.Offer}}% Off
@@ -94,9 +103,9 @@
   <ion-label>Rs.&nbsp;{{cartItem.Amount}}.0</ion-label>
 </div>
       <div class="qty-selector" >
-<ion-button fill="clear" [disabled]="!cartItem.ItemCount" (click)="DecreaseCount(i)">-</ion-button>
+<ion-button fill="clear" [disabled]="!cartItem.ItemCount" (click)="DecreaseItemLocalStorage(i,cartItem.MenuId,cartItem.MenuName,cartItem._id)">-</ion-button>
 <ion-label>{{cartItem.ItemCount}}</ion-label>
-<ion-button fill="clear" (click)="IncreaseCount(i)" >+</ion-button>
+<ion-button fill="clear" (click)="IncraseItemLocalStorage(i,cartItem.MenuId,cartItem.MenuName,cartItem._id)" >+</ion-button>
 
       </div>
 
@@ -111,7 +120,7 @@
 
 
       <ion-item style="border-top:2px solid rgb(207, 207, 207);border-right:2px solid rgb(207, 207, 207);border-left:2px solid rgb(207, 207, 207);border-radius:5px;font-size: 12px;">
-        <ion-label position="floating" style="color: gray;">Write your wishes to this spot...</ion-label>
+        <ion-label position="floating" style="color: gray;">Write any suggestions to this Restaurant or Shop....</ion-label>
         <ion-input [(ngModel)]="wishes"></ion-input>
       </ion-item>
 
@@ -145,7 +154,7 @@
 
 
                       </div>
-                      <ion-button class ="add-btn" color="danger"  (click)="IncreaseItem(i,suggestion.MenuId)" style="height: 20px;--border-radius: 2px;">Add +</ion-button>
+                      <ion-button class ="add-btn" color="danger"  (click)="IncraseItemSuggestion(i,suggestion.MenuId,suggestion._id)" style="height: 20px;--border-radius: 2px;">Add +</ion-button>
             </ion-card-content>
         </ion-card>
 
@@ -218,8 +227,8 @@
 </ion-card>
   <small *ngIf="!couponPresent" style="color:crimson;">Invalid or Coupon expired...</small>
   <small *ngIf="couponApplied" style="color: seagreen;">Coupon Applied...</small>
-  <ion-button color="primary" style="--border-radius: 5px !important" *ngIf="!applied" id="applybtn" (click)="ApplyCoupon()">Apply</ion-button>
-  <ion-button color="primary"  *ngIf="applied" id="removebtn" (click)="RemoveCoupon()">Remove</ion-button>
+  <ion-button color="primary" style="--border-radius: 20px !important;text-transform: capitalize;" *ngIf="!applied" id="applybtn" (click)="ApplyCoupon()">Apply</ion-button>
+  <ion-button color="danger" style="--border-radius: 20px !important;text-transform: capitalize;"  *ngIf="applied" id="removebtn" (click)="RemoveCoupon()">Remove</ion-button>
 
   </form>
         </ion-card-content>
@@ -262,10 +271,10 @@
 
 </ion-content>
 
-<ion-footer  *ngIf="cartItemsAll.length" class="slide-in-bottom">
+<ion-footer  *ngIf="CartItemsLocal.length" class="slide-in-bottom">
   <div class="deliverylocation">
     <ion-card style="border-radius: 0px;width:100%;border-bottom:2px solid tomato;box-shadow:none;">
-      <ion-card-header>
+      <ion-card-header style="font-weight: 500;">
          Delivery Location
          <!-- <ion-button fill="clear" (click)="DeliveryAddress()"><ion-icon   name="create-outline"></ion-icon></ion-button> -->
          <ion-button fill="clear" (click)="ChangeLocation()"><ion-icon   name="create-outline"></ion-icon></ion-button>
@@ -279,7 +288,7 @@
   <ion-toolbar >
     <!-- <ion-title>4 Items</ion-title> -->
 
-    <ion-text class="title">{{cartItemsAll.length}} Items</ion-text>
+    <ion-text class="title">{{CartItemsLocal.length}} Items</ion-text>
     <ion-text class="description">Amount Rs:{{totalAmount1}}</ion-text>
 
 

@@ -9,11 +9,12 @@ import{CartService} from 'src/app/cart.service';
 import Cart from '../models/cart';
 import Tokens from '../models/tokens';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import {LocalNotifications,NotificationChannel} from '@capacitor/local-notifications'
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { LocationAccuracy } from '@ionic-native/location-accuracy/ngx';
 import Category from '../models/category';
 import{CategoriesService} from 'src/app/categories.service';
-import { ThrowStmt } from '@angular/compiler';
+
 import MainCategory from '../models/main-categories';
 import AddSlide from '../models/add-slide';
 import BuddySlide from '../models/buddy-slide';
@@ -24,12 +25,19 @@ import  {SocketService} from '../socket.service';
 import { ModalController } from '@ionic/angular';
 import {CallNumber} from "@ionic-native/call-number/ngx";
 import {ChangeLocationPage} from '../change-location/change-location.page';
+import {OrderTrackModalPage} from '../order-track-modal/order-track-modal.page';
 import {LocalNotificationService} from '../local-notification.service';
 import BuddyBanner from '../models/buddy-banner';
 
 import SpecialOffers from '../models/special-offers';
 
-
+const channel: NotificationChannel={
+  id:'audio_channel',
+  name:'audio_channel',
+  sound: 'notification.wav',
+  importance:5,
+  visibility: 1
+}
 
 @Component({
   selector: 'app-home-page',
@@ -63,6 +71,9 @@ itemTotal=0;
 orderDetailsFromSocket=[];
 specialOffers:SpecialOffers[]=[];
 buddyBanners:BuddyBanner[]=[];
+CartItemsLocal=[];
+time1;
+time2;
 skeleton=[
 
   {},
@@ -90,6 +101,9 @@ skeleton=[
       {},
       {}
       ]
+
+
+
   constructor(private localNotification : LocalNotificationService,private call:CallNumber,private plt:Platform,private alertCtrl:AlertController,private socketService:SocketService ,private dashboardService:DashboardService,public modalController: ModalController,private categoriesService:CategoriesService,private nativeGeocoder:NativeGeocoder,private geolocation: Geolocation,private locationAccuracy: LocationAccuracy,private cartService:CartService,private router: Router,public loadingController: LoadingController,private ordersService: OrdersService,private platform: Platform,private navController:NavController) {
 
 this.plt.ready().then(()=>{
@@ -101,7 +115,31 @@ this.plt.ready().then(()=>{
   }
   ngOnInit(): void {
 
+    LocalNotifications.createChannel(channel);
+    LocalNotifications.requestPermissions();
+    LocalNotifications.registerActionTypes({
+      types:[
+        {
+          id:'Chat_msg',
+          actions:[{
+            id:'view',
+            title:'Open Chat'
+          },
+       {
+         id:'remove',
+         title:'Dismiss',
+         destructive:true
+       },
+       {
+         id:'respond',
+         title:'Respond',
+         input:true
+       }
 
+         ]
+        }
+      ]
+    })
 
 
     this.location = JSON.parse(localStorage.getItem('LocationAddress') || '{}');
@@ -116,6 +154,10 @@ this.plt.ready().then(()=>{
     this.dashboardService.GetBookingSlide(data).subscribe((res)=>{
       this.bookingSlide=res as BookingSlide[];
    })
+
+
+
+
   }
 
 scheduleNotifications(){
@@ -244,23 +286,19 @@ token:String;
    }
 
    ionViewWillEnter(){
+
+
+
      this.showApp=true;
     // this.sendLocalNotification ();
+    // this.presentModal();
+    this.repeatNotification();
 
-    //  this.localNotification.showLocalNotification1 ();
-     this.localNotification.showLocalNotification730 ();
-     this.localNotification.showLocalNotification830 ();
-     this.localNotification.showLocalNotification10 ();
-     this.localNotification.showLocalNotification2 ();
-     this.localNotification.showLocalNotification3 ();
-     this.localNotification.showLocalNotification5 ();
-     this.localNotification.showLocalNotification630 ();
-     this.localNotification.showLocalNotification8 ();
-     this.localNotification.showLocalNotification9 ();
-
+// this.localNotification.scheduleNotification();
      console.log('1');
     this.user = JSON.parse(localStorage.getItem('currentUser') || '{}');
     //this.location=JSON.parse(localStorage.getItem('LocationAddress') || '{}');
+    this. CartItemsLocal=JSON.parse(localStorage.getItem('CartItems') || '{}');
 
     var data1={
       locality:this.location.locality
@@ -350,12 +388,14 @@ UserId:this.user[0]._id
 
 this.ordersService.GetPlacedOrders(getOrders).subscribe((res)=>{
   this.orderDetails=res as Orders[];
-  console.log(this.orderDetails[0].DeliveryPartnerDetails.ImageUrl);
+ // console.log(this.orderDetails[0].DeliveryPartnerDetails.ImageUrl);
  this.orderDetailsFromSocket[0]=this.orderDetails;
 
 console.log(this.orderDetails[0].DeliveryTime);
 
-
+if(this.orderDetails.length){
+  this.presentModal();
+}
 
      });
 
@@ -378,9 +418,9 @@ console.log(this.orderDetails[0].DeliveryTime);
 
 
   }
-  sendLocalNotification () {
-    this.localNotification.showLocalNotification1 ();
-  }
+  // sendLocalNotification () {
+  //   this.localNotification.showLocalNotification1 ();
+  // }
   onDestroy(){
     console.log("page destroyed");
   }
@@ -468,6 +508,294 @@ this.socketService.JoinRoom(data);
     this.router.navigate(['product-page/'+restaurantName+'/'+restaurantId+'/'+menuId+'/'+type]);
   }
 
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: OrderTrackModalPage,
+      breakpoints: [0, 0.3, 0.5, 0.8],
+      initialBreakpoint: 0.5
+    });
+    await modal.present();
+  }
+
+  scheduleNotification(){
+    LocalNotifications.schedule({
+      notifications:[
+        {
+          title:'Friendly Remainder',
+          body:'Join the twinker family',
+          id:2,
+          extra:{
+            data:'pass your data handler',
+
+          },
+          iconColor:'#0000FF',
+          actionTypeId:'Chat_msg',
+          smallIcon:'res://ic_launcher_adaptive_fore',
+        }
+      ]
+    })
+     }
+
+
+     async scheduleAdvanced(){
+      await LocalNotifications.schedule({
+        notifications:[
+          {
+            title: ' Reminder with Action',
+            body: ' Hey I have action types',
+            id: 2,
+            sound:null,
+            extra:{
+              data: 'Pass data to handler'
+            },
+            iconColor:'#0000ff',
+            actionTypeId:'Chat_msg',
+            schedule:{
+                at: new Date(Date.now()+1000*3),
+               repeats:true,
+               every:'hour',
+               count:5,
+               on: {
+               minute: 5
+               }
+            },
+            channelId: 'audio_channel'
+          }
+        ]
+      });
+    }
+
+
+    async repeatNotification(){
+      var today = new Date();
+      var tomorrow = new Date();
+      tomorrow.setDate(today.getDate());
+      tomorrow.setHours(14);
+      tomorrow.setMinutes(16);
+      tomorrow.setSeconds(0);
+      var tomorrow_at_11_am = new Date(tomorrow);
+
+      var today2 = new Date();
+      var tomorrow2 = new Date();
+      tomorrow2.setDate(today2.getDate());
+      tomorrow2.setHours(14);
+      tomorrow2.setMinutes(18);
+      tomorrow2.setSeconds(0);
+      var tomorrow_at_5_pm = new Date(tomorrow2);
+
+      var today3 = new Date();
+      var tomorrow3 = new Date();
+      tomorrow3.setDate(today3.getDate());
+      tomorrow3.setHours(19);
+      tomorrow3.setMinutes(10);
+      tomorrow3.setSeconds(0);
+      var tomorrow_at_7_pm = new Date(tomorrow3);
+
+      var today4 = new Date();
+      var tomorrow4 = new Date();
+      tomorrow4.setDate(today4.getDate());
+      tomorrow4.setHours(7);
+      tomorrow4.setMinutes(50);
+      tomorrow4.setSeconds(0);
+      var tomorrow_at_7_am = new Date(tomorrow4);
+
+      var today5 = new Date();
+      var tomorrow5 = new Date();
+      tomorrow5.setDate(today5.getDate());
+      tomorrow5.setHours(9);
+      tomorrow5.setMinutes(30);
+      tomorrow5.setSeconds(0);
+      var tomorrow_at_9_am = new Date(tomorrow5);
+
+      var today6 = new Date();
+      var tomorrow6 = new Date();
+      tomorrow6.setDate(today6.getDate());
+      tomorrow6.setHours(12);
+      tomorrow6.setMinutes(20);
+      tomorrow6.setSeconds(0);
+      var tomorrow_at_12_pm = new Date(tomorrow6);
+
+      var today7 = new Date();
+      var tomorrow7 = new Date();
+      tomorrow7.setDate(today7.getDate());
+      tomorrow7.setHours(14);
+      tomorrow7.setMinutes(30);
+      tomorrow7.setSeconds(0);
+      var tomorrow_at_2_pm = new Date(tomorrow7);
+
+      var today8 = new Date();
+      var tomorrow8 = new Date();
+      tomorrow8.setDate(today8.getDate());
+      tomorrow8.setHours(16);
+      tomorrow8.setMinutes(10);
+      tomorrow8.setSeconds(0);
+      var tomorrow_at_4_pm = new Date(tomorrow8);
+
+      var today9 = new Date();
+      var tomorrow9 = new Date();
+      tomorrow9.setDate(today9.getDate());
+      tomorrow9.setHours(18);
+      tomorrow9.setMinutes(10);
+      tomorrow9.setSeconds(0);
+      var tomorrow_at_6_pm = new Date(tomorrow9);
+
+
+      var today10 = new Date();
+      var tomorrow10 = new Date();
+      tomorrow9.setDate(today10.getDate());
+      tomorrow10.setHours(20);
+      tomorrow10.setMinutes(30);
+      tomorrow10.setSeconds(0);
+      var tomorrow_at_20_pm = new Date(tomorrow10);
+
+      var today11 = new Date();
+      var tomorrow11 = new Date();
+      tomorrow11.setDate(today11.getDate());
+      tomorrow11.setHours(21);
+      tomorrow11.setMinutes(50);
+      tomorrow11.setSeconds(0);
+      var tomorrow_at_21_pm = new Date(tomorrow11);
+
+
+      await LocalNotifications.schedule({
+        notifications:[
+          {
+            title: 'Grill or Tandoori?',
+            body:'Grill and Tandoori are waiting for you, Tap to Order now...',
+            id: 3,
+            sound: null,
+           // channelId: 'audio_channel',
+            schedule:{
+               at: tomorrow_at_7_pm,
+              repeats:true,
+               every:'day',
+               count:1
+            },
+
+          },
+          {
+            id:4,
+            title:'Good morning with Good Breakfast...',
+            body:'Good Breakfast decides your entire day, Tap to order now...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_7_am,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:5,
+            title:'Are you waked up!',
+            body:'Dosai wants to know that, Just tap to inform to that..',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_9_am,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:6,
+            title:'Hey today is Biryani day...',
+            body:'Biriyani or Varity meals, tap to order now...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_12_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:7,
+            title:'Your stomach wants anything...',
+            body:'Just tap to order now... Favorite dinner is yours...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_20_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:8,
+            title:'Fresh Fruits and Jucies...',
+            body:'Nooo, I would like milk shakes and fruit salats, Just tap to order now...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_2_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+
+          {
+            id:9,
+            title:'Tasty Desserts...',
+            body:'Jigarthanda or Ice creams, Just take a break with us...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_4_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:10,
+            title:'Crispy Evening...',
+            body:'Age is going on... But not for your favorite foods, Just tap to order now...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_6_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:11,
+            title:'I think you forget you dinner...',
+            body:'If yes, dont wait still, tap to fullfill now...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_21_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+          {
+            id:12,
+            title:'Dinner specials...',
+            body:'why still thinking, we are here, tap to order now...',
+            sound: null,
+            // channelId: 'audio_channel',
+             schedule:{
+                at: tomorrow_at_20_pm,
+               repeats:true,
+                every:'day',
+                count:1
+             },
+          },
+
+        ]
+      })
+    }
 
 }
 
